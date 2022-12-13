@@ -44,14 +44,12 @@ namespace WizMes_ANT
         public static List<string> tempContent = new List<string>();
         // 넘겨줄 임시 데이터 변수(품목별 불량현황 -> 스크린샷 popup)
         public static List<Image> ScreenCapture = new List<Image>();
+        // 넘겨줄 임시 데이터 변수(설비가동률 -> 설비가동률상세조회)
+        public static List<string> MCtemp = new List<string>();
 
         // [생산] - 생산계획작성 - 저장과 동시 작업지시 안내를 위한 변수
         public static bool plInputFlag_SavePrint = false;
         public static Dictionary<string, object> plInput = new Dictionary<string, object>();
-
-        // [생산] - 생산계획편성 
-        public static List<string> AutoPlanContent = new List<string>();
-
 
         // 확장자 이름 → SetImage 메서드에서 오류 발생하여, 혹여나 이미지가 아닌 다른 형식의 파일이 업로드 됬을때를 대비해서, 그냥 이미지으로 마지막 확장자명만 체크를 위한 변수
         public static string[] Extensions = { ".jpg", ".jpeg", ".jpe", ".jfif", ".png" };
@@ -279,7 +277,7 @@ namespace WizMes_ANT
 
                     MainWindow.mMenulist[i].subProgramID = new MdiChild()
                     {
-                        Title = "(주)ANT [" + MainWindow.mMenulist[i].MenuID.Trim() + "] " + MainWindow.mMenulist[i].Menu.Trim() +
+                        Title = "WizMes_ANT [" + MainWindow.mMenulist[i].MenuID.Trim() + "] " + MainWindow.mMenulist[i].Menu.Trim() +
                                 " (→" + MainWindow.mMenulist[i].ProgramID.Trim() + ")",
                         Height = SystemParameters.PrimaryScreenHeight * 0.8,
                         MaxHeight = SystemParameters.PrimaryScreenHeight * 0.85,
@@ -500,7 +498,7 @@ namespace WizMes_ANT
 
                     MenuViewModel.subProgramID = new MdiChild()
                     {
-                        Title = "(주)ANT [" + MenuViewModel.MenuID + "] " + MenuViewModel.Menu + " (→" + MenuViewModel.ProgramID.Trim() + ")",
+                        Title = "WizMes_ANT [" + MenuViewModel.MenuID + "] " + MenuViewModel.Menu + " (→" + MenuViewModel.ProgramID.Trim() + ")",
                         Height = SystemParameters.PrimaryScreenHeight * 0.8,
                         MaxHeight = SystemParameters.PrimaryScreenHeight * 0.85,
                         MinHeight = 640,

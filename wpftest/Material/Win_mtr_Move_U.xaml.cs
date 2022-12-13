@@ -2279,13 +2279,9 @@ namespace WizMes_ANT
                 sqlParameter.Add("CustomID", "");
 
                 sqlParameter.Add("Custom", "");
-                sqlParameter.Add("ChkArticleID", chkArticleNo.IsChecked == true ? 1 : 0); // chkBuyerArticleNo.IsChecked == true ? 1 : 0);
-                sqlParameter.Add("ArticleID", "");
-                sqlParameter.Add("Article", chkArticleNo.IsChecked == true && !txtArticleNo.Text.Trim().Equals("") ? txtArticleNo.Text : "");
-                //sqlParameter.Add("ArticleID", ""); // chkBuyerArticleNo.IsChecked == true ? (txtBuyerArticleNo.Tag != null ? txtBuyerArticleNo.Tag.ToString() : "") : "");
-                //sqlParameter.Add("Article", "");// chkBuyerArticleNo.IsChecked == true ? txtArticle.Text : "");
-
-                
+                sqlParameter.Add("ChkArticleID", 0); // chkBuyerArticleNo.IsChecked == true ? 1 : 0);
+                sqlParameter.Add("ArticleID", ""); // chkBuyerArticleNo.IsChecked == true ? (txtBuyerArticleNo.Tag != null ? txtBuyerArticleNo.Tag.ToString() : "") : "");
+                sqlParameter.Add("Article", "");// chkBuyerArticleNo.IsChecked == true ? txtArticle.Text : "");
 
                 sqlParameter.Add("ChkOrder", 0);
 
@@ -3639,7 +3635,7 @@ namespace WizMes_ANT
 
             return flag;
         }
-
+    
         #endregion // 저장 메서드 SaveData()
 
         #region 삭제 메서드 Delete()
@@ -3932,52 +3928,6 @@ namespace WizMes_ANT
                 MessageBox.Show("종료일자는 시작일 이후로 설정해주세요");
                 dtpEDateSrh.SelectedDate = Convert.ToDateTime(e.RemovedItems[0].ToString());
             }
-        }
-        //품명 라벨체크
-        private void lblArticleNo_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
-        {
-            if (chkArticleNo.IsChecked == true)
-            {
-                chkArticleNo.IsChecked = false;
-            }
-            else
-            {
-                chkArticleNo.IsChecked = true;
-            }
-        }
-
-        //품명 체크 
-        private void chkArticleNo_Checked(object sender, RoutedEventArgs e)
-        {
-            chkArticleNo.IsChecked = true;
-
-            txtArticleNo.IsEnabled = true;
-
-            btnPfArticleNo.IsEnabled = true;
-        }
-        //품명 안체크
-        private void chkArticleNo_Unchecked(object sender, RoutedEventArgs e)
-        {
-            chkArticleNo.IsChecked = false;
-
-            txtArticleNo.IsEnabled = false;
-
-            btnPfArticleNo.IsEnabled = false;
-        }
-        //품명 키다운 
-        private void txtArticleNo_KeyDown(object sender, KeyEventArgs e)
-        {
-            if (e.Key == Key.Enter)
-            {
-                e.Handled = true;
-                MainWindow.pf.ReturnCode(txtArticleNo, 7077, "");
-            }
-        }
-        
-        //품명 플러스파인더
-        private void btnPfArticleNoSrh_Click(object sender, RoutedEventArgs e)
-        {
-            MainWindow.pf.ReturnCode(txtArticleNo, 7077, "");
         }
     }
 

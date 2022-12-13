@@ -25,6 +25,51 @@ namespace WizMes_ANT
 
 
         /// <summary>
+        /// 금형 콤보박스
+        /// </summary>
+        /// <returns></returns>
+        public ObservableCollection<CodeView> Get_MOLDID()
+        {
+            ObservableCollection<CodeView> retunCollection = new ObservableCollection<CodeView>();
+            string sql = " select dm.MoldID, dm.MoldNo ";
+            sql += " from dvl_Mold dm ";
+            sql += " order by dm.MoldNo ";
+
+            try
+            {
+                DataSet ds = DataStore.Instance.QueryToDataSet(sql);
+                if (ds != null && ds.Tables.Count > 0)
+                {
+                    DataTable dt = ds.Tables[0];
+                    if (dt.Rows.Count > 0)
+                    {
+                        DataRowCollection drc = dt.Rows;
+
+                        foreach (DataRow item in drc)
+                        {
+                            CodeView mCodeView = new CodeView()
+                            {
+                                code_id = item[0].ToString().Trim(),
+                                code_name = item[1].ToString().Trim()
+                            };
+                            retunCollection.Add(mCodeView);
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("콤보박스 생성 중 오류 발생 : " + ex.ToString());
+            }
+            finally
+            {
+                DataStore.Instance.CloseConnection();
+            }
+
+            return retunCollection;
+        }
+
+        /// <summary>
         /// 설비 콤보박스
         /// </summary>
         /// <returns></returns>
@@ -649,10 +694,17 @@ namespace WizMes_ANT
                     {
                         DataRowCollection drc = dt.Rows;
 
+                        CodeView mCodeView = new CodeView()
+                        {
+                            code_id = "",
+                            code_name = "전체"
+                        };
+                        retunCollection.Add(mCodeView);
+
                         foreach (DataRow item in drc)
                         {
 
-                            CodeView mCodeView = new CodeView()
+                            mCodeView = new CodeView()
                             {
                                 code_id = item[0].ToString().Trim(),
                                 code_name = item[1].ToString().Trim()
@@ -779,11 +831,9 @@ namespace WizMes_ANT
         /// <returns></returns>
         public ObservableCollection<CodeView> GetMachine(string value)
         {
-           
             ObservableCollection<CodeView> retunCollection = new ObservableCollection<CodeView>();
-            try
-            {
-                Dictionary<string, object> sqlParameter = new Dictionary<string, object>();
+
+            Dictionary<string, object> sqlParameter = new Dictionary<string, object>();
             sqlParameter.Add("@sProcessID", value);
 
             DataSet ds = DataStore.Instance.ProcedureToDataSet("xp_Process_sMachine", sqlParameter, false);
@@ -811,12 +861,6 @@ namespace WizMes_ANT
                     }
                 }
             }
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.ToString() + "GetMachine");
-            }
-            
 
             return retunCollection;
         }

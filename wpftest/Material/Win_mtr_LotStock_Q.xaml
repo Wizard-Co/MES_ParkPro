@@ -37,30 +37,30 @@
             <!--검사일자-->
             <Grid Grid.Column="1" Grid.Row="0">
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="65*" />
+                    <ColumnDefinition Width="75*" />
                     <ColumnDefinition Width="85*" />
                 </Grid.ColumnDefinitions>
-                <Label x:Name="lblDate" Grid.Column="0" Style="{DynamicResource LabelSearch}"
+                <Label x:Name="lblDate" Grid.Column="0"  Style="{DynamicResource LabelSearch}"
                        MouseLeftButtonUp="lblDate_MouseLeftButtonUp">
-                    <StackPanel Style="{DynamicResource StackPanelInLabel}">
-                        <Viewbox Style="{DynamicResource ViewBoxSetMaxMinHeight}" >
+                    <StackPanel Orientation="Horizontal" Style="{DynamicResource StackPanelInLabel}">
+                        <Viewbox Style="{DynamicResource ViewBoxSetMaxMinHeight}">
                             <CheckBox x:Name="chkDate" Checked="chkDate_Checked" Unchecked="chkDate_Unchecked" VerticalAlignment="Center" />
                         </Viewbox>
-                        <Viewbox Style="{DynamicResource ViewBoxSetMaxMinHeight}" >
-                            <TextBlock Text="일  자" Style="{DynamicResource TextBlockInViewBoxSearch}" />
+                        <Viewbox Style="{DynamicResource ViewBoxSetMaxMinHeight}">
+                            <TextBlock Text="일  자" Style="{DynamicResource TextBlockInViewBoxSearch}" />    
                         </Viewbox>
                         
                     </StackPanel>
                 </Label>
-                <DatePicker x:Name="dtpSDate" Grid.Column="1"  Style="{DynamicResource DatePickerSearch}" />
+                <DatePicker x:Name="dtpSDate" Grid.Column="1" Style="{DynamicResource DatePickerSearch}" IsEnabled="False" />
             </Grid>
 
             <Grid Grid.Column="1" Grid.Row="1" >
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="65*" />
+                    <ColumnDefinition Width="75*" />
                     <ColumnDefinition Width="85*" />
                 </Grid.ColumnDefinitions>
-                <DatePicker x:Name="dtpEDate" Grid.Column="1"  Style="{DynamicResource DatePickerSearch}"/>
+                <DatePicker x:Name="dtpEDate" Grid.Column="1" Style="{DynamicResource DatePickerSearch}" IsEnabled="False"/>
             </Grid>
 
             <Grid Grid.Column="1" Grid.Row="2" >
@@ -70,20 +70,20 @@
                     <ColumnDefinition Width="*" />
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
-                <Button x:Name="btnLastMonth" Grid.Column="0"  Content="전월"  Click="btnLastMonth_Click" />
-                <Button x:Name="btnThisMonth" Grid.Column="1"  Content="금월"  Click="btnThisMonth_Click"   />
-                <Button x:Name="btnYesterDay" Grid.Column="2"  Content="전일"  Click="btnYesterDay_Click"  />
-                <Button x:Name="btnToday" Grid.Column="3"  Content="금일"  Click="btnToday_Click"  />
+                <Button x:Name="btnLastMonth" Grid.Column="0"  Content="전월" Margin="1" Click="btnLastMonth_Click"  />
+                <Button x:Name="btnThisMonth" Grid.Column="1" Content="금월" Margin="1" Click="btnThisMonth_Click"   />
+                <Button x:Name="btnYesterDay" Grid.Column="2"  Content="전일" Margin="1" Click="btnYesterDay_Click" />
+                <Button x:Name="btnToday" Grid.Column="3"  Content="금일" Margin="1" Click="btnToday_Click" />
             </Grid>
 
             <!--거래처-->
             <Grid Grid.Column="2" Grid.Row="0" >
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="65*" />
-                    <ColumnDefinition Width="95*" />
+                    <ColumnDefinition Width="75*" />
+                    <ColumnDefinition Width="90*" />
                     <ColumnDefinition Width="15*" />
                 </Grid.ColumnDefinitions>
-                <Label  x:Name="lblCustom" Grid.Column="0" Style="{DynamicResource LabelSearch}"  
+                <Label  x:Name="lblCustom" Grid.Column="0" Style="{DynamicResource LabelSearch}"
                         MouseLeftButtonUp="lblCustom_MouseLeftButtonUp">
                     <StackPanel  Style="{DynamicResource StackPanelInLabel}">
                         <Viewbox Style="{DynamicResource ViewBoxSetMaxMinHeight}">
@@ -94,7 +94,7 @@
                         </Viewbox>
                     </StackPanel>
                 </Label>
-                <TextBox x:Name="txtCustomSrh" Grid.Column="1"  Style="{DynamicResource TextBoxSearch}" IsEnabled="False" 
+                <TextBox x:Name="txtCustomSrh" Grid.Column="1" Style="{DynamicResource TextBoxSearch}" IsEnabled="False" 
                          KeyDown="txtCustomSrh_KeyDown"/>
                 <Button x:Name="btnCustomSrh" Grid.Column="2" IsEnabled="False" Click="btnCustomSrh_Click">
                     <Image Source="{DynamicResource btiPlusFind}" Style="{DynamicResource imgPlusFind}" />
@@ -104,107 +104,84 @@
             <!--자재품명-->
             <Grid Grid.Column="2" Grid.Row="1" >
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="65*" />
-                    <ColumnDefinition Width="95*" />
+                    <ColumnDefinition Width="75*" />
+                    <ColumnDefinition Width="90*" />
                     <ColumnDefinition Width="15*" />
                 </Grid.ColumnDefinitions>
-                <Label x:Name="lblSrhMtrArticle" Grid.Column="0" Style="{DynamicResource LabelSearch}" 
+                <Label x:Name="lblSrhMtrArticle" Grid.Column="0" VerticalAlignment="Center" Style="{DynamicResource LabelSearch}"
                         MouseLeftButtonUp="lblSrhMtrArticle_MouseLeftButtonUp">
-                    <StackPanel  Style="{DynamicResource StackPanelInLabel}">
+                    <StackPanel Style="{DynamicResource StackPanelInLabel}">
                         <Viewbox Style="{DynamicResource ViewBoxSetMaxMinHeight}">
                             <CheckBox x:Name="chkMtrArticleSrh" Checked="chkMtrArticleSrh_Checked" Unchecked="chkMtrArticleSrh_UnChecked" VerticalAlignment="Center" ></CheckBox>
                         </Viewbox>
                         <Viewbox Style="{DynamicResource ViewBoxSetMaxMinHeight}">
-                            <TextBlock Text="품    번" Style="{DynamicResource TextBlockInViewBoxSearch}"/>
+                            <TextBlock Text="품  번" Style="{DynamicResource TextBlockInViewBoxSearch}"/>
                         </Viewbox>
                     </StackPanel>
                 </Label>
-                <TextBox x:Name="txtMtrArticleSrh" Grid.Column="1"  IsEnabled="False" 
+                <TextBox x:Name="txtMtrArticleSrh" Grid.Column="1" Style="{DynamicResource TextBoxSearch}" IsEnabled="False" 
                          KeyDown="txtMtrArticleSrh_KeyDown"/>
-                <Button x:Name="btnMtrArticleSrh" Grid.Column="2"  IsEnabled="False" Click="btnMtrArticleSrh_Click">
+                <Button x:Name="btnMtrArticleSrh" Grid.Column="2" IsEnabled="False" Click="btnMtrArticleSrh_Click">
                     <Image Source="{DynamicResource btiPlusFind}" Style="{DynamicResource imgPlusFind}" />
                 </Button>
             </Grid>
 
-            <Grid Grid.Column="2" Grid.Row="2">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="65*" />
-                    <ColumnDefinition Width="95*" />
-                    <ColumnDefinition Width="15*" />
-                </Grid.ColumnDefinitions>
-                <Label x:Name="lblArticleNoSrh" Grid.Column="0" Style="{DynamicResource LabelSearch}" MouseLeftButtonUp="lblArticleNo_MouseLeftButtonUp">
-                    <StackPanel  Style="{DynamicResource StackPanelInLabel}">
-                        <Viewbox Style="{DynamicResource ViewBoxSetMaxMinHeight}">
-                            <CheckBox x:Name="chkArticleNo" VerticalAlignment="Center"
-                                      Checked="chkArticleNo_Checked" Unchecked="chkArticleNo_Unchecked" />
-                        </Viewbox>
-                        <Viewbox Style="{DynamicResource ViewBoxSetMaxMinHeight}">
-                            <TextBlock Text="품    명" Style="{DynamicResource TextBlockInViewBoxSearch}"/>
-                        </Viewbox>
 
-
-
-                    </StackPanel>
-                </Label>
-                <TextBox  x:Name="txtArticleNo" Grid.Column="1" Style="{DynamicResource TextBoxSearch}" KeyDown="txtArticleNo_KeyDown" IsEnabled="False"/>
-                <Button x:Name="btnPfArticleNo" Grid.Column="2" IsEnabled="False" 
-                        Click="btnPfArticleNoSrh_Click" Visibility="Visible">
-                    <Image Source="{DynamicResource btiPlusFind}" />
-                </Button>
-            </Grid>
 
             <!--Lot ID-->
-            <Grid Grid.Column="2" Grid.Row="3" >
+            <Grid Grid.Column="2" Grid.Row="2" >
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="65*" />
-                    <ColumnDefinition Width="95*" />
+                    <ColumnDefinition Width="75*" />
+                    <ColumnDefinition Width="90*" />
                     <ColumnDefinition Width="15*" />
                 </Grid.ColumnDefinitions>
-                <Label x:Name="lblSrhMtrLOTID" Grid.Column="0" Style="{DynamicResource LabelSearch}"
+                <Label x:Name="lblSrhMtrLOTID" Grid.Column="0" VerticalAlignment="Center" Style="{DynamicResource LabelSearch}"
                         MouseLeftButtonUp="lblSrhMtrLOTID_MouseLeftButtonUp">
                     <StackPanel  Style="{DynamicResource StackPanelInLabel}">
                         <Viewbox Style="{DynamicResource ViewBoxSetMaxMinHeight}">
                             <CheckBox x:Name="chkMtrLOTIDSrh" Checked="chkMtrLOTIDSrh_Checked" Unchecked="chkMtrLOTIDSrh_UnChecked" VerticalAlignment="Center" ></CheckBox>
                         </Viewbox>
                         <Viewbox Style="{DynamicResource ViewBoxSetMaxMinHeight}">
-
                             <TextBlock Text="LOT ID" Style="{DynamicResource TextBlockInViewBoxSearch}"/>
                         </Viewbox>
+                        
                     </StackPanel>
                 </Label>
-                <TextBox x:Name="txtMtrLOTIDSrh" Grid.Column="1" IsEnabled="False" 
+                <TextBox x:Name="txtMtrLOTIDSrh" Grid.Column="1" Style="{DynamicResource TextBoxSearch}" IsEnabled="False" 
                          KeyDown="txtMtrLOTIDSrh_KeyDown"/>
+
 
             </Grid>
 
-            <Grid Grid.Column="3" Grid.Row="3">
+            <Grid Grid.Column="2" Grid.Row="3">
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="65*" />
-                    <ColumnDefinition Width="95*" />
+                    <ColumnDefinition Width="75*" />
+                    <ColumnDefinition Width="90*" />
                     <ColumnDefinition Width="15*" />
                 </Grid.ColumnDefinitions>
-                <Label  Grid.Column="0" Grid.Row="0" Style="{DynamicResource LabelSearch}"  MouseLeftButtonUp="chkWareHouse_Click">
-                    <StackPanel  Style="{DynamicResource StackPanelInLabel}">
+                <Label  Grid.Column="0" Grid.Row="0" Margin="1" MouseLeftButtonUp="chkWareHouse_Click">
+                    <StackPanel Style="{DynamicResource StackPanelInLabel}" >
                         <Viewbox Style="{DynamicResource ViewBoxSetMaxMinHeight}">
                             <CheckBox x:Name="chkWareHouse" Click="chkWareHouse_Click" IsChecked="True"/>
                         </Viewbox>
                         <Viewbox Style="{DynamicResource ViewBoxSetMaxMinHeight}">
                             <TextBlock Text="창   고" Style="{DynamicResource TextBlockInViewBoxSearch}"/>
                         </Viewbox>
+                        
                     </StackPanel>
                 </Label>
-                <ComboBox x:Name="cboWareHouse" Style="{DynamicResource ComboBoxSearchString}"  IsEnabled="true" Grid.Column="1"  />
+         
+                 <ComboBox x:Name="cboWareHouse"  Background="White" IsEnabled="true" Grid.Column="1"  Style="{DynamicResource ComboBoxSearchString}"/>
+     
             </Grid>
             <!--제품품명 -->
             <Grid Grid.Column="2" Grid.Row="2">
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="17*" />
-                    <ColumnDefinition Width="43*"/>
-                    <ColumnDefinition Width="99*" />
-                    <ColumnDefinition Width="20*" />
-                    <ColumnDefinition Width="10*" />
+                    <ColumnDefinition Width="75*" />
+                    <ColumnDefinition Width="90*" />
+                    <ColumnDefinition Width="15*" />
                 </Grid.ColumnDefinitions>
-                <Label x:Name="lblSrhProdArticle" Grid.Column="0" Style="{DynamicResource LabelSearch}" Grid.ColumnSpan="2"
+                <Label x:Name="lblSrhProdArticle" Grid.Column="0" Margin="1" VerticalAlignment="Center" Grid.ColumnSpan="2"
                        MouseLeftButtonUp="lblSrhProdArticle_MouseLeftButtonUp" Visibility="Hidden">
                     <StackPanel Orientation="Horizontal">
                         <Viewbox>
@@ -224,57 +201,46 @@
             <Grid Grid.Column="3" Grid.Row="0">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="75*" />
-                    <ColumnDefinition Width="75*" />
+                    <ColumnDefinition Width="90*" />
                     <ColumnDefinition Width="15*" />
                 </Grid.ColumnDefinitions>
 
                 <Label Grid.Column="0" x:Name="lblIncNotApproval" Style="{DynamicResource LabelSearch}" MouseLeftButtonUp="lblIncNotApproval_MouseLeftButtonUp">
-                    <StackPanel  Style="{DynamicResource StackPanelInLabel}">
+                    <StackPanel Style="{DynamicResource StackPanelInLabel}">
                         <Viewbox Style="{DynamicResource ViewBoxSetMaxMinHeight}">
                             <CheckBox x:Name="chkIncNotApproval" VerticalAlignment="Center" IsChecked="False" Checked="chkIncNotApproval_Checked" Unchecked="chkIncNotApproval_UnChecked"></CheckBox>
                         </Viewbox>
                         <Viewbox Style="{DynamicResource ViewBoxSetMaxMinHeight}">
-
                             <TextBlock Text="입고미승인건 포함" Style="{DynamicResource TextBlockInViewBoxSearch}"/>
                         </Viewbox>
+                        
                     </StackPanel>
                 </Label>
 
-                <!--재고 0 포함-->
-                <Label Grid.Column="1" x:Name="lblnIncZeroQty" Style="{DynamicResource LabelSearch}" MouseLeftButtonUp="lblnIncZeroQty_MouseLeftButtonUp">
-                    <StackPanel  Style="{DynamicResource StackPanelInLabel}">
-                        <Viewbox Style="{DynamicResource ViewBoxSetMaxMinHeight}">
-                            <CheckBox x:Name="chknIncZeroQty" VerticalAlignment="Center" IsChecked="False" Checked="chknIncZeroQty_Checked" Unchecked="chknIncZeroQty_UnChecked"></CheckBox>
-                        </Viewbox>
-                        <Viewbox Style="{DynamicResource ViewBoxSetMaxMinHeight}">
-
-                            <TextBlock Text="재고 0 포함"  Style="{DynamicResource TextBlockInViewBoxSearch}"/>
-                        </Viewbox>
-                    </StackPanel>
-                </Label>
+                
 
             </Grid>
 
+            
             <!--자동입출고건 포함-->
             <Grid Grid.Column="3" Grid.Row="1">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="75*" />
-                    <ColumnDefinition Width="75*" />
+                    <ColumnDefinition Width="90*" />
                     <ColumnDefinition Width="15*" />
                 </Grid.ColumnDefinitions>
-                <Label x:Name="lblIncAutoInOutWare" Style="{DynamicResource LabelSearch}" MouseLeftButtonUp="lblIncAutoInOutWare_MouseLeftButtonUp">
-                    <StackPanel  Style="{DynamicResource StackPanelInLabel}">
+                <Label x:Name="lblIncAutoInOutWare"  Style="{DynamicResource LabelSearch}" MouseLeftButtonUp="lblIncAutoInOutWare_MouseLeftButtonUp">
+                    <StackPanel Style="{DynamicResource StackPanelInLabel}">
                         <Viewbox Style="{DynamicResource ViewBoxSetMaxMinHeight}">
                             <CheckBox x:Name="chkIncAutoInOutWare" VerticalAlignment="Center" IsChecked="False" Checked="chkIncAutoInOutWare_Checked" Unchecked="chkIncAutoInOutWare_UnChecked"></CheckBox>
                         </Viewbox>
                         <Viewbox Style="{DynamicResource ViewBoxSetMaxMinHeight}">
-
                             <TextBlock Text="자동입출고건 포함" Style="{DynamicResource TextBlockInViewBoxSearch}"/>
                         </Viewbox>
                     </StackPanel>
                 </Label>
 
-                <!--<Label Grid.Column="1" x:Name="lblnIncDay" Style="{DynamicResource LabelSearch}" MouseLeftButtonUp="lblnIncDay_MouseLeftButtonUp">
+                <!--<Label Grid.Column="1" x:Name="lblnIncDay" Margin="1" VerticalAlignment="Center" MouseLeftButtonUp="lblnIncDay_MouseLeftButtonUp">
                     <StackPanel Orientation="Horizontal">
                         <Viewbox>
                             <CheckBox x:Name="chknIncDay" VerticalAlignment="Center" IsChecked="False" Checked="chknIncDay_Checked" Unchecked="chknIncDay_UnChecked"></CheckBox>
@@ -284,24 +250,45 @@
                 </Label>-->
             </Grid>
 
+            <!--자동입출고건 포함-->
+            <Grid Grid.Column="3" Grid.Row="4">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="75*" />
+                    <ColumnDefinition Width="90*" />
+                    <ColumnDefinition Width="15*" />
+                </Grid.ColumnDefinitions>
+                <!--재고 0 포함-->
+                <Label Grid.Column="0"  x:Name="lblnIncZeroQty" Style="{DynamicResource LabelSearch}" MouseLeftButtonUp="lblnIncZeroQty_MouseLeftButtonUp">
+                    <StackPanel Style="{DynamicResource StackPanelInLabel}">
+                        <Viewbox Style="{DynamicResource ViewBoxSetMaxMinHeight}">
+                            <CheckBox x:Name="chknIncZeroQty" VerticalAlignment="Center" IsChecked="False" Checked="chknIncZeroQty_Checked" Unchecked="chknIncZeroQty_UnChecked"></CheckBox>
+                        </Viewbox>
+                        <Viewbox Style="{DynamicResource ViewBoxSetMaxMinHeight}">
+                            <TextBlock Text="재고 0 포함"  Style="{DynamicResource TextBlockInViewBoxSearch}"/>
+                        </Viewbox>
+
+                    </StackPanel>
+                </Label>
+            </Grid>
+            
 
 
             <!--주요관심품목-->
-            <Grid Grid.Column="3" Grid.Row="1" >
+            <Grid Grid.Column="3" Grid.Row="2">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="75*" />
-                    <ColumnDefinition Width="75*" />
+                    <ColumnDefinition Width="90*" />
                     <ColumnDefinition Width="15*" />
                 </Grid.ColumnDefinitions>
-                <Label x:Name="lblMainItem" Style="{DynamicResource LabelSearch}" MouseLeftButtonUp="lblMainItem_MouseLeftButtonUp" Grid.Column="1">
-                    <StackPanel  Style="{DynamicResource StackPanelInLabel}">
+                <Label x:Name="lblMainItem" Style="{DynamicResource LabelSearch}" MouseLeftButtonUp="lblMainItem_MouseLeftButtonUp">
+                    <StackPanel Style="{DynamicResource StackPanelInLabel}">
                         <Viewbox Style="{DynamicResource ViewBoxSetMaxMinHeight}">
                             <CheckBox x:Name="chkMainItem" VerticalAlignment="Center" Checked="chkMainItem_Checked" Unchecked="chkMainItem_UnChecked"></CheckBox>
                         </Viewbox>
                         <Viewbox Style="{DynamicResource ViewBoxSetMaxMinHeight}">
-
                             <TextBlock Text="세부 조회" Style="{DynamicResource TextBlockInViewBoxSearch}"/>
                         </Viewbox>
+                        
                     </StackPanel>
                 </Label>
             </Grid>
@@ -362,7 +349,7 @@
                 </Button>-->
 
                 <!--엑셀-->
-                <Button x:Name="cmdExcel" Grid.Column="3" Grid.Row="1" Click="cmdExcel_Click" Margin="1">
+                <Button x:Name="cmdExcel" Grid.Column="2" Grid.Row="1" Click="cmdExcel_Click" Margin="1">
                     <StackPanel Orientation="Horizontal">
                         <Image Source="{DynamicResource btiExcel}" Style="{DynamicResource imgSize}" VerticalAlignment="Center"/>
                         <TextBlock Text="{Binding Source={StaticResource tblExcel},Mode=OneWay,Path=Text}" VerticalAlignment="Center" />
@@ -370,19 +357,23 @@
                 </Button>
             </Grid>
         </Grid>
+
+        <!--하단 레이아웃-->
+
         <Grid Grid.Row ="1">
             <Grid.RowDefinitions>
                 <RowDefinition Height="*"/>
                 <RowDefinition Height="50"/>
             </Grid.RowDefinitions>
-            <!--하단 레이아웃--><!--
+
+            <!--
             <Grid Grid.Column="0" Margin="1" >
                 <Grid.RowDefinitions>
                     <RowDefinition Height="*" />
                 </Grid.RowDefinitions>
             </Grid>-->
             <!--데이터그리드-->
-            <Grid  Grid.Row ="0" Grid.Column="0" >
+            <Grid  Grid.Row ="0" Grid.Column="0"  >
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="23*" />
                     <ColumnDefinition Width="107*" />
@@ -391,8 +382,10 @@
                     <ColumnDefinition Width="455*" />
                 </Grid.ColumnDefinitions>
                 <!-- 순번 -->
-                <DataGrid Grid.Row="0" Grid.Column="0" x:Name="dgdNum" BorderThickness="0.5" HeadersVisibility="Column" VerticalScrollBarVisibility="Hidden" ScrollViewer.CanContentScroll="False"
-                          SelectionChanged="dgdNum_SelectionChanged" HorizontalScrollBarVisibility="Hidden" Style="{DynamicResource DataGridSet1}" >
+                <DataGrid Grid.Row="0" Grid.Column="0" x:Name="dgdNum" BorderThickness="0.5" HeadersVisibility="Column" VerticalScrollBarVisibility="Hidden" ScrollViewer.CanContentScroll="False" 
+                          Visibility="Hidden"
+                          SelectionChanged="dgdNum_SelectionChanged" HorizontalScrollBarVisibility="Hidden" Style="{DynamicResource DataGridSet1}">
+
                     <DataGrid.CellStyle>
                         <Style TargetType="DataGridCell">
                             <EventSetter Event="PreviewKeyDown" Handler="DataGird_PreviewKeyDown"/>
@@ -421,10 +414,11 @@
                     </DataGrid.Columns>
                 </DataGrid>
 
-                <GridSplitter Grid.Row="0" Grid.Column="0" Width="3" />
+                <GridSplitter Grid.Row="0" Grid.Column="0" Width="3" Visibility="Hidden"/>
                 <!-- 품명 -->
                 <DataGrid Grid.Row="0" Grid.Column="1" x:Name="dgdArticle" BorderThickness="0.5" HeadersVisibility="Column" VerticalScrollBarVisibility="Hidden" ScrollViewer.CanContentScroll="False"
-                          SelectionChanged="dgdArticle_SelectionChanged" Grid.ColumnSpan="2" Style="{DynamicResource DataGridSet1}" >
+                          Visibility="Hidden"
+                          SelectionChanged="dgdArticle_SelectionChanged" Grid.ColumnSpan="2" Style="{DynamicResource DataGridSet1}">
                     <DataGrid.CellStyle>
                         <Style TargetType="DataGridCell">
                             <EventSetter Event="PreviewKeyDown" Handler="DataGird_PreviewKeyDown"/>
@@ -463,10 +457,11 @@
                     </DataGrid.Columns>
                 </DataGrid>
 
-                <GridSplitter Grid.Row="0" Grid.Column="2" Width="3" />
+                <GridSplitter Grid.Row="0" Grid.Column="2" Width="3" Visibility="Hidden" />
                 <!-- LotID - 이월, Lot집계 2개씩 -->
                 <DataGrid Grid.Row="0" Grid.Column="3" x:Name="dgdLotID" BorderThickness="0.5" HeadersVisibility="Column" VerticalScrollBarVisibility="Hidden" ScrollViewer.CanContentScroll="False"
-                           SelectionChanged="dgdLotID_SelectionChanged" PreviewKeyDown = "DataGird_PreviewKeyDown" KeyDown = "DataGird_KeyDown" Style="{DynamicResource DataGridSet1}" >
+                          Visibility="Hidden"
+                          SelectionChanged="dgdLotID_SelectionChanged" PreviewKeyDown = "DataGird_PreviewKeyDown" KeyDown = "DataGird_KeyDown"  Style="{DynamicResource DataGridSet1}">
                     <DataGrid.CellStyle>
                         <Style TargetType="DataGridCell">
                             <EventSetter Event="PreviewKeyDown" Handler="DataGird_PreviewKeyDown"/>
@@ -495,10 +490,11 @@
                     </DataGrid.Columns>
                 </DataGrid>
 
-                <GridSplitter Grid.Row="0" Grid.Column="3" Width="3" />
+                <GridSplitter Grid.Row="0" Grid.Column="3" Width="3" Visibility="Hidden"/>
                 <!-- 데이터 -->
                 <DataGrid Grid.Row="0" Grid.Column="4" x:Name="dgdContent" BorderThickness="0.5" HeadersVisibility="Column" ScrollViewer.CanContentScroll="False"
-                          SelectionChanged="dgdContent_SelectionChanged" HorizontalScrollBarVisibility="Hidden" Style="{DynamicResource DataGridSet1}">
+                          Visibility="Hidden"
+                          SelectionChanged="dgdContent_SelectionChanged" HorizontalScrollBarVisibility="Hidden" Style="{DynamicResource DataGridSet1}" >
                     <DataGrid.CellStyle>
                         <Style TargetType="DataGridCell">
                             <EventSetter Event="PreviewKeyDown" Handler="DataGird_PreviewKeyDown"/>
@@ -524,7 +520,7 @@
                                 </DataTemplate>
                             </DataGridTemplateColumn.CellTemplate>
                         </DataGridTemplateColumn>
-                        <DataGridTemplateColumn Header="일자" Width="auto">
+                        <DataGridTemplateColumn Header="일자" Width="auto" >
                             <DataGridTemplateColumn.CellTemplate>
                                 <DataTemplate>
                                     <TextBlock Text="{Binding ioDate}" VerticalAlignment="Center" TextAlignment="Center" Padding="5 0"/>
@@ -571,7 +567,7 @@
                 </DataGrid>
 
                 <!-- 데이터가 많을 시 -->
-                <DataGrid Grid.Row="0" x:Name="dgdMain" Grid.ColumnSpan="5" Visibility="Hidden" Style="{DynamicResource DataGridSet1}">
+                <DataGrid Grid.Row="0" x:Name="dgdMain" Grid.ColumnSpan="5" Visibility="Visible" Style="{DynamicResource DataGridSet1}">
                     <DataGrid.RowStyle>
                         <Style TargetType="DataGridRow">
                             <Style.Triggers>
@@ -616,14 +612,14 @@
                                 </DataTemplate>
                             </DataGridTemplateColumn.CellTemplate>
                         </DataGridTemplateColumn>
-                        <DataGridTemplateColumn Header="구분" Width="auto">
+                        <DataGridTemplateColumn Header="이월" Width="auto">
                             <DataGridTemplateColumn.CellTemplate>
                                 <DataTemplate>
                                     <TextBlock Text="{Binding Gubun}" Padding="5 0" TextAlignment="Center"/>
                                 </DataTemplate>
                             </DataGridTemplateColumn.CellTemplate>
                         </DataGridTemplateColumn>
-                        <DataGridTemplateColumn Header="일자" Width="auto">
+                        <DataGridTemplateColumn Header="일자" Width="auto" Visibility="Hidden">
                             <DataGridTemplateColumn.CellTemplate>
                                 <DataTemplate>
                                     <TextBlock Text="{Binding ioDate_CV}" Padding="5 0" TextAlignment="Center"/>
@@ -637,7 +633,7 @@
                                 </DataTemplate>
                             </DataGridTemplateColumn.CellTemplate>
                         </DataGridTemplateColumn>
-                        <DataGridTemplateColumn Header="단위" Width="auto">
+                        <DataGridTemplateColumn Header="단위" Width="auto" Visibility="Hidden">
                             <DataGridTemplateColumn.CellTemplate>
                                 <DataTemplate>
                                     <TextBlock Text="{Binding UnitClssName}" Padding="5 0" TextAlignment="Center"/>
@@ -658,7 +654,7 @@
                                 </DataTemplate>
                             </DataGridTemplateColumn.CellTemplate>
                         </DataGridTemplateColumn>
-                        <DataGridTemplateColumn Header="비고" Width="auto">
+                        <DataGridTemplateColumn Header="비고" Width="auto" Visibility="Hidden">
                             <DataGridTemplateColumn.CellTemplate>
                                 <DataTemplate>
                                     <TextBlock Text="{Binding Remark}" Padding="5 0 0 0" TextAlignment="Left"/>
@@ -669,7 +665,7 @@
                 </DataGrid>
             </Grid>
             <Grid Grid.Row ="1">
-                <DataGrid x:Name="dgdTotal" Grid.ColumnSpan="5"  Style="{DynamicResource TotalGridSet1}">
+                <DataGrid x:Name="dgdTotal" Grid.ColumnSpan="5"  Style="{DynamicResource DataGridSet1}">
                     <DataGrid.Columns>
                         <DataGridTemplateColumn Header="총계" Width="1*">
                             <DataGridTemplateColumn.CellTemplate>
@@ -685,7 +681,7 @@
                                 </DataTemplate>
                             </DataGridTemplateColumn.CellTemplate>
                         </DataGridTemplateColumn>
-                       
+
                         <DataGridTemplateColumn Header="출고수량" Width="1*">
                             <DataGridTemplateColumn.CellTemplate>
                                 <DataTemplate>

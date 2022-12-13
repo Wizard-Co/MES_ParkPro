@@ -532,8 +532,8 @@ namespace WizMes_ANT
                 sqlParameter.Add("CustomID", chkCustom.IsChecked == true ? ((txtCustom.Text != null && txtCustom.Tag != null) ? txtCustom.Text.ToString() : "") : "");
                 sqlParameter.Add("ChkArticleID", chkArticle.IsChecked == true ? 1 : 0);
                 sqlParameter.Add("ArticleID", chkArticle.IsChecked == true ? ((txtArticle.Text != null && txtArticle.Tag != null) ? txtArticle.Text.ToString() : "") : "");
-                sqlParameter.Add("ChkOrder", chkOrderIDSrh.IsChecked == true ? 1 : 0);
-                sqlParameter.Add("Order",  chkOrderIDSrh.IsChecked == true ? ((txtOrderIDSrh.Text != null && txtOrderIDSrh.Tag != null) ? txtOrderIDSrh.Text.ToString() : "" ) : "");
+                sqlParameter.Add("ChkOrderID", chkOrderIDSrh.IsChecked == true ? 1 : 0);
+                sqlParameter.Add("OrderID",  chkOrderIDSrh.IsChecked == true ? ((txtOrderIDSrh.Text != null && txtOrderIDSrh.Tag != null) ? txtOrderIDSrh.Text.ToString() : "" ) : "");
 
                 DataSet ds = DataStore.Instance.ProcedureToDataSet_LogWrite("xp_AutoPlan_sAutoPlan", sqlParameter, true, "R");
 
@@ -563,9 +563,10 @@ namespace WizMes_ANT
                                 OrderQty = Convert.ToDouble(dr["OrderQty"]),
                                 DvlyDate = dr["DvlyDate"].ToString(),
                                 SumInstQty = Convert.ToDouble(dr["SumInstQty"]),
-                                PlanQty = Convert.ToDouble(dr["PlanQty"]),
+                                OrderInstQty = Convert.ToDouble(dr["OrderInstQty"]),
                                 NonePlanQty = Convert.ToDouble(dr["NonePlanQty"]),
                                 CustomID = dr["CustomID"].ToString(),
+                                
 
                             };
 
@@ -726,9 +727,9 @@ namespace WizMes_ANT
         public string BuyerArticleNo { get; set; }      //품번
         public string OrderID { get; set; }             //오더ID  
         public double OrderQty { get; set; }            //수주량
+        public double OrderInstQty { get; set; }        //계획량
         public string DvlyDate { get; set; }            //납기일
         public double SumInstQty { get; set; }          //누계계획량
-        public double PlanQty { get; set; }             //계획량
         public double NonePlanQty { get; set; }         //미계획량
         public string CustomID { get; set; }
 

@@ -44,9 +44,9 @@
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="100*" />
                 <ColumnDefinition Width="160*" />
-                <ColumnDefinition Width="230*" />
-                <ColumnDefinition Width="230*" />
-                <ColumnDefinition Width="100*" />
+                <ColumnDefinition Width="180*" />
+                <ColumnDefinition Width="180*" />
+                <ColumnDefinition Width="200*" />
             </Grid.ColumnDefinitions>
 
             <!-- 기준 일자, 날짜버튼 모음-->
@@ -62,14 +62,14 @@
                         <RowDefinition Height="*"/>
                     </Grid.RowDefinitions>
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="65*" />
+                        <ColumnDefinition Width="75*" />
                         <ColumnDefinition Width="85*" />
                     </Grid.ColumnDefinitions>
 
-                    <Label Grid.Column="0" Grid.Row="0" MouseLeftButtonUp="chkDateSrh_Click"  Style="{DynamicResource LabelSearch}">
+                    <Label  Grid.Column="0" Grid.Row="0"  Style="{DynamicResource LabelSearch}">
                         <StackPanel Style="{DynamicResource StackPanelInLabel}" >
                             <Viewbox Style="{DynamicResource ViewBoxSetMaxMinHeight}">
-                                <CheckBox x:Name="chkDateSrh" Click="chkDateSrh_Click" IsChecked="True" />
+                                <CheckBox x:Name="chkDateSrh" VerticalAlignment="Center" IsChecked="True" IsEnabled="False"/>
                             </Viewbox>
                             <Viewbox Style="{DynamicResource ViewBoxSetMaxMinHeight}" >
                                 <TextBlock Text="기준일자" Style="{DynamicResource TextBlockInViewBoxSearch}" />
@@ -91,16 +91,16 @@
                         <ColumnDefinition Width="*"/>
                         <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
-                    <Button x:Name="btnLastMonth"  Grid.Column="0" Grid.Row="0" Click="btnLastMonth_Click">
+                    <Button x:Name="btnLastMonth"  Grid.Column="2" Grid.Row="0" Click="btnLastMonth_Click">
                         <TextBlock Text="전월"  />
                     </Button>
-                    <Button x:Name="btnThisMonth"  Grid.Column="1" Grid.Row="0" Click="btnThisMonth_Click">
+                    <Button x:Name="btnThisMonth"  Grid.Column="3" Grid.Row="0" Click="btnThisMonth_Click">
                         <TextBlock Text="금월"  />
                     </Button>
-                    <Button x:Name="btnYesterday"  Grid.Column="2" Grid.Row="0" Click="btnYesterday_Click">
+                    <Button x:Name="btnYesterday"  Grid.Column="0" Grid.Row="0" Click="btnYesterday_Click">
                         <TextBlock Text="전일"  />
                     </Button>
-                    <Button x:Name="btnToday"  Grid.Column="3" Grid.Row="0" Click="btnToday_Click">
+                    <Button x:Name="btnToday"  Grid.Column="1" Grid.Row="0" Click="btnToday_Click">
                         <TextBlock Text="금일"  />
                     </Button>
                 </Grid>
@@ -123,70 +123,40 @@
                 <Label  Grid.Column="0" Grid.Row="0" MouseLeftButtonUp="chkCustomer_Click" Style="{DynamicResource LabelSearch}">
                     <StackPanel Style="{DynamicResource StackPanelInLabel}">
                         <Viewbox Style="{DynamicResource ViewBoxSetMaxMinHeight}">
-                            <CheckBox x:Name="chkCustomer"  Click="chkCustomer_Click"/>
+                            <CheckBox x:Name="chkCustomer"  Click="chkCustomer_Click" ></CheckBox>
                         </Viewbox>
                         <Viewbox Style="{DynamicResource ViewBoxSetMaxMinHeight}">
-                            <TextBlock Text=" 거래처" Style="{DynamicResource TextBlockInViewBoxSearch}"/>
+                            <TextBlock Text="거 래 처" Style="{DynamicResource TextBlockInViewBoxSearch}"/>
                         </Viewbox>
+
                     </StackPanel>
                 </Label>
                 <TextBox x:Name="txtCustomer" Grid.Column="1" Grid.Row="0" Style="{DynamicResource TextBoxSearch}" 
                          KeyDown="txtCustomer_KeyDown" />
-                <Button x:Name="btnCustomer"  Grid.Column="3" Grid.Row="0" Click="btnCustomer_Click" IsEnabled="False">
-                    <Image Source="{DynamicResource btiPlusFind}" Style="{DynamicResource imgPlusFind}" Margin="-2"/>
-                </Button>
+                <Label  Grid.Column="0" Grid.Row="1" MouseLeftButtonUp="chkArticle_Click" Style="{DynamicResource LabelSearch}">
+                    <StackPanel Style="{DynamicResource StackPanelInLabel}">
+                        <Viewbox Style="{DynamicResource ViewBoxSetMaxMinHeight}">
+                            <CheckBox x:Name="chkArticle"  Click="chkArticle_Click"></CheckBox>
+                        </Viewbox>
+                        <Viewbox Style="{DynamicResource ViewBoxSetMaxMinHeight}">
+                            <TextBlock Text="품     번" Style="{DynamicResource TextBlockInViewBoxSearch}"/>
+                        </Viewbox>
 
-                <Label  Grid.Column="0" Grid.Row="1" MouseLeftButtonUp="chkInCustomer_Click" Style="{DynamicResource LabelSearch}">
-                    <StackPanel Style="{DynamicResource StackPanelInLabel}">
-                        <Viewbox Style="{DynamicResource ViewBoxSetMaxMinHeight}">
-                            <CheckBox x:Name="chkInCustomer" Click="chkInCustomer_Click"/>
-                        </Viewbox>
-                        <Viewbox Style="{DynamicResource ViewBoxSetMaxMinHeight}">
-                            <TextBlock Text=" 최종고객사" Style="{DynamicResource TextBlockInViewBoxSearch}"/>
-                        </Viewbox>
-                    </StackPanel>
-                </Label>
-                <TextBox x:Name="txtInCustomer" Grid.Column="1" Grid.Row="1" Style="{DynamicResource TextBoxSearch}" 
-                         KeyDown="txtInCustomer_KeyDown" />
-                <Button x:Name="btnInCustomer"  Grid.Column="3" Grid.Row="1" Click="btnInCustomer_Click" IsEnabled="False">
-                    <Image Source="{DynamicResource btiPlusFind}" Style="{DynamicResource imgPlusFind}" Margin="-2"/>
-                </Button>
 
-                <Label  Grid.Column="0" Grid.Row="2" MouseLeftButtonUp="chkBuyerArticleNo_Click" Style="{DynamicResource LabelSearch}">
-                    <StackPanel Style="{DynamicResource StackPanelInLabel}">
-                        <Viewbox Style="{DynamicResource ViewBoxSetMaxMinHeight}">
-                            <CheckBox x:Name="chkBuyerArticleNo"  Click="chkBuyerArticleNo_Click"/>
-                        </Viewbox>
-                        <Viewbox Style="{DynamicResource ViewBoxSetMaxMinHeight}">
-                            <TextBlock Text=" 품   번" Style="{DynamicResource TextBlockInViewBoxSearch}"/>
-                        </Viewbox>
                     </StackPanel>
                 </Label>
-                <TextBox x:Name="txtBuyerArticleNo"  Grid.Column="1" Grid.Row="2" Style="{DynamicResource TextBoxSearch}"
-                         KeyDown="txtBuyerArticleNo_KeyDown"/>
-                <Button x:Name="btnBuyerArticleNo"  Grid.Column="3" Grid.Row="2" Click="btnBuyerArticleNo_Click" IsEnabled="False">
-                    <Image Source="{DynamicResource btiPlusFind}" Style="{DynamicResource imgPlusFind}" Margin="-2"/>
-                </Button>
-                
-                <Label  Grid.Column="0" Grid.Row="3" MouseLeftButtonUp="chkArticle_Click" Style="{DynamicResource LabelSearch}">
-                    <StackPanel Style="{DynamicResource StackPanelInLabel}">
-                        <Viewbox Style="{DynamicResource ViewBoxSetMaxMinHeight}">
-                            <CheckBox x:Name="chkArticle"  Click="chkArticle_Click"/>
-                        </Viewbox>
-                        <Viewbox Style="{DynamicResource ViewBoxSetMaxMinHeight}">
-                            <TextBlock Text=" 품   명" Style="{DynamicResource TextBlockInViewBoxSearch}"/>
-                        </Viewbox>
-                    </StackPanel>
-                </Label>
-                <TextBox x:Name="txtArticle"  Grid.Column="1" Grid.Row="3" Style="{DynamicResource TextBoxSearch}"
+                <TextBox x:Name="txtArticle"  Grid.Column="1" Grid.Row="1" Style="{DynamicResource TextBoxSearch}"
                          KeyDown="txtArticle_KeyDown"/>
-                <Button x:Name="btnArticle"  Grid.Column="3" Grid.Row="3" Click="btnArticle_Click" IsEnabled="False">
-                    <Image Source="{DynamicResource btiPlusFind}" Style="{DynamicResource imgPlusFind}" Margin="-2"/>
+                <Button x:Name="btnCustomer"  Grid.Column="3" Grid.Row="0" Click="btnCustomer_Click">
+                    <Image Source="{DynamicResource btiPlusFind}" Style="{DynamicResource imgPlusFind}"/>
+                </Button>
+                <Button x:Name="btnArticle"  Grid.Column="3" Grid.Row="1" Click="btnArticle_Click">
+                    <Image Source="{DynamicResource btiPlusFind}" Style="{DynamicResource imgPlusFind}"/>
                 </Button>
             </Grid>
 
             <!-- 관리번호, 출고구분 모음 -->
-            <Grid Margin="1" Grid.Column="3" Grid.Row="0" Visibility="Hidden">
+            <Grid Margin="1" Grid.Column="3" Grid.Row="0">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="*"/>
                     <RowDefinition Height="*"/>
@@ -253,6 +223,8 @@
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="*"/>
@@ -261,7 +233,7 @@
                 </Grid.RowDefinitions>
 
                 <!-- 검색(조회) 버튼 -->
-                <Button x:Name="btnSearch" Grid.Column="0" Grid.Row="0" 
+                <Button x:Name="btnSearch" Grid.Column="2" Grid.Row="0" 
                         Click="btnSearch_Click" Margin="1">
                     <StackPanel Orientation="Horizontal">
                         <Image Source="{DynamicResource btiSearch}" Style="{DynamicResource imgSize}" VerticalAlignment="Center" />
@@ -270,7 +242,7 @@
                 </Button>
 
                 <!-- 닫기 버튼 -->
-                <Button x:Name="btnClose"  Grid.Column="1" Grid.Row="0" Click="btnClose_Click" Margin="1" >
+                <Button x:Name="btnClose"  Grid.Column="3" Grid.Row="0" Click="btnClose_Click" Margin="1" >
                     <StackPanel Orientation="Horizontal">
                         <Image Source="{DynamicResource btiClose}" Style="{DynamicResource imgSize}" VerticalAlignment="Center" />
                         <TextBlock Text="{Binding Source={StaticResource tblClose},Mode=OneWay,Path=Text}" VerticalAlignment="Center" />
@@ -278,7 +250,7 @@
                 </Button>
 
                 <!-- 엑셀 버튼 -->
-                <Button x:Name="btnExcel"  Grid.Column="1" Grid.Row="1" Click="btnExcel_Click" Margin="1">
+                <Button x:Name="btnExcel"  Grid.Column="3" Grid.Row="1" Click="btnExcel_Click" Margin="1">
                     <StackPanel Orientation="Horizontal">
                         <Image Source="{DynamicResource btiExcel}" Style="{DynamicResource imgSize}" VerticalAlignment="Center" />
                         <TextBlock Text="{Binding Source={StaticResource tblExcel},Mode=OneWay,Path=Text}" VerticalAlignment="Center" />

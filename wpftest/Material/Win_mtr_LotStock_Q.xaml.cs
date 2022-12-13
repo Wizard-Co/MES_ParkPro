@@ -1,21 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+using System.Collections.ObjectModel;
+using System.Data;
+using System.Reflection;
+using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
-using System.Data;
-using System.Collections.ObjectModel;
 using WizMes_ANT.PopUP;
-using System.Reflection;
-using System.Threading;
 
 namespace WizMes_ANT
 {
@@ -24,6 +18,9 @@ namespace WizMes_ANT
     /// </summary>
     public partial class Win_mtr_LotStock_Q : UserControl
     {
+        string stDate = string.Empty;
+        string stTime = string.Empty;
+
         Lib lib = new Lib();
         int rowNum = 0;
 
@@ -52,6 +49,11 @@ namespace WizMes_ANT
 
         public void UserControl_Loaded(object sender, RoutedEventArgs e)
         {
+            stDate = DateTime.Now.ToString("yyyyMMdd");
+            stTime = DateTime.Now.ToString("HHmm");
+
+            DataStore.Instance.InsertLogByFormS(this.GetType().Name, stDate, stTime, "S");
+
             Lib.Instance.UiLoading(sender);
 
             dtpSDate.SelectedDate = DateTime.Today;
@@ -89,7 +91,7 @@ namespace WizMes_ANT
                 scrollView4.ScrollChanged += new ScrollChangedEventHandler(scrollView_ScrollChanged);
             }
 
-            
+
         }
 
         #region 일자변경
@@ -462,6 +464,7 @@ namespace WizMes_ANT
         {
             try
             {
+                DataStore.Instance.InsertLogByFormS(this.GetType().Name, stDate, stTime, "E");
                 Lib.Instance.ChildMenuClose(this.ToString());
             }
             catch (Exception ex)
@@ -492,7 +495,7 @@ namespace WizMes_ANT
             // 데이터 그리드 4개를 합쳐서 DataTable 에 넣어야됨.
             try
             {
-                DataGrid dgd = new DataGrid();               
+                DataGrid dgd = new DataGrid();
                 dgd = dgdMain;
                 //dgd = dgdNum;
 
@@ -514,6 +517,7 @@ namespace WizMes_ANT
                     {
                         if (ExpExc.choice.Equals(dgd.Name))
                         {
+                            DataStore.Instance.InsertLogByForm(this.GetType().Name, "E");
                             //if (ExpExc.Check.Equals("Y"))
                             //    dt = Lib.Instance.DataGridToDTinHidden(dgd);
                             //else
@@ -789,7 +793,7 @@ namespace WizMes_ANT
                 dr = setDataRow(Content, listVisibleDataGridColumns, dr, dgd4.Columns.Count);
 
                 dt.Rows.Add(dr);
-                
+
 
                 // 첫번째 그리드
                 if (stackDgd1 != EndIndex_Dgd1)
@@ -1105,7 +1109,7 @@ namespace WizMes_ANT
                     int bIndex = LotStock.bIndex;
                     int mIndex = LotStock.mIndex;
 
-                    if(dgdContent.SelectedIndex == 0)
+                    if (dgdContent.SelectedIndex == 0)
                     {
                         bIndex = 0;
                         mIndex = 0;
@@ -1151,9 +1155,9 @@ namespace WizMes_ANT
             }
 
 
-                FillGrid();
+            FillGrid();
 
-            
+
             if (dgdArticle.Items.Count > 0)
             {
                 dgdArticle.SelectedIndex = rowNum;
@@ -1199,7 +1203,6 @@ namespace WizMes_ANT
                 sqlParameter.Add("SEDate", chkDate.IsChecked == true ? (dtpEDate.SelectedDate != null ? dtpEDate.SelectedDate.Value.ToString("yyyyMMdd") : "") : "");
                 sqlParameter.Add("nChkArticleID", chkMtrArticleSrh.IsChecked == true ? 1 : 0); //자재품명 체크
                 sqlParameter.Add("sArticleID", chkMtrArticleSrh.IsChecked == true ? (txtMtrArticleSrh.Tag == null ? "" : txtMtrArticleSrh.Tag.ToString()) : ""); //자재품명
-                //sqlParameter.Add("sArticleID", chkMtrArticleSrh.IsChecked == true && txtMtrArticleSrh.Text != null ? txtArticleNo.Text : ""); //자재품명
                 sqlParameter.Add("nChkParentArticleID", chkProdArticleSrh.IsChecked == true ? 1 : 0); //제품품명 체크
                 sqlParameter.Add("sParentArticleID", chkProdArticleSrh.IsChecked == true ? (txtProdArticleSrh.Tag == null ? "" : txtProdArticleSrh.Tag.ToString()) : ""); //제품품명
                 sqlParameter.Add("nChkCustom", chkCustomSrh.IsChecked == true ? 1 : 0); //거래처 체크
@@ -1213,12 +1216,6 @@ namespace WizMes_ANT
                 sqlParameter.Add("sLotID", chkMtrLOTIDSrh.IsChecked == true ? (txtMtrLOTIDSrh.Text == null ? "" : txtMtrLOTIDSrh.Text.ToString()) : ""); //lot 입력
                 sqlParameter.Add("sFromLocID", chkWareHouse.IsChecked == true && cboWareHouse.SelectedValue != null ? cboWareHouse.SelectedValue.ToString() : ""); //창고 추가 2021-07-09
                 sqlParameter.Add("sToLocID", "");
-
-                sqlParameter.Add("nChkArticleNo", chkArticleNo.IsChecked == true ? 1 : 0); //자재품명 체크
-                sqlParameter.Add("sArticleNoID", chkArticleNo.IsChecked == true ? (txtArticleNo.Tag == null ? "" : txtArticleNo.Tag.ToString()) : ""); //자재품명
-                //sqlParameter.Add("sArticleNoID", chkArticleNo.IsChecked == true && txtArticleNo.Text != null ? txtArticleNo.Text : ""); //자재품명
-
-
                 //sqlParameter.Add("sLotID", chkMtrLOTIDSrh.IsChecked == true && !txtMtrLOTIDSrh.Text.Trim().Equals("") ? txtMtrLOTIDSrh.Text.Trim() : ""); //Lot 췌크 텍스트 
                 //2021-09-23
                 DataSet ds = DataStore.Instance.ProcedureToDataSet("xp_Subul_sMtrSubul_Lot_One", sqlParameter, true);
@@ -1644,7 +1641,7 @@ namespace WizMes_ANT
                     //            {
                     //                emptyLotID.LotID = "일자계";
                     //            }
-                                
+
                     //            dgdLotID.Items.Add(emptyLotID);
                     //            mIndex++;
 
@@ -1694,6 +1691,7 @@ namespace WizMes_ANT
                     //    }
                     //}
                     #endregion
+
                     #region 검색 1500 초과
                     if (dt.Rows.Count > 0)
                     {
@@ -1710,7 +1708,7 @@ namespace WizMes_ANT
 
                         foreach (DataRow dr in drc)
                         {
-                            
+
 
                             //if (dr["cls"].ToString().Trim().Equals("3")) // Lot 일자별
                             //{
@@ -1798,7 +1796,7 @@ namespace WizMes_ANT
 
                                     TotalColor = true
                                 };
-                                
+
                             }
                             else
                             {
@@ -1882,7 +1880,7 @@ namespace WizMes_ANT
                 OutRoll = dr["OutRoll"].ToString(),
 
                 OutQty = stringFormatN0(dr["OutQty"]),
-                StockQty = stringFormatN0(dr["StockQty"]),             
+                StockQty = stringFormatN0(dr["StockQty"]),
                 Remark = dr["Remark"].ToString(),
 
                 BuyerArticleNo = dr["BuyerArticleNo"].ToString(),
@@ -1934,7 +1932,7 @@ namespace WizMes_ANT
                 LotStock.LotID = "";
                 LotStock.ioDate = "";
             }
-            
+
             return LotStock;
         }
 
@@ -2387,56 +2385,6 @@ namespace WizMes_ANT
             //this.cboSupplyType.SelectedValuePath = "code_id";
             //this.cboSupplyType.SelectedIndex = 0;
         }
-
-        //품명 라벨체크
-        private void lblArticleNo_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
-        {
-            if (chkArticleNo.IsChecked == true)
-            {
-                chkArticleNo.IsChecked = false;
-            }
-            else
-            {
-                chkArticleNo.IsChecked = true;
-            }
-        }
-
-        //품명 체크 
-        private void chkArticleNo_Checked(object sender, RoutedEventArgs e)
-        {
-            chkArticleNo.IsChecked = true;
-
-            txtArticleNo.IsEnabled = true;
-
-            btnPfArticleNo.IsEnabled = true;
-        }
-        //품명 안체크
-        private void chkArticleNo_Unchecked(object sender, RoutedEventArgs e)
-        {
-            chkArticleNo.IsChecked = false;
-
-            txtArticleNo.IsEnabled = false;
-
-            btnPfArticleNo.IsEnabled = false;
-        }
-        //품명 키다운 
-        private void txtArticleNo_KeyDown(object sender, KeyEventArgs e)
-        {
-            if (e.Key == Key.Enter)
-            {
-                e.Handled = true;
-                MainWindow.pf.ReturnCode(txtArticleNo, 77, "");
-            }
-        }
-
-        //품명 플러스파인더
-        private void btnPfArticleNoSrh_Click(object sender, RoutedEventArgs e)
-        {
-            MainWindow.pf.ReturnCode(txtArticleNo, 77, "");
-        }
-
-
-
         //// Lot별 일자조회
         //private void lblnIncDay_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         //{
@@ -2479,7 +2427,7 @@ namespace WizMes_ANT
         public string LotID { get; set; }
 
         public string BuyerArticleNo { get; set; }
-        
+
         public int RowHeight { get; set; }
 
     }

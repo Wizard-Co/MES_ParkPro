@@ -66,7 +66,7 @@
                 <TextBox x:Name="txtArticleSrh" Grid.Column="1"
                          Style="{DynamicResource TextBoxSearch}" IsEnabled="False" KeyDown="TxtArticleSrh_KeyDown"/>
             </Grid>
-            
+
             <Grid Grid.Column="1" Grid.Row="2" >
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="75*" />
@@ -201,6 +201,19 @@
                         </StackPanel>
                     </Button>
                 </Grid>
+
+
+                <Grid Grid.Row="2">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="1.5*" />
+                    </Grid.ColumnDefinitions>
+
+                    <Label x:Name="lblMsg" Grid.Column="1"  Background="Yellow" Foreground="Red" Margin="1" 
+                        HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Visibility="Hidden">
+                        <TextBlock x:Name="tbkMsg" Text="자료 추가 중" />
+                    </Label>
+                </Grid>
             </Grid>
 
         </Grid>
@@ -334,7 +347,9 @@
                         <RowDefinition Height="*" />
                         <RowDefinition Height="*" />
                     </Grid.RowDefinitions>
-
+                    
+                   
+                    
 
                     <!-- 0 Row-->
                     <Label Grid.Column="0" Grid.Row="0"  Style="{DynamicResource LabelInputArea}" >
@@ -343,35 +358,18 @@
                         </Viewbox>
                     </Label>
                     <TextBox x:Name="txtCode" Grid.Column="1" Grid.Row="0" Style="{DynamicResource TextBoxInputAutoCreate}"
-                             IsReadOnly="True" Text="{Binding ArticleID}"/>
+                             MaxLength="10"
+                             IsReadOnly="False" Text="{Binding ArticleID}"/>
 
                     <!-- 주요관심품목, 사용안함 -->
-                    <Grid Grid.Row="0" Grid.Column="2" Grid.ColumnSpan="3">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="*" />
-                            <ColumnDefinition Width="0.2*" />
-                            <ColumnDefinition Width="*" />
-                            <ColumnDefinition Width="0.2*" />
-                        </Grid.ColumnDefinitions>
+                    <Label Grid.Column="3" Grid.Row="0"  Style="{DynamicResource LabelInputArea}" Visibility="Visible">
+                        <Viewbox Style="{DynamicResource ViewBoxSetMaxMinHeight}">
+                            <TextBlock Text="부품분류" Style="{DynamicResource TextBlockInViewBoxInput}"/>
+                        </Viewbox>
+                    </Label>
+                    <ComboBox x:Name="cboPartGBNID" Grid.Row="0" Grid.Column="4" Style="{DynamicResource ComboBoxInputString}" Background="#fff2d2"
+                              SelectedValue="{Binding PartGBNID}" DropDownClosed="cboPartGBNID_DropDownClosed" Visibility="Visible"/>
 
-                        <Label Grid.Column="0" Grid.Row="0" MouseLeftButtonUp="lblBuySaleMainYN_MouseLeftButtonUp" Style="{DynamicResource LabelInputArea}">
-                            <Viewbox Style="{DynamicResource ViewBoxSetMaxMinHeight}">
-                                <TextBlock Text="주요관심품목"  Style="{DynamicResource TextBlockInViewBoxInput}"/>
-                            </Viewbox>
-                        </Label>
-
-                        <CheckBox x:Name="chkBuySaleMainYN" Grid.Column="1"
-                                    HorizontalAlignment="Center" VerticalAlignment="Center"/>
-
-                        <Label Grid.Column="2" Grid.Row="0"  MouseLeftButtonUp="lblchkNotUse_MouseLeftButtonUp" Style="{DynamicResource LabelInputArea}">
-                            <Viewbox Style="{DynamicResource ViewBoxSetMaxMinHeight}">
-                                <TextBlock Text="사용안함" Style="{DynamicResource TextBlockInViewBoxInput}"/>
-                            </Viewbox>
-
-                        </Label>
-                        <CheckBox  x:Name="chkNotUse" VerticalAlignment="Center" HorizontalAlignment="Center" Grid.Column="3"/>
-
-                    </Grid>
 
                     <!-- 1 Row-->
                     <Label Grid.Column="0" Grid.Row="1"  Style="{DynamicResource LabelInputArea}">
@@ -439,14 +437,7 @@
                     <ComboBox x:Name="cboSupplyType" Grid.Column="1" Grid.Row="12" Style="{DynamicResource ComboBoxInputString}" Background="#fff2d2"
                               SelectedValue="{Binding SupplyType}" DropDownClosed="cboSupplyType_DropDownClosed"/>
 
-                    <Label Grid.Column="3" Grid.Row="7"  Style="{DynamicResource LabelInputArea}" Visibility="Visible">
-                        <Viewbox Style="{DynamicResource ViewBoxSetMaxMinHeight}">
-                            <TextBlock Text="부품분류" Style="{DynamicResource TextBlockInViewBoxInput}"/>
-                        </Viewbox>
-                    </Label>
-                    <ComboBox x:Name="cboPartGBNID" Grid.Row="7" Grid.Column="4" Style="{DynamicResource ComboBoxInputString}" Background="#fff2d2"
-                              SelectedValue="{Binding PartGBNID}" DropDownClosed="cboPartGBNID_DropDownClosed" Visibility="Visible"/>
-
+                    
                     <!-- 7 Row -->
                     <Label Grid.Column="0" Grid.Row="7"  Style="{DynamicResource LabelInputArea}">
                         <Viewbox Style="{DynamicResource ViewBoxSetMaxMinHeight}">
@@ -456,12 +447,12 @@
                     <ComboBox x:Name="cboUnitClss" Grid.Column="1" Grid.Row="7" Style="{DynamicResource ComboBoxInputString}" Background="#fff2d2"
                                   SelectedValue="{Binding UnitClss}" DropDownClosed="cboUnitClss_DropDownClosed"/>
 
-                    <Label Grid.Column="3" Grid.Row="8"  Style="{DynamicResource LabelInputArea}">
+                    <Label Grid.Column="3" Grid.Row="7"  Style="{DynamicResource LabelInputArea}">
                         <Viewbox Style="{DynamicResource ViewBoxSetMaxMinHeight}">
                             <TextBlock Text="라벨관리" Style="{DynamicResource TextBlockInViewBoxInput}"/>
                         </Viewbox>
                     </Label>
-                    <ComboBox x:Name="cboLabelPrintYN" Grid.Column="4" Grid.Row="8" Style="{DynamicResource ComboBoxInputString}" Background="#fff2d2"
+                    <ComboBox x:Name="cboLabelPrintYN" Grid.Column="4" Grid.Row="7" Style="{DynamicResource ComboBoxInputString}" Background="#fff2d2"
                               SelectedValue="{Binding LabelPrintYN}" DropDownClosed="cboLabelPrintYN_DropDownClosed"/>
 
                     <!-- 8 Row -->
@@ -482,12 +473,12 @@
                             Click="btnCalNeedStockQty_Click"/>-->
                     </Grid>
 
-                    <Label Grid.Column="3" Grid.Row="9"  Style="{DynamicResource LabelInputArea}">
+                    <Label Grid.Column="3" Grid.Row="8"  Style="{DynamicResource LabelInputArea}">
                         <Viewbox Style="{DynamicResource ViewBoxSetMaxMinHeight}">
                             <TextBlock Text="FTA중점관리품" Style="{DynamicResource TextBlockInViewBoxInput}"/>
                         </Viewbox>
                     </Label>
-                    <ComboBox x:Name="cboFTAMgrYN" Grid.Column="4" Grid.Row="9" Style="{DynamicResource ComboBoxInputString}" Background="#fff2d2"
+                    <ComboBox x:Name="cboFTAMgrYN" Grid.Column="4" Grid.Row="8" Style="{DynamicResource ComboBoxInputString}" Background="#fff2d2"
                               SelectedValue="{Binding FTAMgrYN}" DropDownClosed="cboFTAMgrYN_DropDownClosed"/>
 
 
@@ -500,12 +491,12 @@
                     <TextBox x:Name="TextBoxOutQtyPerBox" Grid.Column="1" Grid.Row="9" Style="{DynamicResource TextBoxInput_Number_Right}"
                              Text="{Binding OutQtyPerBox}" KeyDown="TextBoxOutQtyPerBox_KeyDown"/>
 
-                    <Label Grid.Column="3" Grid.Row="10" Style="{DynamicResource LabelInputArea}">
+                    <Label Grid.Column="3" Grid.Row="9" Style="{DynamicResource LabelInputArea}">
                         <Viewbox Style="{DynamicResource ViewBoxSetMaxMinHeight}">
                             <TextBlock Text="원재료속성" Style="{DynamicResource TextBlockInViewBoxInput}"/>
                         </Viewbox>
                     </Label>
-                    <ComboBox x:Name="cboPART_ATTR" Grid.Column="4" Grid.Row="10" Style="{DynamicResource ComboBoxInputString}" Background="White"
+                    <ComboBox x:Name="cboPART_ATTR" Grid.Column="4" Grid.Row="9" Style="{DynamicResource ComboBoxInputString}" Background="White"
                                   SelectedValue="{Binding PART_ATTR}" DropDownClosed="cboPART_ATTR_DropDownClosed"/>
 
                     <!-- 10 Row -->
@@ -519,18 +510,19 @@
 
 
                     <!-- 10 Row -->
-                    <Label Grid.Column="3" Grid.Row="11"  Style="{DynamicResource LabelInputArea}">
+                    <Label Grid.Column="3" Grid.Row="10"  Style="{DynamicResource LabelInputArea}">
                         <Viewbox Style="{DynamicResource ViewBoxSetMaxMinHeight}">
                             <TextBlock Text="출고/가공 단가" Style="{DynamicResource TextBlockInViewBoxInput}"/>
                         </Viewbox>
                     </Label>
-                    <Grid Grid.Row="11" Grid.Column="4">
+                    <Grid Grid.Row="10" Grid.Column="4">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="2.8*" />
                             <ColumnDefinition Width="*" />
                         </Grid.ColumnDefinitions>
-                        <TextBox x:Name="txtOutUnitPrice" Grid.Column="0" Style="{DynamicResource TextBoxInput_Number_Right}" Text="{Binding OutUnitPrice}" 
-                                 TextAlignment="Right" KeyDown="txtOutUnitPrice_KeyDown"/>
+                        <TextBox x:Name="txtOutUnitPrice" Grid.Column="0" Style="{DynamicResource TextBoxInput_NumberCommaZero_Right}" Text="{Binding OutUnitPrice}" 
+                                 TextAlignment="Right" KeyDown="txtOutUnitPrice_KeyDown" PreviewTextInput="TxtOutUnitPrice_PreviewKeyDown"
+                                 />
                         <ComboBox x:Name="cboPriceClss" Grid.Column="1" Style="{DynamicResource ComboBoxInputString}" Background="White"
                               SelectedValue="{Binding UnitPriceClss}" DropDownClosed="cboPriceClss_DropDownClosed"/>
                     </Grid>
@@ -548,8 +540,8 @@
                             <ColumnDefinition Width="2.8*" />
                             <ColumnDefinition Width="*" />
                         </Grid.ColumnDefinitions>
-                        <TextBox x:Name="txtUnitPrice" Grid.Column="0" Style="{DynamicResource TextBoxInput_Number_Right}"
-                             Text="{Binding UnitPrice}" KeyDown="txtUnitPrice_KeyDown" />
+                        <TextBox x:Name="txtUnitPrice" Grid.Column="0" Style="{DynamicResource TextBoxInput_NumberCommaZero_Right}"
+                             Text="{Binding UnitPrice}" KeyDown="txtUnitPrice_KeyDown" PreviewTextInput="TxtUnitPrice_PreviewTextInput_1"/>
                         <ComboBox x:Name="cboPriceClss2" Grid.Column="1" Style="{DynamicResource ComboBoxInputString}" Background="White"
                               SelectedValue="{Binding UnitPriceClss}" DropDownClosed="cboPriceClss2_DropDownClosed"/>
                     </Grid>
@@ -588,7 +580,7 @@
                             </Label>
                             <ComboBox x:Name="cboFreeStuffinYN" Grid.Column="5" Grid.Row="0" Style="{DynamicResource ComboBoxInputString}" Background="#fff2d2"
                               SelectedValue="{Binding FreeStuffinYN}" DropDownClosed="cboFreeStuffinYN_DropDownClosed"/>
-                            
+
                             <!--<Label Grid.Column="0" Grid.Row="0"  Style="{DynamicResource LabelInputArea}" >
                                 <Viewbox Style="{DynamicResource ViewBoxSetMaxMinHeight}">
                                     <TextBlock  Text="내   경" Style="{DynamicResource TextBlockInViewBoxInput}"/>
@@ -598,8 +590,10 @@
                             <TextBox x:Name="txtInDiameter" Grid.Column="1" Grid.Row="0"
                              Text="{Binding InDiameter}" Style="{DynamicResource TextBoxInput_Number_Right}"  />
 
-                            --><!--10 Row-->
-                            <!--외경으로 되어있구나--><!--
+                            -->
+                            <!--10 Row-->
+                            <!--외경으로 되어있구나-->
+                            <!--
                             <Label Grid.Column="2" Grid.Row="0"  Style="{DynamicResource LabelInputArea}">
                                 <Viewbox Style="{DynamicResource ViewBoxSetMaxMinHeight}">
                                     <TextBlock Text="외경" Style="{DynamicResource TextBlockInViewBoxInput}"/>
@@ -676,13 +670,15 @@
                     <TextBox x:Name="txtStockLocName" Grid.Column="4" Grid.Row="11" Margin="1"
                              Text="{Binding StockLocName}" Grid.ColumnSpan="1" KeyDown="txtStockLocName_KeyDown"/>-->
 
-                    <Label Grid.Column="3" Grid.Row="12"  Style="{DynamicResource LabelInputArea}">
+                    <Label Grid.Column="3" Grid.Row="11"  Style="{DynamicResource LabelInputArea}">
                         <Viewbox Style="{DynamicResource ViewBoxSetMaxMinHeight}">
                             <TextBlock Text="H.S Code" Style="{DynamicResource TextBlockInViewBoxInput}"/>
                         </Viewbox>
                     </Label>
 
-                    <Grid Grid.Column="4" Grid.Row="12">
+                    
+                    
+                    <Grid Grid.Column="4" Grid.Row="11">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="4*" />
                             <ColumnDefinition Width="*" />
@@ -697,9 +693,36 @@
                     </Grid>
 
 
+                    <Grid Grid.Row="16" Grid.Column="0" Grid.ColumnSpan="3">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="0.2*" />
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="0.2*" />
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="*" />
+                        </Grid.RowDefinitions>
+                        <Label Grid.Column="0" Grid.Row="0" MouseLeftButtonUp="lblBuySaleMainYN_MouseLeftButtonUp" Style="{DynamicResource LabelInputArea}">
+                            <Viewbox Style="{DynamicResource ViewBoxSetMaxMinHeight}">
+                                <TextBlock Text="주요관심품목"  Style="{DynamicResource TextBlockInViewBoxInput}"/>
+                            </Viewbox>
+                        </Label>
+
+                        <CheckBox x:Name="chkBuySaleMainYN" Grid.Column="1"
+                                    HorizontalAlignment="Center" VerticalAlignment="Center"/>
+
+                        <Label Grid.Column="2" Grid.Row="0"  MouseLeftButtonUp="lblchkNotUse_MouseLeftButtonUp" Style="{DynamicResource LabelInputArea}">
+                            <Viewbox Style="{DynamicResource ViewBoxSetMaxMinHeight}">
+                                <TextBlock Text="사용안함" Style="{DynamicResource TextBlockInViewBoxInput}"/>
+                            </Viewbox>
+
+                        </Label>
+                        <CheckBox  x:Name="chkNotUse" VerticalAlignment="Center" HorizontalAlignment="Center" Grid.Column="3"/>
+
+                    </Grid>
 
 
-                    
 
                     <!-- 15 Row -->
                     <Label Grid.Column="0" Grid.Row="17"  Style="{DynamicResource LabelInputArea}">
@@ -721,17 +744,30 @@
                     </Grid.RowDefinitions>
 
                     <!-- 자료 추가중, 수정중 메시지 -->
-                    <Grid>
+                    <Grid Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*" />
-                            <ColumnDefinition Width="1.5*" />
+                            <ColumnDefinition Width="0.2*" />
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="0.2*" />
                         </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="2*" />
+                            <RowDefinition Height="*" />
+                        </Grid.RowDefinitions>
 
-                        <Label x:Name="lblMsg" Grid.Column="1"  Background="Yellow" Foreground="Red" Margin="1" 
-                        HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Visibility="Hidden">
-                            <TextBlock x:Name="tbkMsg" Text="자료 추가 중" />
+                        <Label Grid.Column="0" Grid.Row="0"  Style="{DynamicResource LabelInputArea}"
+                           HorizontalContentAlignment="Center" VerticalContentAlignment="Center" >
+                            <Viewbox Style="{DynamicResource ViewBoxSetMaxMinHeight}">
+                                <TextBlock Text="대 중 소" Style="{DynamicResource TextBlockInViewBoxInput}"/>
+                            </Viewbox>
                         </Label>
+
+                        <ComboBox x:Name="cboBigMiSmal" Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="2" Style="{DynamicResource ComboBoxInputString}" Background="#fff2d2"
+                              SelectedValue="{Binding BigMiSmalGbn}" DropDownClosed="CboBigMiSmal_DropDownClosed" IsHitTestVisible="False"/>
+
                     </Grid>
+
 
                     <!-- 서브 그리드 - 생산공정 -->
                     <GroupBox Grid.Row="2" Header="생산공정선택">

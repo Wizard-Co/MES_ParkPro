@@ -59,6 +59,7 @@ namespace WizMes_ANT
             mDataGrid.MaxHeight = SystemParameters.WorkArea.Height;
             mDataGrid.VerticalScrollBarVisibility = ScrollBarVisibility.Visible;
             mDataGrid.MouseLeftButtonDown += SelectItem;
+            mDataGrid.SelectedIndex = 0;
 
         }
         //검색,선택,취소버튼
@@ -469,6 +470,8 @@ namespace WizMes_ANT
                             txtName.Text = txtBox.Text;
                             txtName.Focus();
                             this.ShowDialog();
+                            mDataGrid.SelectedIndex = 0;
+
                         }
                         else if (dtCodeTemp.Rows.Count == 0)
                         {
@@ -492,7 +495,9 @@ namespace WizMes_ANT
                     mDataGrid.ItemsSource = rs_dt.DefaultView;
                     txtCode.Text = txtBox.Text;
                     txtCode.Focus();
+                    mDataGrid.SelectedIndex = 0;
                     this.ShowDialog();
+                  
 
                 }
             }
@@ -518,6 +523,8 @@ namespace WizMes_ANT
             if (rs_dt.Rows.Count > 0)
             {
                 DataTableByWhere(txtBox);
+                mDataGrid.SelectedIndex = 0;
+                mDataGrid.SelectedIndex = -1;
             }
             else
             {

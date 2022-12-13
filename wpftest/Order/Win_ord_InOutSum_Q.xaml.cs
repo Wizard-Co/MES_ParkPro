@@ -9,7 +9,6 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Shapes;
 using WizMes_ANT.PopUP;
-using WizMes_ANT.PopUp;
 using WPF.MDI;
 
 namespace WizMes_ANT
@@ -80,113 +79,68 @@ namespace WizMes_ANT
 
             // 전부 노 체크 노 enable로 시작.
             txtCustomer.IsEnabled = false;
-            txtInCustomer.IsEnabled = false;
-            txtBuyerArticleNo.IsEnabled = false;
             txtArticle.IsEnabled = false;
             btnCustomer.IsEnabled = false;
-            btnInCustomer.IsEnabled = false;
-            btnBuyerArticleNo.IsEnabled = false;
             btnArticle.IsEnabled = false;
             cboInOutGubun.IsEnabled = false;
             cboInInspectGubun.IsEnabled = false;
         }
 
-        // 출고일자(날짜) 체크
-        private void chkDateSrh_Click(object sender, RoutedEventArgs e)
-        {
-            if (chkDateSrh.IsChecked == true)
-            {
-                chkDateSrh.IsChecked = false;
-                dtpFromDate.IsEnabled = false;
-                dtpToDate.IsEnabled = false;
-            }
-            else
-            {
-                chkDateSrh.IsChecked = true;
-                dtpFromDate.IsEnabled = true;
-                dtpToDate.IsEnabled = true;
-            }
-        }
-
-        // 출고일자(날짜) 체크
-        private void chkDateSrh_Click(object sender, MouseButtonEventArgs e)
-        {
-            if (chkDateSrh.IsChecked == true)
-            {
-                chkDateSrh.IsChecked = false;
-                dtpFromDate.IsEnabled = false;
-                dtpToDate.IsEnabled = false;
-            }
-            else
-            {
-                chkDateSrh.IsChecked = true;
-                dtpFromDate.IsEnabled = true;
-                dtpToDate.IsEnabled = true;
-            }
-        }
-
         // 어제.(전일)
         private void btnYesterday_Click(object sender, RoutedEventArgs e)
         {
-            DateTime[] SearchDate = lib.BringLastDayDateTimeContinue(dtpToDate.SelectedDate.Value);
+            //string[] receiver = lib.BringYesterdayDatetime();
 
-            dtpFromDate.SelectedDate = SearchDate[0];
-            dtpToDate.SelectedDate = SearchDate[1];
+            //dtpFromDate.Text = receiver[0];
+            //dtpToDate.Text = receiver[1];
+
+            if (dtpFromDate.SelectedDate != null)
+            {
+                dtpFromDate.SelectedDate = dtpFromDate.SelectedDate.Value.AddDays(-1);
+                dtpToDate.SelectedDate = dtpFromDate.SelectedDate;
+            }
+            else
+            {
+                dtpFromDate.SelectedDate = DateTime.Today.AddDays(-1);
+                dtpToDate.SelectedDate = DateTime.Today.AddDays(-1);
+            }
         }
         // 오늘(금일)
         private void btnToday_Click(object sender, RoutedEventArgs e)
         {
-            dtpFromDate.SelectedDate = DateTime.Today;
-            dtpToDate.SelectedDate = DateTime.Today;
+            dtpFromDate.Text = DateTime.Now.ToString("yyyy-MM-dd");
+            dtpToDate.Text = DateTime.Now.ToString("yyyy-MM-dd");
         }
         // 지난 달(전월)
         private void btnLastMonth_Click(object sender, RoutedEventArgs e)
         {
-            DateTime[] SearchDate = lib.BringLastMonthContinue(dtpFromDate.SelectedDate.Value);
+            //string[] receiver = lib.BringLastMonthDatetime();
 
-            dtpFromDate.SelectedDate = SearchDate[0];
-            dtpToDate.SelectedDate = SearchDate[1];
+            //dtpFromDate.Text = receiver[0];
+            //dtpToDate.Text = receiver[1];
+
+            if (dtpFromDate.SelectedDate != null)
+            {
+                DateTime ThatMonth1 = dtpFromDate.SelectedDate.Value.AddDays(-(dtpFromDate.SelectedDate.Value.Day - 1)); // 선택한 일자 달의 1일!
+
+                DateTime LastMonth1 = ThatMonth1.AddMonths(-1); // 저번달 1일
+                DateTime LastMonth31 = ThatMonth1.AddDays(-1); // 저번달 말일
+
+                dtpFromDate.SelectedDate = LastMonth1;
+                dtpToDate.SelectedDate = LastMonth31;
+            }
 
         }
         // 이번 달(금월)
         private void btnThisMonth_Click(object sender, RoutedEventArgs e)
         {
-            dtpFromDate.SelectedDate = lib.BringThisMonthDatetimeList()[0];
-            dtpToDate.SelectedDate = lib.BringThisMonthDatetimeList()[1];
+            string[] receiver = lib.BringThisMonthDatetime();
+
+            dtpFromDate.Text = receiver[0];
+            dtpToDate.Text = receiver[1];
         }
 
-        // 품번
-        private void chkBuyerArticleNo_Click(object sender, RoutedEventArgs e)
-        {
-            if (chkBuyerArticleNo.IsChecked == true)
-            {
-                txtBuyerArticleNo.IsEnabled = true;
-                txtBuyerArticleNo.Focus();
-                btnBuyerArticleNo.IsEnabled = true;
-            }
-            else
-            {
-                txtBuyerArticleNo.IsEnabled = false;
-                btnBuyerArticleNo.IsEnabled = false;
-            }
-        }
-        // 품번
-        private void chkBuyerArticleNo_Click(object sender, MouseButtonEventArgs e)
-        {
-            if (chkBuyerArticleNo.IsChecked == true)
-            {
-                chkBuyerArticleNo.IsChecked = false;
-                txtBuyerArticleNo.IsEnabled = false;
-                btnBuyerArticleNo.IsEnabled = false;
-            }
-            else
-            {
-                chkBuyerArticleNo.IsChecked = true;
-                txtBuyerArticleNo.IsEnabled = true;
-                txtBuyerArticleNo.Focus();
-                btnBuyerArticleNo.IsEnabled = true;
-            }
-        }
+
         // 품명
         private void chkArticle_Click(object sender, RoutedEventArgs e)
         {
@@ -249,38 +203,6 @@ namespace WizMes_ANT
                 txtCustomer.IsEnabled = true;
                 txtCustomer.Focus();
                 btnCustomer.IsEnabled = true;
-            }
-        }
-        // 최종고객사
-        private void chkInCustomer_Click(object sender, RoutedEventArgs e)
-        {
-            if (chkInCustomer.IsChecked == true)
-            {
-                txtInCustomer.IsEnabled = true;
-                txtInCustomer.Focus();
-                btnInCustomer.IsEnabled = true;
-            }
-            else
-            {
-                txtInCustomer.IsEnabled = false;
-                btnInCustomer.IsEnabled = false;
-            }
-        }
-        // 거래처
-        private void chkInCustomer_Click(object sender, MouseButtonEventArgs e)
-        {
-            if (chkInCustomer.IsChecked == true)
-            {
-                chkInCustomer.IsChecked = false;
-                txtInCustomer.IsEnabled = false;
-                btnInCustomer.IsEnabled = false;
-            }
-            else
-            {
-                chkInCustomer.IsChecked = true;
-                txtInCustomer.IsEnabled = true;
-                txtInCustomer.Focus();
-                btnInCustomer.IsEnabled = true;
             }
         }
         //입출고구분
@@ -387,25 +309,13 @@ namespace WizMes_ANT
         //거래처
         private void btnCustomer_Click(object sender, RoutedEventArgs e)
         {
-            pf.ReturnCode(txtCustomer, (int)Defind_CodeFind.DCF_CUSTOM, "");
-        }
-
-        //최종고객사
-        private void btnInCustomer_Click(object sender, RoutedEventArgs e)
-        {
-            pf.ReturnCode(txtCustomer, (int)Defind_CodeFind.DCF_CUSTOM, "");
-        }
-
-        // 품번
-        private void btnBuyerArticleNo_Click(object sender, RoutedEventArgs e)
-        {
-            pf.ReturnCode(txtBuyerArticleNo, 81, txtBuyerArticleNo.Text);
+            pf.ReturnCode(txtCustomer, 0, "");  // 매출거래처만 표기되도록 변경(0 -> 68).
         }
 
         // 품명
         private void btnArticle_Click(object sender, RoutedEventArgs e)
         {
-            pf.ReturnCode(txtArticle, 82, txtArticle.Text);
+            pf.ReturnCode(txtArticle, 84, txtArticle.Text);
         }
 
         #endregion
@@ -414,41 +324,21 @@ namespace WizMes_ANT
         // 검색(조회) 버튼 클릭
         private void btnSearch_Click(object sender, RoutedEventArgs e)
         {
-            using (Loading lw = new Loading(beSearch))
+            DataStore.Instance.InsertLogByForm(this.GetType().Name, "R");
+            TabItem NowTI = tabconGrid.SelectedItem as TabItem;
+
+            if (NowTI.Header.ToString() == "기간집계") { FillGrid_Period(); }
+            else if (NowTI.Header.ToString() == "일일집계") { FillGrid_Day(); }
+            else if (NowTI.Header.ToString() == "월별집계(세로)") { FillGrid_Month_V(); }
+            else if (NowTI.Header.ToString() == "월별집계(가로)") { FillGrid_Month_H(); }
+
+            for (int i = 0; i < 3; i++)
             {
-                lw.ShowDialog();
-            }            
-        }
-
-        private void beSearch()
-        {
-            //검색버튼 비활성화
-            btnSearch.IsEnabled = false;
-
-            Dispatcher.BeginInvoke(new Action(() =>
-            {
-                //로직
-                DataStore.Instance.InsertLogByForm(this.GetType().Name, "R");
-                TabItem NowTI = tabconGrid.SelectedItem as TabItem;
-
-                if (NowTI.Header.ToString() == "기간집계") { FillGrid_Period(); }
-                else if (NowTI.Header.ToString() == "일일집계") { FillGrid_Day(); }
-                else if (NowTI.Header.ToString() == "월별집계(세로)") { FillGrid_Month_V(); }
-                else if (NowTI.Header.ToString() == "월별집계(가로)") { FillGrid_Month_H(); }
-
-                for (int i = 0; i < 3; i++)
-                {
-                    lib.Delay(10);
-                    Header_Content_Width_Adjust(NowTI.Header.ToString());
-                    lib.Delay(10);
-                    Re_Header_Content_Width_Adjust(NowTI.Header.ToString());
-                }
-            }), System.Windows.Threading.DispatcherPriority.Background);
-
-            Dispatcher.BeginInvoke(new Action(() =>
-            {
-                btnSearch.IsEnabled = true;
-            }), System.Windows.Threading.DispatcherPriority.Background);            
+                lib.Delay(10);
+                Header_Content_Width_Adjust(NowTI.Header.ToString());
+                lib.Delay(10);
+                Re_Header_Content_Width_Adjust(NowTI.Header.ToString());
+            }
         }
 
         #region 기간집계 조회
@@ -459,57 +349,24 @@ namespace WizMes_ANT
             grdMerge_Period.Children.Clear();
             grdPeriod.Items.Clear();
 
-            //기준일자
             string SearchFromDate = dtpFromDate.ToString().Substring(0, 10).Replace("-", "");
-            string SearchToDate = dtpToDate.ToString().Substring(0, 10).Replace("-", "");         
-
-            //거래처
-            int ChkCustomID = chkCustomer.IsChecked == true ? 1 : 0;
-            if (chkCustomer.IsChecked == false)
-            { 
-                txtCustomer.Tag = "";
-                txtCustomer.Text = ""; 
-            }
-
-            // 최종고객사
-            int ChkInCustomID = chkInCustomer.IsChecked == true ? 1 : 0;
-            if (chkInCustomer.IsChecked == false)
-            {
-                txtInCustomer.Tag = "";
-                txtInCustomer.Text = "";
-            }
-
-            // 품번
-            int ChkBuyerArticleNo = chkBuyerArticleNo.IsChecked == true ? 1 : 0;
-            if (chkBuyerArticleNo.IsChecked == false)
-            {
-                txtBuyerArticleNo.Tag = "";
-                txtBuyerArticleNo.Text = "";
-            }
-
-            // 품명
-            int ChkArticle = chkArticle.IsChecked == true ? 1 : 0;
-            if (chkArticle.IsChecked == false)
-            {
-                txtArticle.Tag = "";
-                txtArticle.Text = "";
-            }
-
-            // 입출고구분
+            string SearchToDate = dtpToDate.ToString().Substring(0, 10).Replace("-", "");         //기준일자
+            int ChkCustomID = 0;
+            if (chkCustomer.IsChecked == true) { ChkCustomID = 1; }
+            else { txtCustomer.Tag = ""; txtCustomer.Text = ""; }                                                      //거래처
+            int ChkArticleID = 0;
+            if (chkArticle.IsChecked == true) { ChkArticleID = 1; }
+            else { txtArticle.Tag = ""; txtArticle.Text = ""; }                                                       //품명
             int nGubun = 0;
             if (chkInOutGubun.IsChecked == true)
             {
                 if (cboInOutGubun.SelectedValue.ToString() == "1") { nGubun = 1; }
                 if (cboInOutGubun.SelectedValue.ToString() == "2") { nGubun = 2; }
-            }
-
-            // 주요관심품목
-            int nMainItem = chkMainInterestItem.IsChecked == true ? 1 : 0;
-
-            // 거래처등록품목
-            int nCustomItem = chkCustomsEnrollItem.IsChecked == true ? 1 : 0;
-
-            // 입고검수구분
+            }                                                                                   //입출고구분
+            int nMainItem = 0;
+            if (chkMainInterestItem.IsChecked == true) { nMainItem = 1; }                       //주요관심품목
+            int nCustomItem = 0;
+            if (chkCustomsEnrollItem.IsChecked == true) { nCustomItem = 1; }                    //거래처등록품목
             int chkInspect = 0;
             string sInspect = string.Empty;
             if (chkInInsepectGubun.IsChecked == true)
@@ -517,7 +374,7 @@ namespace WizMes_ANT
                 chkInspect = 1;
                 if (cboInInspectGubun.SelectedValue.ToString() == "Y") { sInspect = "Y"; }
                 if (cboInInspectGubun.SelectedValue.ToString() == "N") { sInspect = "N"; }
-            }
+            }                                                                                   //입고검수구분
 
             try
             {
@@ -525,23 +382,16 @@ namespace WizMes_ANT
                 sqlParameter.Add("ChkDate", 1);
                 sqlParameter.Add("SDate", SearchFromDate);
                 sqlParameter.Add("EDate", SearchToDate);
-
                 sqlParameter.Add("ChkCustomID", ChkCustomID);
-                sqlParameter.Add("CustomID", txtCustomer.Tag.ToString());
-                sqlParameter.Add("ChkInCustomID", ChkInCustomID);
-                sqlParameter.Add("InCustomID", txtInCustomer.Tag.ToString());
-
-                sqlParameter.Add("ChkArticleID", ChkBuyerArticleNo);
-                sqlParameter.Add("ArticleID", txtBuyerArticleNo.Tag.ToString());
-                sqlParameter.Add("ChkArticle", ChkArticle);
-                sqlParameter.Add("Article", txtArticle.Text);
-
+                sqlParameter.Add("CustomID", ChkCustomID == 1 ? txtCustomer.Tag.ToString() : "");
+                sqlParameter.Add("ChkArticleID", chkArticle.IsChecked == true ? 1 : 0); //0);// ChkArticleID);
+                sqlParameter.Add("ArticleID", chkArticle.IsChecked == true ? txtArticle.Tag.ToString() : string.Empty);//""); //txtArticle.Tag.ToString());
                 sqlParameter.Add("nGubun", nGubun);
                 sqlParameter.Add("nMainItem", nMainItem);
                 sqlParameter.Add("nCustomItem", nCustomItem);
-
                 sqlParameter.Add("chkInspect", chkInspect);
                 sqlParameter.Add("sInspect", sInspect);
+                sqlParameter.Add("BuyerArticleNo", chkArticle.IsChecked == true ? txtArticle.Text.Trim() : "");
 
                 DataSet ds = DataStore.Instance.ProcedureToDataSet("xp_Outware_sInOutwareSum_Period", sqlParameter, false);
 
@@ -924,57 +774,24 @@ namespace WizMes_ANT
             grdMerge_Days.Children.Clear();
             grdMergeDays.Items.Clear();
 
-            // 기준일자
             string SearchFromDate = dtpFromDate.ToString().Substring(0, 10).Replace("-", "");
-            string SearchToDate = dtpToDate.ToString().Substring(0, 10).Replace("-", "");
-
-            // 거래처
-            int ChkCustomID = chkCustomer.IsChecked == true ? 1 : 0;
-            if (chkCustomer.IsChecked == false)
-            { 
-                txtCustomer.Tag = ""; 
-                txtCustomer.Text = "";
-            }
-
-            // 최종고객사
-            int ChkInCustomID = chkInCustomer.IsChecked == true ? 1 : 0;
-            if (chkInCustomer.IsChecked == false)
-            {
-                txtInCustomer.Tag = "";
-                txtInCustomer.Text = "";
-            }
-
-            // 품번
-            int ChkBuyerArticleNo = chkBuyerArticleNo.IsChecked == true ? 1 : 0;
-            if (chkBuyerArticleNo.IsChecked == false)
-            {
-                txtBuyerArticleNo.Tag = "";
-                txtBuyerArticleNo.Text = "";
-            }
-
-            // 품명
-            int ChkArticle = chkArticle.IsChecked == true ? 1 : 0;
-            if (chkArticle.IsChecked == false)
-            {
-                txtArticle.Tag = "";
-                txtArticle.Text = "";
-            }
-
-            //입출고구분
+            string SearchToDate = dtpToDate.ToString().Substring(0, 10).Replace("-", "");         //기준일자
+            int ChkCustomID = 0;
+            if (chkCustomer.IsChecked == true) { ChkCustomID = 1; }
+            else { txtCustomer.Tag = ""; txtCustomer.Text = ""; }                                                      //거래처
+            int ChkArticleID = 0;
+            if (chkArticle.IsChecked == true) { ChkArticleID = 1; }
+            else { txtArticle.Tag = ""; txtArticle.Text = ""; }                                                       //품명
             int nGubun = 0;
             if (chkInOutGubun.IsChecked == true)
             {
                 if (cboInOutGubun.SelectedValue.ToString() == "1") { nGubun = 1; }
                 if (cboInOutGubun.SelectedValue.ToString() == "2") { nGubun = 2; }
-            }
-
-            //주요관심품목
-            int nMainItem = chkMainInterestItem.IsChecked == true ? 1 : 0;
-
-            //거래처등록품목
-            int nCustomItem = chkCustomsEnrollItem.IsChecked == true ? 1 : 0;
-
-            //입고검수구분
+            }                                                                                   //입출고구분
+            int nMainItem = 0;
+            if (chkMainInterestItem.IsChecked == true) { nMainItem = 1; }                       //주요관심품목
+            int nCustomItem = 0;
+            if (chkCustomsEnrollItem.IsChecked == true) { nCustomItem = 1; }                    //거래처등록품목
             int chkInspect = 0;
             string sInspect = string.Empty;
             if (chkInInsepectGubun.IsChecked == true)
@@ -982,7 +799,7 @@ namespace WizMes_ANT
                 chkInspect = 1;
                 if (cboInInspectGubun.SelectedValue.ToString() == "Y") { sInspect = "Y"; }
                 if (cboInInspectGubun.SelectedValue.ToString() == "N") { sInspect = "N"; }
-            }
+            }                                                                                   //입고검수구분
 
             try
             {
@@ -991,23 +808,16 @@ namespace WizMes_ANT
                 sqlParameter.Add("ChkDate", 1);
                 sqlParameter.Add("SDate", SearchFromDate);
                 sqlParameter.Add("EDate", SearchToDate);
-
                 sqlParameter.Add("ChkCustomID", ChkCustomID);
                 sqlParameter.Add("CustomID", txtCustomer.Tag.ToString());
-                sqlParameter.Add("ChkInCustomID", ChkInCustomID);
-                sqlParameter.Add("InCustomID", txtInCustomer.Tag.ToString());
-
-                sqlParameter.Add("ChkArticleID", ChkBuyerArticleNo);
-                sqlParameter.Add("ArticleID", txtBuyerArticleNo.Tag.ToString());
-                sqlParameter.Add("ChkArticle", ChkArticle);
-                sqlParameter.Add("Article", txtArticle.Text);
-
+                sqlParameter.Add("ChkArticleID", chkArticle.IsChecked == true ? 1 : 0); // ChkArticleID);
+                sqlParameter.Add("ArticleID", chkArticle.IsChecked == true ? txtArticle.Tag.ToString() : string.Empty); // txtArticle.Tag.ToString());
                 sqlParameter.Add("nGubun", nGubun);
                 sqlParameter.Add("nMainItem", nMainItem);
                 sqlParameter.Add("nCustomItem", nCustomItem);
-
                 sqlParameter.Add("chkInspect", chkInspect);
                 sqlParameter.Add("sInspect", sInspect);
+                sqlParameter.Add("BuyerArticleNo", chkArticle.IsChecked == true ? txtArticle.Text.Trim() : "");
 
                 DataSet ds = DataStore.Instance.ProcedureToDataSet("xp_Outware_sInOutwareSum_Day", sqlParameter, false);
 
@@ -1443,57 +1253,24 @@ namespace WizMes_ANT
             grdMerge_Month_V.Children.Clear();
             grdMergeMonth_V.Items.Clear();
 
-            //기준일자
             string SearchFromDate = dtpFromDate.ToString().Substring(0, 10).Replace("-", "");
-            string SearchToDate = dtpToDate.ToString().Substring(0, 10).Replace("-", "");
-
-            //거래처
-            int ChkCustomID = chkCustomer.IsChecked == true ? 1 : 0;
-            if (chkCustomer.IsChecked == false)
-            {
-                txtCustomer.Tag = ""; 
-                txtCustomer.Text = ""; 
-            }
-
-            //거래처
-            int ChkInCustomID = chkInCustomer.IsChecked == true ? 1 : 0;
-            if (chkInCustomer.IsChecked == false)
-            {
-                txtInCustomer.Tag = "";
-                txtInCustomer.Text = "";
-            }
-
-            //품번
-            int ChkBuyerArticleNo = chkBuyerArticleNo.IsChecked == true ? 1 : 0;
-            if (chkBuyerArticleNo.IsChecked == false)
-            {
-                txtBuyerArticleNo.Tag = "";
-                txtBuyerArticleNo.Text = "";
-            }
-
-            //품명
-            int ChkArticle = chkArticle.IsChecked == true ? 1 : 0;
-            if (chkArticle.IsChecked == false)
-            { 
-                txtArticle.Tag = ""; 
-                txtArticle.Text = ""; 
-            }
-
-            //입출고구분
+            string SearchToDate = dtpToDate.ToString().Substring(0, 10).Replace("-", "");         //기준일자
+            int ChkCustomID = 0;
+            if (chkCustomer.IsChecked == true) { ChkCustomID = 1; }
+            else { txtCustomer.Tag = ""; txtCustomer.Text = ""; }                                                      //거래처
+            int ChkArticleID = 0;
+            if (chkArticle.IsChecked == true) { ChkArticleID = 1; }
+            else { txtArticle.Tag = ""; txtArticle.Text = ""; }                                                       //품명
             int nGubun = 0;
             if (chkInOutGubun.IsChecked == true)
             {
                 if (cboInOutGubun.SelectedValue.ToString() == "1") { nGubun = 1; }
                 if (cboInOutGubun.SelectedValue.ToString() == "2") { nGubun = 2; }
-            }
-
-            //주요관심품목
-            int nMainItem = chkMainInterestItem.IsChecked == true ? 1 : 0;
-
-            //거래처등록품목
-            int nCustomItem = chkCustomsEnrollItem.IsChecked == true ? 1 : 0;
-
-            //입고검수구분
+            }                                                                                   //입출고구분
+            int nMainItem = 0;
+            if (chkMainInterestItem.IsChecked == true) { nMainItem = 1; }                       //주요관심품목
+            int nCustomItem = 0;
+            if (chkCustomsEnrollItem.IsChecked == true) { nCustomItem = 1; }                    //거래처등록품목
             int chkInspect = 0;
             string sInspect = string.Empty;
             if (chkInInsepectGubun.IsChecked == true)
@@ -1501,7 +1278,7 @@ namespace WizMes_ANT
                 chkInspect = 1;
                 if (cboInInspectGubun.SelectedValue.ToString() == "Y") { sInspect = "Y"; }
                 if (cboInInspectGubun.SelectedValue.ToString() == "N") { sInspect = "N"; }
-            }
+            }                                                                                   //입고검수구분
 
             try
             {
@@ -1510,23 +1287,16 @@ namespace WizMes_ANT
                 sqlParameter.Add("ChkDate", 1);
                 sqlParameter.Add("SDate", SearchFromDate);
                 sqlParameter.Add("EDate", SearchToDate);
-
                 sqlParameter.Add("ChkCustomID", ChkCustomID);
                 sqlParameter.Add("CustomID", txtCustomer.Tag.ToString());
-                sqlParameter.Add("ChkInCustomID", ChkInCustomID);
-                sqlParameter.Add("InCustomID", txtInCustomer.Tag.ToString());
-
-                sqlParameter.Add("ChkArticleID", ChkBuyerArticleNo);
-                sqlParameter.Add("ArticleID", txtBuyerArticleNo.Tag.ToString());
-                sqlParameter.Add("ChkArticle", ChkArticle);
-                sqlParameter.Add("Article", txtArticle.Text);
-
+                sqlParameter.Add("ChkArticleID", chkArticle.IsChecked == true ? 1 : 0);// ChkArticleID);
+                sqlParameter.Add("ArticleID", chkArticle.IsChecked == true ? txtArticle.Tag.ToString() : string.Empty);//txtArticle.Tag.ToString());
                 sqlParameter.Add("nGubun", nGubun);
                 sqlParameter.Add("nMainItem", nMainItem);
                 sqlParameter.Add("nCustomItem", nCustomItem);
-
                 sqlParameter.Add("chkInspect", chkInspect);
                 sqlParameter.Add("sInspect", sInspect);
+                sqlParameter.Add("BuyerArticleNo", chkArticle.IsChecked == true ? txtArticle.Text.Trim() : "");
 
                 DataSet ds = DataStore.Instance.ProcedureToDataSet("xp_Outware_sInOutwareSum_Month", sqlParameter, false);
 
@@ -1906,56 +1676,23 @@ namespace WizMes_ANT
             grdMerge_Month_H.Children.Clear();
             grdMergeMonth_H.Items.Clear();
 
-            //오늘날짜 자동세팅
-            string SearchToDate = DateTime.Now.ToString("yyyy-MM-dd").Substring(0, 10).Replace("-", "");
-
-            //거래처
-            int ChkCustomID = chkCustomer.IsChecked == true ? 1 : 0;
-            if (chkCustomer.IsChecked == false)
-            { 
-                txtCustomer.Tag = "";
-                txtCustomer.Text = "";
-            }
-
-            //최종고객사
-            int ChkInCustomID = chkInCustomer.IsChecked == true ? 1 : 0;
-            if (chkInCustomer.IsChecked == false)
-            {
-                txtInCustomer.Tag = "";
-                txtInCustomer.Text = "";
-            }
-
-            //품번
-            int ChkBuyerArticleNo = chkBuyerArticleNo.IsChecked == true ? 1 : 0;
-            if (chkBuyerArticleNo.IsChecked == false)
-            {
-                txtBuyerArticleNo.Tag = "";
-                txtBuyerArticleNo.Text = "";
-            }
-
-            //품명
-            int ChkArticle = chkArticle.IsChecked == true ? 1 : 0;
-            if (chkArticle.IsChecked == false)
-            { 
-                txtArticle.Tag = ""; 
-                txtArticle.Text = ""; 
-            }
-
-            //입출고구분
+            string SearchToDate = DateTime.Now.ToString("yyyy-MM-dd").Substring(0, 10).Replace("-", "");         //오늘날짜 자동세팅
+            int ChkCustomID = 0;
+            if (chkCustomer.IsChecked == true) { ChkCustomID = 1; }
+            else { txtCustomer.Tag = ""; txtCustomer.Text = ""; }                                                      //거래처
+            int ChkArticleID = 0;
+            if (chkArticle.IsChecked == true) { ChkArticleID = 1; }
+            else { txtArticle.Tag = ""; txtArticle.Text = ""; }                                                       //품명
             int nGubun = 0;
             if (chkInOutGubun.IsChecked == true)
             {
                 if (cboInOutGubun.SelectedValue.ToString() == "1") { nGubun = 1; }
                 if (cboInOutGubun.SelectedValue.ToString() == "2") { nGubun = 2; }
-            }
-
-            //주요관심품목
-            int nMainItem = chkMainInterestItem.IsChecked == true ? 1 : 0;
-
-            //거래처등록품목
-            int nCustomItem = chkCustomsEnrollItem.IsChecked == true ? 1 : 0;
-
-            //입고검수구분
+            }                                                                                   //입출고구분
+            int nMainItem = 0;
+            if (chkMainInterestItem.IsChecked == true) { nMainItem = 1; }                       //주요관심품목
+            int nCustomItem = 0;
+            if (chkCustomsEnrollItem.IsChecked == true) { nCustomItem = 1; }                    //거래처등록품목
             int chkInspect = 0;
             string sInspect = string.Empty;
             if (chkInInsepectGubun.IsChecked == true)
@@ -1963,7 +1700,7 @@ namespace WizMes_ANT
                 chkInspect = 1;
                 if (cboInInspectGubun.SelectedValue.ToString() == "Y") { sInspect = "Y"; }
                 if (cboInInspectGubun.SelectedValue.ToString() == "N") { sInspect = "N"; }
-            }
+            }                                                                                   //입고검수구분
 
             try
             {
@@ -1971,23 +1708,16 @@ namespace WizMes_ANT
                 Dictionary<string, object> sqlParameter = new Dictionary<string, object>();
                 sqlParameter.Add("ChkDate", 1);
                 sqlParameter.Add("EDate", SearchToDate);
-
                 sqlParameter.Add("ChkCustomID", ChkCustomID);
                 sqlParameter.Add("CustomID", txtCustomer.Tag.ToString());
-                sqlParameter.Add("ChkInCustomID", ChkInCustomID);
-                sqlParameter.Add("InCustomID", txtInCustomer.Tag.ToString());
-
-                sqlParameter.Add("ChkArticleID", ChkBuyerArticleNo);
-                sqlParameter.Add("ArticleID", txtBuyerArticleNo.Tag.ToString());
-                sqlParameter.Add("ChkArticle", ChkArticle);
-                sqlParameter.Add("Article", txtArticle.Text);
-
+                sqlParameter.Add("ChkArticleID", chkArticle.IsChecked == true ? 1 : 0);// ChkArticleID);
+                sqlParameter.Add("ArticleID", chkArticle.IsChecked == true ? txtArticle.Tag.ToString() : string.Empty);// txtArticle.Tag.ToString());
                 sqlParameter.Add("nGubun", nGubun);
                 sqlParameter.Add("nMainItem", nMainItem);
                 sqlParameter.Add("nCustomItem", nCustomItem);
-
                 sqlParameter.Add("chkInspect", chkInspect);
                 sqlParameter.Add("sInspect", sInspect);
+                sqlParameter.Add("BuyerArticleNo", chkArticle.IsChecked == true ? txtArticle.Text.Trim() : "");
 
                 DataSet ds = DataStore.Instance.ProcedureToDataSet("xp_Outware_sInOutwareSum_MonthSpread3", sqlParameter, false);
 
@@ -2407,29 +2137,27 @@ namespace WizMes_ANT
         {
             string sNowTI = ((sender as TabControl).SelectedItem as TabItem).Header as string;
 
-            bool chk_date_srh = chkDateSrh.IsChecked == true;
-
             switch (sNowTI)
             {
                 case "기간집계":
                     txtblMessage.Visibility = Visibility.Hidden;
-                    dtpFromDate.IsEnabled = chk_date_srh;
-                    dtpToDate.IsEnabled = chk_date_srh;
+                    dtpFromDate.IsEnabled = true;
+                    dtpToDate.IsEnabled = true;
                     break;
                 case "일일집계":
                     txtblMessage.Visibility = Visibility.Hidden;
-                    dtpFromDate.IsEnabled = chk_date_srh;
-                    dtpToDate.IsEnabled = chk_date_srh;
+                    dtpFromDate.IsEnabled = true;
+                    dtpToDate.IsEnabled = true;
                     break;
                 case "월별집계(세로)":
                     txtblMessage.Visibility = Visibility.Hidden;
-                    dtpFromDate.IsEnabled = chk_date_srh;
-                    dtpToDate.IsEnabled = chk_date_srh;
+                    dtpFromDate.IsEnabled = true;
+                    dtpToDate.IsEnabled = true;
                     break;
                 case "월별집계(가로)":
                     txtblMessage.Visibility = Visibility.Visible;
-                    dtpFromDate.IsEnabled = chk_date_srh;
-                    dtpToDate.IsEnabled = chk_date_srh;
+                    dtpFromDate.IsEnabled = false;
+                    dtpToDate.IsEnabled = false;
                     break;
                 default: return;
             }
@@ -2914,22 +2642,6 @@ namespace WizMes_ANT
             }
         }
 
-        private void txtInCustomer_KeyDown(object sender, KeyEventArgs e)
-        {
-            if (e.Key == Key.Enter)
-            {
-                btnInCustomer_Click(null, null);
-            }
-        }
-
-        private void txtBuyerArticleNo_KeyDown(object sender, KeyEventArgs e)
-        {
-            if (e.Key == Key.Enter)
-            {
-                btnBuyerArticleNo_Click(null, null);
-            }
-        }
-
         private void txtArticle_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.Key == Key.Enter)
@@ -3258,4 +2970,7 @@ namespace WizMes_ANT
         public string H_Qty13 { get; set; }
 
     }
+
+
 }
+

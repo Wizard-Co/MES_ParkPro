@@ -7,7 +7,6 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using WizMes_ANT.PopUP;
-using WizMes_ANT.PopUp;
 
 namespace WizMes_ANT
 {
@@ -286,39 +285,6 @@ namespace WizMes_ANT
             dtpEDate.SelectedDate = Lib.Instance.BringThisMonthDatetimeList()[1];
         }
 
-        // 최종고객사
-        private void lblInCustomSrh_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
-        {
-            chkInCustomSrh.IsChecked = !chkInCustomSrh.IsChecked;
-        }
-
-        // 최종고객사
-        private void txtInCustomSrh_KeyDown(object sender, KeyEventArgs e)
-        {
-            if (e.Key == Key.Enter)
-                MainWindow.pf.ReturnCode(txtInCustomSrh, (int)Defind_CodeFind.DCF_CUSTOM, "");
-        }
-
-        // 최종고객사
-        private void btnPfInCustomSrh_Click(object sender, RoutedEventArgs e)
-        {
-            MainWindow.pf.ReturnCode(txtInCustomSrh, (int)Defind_CodeFind.DCF_CUSTOM, "");
-        }
-
-        // 최종고객사
-        private void chkInCustomSrh_Checked(object sender, RoutedEventArgs e)
-        {
-            txtInCustomSrh.IsEnabled = true;
-            btnPfInCustomSrh.IsEnabled = true;
-        }
-
-        // 최종고객사
-        private void chkInCustomSrh_Unchecked(object sender, RoutedEventArgs e)
-        {
-            txtInCustomSrh.IsEnabled = false;
-            btnPfInCustomSrh.IsEnabled = false;
-        }
-
         //거래처
         private void lblCustomSrh_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
@@ -482,7 +448,7 @@ namespace WizMes_ANT
             {
                 if (e.Key == Key.Enter)
                 {
-                    pf.ReturnCode(TextBoxArticleSearch, 77, TextBoxArticleSearch.Text);
+                    pf.ReturnCode(TextBoxArticleSearch, 77, "");
                 }
             }
             catch (Exception ee)
@@ -496,7 +462,7 @@ namespace WizMes_ANT
         {
             try
             {
-                pf.ReturnCode(TextBoxArticleSearch, 77, TextBoxArticleSearch.Text);
+                pf.ReturnCode(TextBoxArticleSearch, 77, "");
             }
             catch (Exception ee)
             {
@@ -691,31 +657,23 @@ namespace WizMes_ANT
 
         private void btnPreOrderOK_Click(object sender, RoutedEventArgs e)
         {
-            popPreviousOrder.IsOpen = false;
-
             try
             {
                 Dictionary<string, object> sqlParameter = new Dictionary<string, object>();
                 sqlParameter.Add("ChkDate", 1);
-                sqlParameter.Add("SDate", dtpThisMonth.SelectedDate.Value.ToString("yyyyMM") + "01");
+                sqlParameter.Add("SDate", dtpThisMonth.SelectedDate.Value.ToString("yyyyMM") + "1");
                 sqlParameter.Add("EDate", dtpThisMonth.SelectedDate.Value.ToString("yyyyMM") + "31");
-
-                sqlParameter.Add("ChkInCustom", 0);
-                sqlParameter.Add("InCustomID", "");
                 sqlParameter.Add("ChkCustom", 0);
                 sqlParameter.Add("CustomID", "");
 
                 sqlParameter.Add("ChkArticleID", 0);
                 sqlParameter.Add("ArticleID", "");
-                sqlParameter.Add("ChkArticle", 0);
-                sqlParameter.Add("Article", "");
-
-                sqlParameter.Add("ChkBuyerModelID", 0);
+                sqlParameter.Add("ChkBuyerModelID", "");
                 sqlParameter.Add("BuyerModelID", "");
                 sqlParameter.Add("ChkOrderID", 0);
-                sqlParameter.Add("OrderID", "");
 
-                sqlParameter.Add("ChkCloseClss", 0);
+                sqlParameter.Add("OrderID", "");
+                sqlParameter.Add("ChkCloseClss", "");
                 sqlParameter.Add("CloseClss", "");
                 sqlParameter.Add("ChkWorkID", 0);
                 sqlParameter.Add("WorkID", "");
@@ -765,6 +723,8 @@ namespace WizMes_ANT
             {
                 DataStore.Instance.CloseConnection();
             }
+
+            popPreviousOrder.IsOpen = false;
         }
 
         private void btnPreOrderCC_Click(object sender, RoutedEventArgs e)
@@ -909,6 +869,10 @@ namespace WizMes_ANT
             //cboOrderNO.IsDropDownOpen = true;
             //cboOrderNO.Focus();
             txtCustom.Focus();
+
+
+
+
         }
 
         //수정
@@ -956,9 +920,13 @@ namespace WizMes_ANT
                         {
                             dt = ds.Tables[0];
                             if (dt.Rows.Count > 0)
+                            {
                                 MessageBox.Show("해당 수주 건은 생산 진행중이오니, 삭제하시려면 생산부터 작업지시까지 먼저 삭제해주세요.");
+                            }
                             else
+                            {
                                 MessageBox.Show("해당 수주 건은 작업지시 진행중이오니, 삭제하시려면 작업지시 먼저 삭제해주세요.");
+                            }
                         }
                     }
                     else
@@ -966,36 +934,19 @@ namespace WizMes_ANT
                         if (MessageBox.Show("선택하신 항목을 삭제하시겠습니까?", "삭제 전 확인", MessageBoxButton.YesNo) == MessageBoxResult.Yes)
                         {
                             if (dgdMain.Items.Count > 0 && dgdMain.SelectedItem != null)
-                                rowNum = dgdMain.SelectedIndex;
-
-                            using (Loading lw = new Loading(beDelete))
                             {
-                                lw.ShowDialog();
+                                rowNum = dgdMain.SelectedIndex;
+                            }
+
+                            if (DeleteData(OrderView.OrderID))
+                            {
+                                rowNum -= 1;
+                                re_Search(rowNum);
                             }
                         }
                     }
                 }
             }
-        }
-
-        private void beDelete()
-        {
-            btnDelete.IsEnabled = false;
-
-            Dispatcher.BeginInvoke(new Action(() =>
-            {
-                //로직
-                if (DeleteData(OrderView.OrderID))
-                {
-                    rowNum -= 1;
-                    re_Search(rowNum);
-                }
-            }), System.Windows.Threading.DispatcherPriority.Background);
-
-            Dispatcher.BeginInvoke(new Action(() =>
-            {
-                btnDelete.IsEnabled = true;
-            }), System.Windows.Threading.DispatcherPriority.Background);
         }
 
         //닫기
@@ -1008,69 +959,37 @@ namespace WizMes_ANT
         //검색
         private void btnSearch_Click(object sender, RoutedEventArgs e)
         {
-            using (Loading lw = new Loading(beSearch))
-            {
-                lw.ShowDialog();
-            }
-        }
-
-        private void beSearch()
-        {
             rowNum = 0;
-            btnSearch.IsEnabled = false;
-
-            Dispatcher.BeginInvoke(new Action(() =>
-            {
-                //로직
-                re_Search(rowNum);
-            }), System.Windows.Threading.DispatcherPriority.Background);
-
-            Dispatcher.BeginInvoke(new Action(() =>
-            {
-                btnSearch.IsEnabled = true;
-            }), System.Windows.Threading.DispatcherPriority.Background);
+            re_Search(rowNum);
         }
 
         //저장
         private void btnSave_Click(object sender, RoutedEventArgs e)
         {
-            using (Loading lw = new Loading(beSave))
+            if (SaveData(strFlag))
             {
-                lw.ShowDialog();
+                CanBtnControl();
+                lblMsg.Visibility = Visibility.Hidden;
+                dgdMain.IsHitTestVisible = true;
+                btnNeedStuff.IsEnabled = false;
+                //re_Search(rowNum); //2021-04-28 저장 후 재조회 안되게 막음
+                re_Search(rowNum);
+                PrimaryKey = string.Empty;
+                rowNum = 0;
+                MessageBox.Show("저장이 완료되었습니다."); //2021-04-28 저장되면 저장이 완료되었다는 메세지 띄우기
             }
-        }
-
-        private void beSave()
-        {
-            btnSave.IsEnabled = false;
-
-            Dispatcher.BeginInvoke(new Action(() =>
-            {
-                //로직
-                if (SaveData(strFlag))
-                {
-                    CanBtnControl();
-                    lblMsg.Visibility = Visibility.Hidden;
-                    dgdMain.IsHitTestVisible = true;
-                    btnNeedStuff.IsEnabled = false;
-                    re_Search(rowNum);
-                    PrimaryKey = string.Empty;
-                    rowNum = 0;
-                    MessageBox.Show("저장이 완료되었습니다."); //2021-04-28 저장되면 저장이 완료되었다는 메세지 띄우기
-                }
-            }), System.Windows.Threading.DispatcherPriority.Background);
-
-            Dispatcher.BeginInvoke(new Action(() =>
-            {
-                btnSave.IsEnabled = true;
-            }), System.Windows.Threading.DispatcherPriority.Background);
         }
 
         //취소
         private void btnCancel_Click(object sender, RoutedEventArgs e)
         {
             CanBtnControl();
-            ClearData();            
+
+            //혹시 모르니까 납기일자의 체크박스가 체크되어 있을 수도 있으니까 해제
+            chkDvlyDate.IsChecked = false;
+
+            dgdMain.IsHitTestVisible = true;
+            btnNeedStuff.IsEnabled = false;
 
             if (strFlag.Equals("U"))
             {
@@ -1083,6 +1002,7 @@ namespace WizMes_ANT
             }
 
             strFlag = string.Empty;
+
         }
 
         //엑셀
@@ -1164,12 +1084,18 @@ namespace WizMes_ANT
             if (dgdMain.Items.Count > 0)
             {
                 if (PrimaryKey.Equals(string.Empty))
+                {
                     dgdMain.SelectedIndex = selectedIndex;
+                }
                 else
+                {
                     dgdMain.SelectedIndex = SelectItem(PrimaryKey, dgdMain);
+                }
             }
             else
+            {
                 this.DataContext = null;
+            }
 
             //CalculGridSum();
         }
@@ -1178,10 +1104,14 @@ namespace WizMes_ANT
         private void FillGrid()
         {
             if (dgdMain.Items.Count > 0)
+            {
                 dgdMain.Items.Clear();
+            }
 
             if (dgdNeedStuff.Items.Count > 0)
+            {
                 dgdNeedStuff.Items.Clear();
+            }
 
             try
             {
@@ -1211,44 +1141,23 @@ namespace WizMes_ANT
                 sqlParameter.Add("ChkDate", ChkDateSrh.IsChecked == true ? 1 : 0);
                 sqlParameter.Add("SDate", ChkDateSrh.IsChecked == true ? dtpSDate.SelectedDate.Value.ToString("yyyyMMdd") : "");
                 sqlParameter.Add("EDate", ChkDateSrh.IsChecked == true ? dtpEDate.SelectedDate.Value.ToString("yyyyMMdd") : "");
-
-
-                // 최종고객사
-                sqlParameter.Add("ChkInCustom", chkInCustomSrh.IsChecked == true ? 1 : 0);
-                sqlParameter.Add("InCustomID", chkInCustomSrh.IsChecked == true ? (txtInCustomSrh.Tag != null ? txtInCustomSrh.Tag.ToString() : "") : "");
-                // 거래처
                 sqlParameter.Add("ChkCustom", chkCustomSrh.IsChecked == true ? 1 : 0);
                 sqlParameter.Add("CustomID", chkCustomSrh.IsChecked == true ? (txtCustomSrh.Tag != null ? txtCustomSrh.Tag.ToString() : "") : "");
 
-                
-                // 품번
                 sqlParameter.Add("ChkArticleID", CheckBoxBuyerArticleNoSearch.IsChecked == true ? 1 : 0);
                 sqlParameter.Add("ArticleID", CheckBoxBuyerArticleNoSearch.IsChecked == true ? (TextBoxBuyerArticleNoSearch.Tag == null ? "" : TextBoxBuyerArticleNoSearch.Tag.ToString()) : "");
-                // 품명
-                sqlParameter.Add("ChkArticle", CheckBoxArticleSearch.IsChecked == true ? 1 : 0);
-                sqlParameter.Add("Article", CheckBoxArticleSearch.IsChecked == true ? (TextBoxArticleSearch.Text == string.Empty ? "" : TextBoxArticleSearch.Text) : "");
-
-
-                // 차종
                 sqlParameter.Add("ChkBuyerModelID", chkBuyerModelIDSrh.IsChecked == true ? 1 : 0);
                 sqlParameter.Add("BuyerModelID", chkBuyerModelIDSrh.IsChecked == true ? (txtBuyerModelIDSrh.Tag == null ? "" : txtBuyerModelIDSrh.Tag.ToString()) : "");
-                // 관리번호
                 sqlParameter.Add("ChkOrderID", chkOrderIDSrh.IsChecked == true ? 1 : 0);
+
                 sqlParameter.Add("OrderID", chkOrderIDSrh.IsChecked == true ? (txtOrderIDSrh.Text == string.Empty ? "" : txtOrderIDSrh.Text) : "");
-
-
-                // 완료구분
                 sqlParameter.Add("ChkCloseClss", chkCloseClssSrh.IsChecked == true ? 1 : 0);
                 sqlParameter.Add("CloseClss", chkCloseClssSrh.IsChecked == true ? (cboCloseClssSrh.SelectedValue == null ? "" : cboCloseClssSrh.SelectedValue.ToString()) : "");
-                // 가공구분
                 sqlParameter.Add("ChkWorkID", chkWorkSrh.IsChecked == true ? 1 : 0);
                 sqlParameter.Add("WorkID", chkWorkSrh.IsChecked == true ? (cboWorkSrh.SelectedValue == null ? "" : cboWorkSrh.SelectedValue.ToString()) : "");
 
-
-                // 주문구분
                 sqlParameter.Add("ChkOrderClss", chkOrderClassSrh.IsChecked == true ? 1 : 0);
                 sqlParameter.Add("OrderClss", chkOrderClassSrh.IsChecked == true ? (cboOrderClassSrh.SelectedValue == null ? "" : cboOrderClassSrh.SelectedValue.ToString()) : "");
-                // 수주구분
                 sqlParameter.Add("ChkOrderFlag", chkOrderFlag.IsChecked == true ? 1 : 0);
                 sqlParameter.Add("OrderFlag", chkOrderFlag.IsChecked == true ? (cboOrderFlag.SelectedValue == null ? "" : cboOrderFlag.SelectedValue.ToString()) : "");
 
@@ -1283,8 +1192,6 @@ namespace WizMes_ANT
                                 BuyerID = dr["BuyerID"].ToString(),
 
                                 InCustomID = dr["InCustomID"].ToString(),
-                                KInCustom = dr["KInCustom"].ToString(),
-
                                 OrderNo = dr["OrderNo"].ToString(),
                                 PoNo = dr["PoNo"].ToString(),
                                 BuyerModelID = dr["BuyerModelID"].ToString(),
@@ -1312,16 +1219,24 @@ namespace WizMes_ANT
 
                                 Remark = dr["Remark"].ToString(),
                                 CloseClss = dr["CloseClss"].ToString(),
+                                //CloseDate = dr["CloseDate"].ToString(),
                                 OrderFlag = dr["OrderFlag"].ToString(),
+                                //OrderEnd = dr["OrderEnd"].ToString(),
 
-                                OrderSpec = dr["OrderSpec"].ToString(),                                
+                                OrderSpec = dr["OrderSpec"].ToString(),
+                                KInCustom = dr["KInCustom"].ToString(),
+
                                 ProductAutoInspectYN = dr["ProductAutoInspectYN"].ToString(),
                                 ArticleGrpID = dr["ArticleGrpID"].ToString(),
-                                UnitPrice = stringFormatN0(dr["UnitPrice"]),
                                 ArticleID = dr["ArticleID"].ToString(),
-
                                 Article = dr["Article"].ToString(),
                                 BuyerArticleNo = dr["BuyerArticleNo"].ToString(),
+                                UnitPrice = stringFormatN0(dr["UnitPrice"]),
+
+                                //NewArticleQty = dr["NewArticleQty"].ToString(),
+                                //RePolishingQty = dr["RePolishingQty"].ToString(),
+
+
                             };
 
                             if (Lib.Instance.IsNumOrAnother(OrderCodeView.Amount))
@@ -1426,39 +1341,46 @@ namespace WizMes_ANT
             txtOrderAmount.Text = string.Format("{0:N0}", numTotal) + " 원";
         }
 
-        private void ClearData()
-        {
-            dgdMain.IsHitTestVisible = true;
+        #region 안씀
+        //
+        //private void dgdMain_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        //{
+        //    OrderView = dgdMain.SelectedItem as Win_ord_Order_U_CodeView;
 
-            txtOrderID.Text = string.Empty;
-            TextBoxOrderNo.Text = string.Empty;
-            txtCustom.Text = string.Empty;
-            txtCustom.Tag = null;
-            txtAmount.Text = string.Empty;
-            txtDylvLoc.Text = string.Empty;
-            txtInCustom.Text = string.Empty;
-            txtInCustom.Tag = null;
-            txtBuyerArticleNO.Text = string.Empty;
-            txtBuyerArticleNO.Tag = null;
-            txtUnitPrice.Text = string.Empty;
-            txtArticle.Text = string.Empty;
-            txtPONO.Text = string.Empty;
-            txtModel.Text = string.Empty;
-            txtModel.Tag = null;
-            txtComments.Text = string.Empty;
+        //    if (OrderView != null)
+        //    {
+        //        //셀렉트한 값으로 태그값 넣어주기. 혹시 모르니까.
+        //        txtCustom.Tag = OrderView.CustomID;
+        //        txtArticle.Tag = OrderView.ArticleID;
 
-            cboOrderNO.SelectedIndex = -1;
-            cboOrderForm.SelectedIndex = -1;
-            cboOrderClss.SelectedIndex = -1;
-            cboUnitClss.SelectedIndex = -1;
-            cboArticleGroup.SelectedIndex = -1;
-            cboWork.SelectedIndex = -1;
+        //        this.DataContext = OrderView;
+        //        if (OrderView.ProductAutoInspectYN.Equals("Y"))
+        //        {
+        //            cboAutoInspect.SelectedItem = cboY;
+        //        }
+        //        else
+        //        {
+        //            cboAutoInspect.SelectedItem = cboN;
+        //        }
+        //        CallArticleData(OrderView.ArticleID);
+        //        CallCustomData(OrderView.CustomID);
+        //        FillNeedStockQty(OrderView.ArticleID, txtAmount.Text.Replace(",", ""));
 
-            //혹시 모르니까 납기일자의 체크박스가 체크되어 있을 수도 있으니까 해제
-            chkDvlyDate.IsChecked = false;
-            btnNeedStuff.IsEnabled = false;
-        }
 
+        //        //납기일자에 값이 있으면 체크, 그게 아니면 해제
+        //        if (!OrderView.DvlyDate.Trim().Equals(""))
+        //        {
+        //            chkDvlyDate.IsChecked = true;
+        //        }
+        //        else
+        //        {
+        //            chkDvlyDate.IsChecked = false;
+        //        }
+
+
+        //    }
+        //}
+        #endregion
         /// <summary>
         /// 실삭제
         /// </summary>
@@ -1509,13 +1431,10 @@ namespace WizMes_ANT
             {
                 if (CheckData())
                 {
-                    string sOrderID = txtOrderID.Text == string.Empty ? "" : txtOrderID.Text;
-
                     Dictionary<string, object> sqlParameter = new Dictionary<string, object>();
                     sqlParameter.Clear();
 
-                    sqlParameter.Add("OrderID", sOrderID);
-
+                    sqlParameter.Add("OrderID", txtOrderID.Text == string.Empty ? "" : txtOrderID.Text);
                     sqlParameter.Add("CustomID", txtCustom.Tag.ToString());
                     sqlParameter.Add("OrderNO", TextBoxOrderNo.Text == string.Empty ? "" : TextBoxOrderNo.Text);
                     sqlParameter.Add("PoNo", txtPONO.Text);
@@ -1524,29 +1443,42 @@ namespace WizMes_ANT
                     sqlParameter.Add("OrderClss", cboOrderClss.SelectedValue.ToString());
                     sqlParameter.Add("AcptDate", dtpAcptDate.SelectedDate.Value.ToString("yyyyMMdd"));
                     sqlParameter.Add("DvlyDate", chkDvlyDate.IsChecked == true ? dtpDvlyDate.SelectedDate.Value.ToString("yyyyMMdd") : "");
+                    //sqlParameter.Add("ArticleID", txtArticle.Tag.ToString());
                     sqlParameter.Add("ArticleGrpID", cboArticleGroup.SelectedValue.ToString());
 
                     sqlParameter.Add("DvlyPlace", txtDylvLoc.Text);
                     sqlParameter.Add("WorkID", cboWork.SelectedValue.ToString());
+                    // sqlParameter.Add("PriceClss", 0);
                     sqlParameter.Add("ExchRate", 0.00);
                     sqlParameter.Add("Vat_IND_YN", cboVAT_YN.SelectedValue.ToString());
 
                     sqlParameter.Add("OrderQty", int.Parse(txtAmount.Text.Replace(",", "")));
+
+                    //sqlParameter.Add("RePolishingQty", txtRePolishing.Text != null && !txtRePolishing.Text.Trim().Equals("") ? ConvertDouble(txtRePolishing.Text) : 0);
+                    //sqlParameter.Add("NewArticleQty", txtNewArticle.Text != null && !txtNewArticle.Text.Trim().Equals("") ? ConvertDouble(txtNewArticle.Text) : 0);
+
                     sqlParameter.Add("UnitClss", cboUnitClss.SelectedValue.ToString());
+
                     sqlParameter.Add("Remark", txtComments.Text);
+
+
                     sqlParameter.Add("OrderFlag", 0);
 
-                    sqlParameter.Add("InCustomID", txtInCustom.Tag.ToString());
+                    sqlParameter.Add("InCustomID", txtCustom.Tag.ToString());
+                    //sqlParameter.Add("UnitPriceClss", articleData.UnitPriceClss);
                     sqlParameter.Add("UnitPriceClss", "0");
+                    //sqlParameter.Add("WorkUnitClss", cboWorkUnitClss.SelectedValue.ToString());
+
                     sqlParameter.Add("OrderSpec", "");
                     sqlParameter.Add("BuyerModelID", txtModel.Tag != null ? txtModel.Tag.ToString() : "");
-
                     sqlParameter.Add("ProductAutoInspectYN", cboAutoInspect.SelectedItem == cboY ? "Y" : "N");
                     sqlParameter.Add("UnitPrice", ConvertDouble(txtUnitPrice.Text));
 
                     #region 추가
+
                     if (strFlag.Equals("I"))
                     {
+
                         sqlParameter.Add("CreateUserID", MainWindow.CurrentUser);
 
                         Procedure pro1 = new Procedure();
@@ -1560,6 +1492,7 @@ namespace WizMes_ANT
 
                         List<KeyValue> list_Result = new List<KeyValue>();
                         list_Result = DataStore.Instance.ExecuteAllProcedureOutputGetCS_NewLog(Prolist, ListParameter,"C");
+                        string sGetID = string.Empty;
 
                         if (list_Result[0].key.ToLower() == "success")
                         {
@@ -1569,24 +1502,61 @@ namespace WizMes_ANT
                                 KeyValue kv = list_Result[i];
                                 if (kv.key == "OrderID")
                                 {
+                                    sGetID = kv.value;
+
+                                    PrimaryKey = sGetID;
+
                                     flag = true;
-                                    sOrderID = kv.value;
-                                    PrimaryKey = sOrderID;
+
+
                                 }
                             }
                         }
                         else
                         {
                             MessageBox.Show("[저장실패]\r\n" + list_Result[1].value.ToString());
+                            //flag = false;
                             return false;
                         }
 
                         Prolist.Clear();
-                        ListParameter.Clear();                        
+                        ListParameter.Clear();
+
+                        //Sub 그리드 추가
+
+
+
+                        sqlParameter = new Dictionary<string, object>();
+                        sqlParameter.Clear();
+
+                        sqlParameter.Add("OrderID", sGetID);
+                        sqlParameter.Add("OrderSeq", 0);
+                        sqlParameter.Add("ArticleID", txtBuyerArticleNO.Tag.ToString());
+                        sqlParameter.Add("NewProductYN", "");
+                        sqlParameter.Add("Remark", "");
+                        sqlParameter.Add("UnitPriceClss", "0");
+                        sqlParameter.Add("UnitClss", cboUnitClss.SelectedValue.ToString());
+
+                        //sqlParameter.Add("ColorQty", OrderSub.ColorQty == string.Empty ? "0" : OrderSub.ColorQty.ToString().Replace(",", ""));
+                        sqlParameter.Add("ColorQty", int.Parse(txtAmount.Text.Replace(",", "")));
+
+                        sqlParameter.Add("CreateUserID", MainWindow.CurrentUser);
+
+                        Procedure pro2 = new Procedure();
+                        pro2.Name = "xp_ord_iOrderSub";
+                        pro2.OutputUseYN = "N";
+                        pro2.OutputName = "OrderID";
+                        pro2.OutputLength = "10";
+
+                        Prolist.Add(pro2);
+                        ListParameter.Add(sqlParameter);
+
+
                     }
                     #endregion
 
                     #region 수정
+
                     else if (strFlag.Equals("U"))
                     {
                         sqlParameter.Add("LastUpdateUserID", MainWindow.CurrentUser);
@@ -1604,6 +1574,7 @@ namespace WizMes_ANT
                         sqlParameter = new Dictionary<string, object>();
                         sqlParameter.Clear();
                         sqlParameter.Add("OrderID", txtOrderID.Text);
+                        //sqlParameter.Add("Seq", "");
 
                         Procedure pro4 = new Procedure();
                         pro4.Name = "xp_Order_dOrderColorAll";
@@ -1613,32 +1584,40 @@ namespace WizMes_ANT
 
                         Prolist.Add(pro4);
                         ListParameter.Add(sqlParameter);
+
+
+                        //Sub 그리드 추가
+                        for (int i = 0; i < DataGridSub.Items.Count; i++)
+                        {
+                            var OrderSub = DataGridSub.Items[i] as Win_ord_Order_U_Sub_CodeView;
+
+                            sqlParameter = new Dictionary<string, object>();
+                            sqlParameter.Clear();
+                            sqlParameter.Add("OrderID", txtOrderID.Text);
+                            sqlParameter.Add("OrderSeq", i + 1);
+                            //sqlParameter.Add("ArticleID", OrderSub.ArticleID);
+                            sqlParameter.Add("ArticleID", txtBuyerArticleNO.Tag.ToString());
+                            sqlParameter.Add("NewProductYN", OrderSub.NewProductYN);
+                            sqlParameter.Add("Remark", OrderSub.Remark);
+                            sqlParameter.Add("UnitPriceClss", "0");
+                            sqlParameter.Add("UnitClss", cboUnitClss.SelectedValue.ToString());
+
+                            //sqlParameter.Add("ColorQty", OrderSub.ColorQty == string.Empty ? "0" : OrderSub.ColorQty.ToString().Replace(",", ""));
+                            sqlParameter.Add("ColorQty", int.Parse(txtAmount.Text.Replace(",", "")));
+
+                            sqlParameter.Add("CreateUserID", MainWindow.CurrentUser);
+
+                            Procedure pro2 = new Procedure();
+                            pro2.Name = "xp_ord_iOrderSub";
+                            pro2.OutputUseYN = "N";
+                            pro2.OutputName = "OrderID";
+                            pro2.OutputLength = "10";
+
+                            Prolist.Add(pro2);
+                            ListParameter.Add(sqlParameter);
+                        }
                     }
                     #endregion
-
-                    //Sub 그리드 추가
-                    sqlParameter = new Dictionary<string, object>();
-                    sqlParameter.Clear();
-
-                    sqlParameter.Add("OrderID", sOrderID);
-                    sqlParameter.Add("OrderSeq", 0);
-                    sqlParameter.Add("ArticleID", txtBuyerArticleNO.Tag.ToString());
-                    sqlParameter.Add("NewProductYN", "");
-                    sqlParameter.Add("Remark", "");
-                    sqlParameter.Add("UnitPriceClss", "0");
-                    sqlParameter.Add("UnitClss", cboUnitClss.SelectedValue.ToString());
-                    sqlParameter.Add("ColorQty", int.Parse(txtAmount.Text.Replace(",", "")));
-
-                    sqlParameter.Add("CreateUserID", MainWindow.CurrentUser);
-
-                    Procedure pro2 = new Procedure();
-                    pro2.Name = "xp_ord_iOrderSub";
-                    pro2.OutputUseYN = "N";
-                    pro2.OutputName = "OrderID";
-                    pro2.OutputLength = "10";
-
-                    Prolist.Add(pro2);
-                    ListParameter.Add(sqlParameter);
 
                     string[] Confirm = new string[2];
                     Confirm = DataStore.Instance.ExecuteAllProcedureOutputNew_NewLog(Prolist, ListParameter,"U");
@@ -1646,9 +1625,12 @@ namespace WizMes_ANT
                     {
                         MessageBox.Show("[저장실패]\r\n" + Confirm[1].ToString());
                         flag = false;
+                        //return false;
                     }
                     else
+                    {
                         flag = true;
+                    }
                 }
             }
             catch (Exception ex)
@@ -1674,12 +1656,7 @@ namespace WizMes_ANT
                 return flag;
             }
 
-            if (txtInCustom.Text.Length <= 0 || txtInCustom.Tag == null)
-            {
-                MessageBox.Show("최종고객사가 입력되지 않았습니다. 먼저 거래처를 입력해주세요");
-                flag = false;
-                return flag;
-            }
+
 
             if (txtAmount.Text.Length <= 0)
             {
@@ -1816,19 +1793,10 @@ namespace WizMes_ANT
                 if (txtCustom.Tag != null)
                 {
                     CallCustomData(txtCustom.Tag.ToString());
+                    txtDylvLoc.Text = txtCustom.Text;
+                    txtInCustom.Text = txtCustom.Text;
+                    txtInCustom.Tag = txtCustom.Tag;
 
-                    if (string.IsNullOrEmpty(txtDylvLoc.Text))
-                    {
-                        txtDylvLoc.Text = txtCustom.Text;
-                        txtDylvLoc.Tag = txtCustom.Tag;
-                    }                        
-
-                    // 최종고객사도 같이 세팅
-                    if (string.IsNullOrEmpty(txtInCustom.Text))
-                    {
-                        txtInCustom.Text = txtCustom.Text;
-                        txtInCustom.Tag = txtCustom.Tag;
-                    }
                 }
 
                 //납품거래처 -> 납품 장소 커서이동
@@ -1848,20 +1816,105 @@ namespace WizMes_ANT
             if (txtCustom.Tag != null)
             {
                 CallCustomData(txtCustom.Tag.ToString());
-
-                if (string.IsNullOrEmpty(txtDylvLoc.Text))
-                    txtDylvLoc.Text = txtCustom.Text;
-
-                // 최종고객사도 같이 세팅
-                if (string.IsNullOrEmpty(txtInCustom.Text))
-                {
-                    txtInCustom.Tag = txtCustom.Tag;
-                    txtInCustom.Text = txtCustom.Text;
-                }
+                txtDylvLoc.Text = txtCustom.Text;
             }
 
             //플러스 파인더 선택 후 납품 장소로 커서 이동
             txtDylvLoc.Focus();
+
+        }
+
+        //품명
+        private void txtArticle_KeyDown(object sender, KeyEventArgs e)
+        {
+            try
+            {
+                if (e.Key == Key.Enter)
+                {
+
+                    if (txtCustom != null && txtCustom.Text != "")
+                    {   //선택된 납품거래처에 따른 품명만 보여주게
+                        //MainWindow.pf.ReturnCode(txtArticle, 57, txtCustom.Tag.ToString().Trim());
+
+                        //품번을 품명처럼 쓴다고 해서 품번을 조회하도록 2020.03.17, 장가빈
+                        MainWindow.pf.ReturnCodeGLS(txtArticle, 7070, txtCustom.Tag.ToString().Trim());
+
+                    }
+                    else
+                    {   //선택된 납품거래처가 없다면 전체 품명 다 보여주게
+                        //MainWindow.pf.ReturnCode(txtArticle, (int)Defind_CodeFind.DCF_Article, "");
+
+                        //품번을 품명처럼 쓴다고 해서 품번을 조회하도록 2020.03.17, 장가빈
+                        MainWindow.pf.ReturnCodeGLS(txtArticle, 7071, "");
+                    }
+
+
+                    if (txtArticle.Tag != null)
+                    {
+                        CallArticleData(txtArticle.Tag.ToString());
+                        //품명종류 대입(ex.제품 등)
+                        cboArticleGroup.SelectedValue = articleData.ArticleGrpID;
+                        //품번 대입
+                        //txtBuyerArticleNO.Text = articleData.BuyerArticleNo;
+                        //품명 대입
+                        txtBuyerArticleNO.Text = articleData.BuyerArticleNo;
+                        //단가 대입
+                        txtUnitPrice.Text = articleData.OutUnitPrice;
+
+                    }
+
+                    //플러스 파인더 작동 후 규격으로 커서 이동
+                    txtSpec.Focus();
+                }
+            }
+            catch (Exception ex)
+            {
+                //MessageBox.Show("오류 발생, 오류 내용 : " + ex.ToString());
+            }
+            finally
+            {
+                DataStore.Instance.CloseConnection();
+            }
+        }
+
+        //품명
+        private void btnPfArticle_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                if (txtCustom != null && txtCustom.Text != "")
+                {   //선택된 납품거래처에 따른 품명만 보여주게
+                    MainWindow.pf.ReturnCodeGLS(txtArticle, 7070, txtCustom.Tag.ToString().Trim());
+                }
+                else
+                {   //선택된 납품거래처가 없다면 전체 품명 다 보여주게
+                    MainWindow.pf.ReturnCodeGLS(txtArticle, 7071, "");
+                }
+
+                if (txtArticle.Tag != null)
+                {
+                    CallArticleData(txtArticle.Tag.ToString());
+                    //품명종류 대입(ex.제품 등)
+                    cboArticleGroup.SelectedValue = articleData.ArticleGrpID;
+                    //품번 대입
+                    //txtBuyerArticleNO.Text = articleData.BuyerArticleNo;
+                    //품명 대입
+                    //txtBuyerArticleNO.Text = articleData.Article;
+                    //단가 대입
+                    txtUnitPrice.Text = articleData.OutUnitPrice;
+                }
+
+                //플러스 파인더 작동 후 규격으로 커서 이동
+                txtSpec.Focus();
+            }
+            catch (Exception ex)
+            {
+                //MessageBox.Show("오류 발생, 오류 내용 : " + ex.ToString());
+            }
+            finally
+            {
+                DataStore.Instance.CloseConnection();
+            }
         }
 
         //차종 키다운 
@@ -3029,13 +3082,8 @@ namespace WizMes_ANT
                 {
                     this.DataContext = OrderInfo;
 
-                    txtCustom.Tag = OrderInfo.CustomID;
-                    txtInCustom.Tag = OrderInfo.InCustomID;
-                    txtModel.Tag = OrderInfo.BuyerModelID;
-                    txtBuyerArticleNO.Tag = OrderInfo.ArticleID;
-
-                    /*String OrderID = OrderInfo.OrderID;
-                    FillGridSub(OrderID);*/
+                    String OrderID = OrderInfo.OrderID;
+                    FillGridSub(OrderID);
                 }
             }
             catch (Exception ee)
@@ -3108,7 +3156,7 @@ namespace WizMes_ANT
 
         #endregion
 
-        private void txtBuyerArticleNO_KeyDown(object sender, KeyEventArgs e)
+        private void txtBuyerArticle_KeyDown(object sender, KeyEventArgs e)
         {
             try
             {
@@ -3117,10 +3165,17 @@ namespace WizMes_ANT
 
                     if (txtCustom != null && txtCustom.Text != "")
                     {   //선택된 납품거래처에 따른 품명만 보여주게
-                        MainWindow.pf.ReturnCodeGLS(txtBuyerArticleNO, 85, txtCustom.Tag.ToString().Trim());
+                        //MainWindow.pf.ReturnCode(txtArticle, 57, txtCustom.Tag.ToString().Trim());
+
+                        //품번을 품명처럼 쓴다고 해서 품번을 조회하도록 2020.03.17, 장가빈
+                        MainWindow.pf.ReturnCodeGLS(txtBuyerArticleNO, 7070, txtCustom.Tag.ToString().Trim());
+
                     }
                     else
-                    {   //선택된 납품거래처에 따른 품명만 보여주게
+                    {   //선택된 납품거래처가 없다면 전체 품명 다 보여주게
+                        //MainWindow.pf.ReturnCode(txtArticle, (int)Defind_CodeFind.DCF_Article, "");
+
+                        //품번을 품명처럼 쓴다고 해서 품번을 조회하도록 2020.03.17, 장가빈
                         MainWindow.pf.ReturnCodeGLS(txtBuyerArticleNO, 7071, "");
                     }
 
@@ -3131,16 +3186,15 @@ namespace WizMes_ANT
                         //품명종류 대입(ex.제품 등)
                         cboArticleGroup.SelectedValue = articleData.ArticleGrpID;
                         //품번 대입
-                        txtBuyerArticleNO.Text = articleData.BuyerArticleNo;
+                        //txtBuyerArticleNO.Text = articleData.BuyerArticleNo;
                         //품명 대입
                         txtArticle.Text = articleData.Article;
                         //단가 대입
                         txtUnitPrice.Text = articleData.OutUnitPrice;
-
                     }
 
-                    //플러스 파인더 작동 후 발주번호로 커서 이동
-                    txtPONO.Focus();
+                    //플러스 파인더 작동 후 규격으로 커서 이동
+                    txtSpec.Focus();
                 }
             }
             catch (Exception ex)
@@ -3154,13 +3208,13 @@ namespace WizMes_ANT
 
         }
 
-        private void btnPfBuyerArticleNo_Click(object sender, RoutedEventArgs e)
+        private void btnPfBuyerArticle_Click(object sender, RoutedEventArgs e)
         {
             try
             {
                 if (txtCustom != null && txtCustom.Text != "")
                 {   //선택된 납품거래처에 따른 품명만 보여주게
-                    MainWindow.pf.ReturnCodeGLS(txtBuyerArticleNO, 85, txtCustom.Tag.ToString().Trim());
+                    MainWindow.pf.ReturnCodeGLS(txtBuyerArticleNO, 7070, txtCustom.Tag.ToString().Trim());
                 }
                 else
                 {   //선택된 납품거래처가 없다면 전체 품명 다 보여주게
@@ -3173,15 +3227,15 @@ namespace WizMes_ANT
                     //품명종류 대입(ex.제품 등)
                     cboArticleGroup.SelectedValue = articleData.ArticleGrpID;
                     //품번 대입
-                    txtBuyerArticleNO.Text = articleData.BuyerArticleNo;
+                    //txtBuyerArticleNO.Text = articleData.BuyerArticleNo;
                     //품명 대입
                     txtArticle.Text = articleData.Article;
                     //단가 대입
                     txtUnitPrice.Text = articleData.OutUnitPrice;
                 }
 
-                //플러스 파인더 작동 후 발주번호로 커서 이동
-                txtPONO.Focus();
+                //플러스 파인더 작동 후 규격으로 커서 이동
+                txtSpec.Focus();
             }
             catch (Exception ex)
             {
@@ -3192,25 +3246,18 @@ namespace WizMes_ANT
                 DataStore.Instance.CloseConnection();
             }
         }
-
-        private void rbnOrderNo_Click(object sender, RoutedEventArgs e)
-        {
-            tbkOrderSrh.Text = " Order No";
-            dgdtxtOrderID.Visibility = Visibility.Hidden;
-            dgdtxtOrderNo.Visibility = Visibility.Visible;
-        }
-
-        private void rbnOrderID_Click(object sender, RoutedEventArgs e)
-        {
-            tbkOrderSrh.Text = " 관리 번호";
-            dgdtxtOrderID.Visibility = Visibility.Visible;
-            dgdtxtOrderNo.Visibility = Visibility.Hidden;
-        }
     }
+
+
+
+
+
+
 
     public class Win_ord_Order_U_CodeView : BaseView
     {
         public string OrderID { get; set; }
+        public string OrderNO { get; set; }
         public string CustomID { get; set; }
         public string KCustom { get; set; }
         public string CloseClss { get; set; }

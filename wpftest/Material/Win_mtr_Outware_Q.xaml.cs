@@ -453,10 +453,8 @@ namespace WizMes_ANT
 
             sqlParameter.Add("Custom", chkCustomSrh.IsChecked == true && !txtCustomSrh.Text.Trim().Equals("") ? txtCustomSrh.Text : "");
 
-            sqlParameter.Add("ChkArticleID", chkArticleNo.IsChecked == true ? 1: 0);
+            sqlParameter.Add("ChkArticleID", 0);
             sqlParameter.Add("ArticleID", "");
-            sqlParameter.Add("sArticle", chkArticleNo.IsChecked == true && txtArticleNo.Text != null ? txtArticleNo.Text : "");
-
             sqlParameter.Add("ChkOrder", chkOrderID.IsChecked == true ? (rbnManageNumber.IsChecked == true ? 1 : 2) : 0);
             sqlParameter.Add("Order", txtOrderID.Text);
             sqlParameter.Add("OrderFlag", 0);       //무쓸모.
@@ -468,8 +466,8 @@ namespace WizMes_ANT
             sqlParameter.Add("sProductYN", "");
 
             sqlParameter.Add("nBuyerArticleNo", chkArticle.IsChecked == true ? 1 : 0);
-            sqlParameter.Add("BuyerArticleNo", chkArticle.IsChecked == true && txtArticle.Text != null ? txtArticle.Text : "");
-             
+            sqlParameter.Add("BuyerArticleNo", chkArticle.IsChecked == true && !txtArticle.Text.Trim().Equals("") ? @Escape(txtArticle.Text) : "");
+
             DataSet ds = DataStore.Instance.ProcedureToDataSet_LogWrite("xp_Outware_sOutwareDetail", sqlParameter, true, "R");
 
 
@@ -1125,21 +1123,16 @@ namespace WizMes_ANT
 
         private void txtArticle_KeyDown(object sender, System.Windows.Input.KeyEventArgs e)
         {
-            if (e.Key == Key.Enter)
-            {
-                e.Handled = true;
-                MainWindow.pf.ReturnCode(txtArticle, 76, "");
-            }
             //if (e.Key == Key.Enter)
             //{
             //    rowNum = 0;
             //    re_Search(rowNum);
             //}
-            //if (e.Key == Key.Enter)
-            //{
-            //    e.Handled = true;
-            //    MainWindow.pf.ReturnCode(txtArticle, (int)Defind_CodeFind.DCF_BuyerArticleNo, "");
-            //}
+            if (e.Key == Key.Enter)
+            {
+                e.Handled = true;
+                MainWindow.pf.ReturnCode(txtArticle, (int)Defind_CodeFind.DCF_BuyerArticleNo, "");
+            }
         }
 
         #region 기타 메서드
@@ -1246,8 +1239,7 @@ namespace WizMes_ANT
 
         private void btnPfArticleSrh_Click(object sender, RoutedEventArgs e)
         {
-            MainWindow.pf.ReturnCode(txtArticle, 76, "");
-            //MainWindow.pf.ReturnCode(txtArticle, (int)Defind_CodeFind.DCF_BuyerArticleNo, "");
+            MainWindow.pf.ReturnCode(txtArticle, (int)Defind_CodeFind.DCF_BuyerArticleNo, "");
         }
 
         private void lblCustomSrh_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
@@ -1287,53 +1279,6 @@ namespace WizMes_ANT
             {
                 MessageBox.Show("오류지점 - 거래처 검색 엔터키 : " + ee.ToString());
             }
-        }
-
-        //품명 라벨체크
-        private void lblArticleNo_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
-        {
-            if (chkArticleNo.IsChecked == true)
-            {
-                chkArticleNo.IsChecked = false;
-            }
-            else
-            {
-                chkArticleNo.IsChecked = true;
-            }
-        }
-
-        //품명 체크 
-        private void chkArticleNo_Checked(object sender, RoutedEventArgs e)
-        {
-            chkArticleNo.IsChecked = true;
-
-            txtArticleNo.IsEnabled = true;
-
-            btnPfArticleNo.IsEnabled = true;
-        }
-        //품명 안체크
-        private void chkArticleNo_Unchecked(object sender, RoutedEventArgs e)
-        {
-            chkArticleNo.IsChecked = false;
-
-            txtArticleNo.IsEnabled = false;
-
-            btnPfArticleNo.IsEnabled = false;
-        }
-        //품명 키다운 
-        private void txtArticleNo_KeyDown(object sender, KeyEventArgs e)
-        {
-            if (e.Key == Key.Enter)
-            {
-                e.Handled = true;
-                MainWindow.pf.ReturnCode(txtArticleNo, 77, "");
-            }
-        }
-
-        //품명 플러스파인더
-        private void btnPfArticleNoSrh_Click(object sender, RoutedEventArgs e)
-        {
-            MainWindow.pf.ReturnCode(txtArticleNo, 77, "");
         }
     }
 

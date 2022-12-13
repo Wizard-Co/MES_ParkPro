@@ -37,7 +37,6 @@ namespace WizMes_ANT
         ObservableCollection<Process_CodeView> ovcArticleProcess = new ObservableCollection<Process_CodeView>();
         ObservableCollection<CustomArticle_CodeView> ovcCustomArticle = new ObservableCollection<CustomArticle_CodeView>();
 
-
         /// <summary>
         /// 서브 그리드 삭제용
         /// </summary>
@@ -49,6 +48,8 @@ namespace WizMes_ANT
         // FTP 활용모음.
         string strImagePath = string.Empty;
         string strFullPath = string.Empty;
+
+        string AASS = string.Empty;
 
         List<string[]> listFtpFile = new List<string[]>();
         List<string[]> deleteListFtpFile = new List<string[]>(); // 삭제할 파일 리스트
@@ -138,7 +139,7 @@ namespace WizMes_ANT
             this.cboLabelPrintYN.ItemsSource = ovcYN;
             this.cboLabelPrintYN.DisplayMemberPath = "code_name";
             this.cboLabelPrintYN.SelectedValuePath = "code_id";
-
+            //cboBigMiSmal
             // 용도 구하기
             //ObservableCollection<CodeView> ovcUseingType = ComboBoxUtil.Instance.Gf_DB_CM_GetComCodeDataset(null, "CMMAUSETYPE", "Y", "");
             //this.cboUseingType.ItemsSource = ovcUseingType;
@@ -188,6 +189,11 @@ namespace WizMes_ANT
             this.cboProductGrpID.DisplayMemberPath = "code_name";
             this.cboProductGrpID.SelectedValuePath = "code_id";
 
+            // 제품군
+            ObservableCollection<CodeView> ovcBigMiSmal = ComboBoxUtil.Instance.Gf_DB_CM_GetComCodeDataset(null, "BIGMISMAL", "Y", "");
+            this.cboBigMiSmal.ItemsSource = ovcBigMiSmal;
+            this.cboBigMiSmal.DisplayMemberPath = "code_name";
+            this.cboBigMiSmal.SelectedValuePath = "code_id";
             // 부품분류
             //List<string[]> lstPart = new List<string[]>();
             //string[] Part01 = new string[] { "0", "완제품" };
@@ -369,7 +375,7 @@ namespace WizMes_ANT
             grdInput2.IsHitTestVisible = false;
             //grdMtrInfo.IsEnabled = false;
             //grdFTP.IsEnabled = false;
-
+            cboBigMiSmal.IsHitTestVisible = false;
             ImageOnlySeeMode();
 
 
@@ -389,7 +395,7 @@ namespace WizMes_ANT
             //grdFTP.IsEnabled = true;
 
             chkBuySaleMainYN.IsChecked = false;
-
+            cboBigMiSmal.IsHitTestVisible = true;
             ImageSaveUpdateMode();
 
             btnImgSeeCheckAndSetting();
@@ -526,8 +532,9 @@ namespace WizMes_ANT
             cboProductGrpID.SelectedIndex = 0; //제품군
             cboPartGBNID.SelectedIndex = 0; //부품분류
             cboFTAMgrYN.SelectedIndex = 1; //FTA중점
+            cboBigMiSmal.SelectedIndex = 0; //대중소 구분
 
-
+            txtCode.IsReadOnly = false;
             txtBuyerArticleNo.Focus();
         }
 
@@ -544,7 +551,7 @@ namespace WizMes_ANT
                 strFlag = "U";
 
                 //GetProcess();
-
+                txtCode.IsReadOnly = true;
                 txtName.Focus();
             }
             else
@@ -629,7 +636,7 @@ namespace WizMes_ANT
         {
             //검색버튼 비활성화
             btnSearch.IsEnabled = false;
-
+            //a
             Dispatcher.BeginInvoke(new Action(() =>
 
             {
@@ -1082,7 +1089,9 @@ namespace WizMes_ANT
                                 UnitPriceClss = dr["UnitPriceClss"].ToString(),
 
                                 FreeStuffinYN = dr["FreeStuffinYN"].ToString(), // 무검사입고품여부
-                                 
+
+                                BigMiSmalGbn = dr["BigMiSmalGbn"].ToString(), // 
+
 
 
 
@@ -1272,14 +1281,15 @@ namespace WizMes_ANT
 
             string GetKey = "";
 
-            if (CheckData(txtBuyerArticleNo.Text, strFlag)) //2021-07-21 품번이 같은 경우를 확인하기 위해 변경 CheckData(txtName.Text, strFlag)
+            if (CheckData(txtCode.Text, strFlag)) //2021-07-21 품번이 같은 경우를 확인하기 위해 변경 CheckData(txtName.Text, strFlag)
             {
                 try
                 {
                     Dictionary<string, object> sqlParameter = new Dictionary<string, object>();
                     sqlParameter.Clear();
 
-                    sqlParameter.Add("sArticleID", strFlag.Trim().Equals("I") ? "" : strID);
+                    //sqlParameter.Add("sArticleID", strFlag.Trim().Equals("I") ? "" : txtCode.Text);
+                    sqlParameter.Add("sArticleID", txtCode.Text != null && !txtCode.Text.Trim().Equals("") ? txtCode.Text : "");
                     sqlParameter.Add("CompanyID", "0001");
                     sqlParameter.Add("sArticle", txtName.Text.Trim().Equals("") ? txtBuyerArticleNo.Text : txtName.Text);
                     sqlParameter.Add("BuyerArticleNo", txtBuyerArticleNo.Text);
@@ -1306,13 +1316,13 @@ namespace WizMes_ANT
                     sqlParameter.Add("sImageFilePath", "");
 
                     sqlParameter.Add("sLabelPrintYN", cboLabelPrintYN.SelectedValue != null ? cboLabelPrintYN.SelectedValue.ToString() : "");
-                    sqlParameter.Add("nUnitPrice", ConvertDouble(txtUnitPrice.Text));
+                    sqlParameter.Add("nUnitPrice", ConvertDouble(txtUnitPrice.Text.Replace(",", "")));
                     sqlParameter.Add("UnitPriceClss", cboPriceClss.SelectedValue != null ? cboPriceClss.SelectedValue.ToString() : "");
 
-                    sqlParameter.Add("OutUnitPrice", ConvertDouble(txtOutUnitPrice.Text));
+                    sqlParameter.Add("OutUnitPrice", ConvertDouble(txtOutUnitPrice.Text.Replace(",", "")));
                     sqlParameter.Add("sFTAMgrYN", cboFTAMgrYN.SelectedValue != null ? cboFTAMgrYN.SelectedValue.ToString() : "");
                     sqlParameter.Add("sHSCode", txtHSCode.Text);
-                    
+
                     sqlParameter.Add("sBuySaleMainYN", chkBuySaleMainYN.IsChecked == true ? "Y" : "N");
 
                     sqlParameter.Add("sComments", txtComments.Text);
@@ -1323,21 +1333,61 @@ namespace WizMes_ANT
                     sqlParameter.Add("sCoatingSpec", txtCoatingSpec.Text); //도면번호
 
                     sqlParameter.Add("sFreeStuffinYN", cboFreeStuffinYN.SelectedValue != null ? cboFreeStuffinYN.SelectedValue.ToString() : ""); //무검사 입고품 여부Y/N
+                    sqlParameter.Add("sBigMiSmalGbn", cboBigMiSmal.SelectedValue != null ? cboBigMiSmal.SelectedValue.ToString() : ""); //대중소추가 
+
 
                     #region 추가
                     if (strFlag.Equals("I"))
                     {
                         sqlParameter.Add("CreateUserID", MainWindow.CurrentUser);
 
-                        Dictionary<string, int> outputParam = new Dictionary<string, int>();
-                        outputParam.Add("sArticleID", 5);
-                        Dictionary<string, string> dicResult = DataStore.Instance.ExecuteProcedureOutputNoTran("xp_Article_iArticle", sqlParameter, outputParam, true);
+                        Procedure pro1 = new Procedure();
+                        pro1.Name = "xp_Article_iArticle";
+                        pro1.OutputUseYN = "N";
+                        pro1.OutputName = "sArticleID";
+                        pro1.OutputLength = "10";
+                        
+                        Prolist.Add(pro1);
+                        ListParameter.Add(sqlParameter);
 
-                        GetKey = dicResult["sArticleID"];
-
-                        if ((GetKey != string.Empty) && (GetKey != "9999"))
+                        List<KeyValue> list_Result = new List<KeyValue>();
+                        list_Result = DataStore.Instance.ExecuteAllProcedureOutputGetCS_NewLog(Prolist, ListParameter, "C");
+                        //string sGetID = string.Empty;
+                        if (list_Result[0].key.ToLower() == "success")
                         {
-                            flag = true;
+                            list_Result.RemoveAt(0);
+                            for (int i = 0; i < list_Result.Count; i++)
+                            {
+                                KeyValue kv = list_Result[i];
+                                if (kv.key == "sArticleID")
+                                {
+                                    GetKey = kv.value;
+
+                                    AASS = kv.value;
+
+                                    flag = true;
+                                }
+                            }
+                        }
+                        else
+                        {
+                            MessageBox.Show("[저장실패]\r\n" + list_Result[0].value.ToString());
+                            flag = false;
+                            //return false;
+                        }
+
+                        Prolist.Clear();
+                        ListParameter.Clear();
+
+                        //Dictionary<string, int> outputParam = new Dictionary<string, int>();
+                        //outputParam.Add("sArticleID", 5);
+                        //Dictionary<string, string> dicResult = DataStore.Instance.ExecuteProcedureOutputNoTran("xp_Article_iArticle", sqlParameter, outputParam, true);
+
+                        //GetKey = dicResult["sArticleID"];
+
+                        //if ((GetKey != string.Empty) && (GetKey != "9999"))
+                        //{
+                        //    flag = true;
 
                             // 공정 선택한거 넣기
                             for (int i = 0; i < dgdProcess.Items.Count; i++)
@@ -1348,7 +1398,8 @@ namespace WizMes_ANT
                                     sqlParameter = new Dictionary<string, object>();
                                     sqlParameter.Clear();
 
-                                    sqlParameter.Add("sArticleID", GetKey);
+                                    //sqlParameter.Add("sArticleID", GetKey);
+                                    sqlParameter.Add("sArticleID", txtCode.Text);
                                     sqlParameter.Add("sProcessID", WinProcess.ProcessID);
                                     sqlParameter.Add("UseYN", "Y");
                                     sqlParameter.Add("UserID", MainWindow.CurrentUser);
@@ -1365,7 +1416,7 @@ namespace WizMes_ANT
                             }
 
                             string[] Confirm = new string[2];
-                            Confirm = DataStore.Instance.ExecuteAllProcedureOutputNew_NewLog(Prolist, ListParameter,"C");
+                            Confirm = DataStore.Instance.ExecuteAllProcedureOutputNew_NewLog(Prolist, ListParameter, "C");
                             if (Confirm[0] != "success")
                             {
                                 MessageBox.Show("[저장실패]\r\n" + Confirm[1].ToString());
@@ -1376,13 +1427,13 @@ namespace WizMes_ANT
                             {
                                 flag = true;
                             }
-                        }
-                        else
-                        {
-                            MessageBox.Show("[저장실패]\r\n" + GetKey);
-                            flag = false;
-                            return false;
-                        }
+                        //}
+                        //else
+                        //{
+                        //    MessageBox.Show("[저장실패]\r\n" + GetKey);
+                        //    flag = false;
+                        //    return false;
+                        //}
                     }
                     #endregion // 추가
 
@@ -1425,7 +1476,7 @@ namespace WizMes_ANT
                         }
 
                         string[] Confirm = new string[2];
-                        Confirm = DataStore.Instance.ExecuteAllProcedureOutputNew_NewLog(Prolist, ListParameter,"U");
+                        Confirm = DataStore.Instance.ExecuteAllProcedureOutputNew_NewLog(Prolist, ListParameter, "U");
                         if (Confirm[0] != "success")
                         {
                             MessageBox.Show("[저장실패]\r\n" + Confirm[1].ToString());
@@ -1540,12 +1591,12 @@ namespace WizMes_ANT
             {
                 // 2020.02.20 일단 품명 중복검사 제외
                 // 2021.07.21 일단 품명 중복검사 제외
-                //if (!GetArticleByName(strName))
-                //{
-                //    MessageBox.Show("이미 같은 이름의 품번이 존재합니다.(사용안함 포함)"); //2021-07-21 품번이 같을 경우 MessageBox.Show("이미 같은 이름의 품명이 존재합니다.");
-                //    flag = false;
-                //    return flag;
-                //}
+                if (!GetArticleByName(strName))
+                {
+                    MessageBox.Show("이미 같은 이름의 코드가 존재합니다.(사용안함 포함)"); //2021-07-21 품번이 같을 경우 MessageBox.Show("이미 같은 이름의 품명이 존재합니다.");
+                    flag = false;
+                    return flag;
+                }
 
                 // 2020.02.20 품번이 필수 입력이 되어야함!!!
                 if (txtBuyerArticleNo.Text.Trim().Equals(""))
@@ -1556,6 +1607,14 @@ namespace WizMes_ANT
                 }
             }
 
+            //if(strFlag.Equals("U"))
+            //{
+            //    if(!GetArticleByName(strName))
+            //    {
+
+            //    }
+            //}
+            
             if (cboArticleGrp.SelectedIndex == -1 || cboArticleGrp.SelectedValue == null)
             {
                 MessageBox.Show("품명그룹을 선택해주세요");
@@ -1645,7 +1704,7 @@ namespace WizMes_ANT
         }
 
         #endregion 유효성 검사
-
+        
         //품목이 있는지 체크(추가시에만)
         private bool GetArticleByName(string strArticleName)
         {
@@ -1665,11 +1724,13 @@ namespace WizMes_ANT
                     if (dt.Rows.Count > 0)
                     {
                         //string strName = dt.Rows[0]["Article"].ToString(); 2021-07-21
-                        string strName = dt.Rows[0]["BuyerArticleNo"].ToString();
+                        string strName = dt.Rows[0]["ArticleID"].ToString();
+                        //string strName = dt.Rows[0]["BuyerArticleNo"].ToString();
                         if (!strName.Replace(" ", "").Equals(""))
                         {
                             flag = false;
                         }
+ 
                     }
                 }
             }
@@ -2767,10 +2828,26 @@ namespace WizMes_ANT
                 re_Search(rowNum);
             }
         }
+        //대중소구분 깡통
+        private void CboBigMiSmal_DropDownClosed(object sender, EventArgs e)
+        {
+
+        }
+
+        private void TxtOutUnitPrice_PreviewKeyDown(object sender, TextCompositionEventArgs e)
+        {
+            Lib.Instance.CheckIsNumeric((TextBox)sender, e);
+        }
+
+        private void TxtUnitPrice_PreviewTextInput_1(object sender, TextCompositionEventArgs e)
+        {
+            Lib.Instance.CheckIsNumeric((TextBox)sender, e);
+        }
 
 
 
-        ////숫자 외에 다른 문자열 못들어오도록
+
+        ////숫자 외에 다른 문자열 ㅁ
         //public bool IsNumeric(string source)
         //{
         //    Regex regex = new Regex("[^0-9.-]+");
@@ -2899,6 +2976,7 @@ namespace WizMes_ANT
         public string CotingType { get; set; } // 내경
 
         public string ProdDiffiLevel { get; set; } // 난이도 
+        public string BigMiSmalGbn { get; set; } // 대중소구분 
 
         public BitmapImage ImageView { get; set; }
 

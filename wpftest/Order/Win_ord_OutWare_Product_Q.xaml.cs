@@ -54,16 +54,12 @@ namespace WizMes_ANT
             chkOutwareDay.IsChecked = true;
 
             cboArticleGroup.IsEnabled = false;
-            txtBuyerArticleNo.IsEnabled = false;
             txtArticle.IsEnabled = false;
             txtCustomer.IsEnabled = false;
-            txtInCustomer.IsEnabled = false;
             txtOrderID.IsEnabled = false;
             //cboOutClss.IsEnabled = false;  //체크된 채로 로드되기 때문.
-            btnBuyerArticleNo.IsEnabled = false;
             btnArticle.IsEnabled = false;
             btnCustomer.IsEnabled = false;
-            btnInCustomer.IsEnabled = false;
 
             rbnManageNumber.IsChecked = true;
 
@@ -199,8 +195,7 @@ namespace WizMes_ANT
                 cboArticleGroup.Focus();
             }
         }
-
-        //품번
+        // 품번
         private void chkBuyerArticleNo_Click(object sender, RoutedEventArgs e)
         {
             if (chkBuyerArticleNo.IsChecked == true)
@@ -215,7 +210,7 @@ namespace WizMes_ANT
                 btnBuyerArticleNo.IsEnabled = false;
             }
         }
-        //품번
+        // 품번
         private void chkBuyerArticleNo_Click(object sender, MouseButtonEventArgs e)
         {
             if (chkBuyerArticleNo.IsChecked == true)
@@ -248,7 +243,7 @@ namespace WizMes_ANT
             }
         }
         //품명
-        private void chkArticle_Click(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        private void chkArticle_Click(object sender, MouseButtonEventArgs e)
         {
             if (chkArticle.IsChecked == true)
             {
@@ -280,7 +275,7 @@ namespace WizMes_ANT
             }
         }
         //거래처
-        private void chkCustomer_Click(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        private void chkCustomer_Click(object sender, MouseButtonEventArgs e)
         {
             if (chkCustomer.IsChecked == true)
             {
@@ -296,7 +291,7 @@ namespace WizMes_ANT
                 btnCustomer.IsEnabled = true;
             }
         }
-        //최종고객사
+        // 최종고객사
         private void chkInCustomer_Click(object sender, RoutedEventArgs e)
         {
             if (chkInCustomer.IsChecked == true)
@@ -311,8 +306,8 @@ namespace WizMes_ANT
                 btnInCustomer.IsEnabled = false;
             }
         }
-        //최종고객사
-        private void chkInCustomer_Click(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        // 최종고객사
+        private void chkInCustomer_Click(object sender, MouseButtonEventArgs e)
         {
             if (chkInCustomer.IsChecked == true)
             {
@@ -339,7 +334,7 @@ namespace WizMes_ANT
             else { txtOrderID.IsEnabled = false; }
         }
         //관리번호
-        private void chkOrderID_Click(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        private void chkOrderID_Click(object sender, MouseButtonEventArgs e)
         {
             if (chkOrderID.IsChecked == true)
             {
@@ -364,7 +359,7 @@ namespace WizMes_ANT
             else { cboOutClss.IsEnabled = false; }
         }
         //출고구분
-        private void chkOutClss_Click(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        private void chkOutClss_Click(object sender, MouseButtonEventArgs e)
         {
             if (chkOutClss.IsChecked == true)
             {
@@ -380,7 +375,7 @@ namespace WizMes_ANT
         }
 
         // 주요관심품목
-        private void chkMainInterestItems_Click(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        private void chkMainInterestItems_Click(object sender, MouseButtonEventArgs e)
         {
             if (chkMainInterestItems.IsChecked == true)
             {
@@ -395,25 +390,14 @@ namespace WizMes_ANT
 
         private void rbnOrderNO_Click(object sender, RoutedEventArgs e)
         {
-            Check_bdrOrder();
+            txbOrderID.Text = "발주번호";
         }
 
         private void rbnManageNumber_Click(object sender, RoutedEventArgs e)
         {
-            Check_bdrOrder();
+            txbOrderID.Text = "관리번호";
         }
 
-        private void Check_bdrOrder()
-        {
-            if (rbnOrderNO.IsChecked == true)
-            {
-                txbOrderID.Text = "Order No";
-            }
-            else if (rbnManageNumber.IsChecked == true)
-            {
-                txbOrderID.Text = "관리 번호";
-            }
-        }
         #endregion
 
 
@@ -423,16 +407,17 @@ namespace WizMes_ANT
         //거래처
         private void btnCustomer_Click(object sender, RoutedEventArgs e)
         {
-            pf.ReturnCode(txtCustomer, (int)Defind_CodeFind.DCF_CUSTOM, "");
+            pf.ReturnCode(txtCustomer, 0, "");  // 매출거래처만 표기되도록 변경(0 -> 68).
         }
 
-        //최종고객사
+        // 최종고객사
         private void btnInCustomer_Click(object sender, RoutedEventArgs e)
         {
-            pf.ReturnCode(txtInCustomer, (int)Defind_CodeFind.DCF_CUSTOM, "");
+            pf.ReturnCode(txtInCustomer, 0, "");  // 매출거래처만 표기되도록 변경(0 -> 68).
         }
 
         // 품번
+        
         private void btnBuyerArticleNo_Click(object sender, RoutedEventArgs e)
         {
             pf.ReturnCode(txtBuyerArticleNo, 81, txtBuyerArticleNo.Text);
@@ -452,9 +437,9 @@ namespace WizMes_ANT
         // 검색버튼 클릭. (조회)
         private void btnSearch_Click(object sender, RoutedEventArgs e)
         {
-            using (Loading lw = new Loading(beSearch))
+            using(Loading ld = new Loading(beSearch))
             {
-                lw.ShowDialog();
+                ld.ShowDialog();
             }
         }
 
@@ -469,10 +454,7 @@ namespace WizMes_ANT
                 FillGrid();
             }), System.Windows.Threading.DispatcherPriority.Background);
 
-            Dispatcher.BeginInvoke(new Action(() =>
-            {
-                btnSearch.IsEnabled = true;
-            }), System.Windows.Threading.DispatcherPriority.Background);
+            btnSearch.IsEnabled = true;
         }
 
         private void FillGrid()
@@ -514,12 +496,12 @@ namespace WizMes_ANT
                 txtArticle.Text = "";
             }
 
-            //관리번호
+            //관리번호, 발주번호
             int ChkOrder = 0;
             if (chkOrderID.IsChecked == true)
             {
-                if (rbnManageNumber.IsChecked == true)  ChkOrder = 1;
-                else if (rbnOrderNO.IsChecked == true)  ChkOrder = 2;
+                if (rbnManageNumber.IsChecked == true) { ChkOrder = 1; }
+                else if (rbnOrderNO.IsChecked == true) { ChkOrder = 2; }
             }
 
             //제품그룹
@@ -560,14 +542,14 @@ namespace WizMes_ANT
                 sqlParameter.Add("ChkOrder", ChkOrder);
                 sqlParameter.Add("Order", txtOrderID.Text);
                 sqlParameter.Add("OrderFlag", 0);       //무쓸모..
-
+                
                 sqlParameter.Add("chkArticleGrpID", chkArticleGrpID);
                 sqlParameter.Add("sArticleGrpID", cboArticleGroup.SelectedValue.ToString());
                 sqlParameter.Add("sProductYN", "Y"); // 제품여부 Y인데 빈값넣으니까 됐어 왜지???
 
                 sqlParameter.Add("chkOutClss", int_chkOutClss);
                 sqlParameter.Add("OutClss", outclssGBN); //cboOutClss.SelectedValue.ToString()
-                sqlParameter.Add("nMainItem", interestitems);               
+                sqlParameter.Add("nMainItem", interestitems);
 
                 DataSet ds = DataStore.Instance.ProcedureToDataSet_LogWrite("xp_Outware_sOutwareProduct", sqlParameter, true, "R");
 
@@ -626,8 +608,8 @@ namespace WizMes_ANT
                                     LotID = item["LotID"].ToString(),
                                     ColorGreen = "false",
                                     ColorRed = "false"
-
                                 };
+
                                 dgdOutware.Items.Add(window_OutwareProductViewInsert);
                                 i++;
                             }
@@ -670,6 +652,7 @@ namespace WizMes_ANT
                                     ColorGreen = "false",
                                     ColorRed = "false"
                                 };
+
                                 dgdOutware.Items.Add(window_OutwareProductViewInsert);
                                 i++;
                             }
@@ -711,6 +694,7 @@ namespace WizMes_ANT
                                     ColorGreen = "true",
                                     ColorRed = "false"
                                 };
+
                                 dgdOutware.Items.Add(window_OutwareProductViewInsert);
                                 i++;
                             }
@@ -752,6 +736,7 @@ namespace WizMes_ANT
                                     ColorGreen = "true",
                                     ColorRed = "false"
                                 };
+
                                 dgdOutware.Items.Add(window_OutwareProductViewInsert);
                                 i++;
                             }
@@ -793,6 +778,7 @@ namespace WizMes_ANT
                                     ColorGreen = "false",
                                     ColorRed = "true"
                                 };
+
                                 dgdOutware.Items.Add(window_OutwareProductViewInsert);
                                 i++;
                             }
@@ -835,8 +821,8 @@ namespace WizMes_ANT
                                     ColorGreen = "false",
                                     ColorRed = "true"
                                 };
+
                                 dgdTotal.Items.Add(window_OutwareProductViewInsert);
-                                //dgdOutware.Items.Add(window_OutwareProductViewInsert);
                                 i++;
                             }
 
@@ -972,41 +958,44 @@ namespace WizMes_ANT
             }
         }
 
+
+
         // 사용자 편의. 엔터키로 플러스파인더 호출.
-        // 거래처
         private void txtCustomer_KeyDown(object sender, System.Windows.Input.KeyEventArgs e)
         {
             if (e.Key == Key.Enter)
+            {
                 btnCustomer_Click(null, null);
+            }
         }
-
-        // 최종고객사
         private void txtInCustomer_KeyDown(object sender, System.Windows.Input.KeyEventArgs e)
         {
             if (e.Key == Key.Enter)
+            {
                 btnInCustomer_Click(null, null);
+            }
         }
-
-        // 품번
         private void txtBuyerArticleNo_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.Key == Key.Enter)
+            {
                 btnBuyerArticleNo_Click(null, null);
+            }
         }
-
-        // 품명
         private void txtArticle_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.Key == Key.Enter)
+            {
                 btnArticle_Click(null, null);
+            }
         }
-
         private void DataGrid_SizeChange(object sender, SizeChangedEventArgs e)
         {
             DataGrid dgs = sender as DataGrid;
             if (dgs.ColumnHeaderHeight == 0)
+            {
                 dgs.ColumnHeaderHeight = 1;
-
+            }
             double a = e.NewSize.Height / 100;
             double b = e.PreviousSize.Height / 100;
             double c = a / b;

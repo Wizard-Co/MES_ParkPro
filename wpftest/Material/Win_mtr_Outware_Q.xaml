@@ -119,24 +119,17 @@
                 <Button x:Name="btnPfArticleSrh" Grid.Column="2" Grid.Row="1" IsEnabled="False" Click="btnPfArticleSrh_Click">
                     <Image Source="{DynamicResource btiPlusFind}" Style="{DynamicResource imgPlusFind}" />
                 </Button>
-             
-                <Label x:Name="lblArticleNoSrh" Grid.Column="0" Grid.Row="2" Style="{DynamicResource LabelSearch}" MouseLeftButtonUp="lblArticleNo_MouseLeftButtonUp">
-                <StackPanel  Style="{DynamicResource StackPanelInLabel}">
-                    <Viewbox Style="{DynamicResource ViewBoxSetMaxMinHeight}">
-                        <CheckBox x:Name="chkArticleNo" VerticalAlignment="Center"
-                                    Checked="chkArticleNo_Checked" Unchecked="chkArticleNo_Unchecked" />
-                    </Viewbox>
-                    <Viewbox Style="{DynamicResource ViewBoxSetMaxMinHeight}">
-                        <TextBlock Text="품     명" Style="{DynamicResource TextBlockInViewBoxSearch}"/>
-                    </Viewbox>
-                </StackPanel>
-            </Label>
-                <TextBox  x:Name="txtArticleNo" Grid.Column="1" Grid.Row="2" Style="{DynamicResource TextBoxSearch}" KeyDown="txtArticleNo_KeyDown" IsEnabled="False"/>
-                <Button x:Name="btnPfArticleNo" Grid.Column="2"  Grid.Row="2" IsEnabled="False" 
-                    Click="btnPfArticleNoSrh_Click" Visibility="Visible">
-                    <Image Source="{DynamicResource btiPlusFind}" />
-                </Button>
-              
+                <Label  Grid.Column="0" Grid.Row="2" Style="{DynamicResource LabelSearch}" MouseLeftButtonUp="chkOrderID_Click">
+                    <StackPanel Style="{DynamicResource StackPanelInLabel}" >
+                        <Viewbox Style="{DynamicResource ViewBoxSetMaxMinHeight}">
+                            <CheckBox x:Name="chkOrderID" Click="chkOrderID_Click" ></CheckBox>
+                        </Viewbox>
+                        <Viewbox Style="{DynamicResource ViewBoxSetMaxMinHeight}">
+                            <TextBlock x:Name="txbOrderID" Text="관리번호" Style="{DynamicResource TextBlockInViewBoxSearch}"/>
+                        </Viewbox>
+                    </StackPanel>
+                </Label>
+                <TextBox x:Name="txtOrderID"  Grid.Column="1" Grid.Row="2" Style="{DynamicResource TextBoxSearch}" />
 
                 <Label Grid.Column="0" Grid.Row="3"  Style="{DynamicResource LabelSearch}" MouseLeftButtonUp="lblCustomSrh_MouseLeftButtonUp">
                     <StackPanel Style="{DynamicResource StackPanelInLabel}" >
@@ -170,19 +163,8 @@
                     <ColumnDefinition Width="95*"/>
                     <ColumnDefinition Width="20*"/>
                 </Grid.ColumnDefinitions>
-                <Label  Grid.Column="0" Grid.Row="0" Style="{DynamicResource LabelSearch}" MouseLeftButtonUp="chkOrderID_Click">
-                    <StackPanel Style="{DynamicResource StackPanelInLabel}" >
-                        <Viewbox Style="{DynamicResource ViewBoxSetMaxMinHeight}">
-                            <CheckBox x:Name="chkOrderID" Click="chkOrderID_Click" ></CheckBox>
-                        </Viewbox>
-                        <Viewbox Style="{DynamicResource ViewBoxSetMaxMinHeight}">
-                            <TextBlock x:Name="txbOrderID" Text="관리번호" Style="{DynamicResource TextBlockInViewBoxSearch}"/>
-                        </Viewbox>
-                    </StackPanel>
-                </Label>
-                <TextBox x:Name="txtOrderID"  Grid.Column="1" Grid.Row="0" Style="{DynamicResource TextBoxSearch}" />
-                
-                <Label  Grid.Column="0" Grid.Row="1" Style="{DynamicResource LabelSearch}" MouseLeftButtonUp="chkFromLoc_Click">
+
+                <Label  Grid.Column="0" Grid.Row="0" Style="{DynamicResource LabelSearch}" MouseLeftButtonUp="chkFromLoc_Click">
                     <StackPanel Style="{DynamicResource StackPanelInLabel}" >
                         <Viewbox Style="{DynamicResource ViewBoxSetMaxMinHeight}">
                             <CheckBox x:Name="chkFromLoc" Click="chkFromLoc_Click"  />
@@ -194,8 +176,8 @@
 
                     </StackPanel>
                 </Label>
-                <ComboBox x:Name="cboFromLoc" Grid.Column="1" Grid.Row="1" Style="{DynamicResource ComboBoxSearchString}" />
-                <Label  Grid.Column="0" Grid.Row="2" Style="{DynamicResource LabelSearch}" MouseLeftButtonUp="chkToLoc_Click">
+                <ComboBox x:Name="cboFromLoc" Grid.Column="1" Grid.Row="0" Style="{DynamicResource ComboBoxSearchString}" />
+                <Label  Grid.Column="0" Grid.Row="1" Style="{DynamicResource LabelSearch}" MouseLeftButtonUp="chkToLoc_Click">
                     <StackPanel Style="{DynamicResource StackPanelInLabel}" >
                         <Viewbox Style="{DynamicResource ViewBoxSetMaxMinHeight}">
                             <CheckBox x:Name="chkToLoc"  Click="chkToLoc_Click" ></CheckBox>
@@ -207,8 +189,8 @@
 
                     </StackPanel>
                 </Label>
-                <ComboBox x:Name="cboToLoc" Grid.Column="1" Grid.Row="2" Style="{DynamicResource ComboBoxSearchString}" />
-                <Label  Grid.Column="0" Grid.Row="3" Style="{DynamicResource LabelSearch}" MouseLeftButtonUp="chkOutClss_Click">
+                <ComboBox x:Name="cboToLoc" Grid.Column="1" Grid.Row="1" Style="{DynamicResource ComboBoxSearchString}" />
+                <Label  Grid.Column="0" Grid.Row="2" Style="{DynamicResource LabelSearch}" MouseLeftButtonUp="chkOutClss_Click">
                     <StackPanel Style="{DynamicResource StackPanelInLabel}" >
                         <Viewbox Style="{DynamicResource ViewBoxSetMaxMinHeight}">
                             <CheckBox x:Name="chkOutClss" Click="chkOutClss_Click" ></CheckBox>
@@ -220,7 +202,7 @@
 
                     </StackPanel>
                 </Label>
-                <ComboBox x:Name="cboOutClss"  Grid.Column="1" Grid.Row="3"  Style="{DynamicResource ComboBoxSearchString}" />
+                <ComboBox x:Name="cboOutClss"  Grid.Column="1" Grid.Row="2"  Style="{DynamicResource ComboBoxSearchString}" />
             </Grid>
 
             <!-- 검색/닫기/엑셀 버튼 -->

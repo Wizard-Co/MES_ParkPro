@@ -254,7 +254,7 @@ namespace WizMes_ANT
             btnFileUpload1.IsEnabled = false;
             txtSketch1.IsEnabled = false;
             btnFileDelete1.IsEnabled = false;
-;
+            ;
 
             // 보기 버튼체크
             btnImgSeeCheckAndSetting();
@@ -265,7 +265,7 @@ namespace WizMes_ANT
             btnFileUpload1.IsEnabled = true;
             txtSketch1.IsEnabled = true;
             btnFileDelete1.IsEnabled = true;
-  
+
 
             // 보기 버튼체크
             btnImgSeeCheckAndSetting();
@@ -2880,7 +2880,7 @@ namespace WizMes_ANT
                 //버튼 태그값.
                 string ClickPoint = ((Button)sender).Tag.ToString();
 
-                if ((ClickPoint == "01") && (txtSketch1.Text == string.Empty) )
+                if ((ClickPoint == "01") && (txtSketch1.Text == string.Empty))
                 //|| (ClickPoint == "07") && (txtSketch7.Text == string.Empty))
                 {
                     MessageBox.Show("파일이 없습니다.");
@@ -2900,7 +2900,7 @@ namespace WizMes_ANT
                     string str_localpath = string.Empty;
 
                     if (ClickPoint == "01") { str_remotepath = txtSketch1.Text; }
-              
+
 
                     #region temp 폴더에 저장 후에 여는건데 이걸 왜씀?
 

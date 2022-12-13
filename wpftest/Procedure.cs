@@ -572,7 +572,7 @@ namespace WizMes_ANT
         /// <param name="strArticleID"></param>
         /// <param name="strYN"></param>
         /// <returns></returns>
-        public DataTable GetCustomArticle(int numCustom, string strCustomID, string strCustomGubun, int numArticleID, string strArticleID, string strYN ,int numBuyCustom, string strBuyCustom)
+        public DataTable GetCustomArticle(int numCustom, string strCustomID, string strCustomGubun, int numArticleID, string strArticleID, string strYN, int numBuyCustom, string strBuyCustom)
         {
             DataTable dataTable = null;
 

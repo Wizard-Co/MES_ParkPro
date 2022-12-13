@@ -290,7 +290,7 @@
 
                 <Label Grid.Column="1" Style="{DynamicResource LabelSearch}">
                     <StackPanel>
-                        <CheckBox x:Name="chkAutoInOutIteANTcloud" Content="자동입출고건 포함" Style="{DynamicResource CheckBoxInputArea}" />
+                        <CheckBox x:Name="chkAutoInOutItemsIncloud" Content="자동입출고건 포함" Style="{DynamicResource CheckBoxInputArea}" />
                         <TextBlock/>
                         <CheckBox x:Name="chkHideInOutReasonNumber" Content="입출고 근거번호 숨김" Style="{DynamicResource CheckBoxInputArea}" Click="chkHideInOutReasonNumber_Click" />
                         <TextBlock/>

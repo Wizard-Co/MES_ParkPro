@@ -437,7 +437,7 @@ namespace WizMes_ANT
         // 품명 검색 엔터 → 플러스 파인더 이벤트
         private void txtArticleSrh_KeyDown(object sender, KeyEventArgs e)
         {
-            
+
             //if (e.Key == Key.Enter)
             //{
             //    rowNum = 0;
@@ -447,15 +447,15 @@ namespace WizMes_ANT
             if (e.Key == Key.Enter)
             {
                 e.Handled = true;
-                MainWindow.pf.ReturnCode(txtArticleSrh, 7077, "");
+                MainWindow.pf.ReturnCode(txtArticleSrh, 76, "");
             }
         }
         // 품명 검색 플러스파인더 이벤트
         private void btnPfArticleSrh_Click(object sender, RoutedEventArgs e)
         {
-            MainWindow.pf.ReturnCode(txtArticleSrh, 7077, "");
+            MainWindow.pf.ReturnCode(txtArticleSrh, 76, "");
         }
-        
+
         // 거래처
         // 거래처 검색 라벨 왼쪽 클릭 이벤트
         private void lblCustomSrh_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
@@ -498,7 +498,7 @@ namespace WizMes_ANT
         {
             MainWindow.pf.ReturnCode(txtCustomSrh, (int)Defind_CodeFind.DCF_CUSTOM, "");
         }
-        
+
         // 입고구분
         // 입고구분 검색 라벨 왼쪽 클릭 이벤트
         private void lblStuffClssSrh_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
@@ -1051,7 +1051,7 @@ namespace WizMes_ANT
         {
             try
             {
-               
+
                 //PrinterSettings settings = new PrinterSettings();
                 //string Print = "";
                 //foreach (string printer in PrinterSettings.InstalledPrinters)
@@ -1117,8 +1117,8 @@ namespace WizMes_ANT
                         setLabePrint(LabelPrint);
                     }
 
-                    
-                    
+
+
                 }
 
                 // 페이지 계산 등
@@ -1241,7 +1241,7 @@ namespace WizMes_ANT
                     //pastesheet.Paste();
 
                 }
-                
+
                 pastesheet.UsedRange.EntireRow.Select();
 
                 #endregion // 실제 엑셀 작업
@@ -1623,13 +1623,12 @@ namespace WizMes_ANT
                 if (e.Key == Key.Enter)
                 {
 
-
-                    if (txtCustom.Tag == null || txtCustom.Tag.ToString().Trim().Equals("")
-                 || txtCustom.Text.Trim().Equals(""))
-                    {
-                        MessageBox.Show("거래처를 먼저 선택해주세요.");
-                        return;
-                    }
+                 //   if (txtCustom.Tag == null || txtCustom.Tag.ToString().Trim().Equals("")
+                 //|| txtCustom.Text.Trim().Equals(""))
+                 //   {
+                 //       MessageBox.Show("거래처를 먼저 선택해주세요.");
+                 //       return;
+                 //   }
 
 
                     if (txtCustom != null && txtCustom.Text != "")
@@ -2084,7 +2083,7 @@ namespace WizMes_ANT
                 sqlParameter.Add("ArticleGrpID", cboArticleGrpSrh.SelectedValue != null ? cboArticleGrpSrh.SelectedValue.ToString() : "");
                 sqlParameter.Add("chkInspect", chksInspectApprovalYN.IsChecked == true ? 1 : 0);      // 입고 검수
                 sqlParameter.Add("sInspect", cbosInspectApprovalYN.SelectedValue != null ? cbosInspectApprovalYN.SelectedValue.ToString() : "");
-                     
+
                 // [자재입고검사등록] 검색조건 - 나머진 공통 
                 sqlParameter.Add("nChkBuyCustom", 0); // 구매거래처 
                 sqlParameter.Add("sBuyCustom", "");
@@ -2178,7 +2177,7 @@ namespace WizMes_ANT
                                 LabelPrintYN = dr["LabelPrintYN"].ToString(),
                                 FreeStuffinYN = dr["FreeStuffinYN"].ToString(),
                             };
-                            
+
                             // 입고일자
                             OcStuffIn.StuffDate_CV = DatePickerFormat(OcStuffIn.StuffDate);
 
@@ -2727,7 +2726,7 @@ namespace WizMes_ANT
                     sqlParameter.Add("ArticleID", txtArticle.Tag != null && !txtArticle.Tag.ToString().Trim().Equals("") ? txtArticle.Tag.ToString() : "");
                     sqlParameter.Add("ModelID", ""); // 얜 또 뭐여
                     sqlParameter.Add("UnitClss", cboUnit.SelectedValue != null ? cboUnit.SelectedValue.ToString() : ""); // 입고 단위
-                    
+
                     sqlParameter.Add("TotRoll", 0);
                     sqlParameter.Add("TotQty", ConvertDouble(txInQty.Text)); // 입고수량
 
@@ -2762,7 +2761,7 @@ namespace WizMes_ANT
                         ListParameter.Add(sqlParameter);
 
                         List<KeyValue> list_Result = new List<KeyValue>();
-                        list_Result = DataStore.Instance.ExecuteAllProcedureOutputGetCS_NewLog(Prolist, ListParameter,"C");
+                        list_Result = DataStore.Instance.ExecuteAllProcedureOutputGetCS_NewLog(Prolist, ListParameter, "C");
                         string sGetID = string.Empty;
 
                         if (list_Result[0].key.ToLower() == "success")
@@ -2859,7 +2858,7 @@ namespace WizMes_ANT
                     }
 
                     string[] Confirm = new string[2];
-                    Confirm = DataStore.Instance.ExecuteAllProcedureOutputNew_NewLog(Prolist, ListParameter,"U");
+                    Confirm = DataStore.Instance.ExecuteAllProcedureOutputNew_NewLog(Prolist, ListParameter, "U");
                     if (Confirm[0] != "success")
                     {
                         MessageBox.Show("[저장실패]\r\n" + Confirm[1].ToString());

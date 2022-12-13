@@ -66,7 +66,7 @@ namespace WizMes_ANT
             rbnManageNum.IsChecked = true; // 관리번호 : OrderID
 
             chkIn_NotApprovedIncloud.IsChecked = true; // 입고미승인건 포함
-            chkAutoInOutIteANTcloud.IsChecked = true; // 자동입출건 포함
+            chkAutoInOutItemsIncloud.IsChecked = true; // 자동입출건 포함
 
             // 콤보박스 세팅
             // 콤보박스 세팅
@@ -870,7 +870,7 @@ namespace WizMes_ANT
                 sqlParameter.Add("nChkReqID", chkOrderNum.IsChecked == true ? 1 : 0);
                 sqlParameter.Add("sReqID", chkOrderNum.IsChecked == true && txtOrderNum.Tag != null ? txtOrderNum.Tag.ToString() : "");
                 sqlParameter.Add("incNotApprovalYN", chkIn_NotApprovedIncloud.IsChecked == true ? "Y" : "N");
-                sqlParameter.Add("incAutoInOutYN", chkAutoInOutIteANTcloud.IsChecked == true ? "Y" : "N");
+                sqlParameter.Add("incAutoInOutYN", chkAutoInOutItemsIncloud.IsChecked == true ? "Y" : "N");
 
                 sqlParameter.Add("sProductYN", "");    // 이유불문 무조건 Y인JaturiNoYN데..;;
                 sqlParameter.Add("nMainItem", chkMainInterestItemsSee.IsChecked == true ? 1 : 0);
@@ -881,7 +881,7 @@ namespace WizMes_ANT
                 sqlParameter.Add("nBuyerArticleNo", chkArticle.IsChecked == true ? 1 : 0);
                 sqlParameter.Add("BuyerArticleNo", chkArticle.IsChecked == true && !txtArticle.Text.Trim().Equals("") ? @Escape(txtArticle.Text) : "");
 
-                DataSet ds = DataStore.Instance.ProcedureToDataSet("xp_Subul_sSubul_MTR_20211014", sqlParameter, true);
+                DataSet ds = DataStore.Instance.ProcedureToDataSet("xp_Subul_sSubul_MTR", sqlParameter, true);
 
                 if (ds != null && ds.Tables.Count > 0)
                 {

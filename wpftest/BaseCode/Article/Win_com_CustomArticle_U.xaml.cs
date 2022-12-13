@@ -466,10 +466,10 @@ namespace WizMes_ANT
                 int numBuyCustom = chkBuyCustomSrh.IsChecked == true ? 1 : 0;
                 string strBuyCustom = chkBuyCustomSrh.IsChecked == true ? txtBuyCustomSrh.Text : "";
 
-                int numArticleID= chkArticleSrh.IsChecked == true ? 1 : 0;
+                int numArticleID = chkArticleSrh.IsChecked == true ? 1 : 0;
                 string strArticleID = chkArticleSrh.IsChecked == true ? txtArticleSrh.Tag.ToString() : "";
 
-                DataTable dt = Procedure.Instance.GetCustomArticle(numCustom, strCustom, strCustomGubun, numArticleID, strArticleID, strYN, numBuyCustom , strBuyCustom);
+                DataTable dt = Procedure.Instance.GetCustomArticle(numCustom, strCustom, strCustomGubun, numArticleID, strArticleID, strYN, numBuyCustom, strBuyCustom);
 
 
                 DataStore.Instance.InsertLogByForm(this.GetType().Name, "R");
@@ -820,7 +820,7 @@ namespace WizMes_ANT
                         }
 
                         string[] Confirm = new string[2];
-                        Confirm = DataStore.Instance.ExecuteAllProcedureOutputNew_NewLog(Prolist, ListParameter,"C");
+                        Confirm = DataStore.Instance.ExecuteAllProcedureOutputNew_NewLog(Prolist, ListParameter, "C");
                         if (Confirm[0] != "success")
                         {
                             MessageBox.Show("[저장실패]\r\n" + Confirm[1].ToString());
@@ -864,7 +864,7 @@ namespace WizMes_ANT
                             }
 
                             string[] Confirm = new string[2];
-                            Confirm = DataStore.Instance.ExecuteAllProcedureOutputNew_NewLog(Prolist, ListParameter,"U");
+                            Confirm = DataStore.Instance.ExecuteAllProcedureOutputNew_NewLog(Prolist, ListParameter, "U");
                             if (Confirm[0] != "success")
                             {
                                 MessageBox.Show("[저장실패]\r\n" + Confirm[1].ToString());
@@ -1879,7 +1879,7 @@ namespace WizMes_ANT
             txtBuyCustomSrh.IsEnabled = true;
             btnPfBuyCustomSrh.IsEnabled = true;
         }
-        
+
         //고객품번 체크해제
         private void chkBuyCustomSrh_UnChecked(object sender, RoutedEventArgs e)
         {
@@ -1895,10 +1895,10 @@ namespace WizMes_ANT
             if (e.Key == Key.Enter)
             {
                 e.Handled = true;
-                MainWindow.pf.ReturnCode(txtBuyCustomSrh, 7076,  "");
+                MainWindow.pf.ReturnCode(txtBuyCustomSrh, 7076, "");
             }
         }
-        
+
         //고객품번 버튼클릭
         private void btnPfBuyCustomSrh_Click(object sender, RoutedEventArgs e)
         {
@@ -1950,7 +1950,11 @@ namespace WizMes_ANT
         {
             MainWindow.pf.ReturnCode(txtArticleSrh, 7077, "");
         }
-
+        //단가 콤마찍기
+        private void TxtUnitPrice_PreviewKeyDown(object sender, TextCompositionEventArgs e)
+        {
+            Lib.Instance.CheckIsNumeric((TextBox)sender, e);
+        }
     }
 
     class Win_com_CustomArticle_U_CodeView : BaseView

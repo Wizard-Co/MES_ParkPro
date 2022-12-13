@@ -238,13 +238,13 @@ namespace WizMes_ANT
         {
             if (e.Key == Key.Enter)
             {
-                MainWindow.pf.ReturnCode(txtMtrArticleSrh, 76, "");
+                MainWindow.pf.ReturnCode(txtMtrArticleSrh, 1, "");
             }
         }
         // 자재품명 플러스파인더
         private void btnMtrArticleSrh_Click(object sender, RoutedEventArgs e)
         {
-            MainWindow.pf.ReturnCode(txtMtrArticleSrh, 76, "");
+            MainWindow.pf.ReturnCode(txtMtrArticleSrh, 1, "");
         }
 
         //자재품명 초기화
@@ -1075,9 +1075,6 @@ namespace WizMes_ANT
                 sqlParameter.Add("sFromLocID", ""); //창고 추가 2021-07-09
                 sqlParameter.Add("sToLocID", "");
 
-                sqlParameter.Add("nChkArticleNo", chkArticleNo.IsChecked == true ? 1 : 0); //자재품명 체크
-                sqlParameter.Add("sArticleNoID", chkArticleNo.IsChecked == true ? (txtArticleNo.Tag == null ? "" : txtArticleNo.Tag.ToString()) : ""); //자재품명
-
                 //sqlParameter.Add("sLotID", chkMtrLOTIDSrh.IsChecked == true && !txtMtrLOTIDSrh.Text.Trim().Equals("") ? txtMtrLOTIDSrh.Text.Trim() : ""); //Lot 췌크 텍스트 
 
                 DataSet ds = DataStore.Instance.ProcedureToDataSet("xp_Subul_sMtrSubul_Lot_One", sqlParameter, true);
@@ -1503,7 +1500,7 @@ namespace WizMes_ANT
                     //            {
                     //                emptyLotID.LotID = "일자계";
                     //            }
-
+                                
                     //            dgdLotID.Items.Add(emptyLotID);
                     //            mIndex++;
 
@@ -1701,6 +1698,7 @@ namespace WizMes_ANT
                             {
                                 dgdMain.Items.Add(Lot);
                             }
+
 
                             //dgdMain.Items.Add(Lot);
                         }
@@ -2172,54 +2170,6 @@ namespace WizMes_ANT
                 chkMtrLOTIDSrh.IsChecked = true;
             }
         }
-
-        //품명 라벨체크
-        private void lblArticleNo_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
-        {
-            if (chkArticleNo.IsChecked == true)
-            {
-                chkArticleNo.IsChecked = false;
-            }
-            else
-            {
-                chkArticleNo.IsChecked = true;
-            }
-        }
-
-        //품명 체크 
-        private void chkArticleNo_Checked(object sender, RoutedEventArgs e)
-        {
-            chkArticleNo.IsChecked = true;
-
-            txtArticleNo.IsEnabled = true;
-
-            btnPfArticleNo.IsEnabled = true;
-        }
-        //품명 안체크
-        private void chkArticleNo_Unchecked(object sender, RoutedEventArgs e)
-        {
-            chkArticleNo.IsChecked = false;
-
-            txtArticleNo.IsEnabled = false;
-
-            btnPfArticleNo.IsEnabled = false;
-        }
-        //품명 키다운 
-        private void txtArticleNo_KeyDown(object sender, KeyEventArgs e)
-        {
-            if (e.Key == Key.Enter)
-            {
-                e.Handled = true;
-                MainWindow.pf.ReturnCode(txtArticleNo, 77, "");
-            }
-        }
-
-        //품명 플러스파인더
-        private void btnPfArticleNoSrh_Click(object sender, RoutedEventArgs e)
-        {
-            MainWindow.pf.ReturnCode(txtArticleNo, 77, "");
-        }
-
 
 
         //// Lot별 일자조회

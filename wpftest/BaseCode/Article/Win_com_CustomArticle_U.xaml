@@ -134,9 +134,9 @@
                     <Image Source="{DynamicResource btiPlusFind}"/>
                 </Button>
             </Grid>
-            
 
-            <Grid Grid.Column="2" Grid.Row="2" Grid.ColumnSpan="2" >
+
+            <Grid Grid.Column="2" Grid.Row="3" Grid.ColumnSpan="2" >
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="85*" />
                     <ColumnDefinition Width="105*" />
@@ -358,7 +358,7 @@
                             </DataGridTemplateColumn>
                             <DataGridTextColumn Header="품명" Binding="{Binding Article}" Width="*" Visibility="Visible"/>
                             <DataGridTextColumn Header="품번" Binding="{Binding BuyerArticleNo}"   Width="*"/>
-                            
+
 
                             <!--<DataGridTextColumn Header="차종" Binding="{Binding ArticleID}"  HeaderTemplate="{StaticResource ResourceKey=HorizonalCenter}" Width="*"/>-->
 
@@ -368,22 +368,22 @@
                     </DataGrid>
                     <TextBlock x:Name="tbkAllCount" Grid.Row="5" Margin="1" Text="행의 갯수 : " VerticalAlignment="Center" />
                 </Grid>
-                
+
                 <GridSplitter Grid.Column="1" Width="5" ResizeBehavior="PreviousAndNext" />
-                
+
                 <Grid Grid.Column="1" >
                     <Grid.RowDefinitions >
                         <RowDefinition Height="*" />
                         <RowDefinition Height="*" />
                     </Grid.RowDefinitions>
-                    
+
                     <Grid Grid.Row="0" >
                         <Grid.RowDefinitions >
                             <RowDefinition Height="2*" />
                             <RowDefinition Height="*" />
                             <RowDefinition Height="*" />
                         </Grid.RowDefinitions>
-                        
+
                         <Button x:Name="btnAddSelectItem" Grid.Row="1" Margin="1" 
                                 VerticalContentAlignment="Center" Click="btnAddSelectItem_Click" IsEnabled="False"
                                 HorizontalContentAlignment="Center" Style="{DynamicResource btnInNoViewBox}">
@@ -456,7 +456,7 @@
                                 </Style.Resources>
                             </Style>
                         </DataGrid.RowStyle>
-                        
+
                         <DataGrid.CellStyle>
                             <Style TargetType="DataGridCell">
                                 <EventSetter Event="PreviewKeyDown" Handler="DataGird_PreviewKeyDown"/>
@@ -467,8 +467,8 @@
                                 <EventSetter Event="PreviewMouseDown" Handler="DataGridCell_PreviewMouseDown" />
                             </Style>
                         </DataGrid.CellStyle>
-                        
-                        
+
+
                         <DataGrid.Columns>
                             <DataGridTextColumn Header="" Binding="{Binding SelectNum}"/>
                             <DataGridTemplateColumn Header="선택">
@@ -509,8 +509,8 @@
                                     </DataTemplate>
                                 </DataGridTemplateColumn.CellEditingTemplate>
                             </DataGridTemplateColumn>
-                            
-                            
+
+
                             <DataGridTemplateColumn Header="최종고객사" Width="auto" MinWidth="60" x:Name="FinalCustom">
                                 <DataGridTemplateColumn.CellTemplate>
                                     <DataTemplate>
@@ -536,7 +536,7 @@
                                 <DataGridTemplateColumn.CellEditingTemplate>
                                     <DataTemplate>
                                         <TextBox x:Name="txtUnitPrice" Text="{Binding UnitPrice, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, StringFormat=N0}" Foreground="Black"
-                                                     Style="{DynamicResource TextBoxInput_Number_Right}"
+                                                     Style="{DynamicResource TextBoxInput_NumberCommaZero_Right}" PreviewTextInput="TxtUnitPrice_PreviewKeyDown"
                                                     />
                                     </DataTemplate>
                                 </DataGridTemplateColumn.CellEditingTemplate>

@@ -101,7 +101,7 @@
                                       Checked="chkArticleSrh_Checked" Unchecked="chkArticleSrh_Unchecked"/>
                         </Viewbox>
                         <Viewbox Style="{DynamicResource ViewBoxSetMaxMinHeight}">
-                            <TextBlock Text=" 품     명" Style="{DynamicResource TextBlockInViewBoxSearch}" />
+                            <TextBlock Text=" 품     번" Style="{DynamicResource TextBlockInViewBoxSearch}" />
                         </Viewbox>
 
                     </StackPanel>
@@ -681,12 +681,12 @@
 
                         <Label Grid.Row="4" Grid.Column="0" Style="{DynamicResource LabelInputArea}" >
                             <Viewbox  Style="{DynamicResource ViewBoxSetMaxMinHeight}">
-                                <TextBlock Text="품     명" Style="{DynamicResource TextBlockInViewBoxInput}"/>
+                                <TextBlock Text="품     번" Style="{DynamicResource TextBlockInViewBoxInput}"/>
                             </Viewbox>
                         </Label>
                         <TextBox x:Name="txtArticle" Grid.Row="4" Grid.Column="1" 
                                  Style="{StaticResource TextBoxInputNecessary}" Grid.ColumnSpan="2"
-                                 Text="{Binding Article}" Tag="{Binding ArticleID}"
+                                 Text="{Binding BuyerArticleNo}" Tag="{Binding ArticleID}"
                                  Keyboard.KeyDown="txtArticle_KeyDown" IsHitTestVisible="True"/>
                         <Button x:Name="btnPfArticle" Grid.Row="4" Grid.Column="3" Margin="1"
                                 Click="btnPfArticle_Click" IsEnabled="True">
@@ -698,7 +698,7 @@
                             </Viewbox>
                         </Label>
                         <ComboBox x:Name="cboArticleGrp" Grid.Row="2" Grid.Column="5" Style="{StaticResource ComboBoxInputString}"
-                                  SelectedValue="{Binding ArticleGrpID}" IsHitTestVisible="False"/>
+                                  SelectedValue="{Binding ArticleGrpID}" IsHitTestVisible="True"/>
 
                         <Label Grid.Row="5" Grid.Column="0" Style="{DynamicResource LabelInputArea}" >
                             <Viewbox Style="{DynamicResource ViewBoxSetMaxMinHeight}">
@@ -723,7 +723,7 @@
                                 <TextBlock Text="입고 단위" Style="{DynamicResource TextBlockInViewBoxInput}"/>
                             </Viewbox>
                         </Label>
-                        <ComboBox x:Name="cboUnit" Grid.Row="4" Grid.Column="5"  IsHitTestVisible="False"
+                        <ComboBox x:Name="cboUnit" Grid.Row="4" Grid.Column="5" 
                                   SelectedValue="{Binding UnitClss}" Style="{StaticResource ComboBoxInputString}"/>
 
                         <Label Grid.Row="5" Grid.Column="4" Style="{DynamicResource LabelInputArea}" >
@@ -808,7 +808,7 @@
                         </Label>
                         <ComboBox x:Name="cboFreeStuffinYN" Grid.Row="13" Grid.Column="1" Style="{StaticResource ComboBoxInputString}"
                                   SelectedValue="{Binding FreeStuffinYN}"/>
-                        
+
                         <Label Grid.Row="12" Grid.Column="3" Grid.ColumnSpan="2" Margin="1" Content="단가" ToolTip="라벨번호"
                                HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Visibility="Hidden" />
                         <TextBox x:Name="txtUnitPrice" Grid.Row="12" Grid.Column="5" Margin="1" Background="#fff2d2"

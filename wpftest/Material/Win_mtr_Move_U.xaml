@@ -163,34 +163,6 @@
                     <ComboBox  x:Name="cboOutClssSrh" Grid.Column="1" Style="{DynamicResource ComboBoxSearchString}" Background="White" IsEnabled="True"/>
                 </Grid>
 
-                <Grid Grid.Column="3" Grid.Row="0">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="65*" />
-                        <ColumnDefinition Width="95*" />
-                        <ColumnDefinition Width="15*" />
-                    </Grid.ColumnDefinitions>
-                    <Label x:Name="lblArticleNoSrh" Grid.Column="0" Style="{DynamicResource LabelSearch}" MouseLeftButtonUp="lblArticleNo_MouseLeftButtonUp">
-                        <StackPanel  Style="{DynamicResource StackPanelInLabel}">
-                            <Viewbox Style="{DynamicResource ViewBoxSetMaxMinHeight}">
-                                <CheckBox x:Name="chkArticleNo" VerticalAlignment="Center"
-                                      Checked="chkArticleNo_Checked" Unchecked="chkArticleNo_Unchecked" />
-                            </Viewbox>
-                            <Viewbox Style="{DynamicResource ViewBoxSetMaxMinHeight}">
-                                <TextBlock Text="품    명" Style="{DynamicResource TextBlockInViewBoxSearch}"/>
-                            </Viewbox>
-
-
-
-                        </StackPanel>
-                    </Label>
-                    <TextBox  x:Name="txtArticleNo" Grid.Column="1" Style="{DynamicResource TextBoxSearch}" KeyDown="txtArticleNo_KeyDown" IsEnabled="False"/>
-                    <Button x:Name="btnPfArticleNo" Grid.Column="2" IsEnabled="False" 
-                        Click="btnPfArticleNoSrh_Click" Visibility="Visible">
-                        <Image Source="{DynamicResource btiPlusFind}" />
-                    </Button>
-                </Grid>
-                
-
                 <Grid Grid.Column="4" Grid.RowSpan="4">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="*" />

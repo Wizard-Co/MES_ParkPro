@@ -25,13 +25,9 @@ namespace WizMes_ANT
         int rowNum = 0;
         int ArticleBomCnt = 0;
         Lib lib = new Lib();
-        string TempArticle = string.Empty;
-        double QtyDivi = 0;
 
         Win_com_ArticleBOM_ItemList WinArticleBomList = new Win_com_ArticleBOM_ItemList();
         Win_com_ArticleBOM_Code_U WinArticleBomCode = new Win_com_ArticleBOM_Code_U();
-
-
         DataTable dataTableArticle = null;
         DataTable dataTableBOM = null;
 
@@ -74,14 +70,6 @@ namespace WizMes_ANT
             this.cboUnitClss.ItemsSource = ovcUnitClss;
             this.cboUnitClss.DisplayMemberPath = "code_name";
             this.cboUnitClss.SelectedValuePath = "code_id";
-
-
-            //변환단위
-            ObservableCollection<CodeView> ovcChangedUnitClss = ComboBoxUtil.Instance.Gf_DB_CM_GetComCodeDataset(null, "MTRUNIT", "Y", "");
-            this.cboChangedUnitClss.ItemsSource = ovcChangedUnitClss;
-            this.cboChangedUnitClss.DisplayMemberPath = "code_name";
-            this.cboChangedUnitClss.SelectedValuePath = "code_id";
-            
         }
 
         //품명그룹 검색 조건 사용체크
@@ -194,7 +182,6 @@ namespace WizMes_ANT
             txtParentArticle.IsReadOnly = false;
             btnPfParentArticle.IsEnabled = true;
 
-
             txtArticle.Background = (SolidColorBrush)new BrushConverter().ConvertFrom("#fff2d2");
             txtArticle.IsReadOnly = false;
             btnPfArticle.IsEnabled = true;
@@ -222,17 +209,12 @@ namespace WizMes_ANT
             CantBtnControl();
             tbkMsg.Text = "자료 입력 중";
             strFlag = "I";
-
-
-
             this.DataContext = null;
             cboUnitClss.SelectedIndex = 1;
             dtpFromDate.SelectedDate = DateTime.Today;
             dtpToDate.SelectedDate = DateTime.Today.AddYears(500);
 
-            //txtParentArticle.Tag = null;
-            txtParentArticle.Tag = TempArticle; // 20221017
-
+            txtParentArticle.Tag = null;
             txtArticle.Tag = null;
         }
 
@@ -414,13 +396,13 @@ namespace WizMes_ANT
             DataTable dt = null;
             string Name = string.Empty;
 
-            string[] lst = new string[2];
+            string[] lst = new string[6];
             lst[0] = "품명BOM 리스트";
-            //lst[1] = "품명 BOM_상위품목";
-            //lst[2] = "품명 BOM_하위품목";
-            lst[1] = dgdExcel.Name;
-            //lst[4] = dgdArticleP.Name;
-            //lst[5] = dgdArticleC.Name;
+            lst[1] = "품명 BOM_상위품목";
+            lst[2] = "품명 BOM_하위품목";
+            lst[3] = tlvItemList.Name;
+            lst[4] = dgdArticleP.Name;
+            lst[5] = dgdArticleC.Name;
 
             ExportExcelxaml ExpExc = new ExportExcelxaml(lst);
             ExpExc.ShowDialog();
@@ -428,43 +410,39 @@ namespace WizMes_ANT
             if (ExpExc.DialogResult.HasValue)
             {
                 DataStore.Instance.InsertLogByForm(this.GetType().Name, "E");
-                if (ExpExc.choice.Equals(dgdExcel.Name))
+                if (ExpExc.choice.Equals(tlvItemList.Name))
+                {
+                    //if (ExpExc.Check.Equals("Y"))
+                    //    dt = Lib.Instance.DataGridToDTinHidden(dataTableBOM);
+                    //else
+                    //    dt = Lib.Instance.DataGirdToDataTable(tlvItemList);
+
+                    Name = tlvItemList.Name;
+                    Lib.Instance.GenerateExcel(dataTableBOM, Name);
+                    Lib.Instance.excel.Visible = true;
+                }
+                else if (ExpExc.choice.Equals(dgdArticleP.Name))
                 {
                     if (ExpExc.Check.Equals("Y"))
-                        dt = Lib.Instance.DataGridToDTinHidden(dgdExcel);
+                        dt = Lib.Instance.DataGridToDTinHidden(dgdArticleP);
                     else
-                        dt = Lib.Instance.DataGirdToDataTable(dgdExcel);
+                        dt = Lib.Instance.DataGirdToDataTable(dgdArticleP);
 
-                    Name = dgdExcel.Name;
-
-                    //Lib.Instance.GenerateExcel(dataTableBOM, Name);
-                    if (Lib.Instance.GenerateExcel(dt, Name))
-                        Lib.Instance.excel.Visible = true;
-                    else
-                        return;
+                    Name = dgdArticleP.Name;
+                    Lib.Instance.GenerateExcel(dt, Name);
+                    Lib.Instance.excel.Visible = true;
                 }
-                //else if (ExpExc.choice.Equals(dgdArticleP.Name))
-                //{
-                //    if (ExpExc.Check.Equals("Y"))
-                //        dt = Lib.Instance.DataGridToDTinHidden(dgdArticleP);
-                //    else
-                //        dt = Lib.Instance.DataGirdToDataTable(dgdArticleP);
+                else if (ExpExc.choice.Equals(dgdArticleC.Name))
+                {
+                    if (ExpExc.Check.Equals("Y"))
+                        dt = Lib.Instance.DataGridToDTinHidden(dgdArticleC);
+                    else
+                        dt = Lib.Instance.DataGirdToDataTable(dgdArticleC);
 
-                //    Name = dgdArticleP.Name;
-                //    Lib.Instance.GenerateExcel(dt, Name);
-                //    Lib.Instance.excel.Visible = true;
-                //}
-                //else if (ExpExc.choice.Equals(dgdArticleC.Name))
-                //{
-                //    if (ExpExc.Check.Equals("Y"))
-                //        dt = Lib.Instance.DataGridToDTinHidden(dgdArticleC);
-                //    else
-                //        dt = Lib.Instance.DataGirdToDataTable(dgdArticleC);
-
-                //    Name = dgdArticleC.Name;
-                //    Lib.Instance.GenerateExcel(dt, Name);
-                //    Lib.Instance.excel.Visible = true;
-                //}
+                    Name = dgdArticleC.Name;
+                    Lib.Instance.GenerateExcel(dt, Name);
+                    Lib.Instance.excel.Visible = true;
+                }
                 else
                 {
                     if (dt != null)
@@ -479,9 +457,6 @@ namespace WizMes_ANT
         private void re_Search(int selectedIndex)
         {
             FillGrid2();
-
-            FillGridExcel(); //엑셀 출력용
-            //dgdExcel
         }
 
         private void re_Search_P(int selectedIndex)
@@ -634,7 +609,6 @@ namespace WizMes_ANT
         //}
         #endregion
 
-
         #region 2020-02-11 신규 조회 FillGrid2()
 
         private void FillGrid2()
@@ -705,17 +679,10 @@ namespace WizMes_ANT
                                 ToDate = dr["ToDate"].ToString(),
                                 UnitClss = dr["UnitClss"].ToString(),
                                 UnitClssName = dr["UnitClssName"].ToString(),
-                                
                                 Weight = dr["Weight"].ToString(),
                                 UseYN = dr["UseYN"].ToString(),
-                                BuyerArticleNo = dr["BuyerArticleNo"].ToString(),
-
-                                ConvertUnitClssName = dr["UnitClssName"].ToString(),
-                                
+                                BuyerArticleNo = dr["BuyerArticleNo"].ToString()
                             };
-
-                           
-
 
                             ItemList.Qty = Lib.Instance.returnNumString(ItemList.Qty);
                             ItemList.Weight = Lib.Instance.returnNumString(ItemList.Weight);
@@ -726,32 +693,6 @@ namespace WizMes_ANT
                             ItemList.ToDate_CV = Lib.Instance.StrDateTimeBar(ItemList.ToDate);
                             ItemList.FirstColumnCV = ItemList.LvlPad + "(" + ItemList.ArticleID + ")" + ItemList.BuyerArticleNo;
 
-                            QtyDivi = ConvertDouble(ItemList.Qty);
-                            QtyDivi = QtyDivi * 1000;
-                            if (ItemList.UnitClss == null)
-                            {
-                                return;
-                            }
-
-                            if (ItemList.UnitClss.Equals("4"))
-                            {
-                                ItemList.ConvertUnitClssName = "mm";
-                                ItemList.ConvertQty = QtyDivi.ToString(); 
-                            }
-                            else if (ItemList.UnitClss.Equals("2"))
-                            {
-                                ItemList.ConvertUnitClssName = "g";
-                                ItemList.ConvertQty = QtyDivi.ToString();
-                            }
-                            else
-                            {
-                                ItemList.ConvertUnitClssName = ItemList.UnitClssName;
-                                ItemList.ConvertQty = ItemList.Qty;
-                            }
-
-
-
-
                             if (ItemList.LvlPad != "")
                             {
                                 ItemList.FirstColumnCV2 = ItemList.LvlPad + " " + ItemList.Article;
@@ -761,7 +702,7 @@ namespace WizMes_ANT
                                 ItemList.FirstColumnCV2 = ItemList.Article;
                             }
 
-                            //if (ItemList.LVL != 10000
+                            //if (ItemList.LVL != 1
                             //    && BeforeLVL + 1 != ItemList.LVL)
                             //{
                             //    continue;
@@ -881,94 +822,6 @@ namespace WizMes_ANT
 
         #endregion
 
-        #region
-        //검색
-        private void FillGridExcel()
-        {
-            if (dgdExcel.Items.Count > 0)
-            {
-                dgdExcel.Items.Clear();
-            }
-
-            try
-            {
-                Dictionary<string, object> sqlParameter = new Dictionary<string, object>();
-                sqlParameter.Add("sArticleGrpID", chkArticleGrpSrh.IsChecked == true && cboArticleGrpSrh.SelectedValue != null ? cboArticleGrpSrh.SelectedValue.ToString() : "");
-                sqlParameter.Add("sArticleID", chkArticleSrh.IsChecked == true && txtArticleSrh.Tag != null ? txtArticleSrh.Tag.ToString() : "");
-                sqlParameter.Add("sDirection", strDirection);
-                sqlParameter.Add("sIncNotuse", chkNoUse.IsChecked == true ? 1 : 0);
-
-                DataSet ds = DataStore.Instance.ProcedureToDataSet_LogWrite("xp_Article_sArticleBOM", sqlParameter, true, "R");
-
-                if (ds != null && ds.Tables.Count > 0)
-                {
-                    DataTable dt = ds.Tables[0];
-                    int i = 0;
-
-                    //dataGrid.Items.Clear();e
-                    if (dt.Rows.Count == 0)
-                    {
-                        MessageBox.Show("조회된 데이터가 없습니다.");
-                    }
-                    else
-                    {
-                        DataRowCollection drc = dt.Rows;
-
-                        foreach (DataRow dr in drc)
-                        {
-                            i++;
-                            var WinExcel = new Win_com_ArticleBOM_ItemList()
-                            {
-                                Num = i,
-                                Article = dr["Article"].ToString(),
-                                ArticleID = dr["ArticleID"].ToString(),
-                                LVL = ConvertInt(dr["LVL"].ToString()),
-                                ArticleGrpID = dr["ArticleGrpID"].ToString(),
-                                ArticleP = dr["ArticleP"].ToString(),
-                                ChildBuyerArticleNO = dr["ChildBuyerArticleNO"].ToString(),
-                                ChildCnt = dr["ChildCnt"].ToString(),
-                                FromDate = dr["FromDate"].ToString(),
-                                LossPcntClss = dr["LossPcntClss"].ToString(),
-                                LossQty = dr["LossQty"].ToString(),
-                                LvlPad = dr["LvlPad"].ToString(),
-                                ord = dr["ord"].ToString(),
-                                PARENTArticleID = dr["PARENTArticleID"].ToString(),
-                                ParentArticleIDS = dr["ParentArticleIDS"].ToString(),
-                                ParentBuyerArticleNO = dr["ParentBuyerArticleNO"].ToString(),
-                                PcntClss = dr["PcntClss"].ToString(),
-                                Qty = dr["Qty"].ToString(),
-                                ScraptRate = dr["ScraptRate"].ToString(),
-                                ToDate = dr["ToDate"].ToString(),
-                                UnitClss = dr["UnitClss"].ToString(),
-                                UnitClssName = dr["UnitClssName"].ToString(),
-                                Weight = dr["Weight"].ToString(),
-                                UseYN = dr["UseYN"].ToString(),
-                                BuyerArticleNo = dr["BuyerArticleNo"].ToString()
-
-                            };
-                            WinExcel.Weight = Lib.Instance.returnNumString(WinExcel.Weight);
-                            WinExcel.LossQty = Lib.Instance.returnNumString(WinExcel.LossQty);
-                            WinExcel.ScraptRate = Lib.Instance.returnNumString(WinExcel.ScraptRate);
-
-                            WinExcel.FromDate_CV = Lib.Instance.StrDateTimeBar(WinExcel.FromDate);
-                            WinExcel.ToDate_CV = Lib.Instance.StrDateTimeBar(WinExcel.ToDate);
-                            dgdExcel.Items.Add(WinExcel);
-                        }
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show("오류 발생, 오류 내용 : " + ex.ToString());
-            }
-            finally
-            {
-                DataStore.Instance.CloseConnection();
-            }
-        }
-
-        #endregion
-
         private void TlvItemList_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
         {
             var WinBomList = tlvItemList.SelectedItem as TreeViewItem;
@@ -981,9 +834,6 @@ namespace WizMes_ANT
                 {
                     this.DataContext = WinArticleBomList;
                     txtArticle.Tag = WinArticleBomList.ArticleID;
-                    txtParentArticle.Tag = WinArticleBomList.PARENTArticleID;
-                    // ↑소요량 수정불가 현상을 위해 추가 2022.05.06 (프로시저 저장시 상위품명의 코드를 찾지 못해서 소요량 수정이 정상적으로 작동하지 않음 )
-
 
                     if (WinArticleBomList.UseYN.Equals("Y"))
                     {
@@ -993,21 +843,6 @@ namespace WizMes_ANT
                     {
                         chkUseClss.IsChecked = true;
                     }
-
-
-                    Multiplication(); // 특정 단위 x1000 해주기
-
-                    // EA 면 EA로 왼쪽도 바꾸기 
-                    if (cboUnitClss.SelectedValue == null)
-                    {
-                        return;
-                    }
-                    if (WinArticleBomList.UnitClss.Equals("0"))       
-                    {
-                        cboChangedUnitClss.SelectedValue = "0";
-                    }
-                    
-
                 }
             }
         }
@@ -1064,8 +899,8 @@ namespace WizMes_ANT
             {
                 if (CheckData())
                 {
-                    //// 만약에 상위품 하위품의 품명이 같다면!!!!!!!!!! → 그대로 들어가면 문제 생김
-                    //// 상위품을 지우고 하위품명으로만 들어가도록
+                    // 만약에 상위품 하위품의 품명이 같다면!!!!!!!!!! → 그대로 들어가면 문제 생김
+                    // 상위품을 지우고 하위품명으로만 들어가도록
                     if (txtParentArticle.Tag != null
                         && !txtParentArticle.Text.Trim().Equals("")
                         && txtArticle.Tag.ToString().Trim().Equals(txtParentArticle.Tag.ToString().Trim()))
@@ -1103,7 +938,7 @@ namespace WizMes_ANT
                         ListParameter.Add(sqlParameter);
 
                         string[] Confirm = new string[2];
-                        Confirm = DataStore.Instance.ExecuteAllProcedureOutputNew_NewLog(Prolist, ListParameter, "C");
+                        Confirm = DataStore.Instance.ExecuteAllProcedureOutputNew_NewLog(Prolist, ListParameter,"C");
                         if (Confirm[0] != "success")
                         {
                             MessageBox.Show("[저장실패]\r\n" + Confirm[1].ToString());
@@ -1114,9 +949,6 @@ namespace WizMes_ANT
                         {
                             flag = true;
                         }
-
-                        TempArticle = txtParentArticle.Tag.ToString(); // 20221017
-
                     }
 
                     #endregion
@@ -1135,7 +967,7 @@ namespace WizMes_ANT
                         ListParameter.Add(sqlParameter);
 
                         string[] Confirm = new string[2];
-                        Confirm = DataStore.Instance.ExecuteAllProcedureOutputNew_NewLog(Prolist, ListParameter, "U");
+                        Confirm = DataStore.Instance.ExecuteAllProcedureOutputNew_NewLog(Prolist, ListParameter,"U");
                         if (Confirm[0] != "success")
                         {
                             MessageBox.Show("[저장실패]\r\n" + Confirm[1].ToString());
@@ -1352,28 +1184,10 @@ namespace WizMes_ANT
                             UnitPriceClss = dr["UnitPriceClss"].ToString(),
                             UnitClss = dr["UnitClss"].ToString(),
                             PartGBNID = dr["PartGBNID"].ToString(),
-                            ProductGrpID = dr["ProductGrpID"].ToString(),
-                            //ChangedUnitClss= dr["ChangedUnitClss"].ToString()
+                            ProductGrpID = dr["ProductGrpID"].ToString()
                         };
 
-                        //원자재 선택시 KG, 품명그룹 01 =원자재
-                        if (getArticleInfo.UnitClss.Equals("4")) // M 를 mm로 변환
-                        {
-                            cboChangedUnitClss.SelectedValue = "7";
-
-                        }
-                        else if (getArticleInfo.UnitClss.Equals("2"))  //Kg을 g으로 변환
-                        {
-                            cboChangedUnitClss.SelectedValue = "1";
-                        }
-                        else
-                        {
-                            cboChangedUnitClss.SelectedValue = getArticleInfo.UnitClss;
-                        }
-
                         cboUnitClss.SelectedValue = getArticleInfo.UnitClss;
-                        
-
                     }
                 }
             }
@@ -1649,11 +1463,6 @@ namespace WizMes_ANT
         {
             return string.Format("{0:N2}", obj);
         }
-        // 천마리 콤마, 소수점 세자리
-        private string stringFormatN3(object obj)
-        {
-            return string.Format("{0:N3}", obj);
-        }
 
         // 데이터피커 포맷으로 변경
         private string DatePickerFormat(string str)
@@ -1768,119 +1577,7 @@ namespace WizMes_ANT
             Lib.Instance.CheckIsNumeric((TextBox)sender, e);
         }
 
-        //소요량 계산 g->KG으로자동으로 등록 mm-> KG 자동으로등록 
-        private void TxtQty_TextChanged(object sender, TextChangedEventArgs e)
-        {
-            ChangedQty();
-        }
 
-        private void ChangedQty() // 나누기 1000으로 계산 
-        {
-            try
-            {
-                double ChangeQty = 0;
-                double ChangeDivision = 0;             //나눌떄 쓸꺼
-
-                if (cboUnitClss.SelectedValue == null)
-                {
-                    return;
-                }
-
-                if (cboUnitClss.SelectedValue.Equals("2")
-                    || cboUnitClss.SelectedValue.Equals("4"))
-                {
-                    ChangeDivision = ConvertDouble(txtQtyCal.Text); //한번 받아옴
-
-                    ChangeQty = ChangeDivision / 1000;          // 1000으로 쪼갬
-
-                    txtQty.Text = stringFormatN3(ChangeQty);        //소요량 실제 저장되는 곳
-                }
-                else
-                {
-                    txtQty.Text = txtQtyCal.Text;
-
-                }
-
-            }
-            catch(Exception ex)
-            {
-                MessageBox.Show(ex.ToString() + "ChangedQty()");
-            }
-            
-           
-        }
-
-        //오른쪽 콤보박스가 M , Kg 일 경우 mm, g 으로 변환 
-        private void CboUnitClss_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            
-        }
-
-        // 내용 바뀌면 x1000하자 
-        private void TxtQtyCal_SelectionChanged(object sender, RoutedEventArgs e)
-        {
-            //Multiplication();
-        }
-
-
-       
-        private void Multiplication() //특정 단위 x1000
-        {
-            try
-            {
-                double ChangeQty = 0;
-                double ChangeMulti = 0;             //나눌떄 쓸꺼
-
-                if (cboUnitClss.SelectedValue == null)
-                {
-                    return;
-                }
-
-
-                if (cboUnitClss.SelectedValue.Equals("2")
-                    || cboUnitClss.SelectedValue.Equals("4"))
-                {
-                    ChangeMulti = ConvertDouble(txtQtyCal.Text); //한번 받아옴
-
-                    ChangeQty = ChangeMulti * 1000;          // 1000으로 쪼갬
-
-
-                    txtQtyCal.Text = stringFormatN0(ChangeQty);       //소요량 보이는 곳 
-
-
-                    if (cboUnitClss.SelectedValue.Equals("4")) // M 를 mm로 변환
-                    {
-                        cboChangedUnitClss.SelectedValue = "7";
-                    }
-                    if (cboUnitClss.SelectedValue.Equals("2"))  //Kg을 g으로 변환
-                    {
-                        cboChangedUnitClss.SelectedValue = "1";
-                    }
-
-                }
-                else
-                {
-                    txtQty.Text = txtQtyCal.Text;
-                }
-
-
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.ToString() + "Multiplication()");
-            }
-        }
-
-        //마우스 좌클릭시 계산 초기화 오류방지
-        private void Grid_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
-        {
-            if(txtQtyCal.Text != null 
-                && !txtQtyCal.Text.Trim().Equals(""))
-            {
-                ChangedQty();
-            }
-            
-        }
     }
 
     class Win_com_ArticleBOM_ItemList : BaseView
@@ -1902,7 +1599,6 @@ namespace WizMes_ANT
         public string ArticleGrpID { get; set; }
         public string ChildCnt { get; set; }
         public string Qty { get; set; }
-        public string ConvertQty { get; set; }
         public string FromDate { get; set; }
 
         public string ToDate { get; set; }
@@ -1915,7 +1611,6 @@ namespace WizMes_ANT
         public string LossPcntClss { get; set; }
         public string ScraptRate { get; set; }
         public string UnitClssName { get; set; }
-        public string ConvertUnitClssName { get; set; }
         public string Weight { get; set; }
 
         public string ChildBuyerArticleNO { get; set; }
@@ -1984,7 +1679,6 @@ namespace WizMes_ANT
         public string UnitPrice { get; set; }
         public string UnitPriceClss { get; set; }
         public string UnitClss { get; set; }
-        public string ChangedUnitClss { get; set; }
         public string PartGBNID { get; set; }
         public string ProductGrpID { get; set; }
     }

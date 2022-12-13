@@ -474,8 +474,35 @@
     <Compile Include="Product\MachineSearch\Win_Prd_WorkLog_Q.xaml.cs">
       <DependentUpon>Win_Prd_WorkLog_Q.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Product\MoldData\Win_dvl_InOutWare_Mold_U.xaml.cs">
+      <DependentUpon>Win_dvl_InOutWare_Mold_U.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Product\MoldData\Win_dvl_MoldEvaCal_U.xaml.cs">
+      <DependentUpon>Win_dvl_MoldEvaCal_U.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Product\MoldData\Win_dvl_MoldEvalBasis_U.xaml.cs">
+      <DependentUpon>Win_dvl_MoldEvalBasis_U.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Product\MoldData\Win_dvl_MoldHitCount_Q.xaml.cs">
+      <DependentUpon>Win_dvl_MoldHitCount_Q.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Product\MoldData\Win_dvl_Molding_U.xaml.cs">
       <DependentUpon>Win_dvl_Molding_U.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Product\MoldData\Win_dvl_MoldRegularInspectBasis_U.xaml.cs">
+      <DependentUpon>Win_dvl_MoldRegularInspectBasis_U.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Product\MoldData\Win_dvl_MoldRegularInspect_U.xaml.cs">
+      <DependentUpon>Win_dvl_MoldRegularInspect_U.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Product\MoldData\Win_dvl_MoldRepair_Q.xaml.cs">
+      <DependentUpon>Win_dvl_MoldRepair_Q.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Product\MoldData\Win_dvl_MoldRepair_U1.xaml.cs">
+      <DependentUpon>Win_dvl_MoldRepair_U1.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Product\MoldData\Win_dvl_MoldTracking_Q.xaml.cs">
+      <DependentUpon>Win_dvl_MoldTracking_Q.xaml</DependentUpon>
     </Compile>
     <Compile Include="Product\Pop\NoWorkInfo.xaml.cs">
       <DependentUpon>NoWorkInfo.xaml</DependentUpon>
@@ -1001,7 +1028,43 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="Product\MoldData\Win_dvl_InOutWare_Mold_U.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Product\MoldData\Win_dvl_MoldEvaCal_U.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Product\MoldData\Win_dvl_MoldEvalBasis_U.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Product\MoldData\Win_dvl_MoldHitCount_Q.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Product\MoldData\Win_dvl_Molding_U.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Product\MoldData\Win_dvl_MoldRegularInspectBasis_U.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Product\MoldData\Win_dvl_MoldRegularInspect_U.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Product\MoldData\Win_dvl_MoldRepair_Q.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Product\MoldData\Win_dvl_MoldRepair_U1.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Product\MoldData\Win_dvl_MoldTracking_Q.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

@@ -2774,10 +2774,10 @@ namespace WizMes_ANT
                 sqlParameter.Add("sWorkDate", DateTime.Now.ToString("yyyyMMdd"));
                 sqlParameter.Add("sWorkTime", DateTime.Now.ToString("HHmm"));
 
-                sqlParameter.Add("sUserID", MainWindow.CurrentPersonID);
+                sqlParameter.Add("sUserID", MainWindow.CurrentUser);
                 sqlParameter.Add("sWorkComputer", System.Environment.MachineName);
                 sqlParameter.Add("sWorkComputerIP", userhost.ToString());
-                sqlParameter.Add("sWorkLog", "DaeOne" + " " + "[" + MenuID + "]" + " " + MenuName + " " + "(" + objList.ToString() + ")");
+                sqlParameter.Add("sWorkLog", "ANT" + " " + "[" + MenuID + "]" + " " + MenuName + " " + "(" + objList.ToString() + ")");
 
 
                 string[] result = DataStore.Instance.ExecuteProcedure("xp_iWorkLogWPF", sqlParameter, false);

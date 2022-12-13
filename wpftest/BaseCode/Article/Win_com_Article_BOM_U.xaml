@@ -5,14 +5,13 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:WizMes_ANT"
              mc:Ignorable="d" Loaded="UserControl_Loaded"
-             d:DesignHeight="620" d:DesignWidth="820"
-             >
-    <Grid MouseLeftButtonDown="Grid_MouseLeftButtonDown" PreviewMouseLeftButtonDown="Grid_MouseLeftButtonDown">
+             d:DesignHeight="620" d:DesignWidth="820">
+    <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="88*" />
             <RowDefinition Height="532*" />
         </Grid.RowDefinitions>
-        <Grid Grid.Row="0" Background="{DynamicResource WizMes_ANT}"  MouseLeftButtonDown="Grid_MouseLeftButtonDown" PreviewMouseLeftButtonDown="Grid_MouseLeftButtonDown">
+        <Grid Grid.Row="0" Background="{DynamicResource WizMes_ANT}" >
             <Grid.RowDefinitions>
                 <RowDefinition Height="*" />
                 <RowDefinition Height="*" />
@@ -213,7 +212,7 @@
                             <TextBlock Text="{Binding Source={StaticResource tblCancle},Mode=OneWay,Path=Text}" VerticalAlignment="Center"/>
                         </StackPanel>
                     </Button>
-                    <Button x:Name="btnExcel" Grid.Column="3" Margin="1" Click="btnExcel_Click" Visibility="Visible">
+                    <Button x:Name="btnExcel" Grid.Column="3" Margin="1" Click="btnExcel_Click" Visibility="Hidden">
                         <StackPanel Orientation="Horizontal">
                             <Image Source="{DynamicResource btiExcel}" Style="{DynamicResource imgSize}" VerticalAlignment="Center"/>
                             <TextBlock Text="{Binding Source={StaticResource tblExcel},Mode=OneWay,Path=Text}" VerticalAlignment="Center"/>
@@ -238,7 +237,7 @@
                 </Grid>
             </Grid>
         </Grid>
-        <Grid Grid.Row="1">
+        <Grid Grid.Row="1" >
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="1.1*" />
                 <ColumnDefinition Width="auto" />
@@ -281,7 +280,7 @@
                                     HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="1"
                                     SelectedItemChanged="TlvItemList_SelectedItemChanged">
                     <local:TreeListView.Columns>
-
+                        
                         <GridViewColumn Header="품번" Width="auto" >
                             <GridViewColumn.CellTemplate>
 
@@ -309,35 +308,17 @@
                         <GridViewColumn Header="소요량" Width="auto" >
                             <GridViewColumn.CellTemplate>
                                 <DataTemplate>
-                                    <TextBlock Text="{Binding ConvertQty}" TextAlignment="Right" VerticalAlignment="Center" />
+                                    <TextBlock Text="{Binding Qty}" TextAlignment="Right" VerticalAlignment="Center" />
                                 </DataTemplate>
                             </GridViewColumn.CellTemplate>
                         </GridViewColumn>
                         <GridViewColumn Header="단위" Width="auto">
                             <GridViewColumn.CellTemplate>
                                 <DataTemplate>
-                                    <TextBlock Text="{Binding ConvertUnitClssName}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                                </DataTemplate>
-                            </GridViewColumn.CellTemplate>
-                        </GridViewColumn>
-                        
-                        <GridViewColumn Header="소요량_o" Width="auto" >
-                            <GridViewColumn.CellTemplate>
-                                <DataTemplate>
-                                    <TextBlock Text="{Binding Qty}" TextAlignment="Right" VerticalAlignment="Center" />
-                                </DataTemplate>
-                            </GridViewColumn.CellTemplate>
-                        </GridViewColumn>
-                        <GridViewColumn Header="단위_o" Width="auto">
-                            <GridViewColumn.CellTemplate>
-                                <DataTemplate>
                                     <TextBlock Text="{Binding UnitClssName}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                                 </DataTemplate>
                             </GridViewColumn.CellTemplate>
                         </GridViewColumn>
-
-                        
-                        
                         <GridViewColumn Header="중량(Kg)" Width="auto" >
                             <GridViewColumn.CellTemplate>
                                 <DataTemplate>
@@ -441,18 +422,6 @@
                                     <Button x:Name="btnPfParentArticle" Grid.Column="1" Click="btnPfParentArticle_Click">
                                         <Image Source="{DynamicResource btiPlusFind}" />
                                     </Button>
-
-                                    <Viewbox Grid.Column="4"   MouseLeftButtonUp="vbUseClss_MouseLeftButtonUp" Style="{DynamicResource ViewBoxSetMaxMinHeight}">
-                                        <StackPanel  Style="{DynamicResource StackPanelInLabel}" >
-                                            <Viewbox Style="{DynamicResource ViewBoxSetMaxMinHeight}">
-                                                <CheckBox x:Name="chkUseClss"  Style="{DynamicResource CheckBoxInputArea}"/>
-                                            </Viewbox>
-                                            <Viewbox Style="{DynamicResource ViewBoxSetMaxMinHeight}">
-                                                <TextBlock Text="사용안함" Style="{DynamicResource TextBlockInViewBoxInput}" />
-                                            </Viewbox>
-
-                                        </StackPanel>
-                                    </Viewbox>
                                 </Grid>
                                 <Label Grid.Row="1" Grid.Column="0" Style="{DynamicResource LabelInputArea}">
                                     <Viewbox Style="{DynamicResource ViewBoxSetMaxMinHeight}">
@@ -493,18 +462,12 @@
                                         <ColumnDefinition Width="*" />
                                         <ColumnDefinition Width="0.4*" />
                                         <ColumnDefinition Width="0.6*" />
-                                        <ColumnDefinition Width="0.7*" />
-                                        <ColumnDefinition Width="0.7*" />
-                                        <ColumnDefinition Width="*" />
                                         <ColumnDefinition Width="0.6*" />
+                                        <ColumnDefinition Width="1.4*" />
+                                        <ColumnDefinition Width="*" />
                                     </Grid.ColumnDefinitions>
-                                    <TextBox x:Name="txtQty" Grid.Column="5"  Style="{DynamicResource TextBoxInput_Number_Left}" Background="#fff2d2"
-                                             Text="{Binding Qty}" PreviewTextInput="txtQty_PreviewTextInput" Visibility="Visible"/>
-                                    <TextBox x:Name="txtQtyCal" Grid.Column="0"  Style="{DynamicResource TextBoxInput_Number_Left}" Background="#fff2d2" 
-                                             Text="{Binding Qty}" PreviewTextInput="txtQty_PreviewTextInput" TextChanged="TxtQty_TextChanged" SelectionChanged="TxtQtyCal_SelectionChanged" />
-                                    <!--<TextBox x:Name="txtFake" Grid.Column="5"  Style="{DynamicResource TextBoxInput_Number_Left}" Background="#fff2d2"
-                                             Text="{Binding Qty}" PreviewTextInput="txtQty_PreviewTextInput" />-->
-                                    
+                                    <TextBox x:Name="txtQty" Grid.Column="0"  Style="{DynamicResource TextBoxInput_Number_Left}" Background="#fff2d2"
+                                             Text="{Binding Qty}" PreviewTextInput="txtQty_PreviewTextInput"/>
                                     <Viewbox Grid.Column="1"  MouseLeftButtonUp="vbPercent_MouseLeftButtonUp" Style="{DynamicResource ViewBoxSetMaxMinHeight}">
                                         <StackPanel Style="{DynamicResource StackPanelInLabel}">
                                             <CheckBox x:Name="chkPercent" VerticalAlignment="Center" Style="{DynamicResource CheckBoxInputArea}"/>
@@ -513,20 +476,22 @@
                                             <TextBlock Text="%" />
                                         </StackPanel>
                                     </Viewbox>
-                                    <ComboBox x:Name="cboChangedUnitClss" Grid.Column="2"
-                                              DisplayMemberPath="{Binding code_name}" 
-                                              SelectedValuePath="{Binding code_id}"
-                                              Style="{DynamicResource ComboBoxInputString}" Background="White" 
-                                               IsHitTestVisible="False"/> 
-                                    
 
-                                    <ComboBox x:Name="cboUnitClss" Grid.Column="6"
+                                    <ComboBox x:Name="cboUnitClss" Grid.Column="2" 
                                               Style="{DynamicResource ComboBoxInputString}" Background="White" 
-                                              SelectedValue="{Binding UnitClss}" IsHitTestVisible="False" 
-                                              SelectionChanged="CboUnitClss_SelectionChanged"
-                                              />
+                                              SelectedValue="{Binding UnitClss}" IsHitTestVisible="False"/>
 
-                                    
+                                    <Viewbox Grid.Column="4"  MouseLeftButtonUp="vbUseClss_MouseLeftButtonUp" Style="{DynamicResource ViewBoxSetMaxMinHeight}">
+                                        <StackPanel  Style="{DynamicResource StackPanelInLabel}" >
+                                            <Viewbox Style="{DynamicResource ViewBoxSetMaxMinHeight}">
+                                                <CheckBox x:Name="chkUseClss"  Style="{DynamicResource CheckBoxInputArea}"/>
+                                            </Viewbox>
+                                            <Viewbox Style="{DynamicResource ViewBoxSetMaxMinHeight}">
+                                                <TextBlock Text="사용안함" Style="{DynamicResource TextBlockInViewBoxInput}" />
+                                            </Viewbox>
+
+                                        </StackPanel>
+                                    </Viewbox>
                                 </Grid>
 
                                 <Label Grid.Row="3" Grid.Column="0" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Style="{DynamicResource LabelInputArea}">
@@ -619,24 +584,7 @@
                                         <TextBlock Text="조회" Margin="7" />
                                     </Button>
                                 </Grid>
-                                <DataGrid x:Name="dgdExcel"  Grid.Row="3" Margin="1"  IsReadOnly="True" Style="{DynamicResource DataGridSet1}" Visibility="Hidden">
-
-                                    <DataGrid.Columns>
-                                        <DataGridTextColumn Header="LVL" Binding="{Binding LVL}" Width="auto" />
-                                        <DataGridTextColumn Header="품명코드" Binding="{Binding ArticleID}" Width="auto" />
-                                        <DataGridTextColumn Header="품번" Binding="{Binding ChildBuyerArticleNO}" Width="*"  />
-                                        <DataGridTextColumn Header="품명" Binding="{Binding Article}" Width="*"/>
-                                        <DataGridTextColumn Header="소요량" Binding="{Binding Qty, StringFormat=N0}" Width="*"/>
-                                        <DataGridTextColumn Header="단위" Binding="{Binding UnitClssName}" Width="*"/>
-                                        <DataGridTextColumn Header="중량" Binding="{Binding Weight, StringFormat=N0}" Width="*"/>
-                                        <DataGridTextColumn Header="스크랩발생률" Binding="{Binding ScraptRate, StringFormat=N0}" Width="*"/>
-                                        <DataGridTextColumn Header="적용시작일" Binding="{Binding FromDate_CV}" Width="*"/>
-                                        <DataGridTextColumn Header="적용종료일" Binding="{Binding ToDate_CV}" Width="*"/>
-                                        <!--<DataGridTextColumn Header="FirstColumnCV" Binding="{Binding Article}" Width="*"/>-->
-                                    </DataGrid.Columns>
-                                </DataGrid>
-
-                                <DataGrid x:Name="dgdArticleP" Grid.Row="3" Margin="1" Style="{StaticResource DataGridSet1}" Visibility="Visible"
+                                <DataGrid x:Name="dgdArticleP" Grid.Row="3" Margin="1" Style="{StaticResource DataGridSet1}"
                                           SelectionChanged="DgdArticleP_SelectionChanged">
                                     <DataGrid.RowStyle>
                                         <Style TargetType="DataGridRow">

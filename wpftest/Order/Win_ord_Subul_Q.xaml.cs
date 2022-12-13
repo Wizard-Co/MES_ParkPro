@@ -76,7 +76,7 @@ namespace WizMes_ANT
             rbnManageNum.IsChecked = true; // 관리번호 : OrderID
 
             chkIn_NotApprovedIncloud.IsChecked = true; // 입고미승인건 포함
-            chkAutoInOutIteANTcloud.IsChecked = true; // 자동입출건 포함
+            chkAutoInOutItemsIncloud.IsChecked = true; // 자동입출건 포함
 
             // 콤보박스 세팅
             ComboBoxSetting();
@@ -276,12 +276,12 @@ namespace WizMes_ANT
             if (e.Key == Key.Enter)
             {
                 e.Handled = true;
-                MainWindow.pf.ReturnCode(txtCustomer, 0, "");
+                MainWindow.pf.ReturnCode(txtCustomer, 68, "");
             }
         }
         private void btnCustomer_Click(object sender, RoutedEventArgs e)
         {
-            MainWindow.pf.ReturnCode(txtCustomer, 0, "");
+            MainWindow.pf.ReturnCode(txtCustomer, 68, "");
         }
 
         // 품명
@@ -313,12 +313,12 @@ namespace WizMes_ANT
             if (e.Key == Key.Enter)
             {
                 e.Handled = true;
-                MainWindow.pf.ReturnCode(txtArticle, 82, ""); //2021-07-16
+                MainWindow.pf.ReturnCode(txtArticle, (int)Defind_CodeFind.DCF_BuyerArticleNo, ""); //2021-07-16
             }
         }
         private void btnArticle_Click(object sender, RoutedEventArgs e)
         {
-            MainWindow.pf.ReturnCode(txtArticle, 82, "");
+            MainWindow.pf.ReturnCode(txtArticle, (int)Defind_CodeFind.DCF_BuyerArticleNo, "");
         }
 
         // 창고
@@ -828,7 +828,7 @@ namespace WizMes_ANT
             }
             else if (chkArticle.IsChecked == true && txtArticle.Text == "")
             {
-                MessageBox.Show("품명를 입력한 후 검색을 하거나 품명 체크를 해제 후 검색 하세요");
+                MessageBox.Show("품번를 입력한 후 검색을 하거나 품번 체크를 해제 후 검색 하세요");
                 return;
             }
 
@@ -869,8 +869,8 @@ namespace WizMes_ANT
                 sqlParameter.Add("nChkCustom", chkCustomer.IsChecked == true ? 1 : 0);
                 sqlParameter.Add("sCustomID", chkCustomer.IsChecked == true && txtCustomer.Tag != null ? txtCustomer.Tag.ToString() : "");
 
-                sqlParameter.Add("nChkArticleID", chkArticle.IsChecked == true ? 1 : 0);
-                sqlParameter.Add("sArticleID", chkArticle.IsChecked == true && txtArticle.Tag != null ? txtArticle.Tag.ToString() : "");
+                sqlParameter.Add("nChkArticleID", 0);
+                sqlParameter.Add("sArticleID", "");
                 sqlParameter.Add("nChkOrder", chkManageNum.IsChecked == true ? 2 : 0); //이 친구는 주석이라서 무슨 값이 들어가도...
 
                 sqlParameter.Add("sOrder", txtManageNum.Text);
@@ -886,7 +886,7 @@ namespace WizMes_ANT
                 sqlParameter.Add("nChkReqID", chkOrderNum.IsChecked == true ? 1 : 0);
                 sqlParameter.Add("sReqID", chkOrderNum.IsChecked == true && txtOrderNum.Tag != null ? txtOrderNum.Tag.ToString() : "");
                 sqlParameter.Add("incNotApprovalYN", chkIn_NotApprovedIncloud.IsChecked == true ? "Y" : "N");
-                sqlParameter.Add("incAutoInOutYN", chkAutoInOutIteANTcloud.IsChecked == true ? "Y" : "N");
+                sqlParameter.Add("incAutoInOutYN", chkAutoInOutItemsIncloud.IsChecked == true ? "Y" : "N");
 
                 sqlParameter.Add("sProductYN", chkArticleGroup.IsChecked == true && cboArticleGroup.SelectedValue.Equals("3") ? "Y" : "");    // 제품으로 조회시 Y 그게 아니면 빈값
                 sqlParameter.Add("nMainItem", chkMainInterestItemsSee.IsChecked == true ? 1 : 0);
@@ -894,8 +894,8 @@ namespace WizMes_ANT
                 sqlParameter.Add("nSupplyType", chkSupplyType.IsChecked == true ? 1 : 0);
                 sqlParameter.Add("sSupplyType", chkSupplyType.IsChecked == true && cboSupplyType.SelectedValue != null ? cboSupplyType.SelectedValue.ToString() : "");
 
-                sqlParameter.Add("nBuyerArticleNo", 0);
-                sqlParameter.Add("BuyerArticleNo", "");
+                sqlParameter.Add("nBuyerArticleNo", chkArticle.IsChecked == true ? 1 : 0);
+                sqlParameter.Add("BuyerArticleNo", chkArticle.IsChecked == true && !txtArticle.Text.Trim().Equals("") ? @Escape(txtArticle.Text) : "");
 
                 DataSet ds = DataStore.Instance.ProcedureToDataSet_LogWrite("xp_Subul_sSubul", sqlParameter, true, "R");
 

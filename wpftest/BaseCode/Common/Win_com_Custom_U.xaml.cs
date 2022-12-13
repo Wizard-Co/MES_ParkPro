@@ -6,6 +6,7 @@ using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using WizMes_ANT.PopUp;
 using WizMes_ANT.PopUP;
 
 namespace WizMes_ANT
@@ -282,28 +283,42 @@ namespace WizMes_ANT
         private void btnSearch_Click(object sender, RoutedEventArgs e)
         {
             //검색버튼 비활성화
-            btnSearch.IsEnabled = false;
+            //btnSearch.IsEnabled = false;
 
-            Dispatcher.BeginInvoke(new Action(() =>
+            rowNum = 0;
 
+            using (Loading lw = new Loading(re_Search))
             {
-                Thread.Sleep(2000);
+                lw.ShowDialog();
+            }
 
-                //로직
-                ClearData();
-                rowNum = 0;
-                re_Search(rowNum);
-
-            }), System.Windows.Threading.DispatcherPriority.Background);
-
-
-
-            Dispatcher.BeginInvoke(new Action(() =>
-
+            if (dgdCustom.Items.Count == 0)
             {
-                btnSearch.IsEnabled = true;
+                this.DataContext = null;
+                MessageBox.Show("조회된 데이터가 없습니다.");
+                return;
+            }
 
-            }), System.Windows.Threading.DispatcherPriority.Background);
+            //Dispatcher.BeginInvoke(new Action(() =>
+
+            //{
+            //    Thread.Sleep(2000);
+
+            //    //로직
+            //    ClearData();
+            //    rowNum = 0;
+            //    re_Search(rowNum);
+
+            //}), System.Windows.Threading.DispatcherPriority.Background);
+
+
+
+            //Dispatcher.BeginInvoke(new Action(() =>
+
+            //{
+            //    btnSearch.IsEnabled = true;
+
+            //}), System.Windows.Threading.DispatcherPriority.Background);
         }
 
         //// 저장
@@ -333,6 +348,17 @@ namespace WizMes_ANT
         //저장
         private void btnSave_Click(object sender, RoutedEventArgs e)
         {
+
+            using (Loading lw = new Loading(beSave))
+            {
+
+                lw.ShowDialog();
+            }
+            //re_Search(rowNum);
+        }
+
+        private void beSave()
+        {
             if (SaveData(txtCustomID.Text, strFlag))
             {
                 CanBtnControl();
@@ -347,6 +373,8 @@ namespace WizMes_ANT
 
                     rowNum = 0;
                     re_Search(rowNum);
+                    return;
+
                 }
                 else
                 {
@@ -354,35 +382,25 @@ namespace WizMes_ANT
                 }
             }
 
-            //int i = 0;
-
-            //foreach (Win_com_Custom_U_CodeView WMRIC in dgdCustom.Items)
-            //{
-
-            //    string a = WMRIC.CustomID.ToString();
-            //    string b = AASS;
-
-
-            //    if (a == b)
-            //    {
-            //        System.Diagnostics.Debug.WriteLine("데이터 같음");
-
-            //        break;
-            //    }
-            //    else
-            //    {
-            //        System.Diagnostics.Debug.WriteLine("다름");
-            //    }
-
-            //    i++;
-            //}
-
-            //rowNum = i;
-            re_Search(rowNum);
         }
 
         //취소
         private void btnCancel_Click(object sender, RoutedEventArgs e)
+        {
+            using (Loading lw = new Loading(beCancel))
+            {
+                lw.ShowDialog();
+            }
+
+            if (dgdCustom.Items.Count == 0)
+            {
+                this.DataContext = null;
+                MessageBox.Show("조회된 데이터가 없습니다.");
+                return;
+            }
+        }
+
+        private void beCancel()
         {
             ClearData();
 
@@ -442,6 +460,21 @@ namespace WizMes_ANT
             }
 
             rowNum = 0;
+        }
+
+        private void re_Search()
+        {
+            FillGrid();
+
+            if (dgdCustom.Items.Count > 0)
+            {
+                dgdCustom.SelectedIndex = rowNum;
+            }
+            else
+            {
+                MessageBox.Show("조회된 데이터가 없습니다.");
+                return;
+            }
         }
 
         #endregion

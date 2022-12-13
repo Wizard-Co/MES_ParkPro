@@ -812,10 +812,6 @@ namespace WizMes_ANT
                 sqlParameter.Add("ChkArticle", chkArticle.IsChecked == true ? 1 : 0);
                 sqlParameter.Add("ArticleID", chkArticle.IsChecked == true && txtArticle.Tag != null && txtArticle.Text.Trim().Equals("") == false ? txtArticle.Tag.ToString() : "");
 
-                sqlParameter.Add("nChkArticleNo", chkArticleNo.IsChecked == true ? 1 : 0);
-                sqlParameter.Add("ArticleNoID", txtArticleNo.Tag != null && !txtArticleNo.Text.Trim().Equals("") ? txtArticleNo.Tag.ToString() : "");
-
-
                 sqlParameter.Add("ChkLabelID", chkLotIDSrh.IsChecked == true ? 1 : 0);
                 sqlParameter.Add("LabelID", chkLotIDSrh.IsChecked == true && !txtLotIDSrh.Text.Trim().Equals("") ? txtLotIDSrh.Text : "");
 
@@ -1933,53 +1929,6 @@ namespace WizMes_ANT
                 cboWareHouse.IsEnabled = true;
                 cboWareHouse.Focus();
             }
-        }
-
-        //품명 라벨체크
-        private void lblArticleNo_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
-        {
-            if (chkArticleNo.IsChecked == true)
-            {
-                chkArticleNo.IsChecked = false;
-            }
-            else
-            {
-                chkArticleNo.IsChecked = true;
-            }
-        }
-
-        //품명 체크 
-        private void chkArticleNo_Checked(object sender, RoutedEventArgs e)
-        {
-            chkArticleNo.IsChecked = true;
-
-            txtArticleNo.IsEnabled = true;
-
-            btnPfArticleNo.IsEnabled = true;
-        }
-        //품명 안체크
-        private void chkArticleNo_Unchecked(object sender, RoutedEventArgs e)
-        {
-            chkArticleNo.IsChecked = false;
-
-            txtArticleNo.IsEnabled = false;
-
-            btnPfArticleNo.IsEnabled = false;
-        }
-        //품명 키다운 
-        private void txtArticleNo_KeyDown(object sender, KeyEventArgs e)
-        {
-            if (e.Key == Key.Enter)
-            {
-                e.Handled = true;
-                MainWindow.pf.ReturnCode(txtArticleNo, 7077, txtArticleNo.Text);
-            }
-        }
-
-        //품명 플러스파인더
-        private void btnPfArticleNoSrh_Click(object sender, RoutedEventArgs e)
-        {
-            MainWindow.pf.ReturnCode(txtArticleNo, 7077, txtArticleNo.Text);
         }
     }
 

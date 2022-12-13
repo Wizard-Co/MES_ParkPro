@@ -769,7 +769,7 @@
                         </Grid>
                     </TabItem>
 
-                    
+
                 </TabControl>
                 <Grid x:Name="grdInputsub" Grid.Row="1" >
                     <Grid.RowDefinitions>
@@ -780,7 +780,7 @@
                         <RowDefinition Height="*" />
                     </Grid.RowDefinitions>
                     <Grid.ColumnDefinitions>
-                        
+
 
                         <ColumnDefinition Width="0.5*" />
                         <ColumnDefinition Width="0.5*" />
@@ -791,7 +791,7 @@
                         <ColumnDefinition Width="0.8*" />
                         <ColumnDefinition Width="3.2*" />
                         <ColumnDefinition Width="0.5*" />
-                        
+
                     </Grid.ColumnDefinitions>
                     <Label Grid.Row="0" Grid.Column="5" Style="{DynamicResource LabelInputArea}" >
                         <Viewbox Style="{DynamicResource ViewBoxSetMaxMinHeight}">
@@ -808,14 +808,14 @@
                                            VerticalContentAlignment="Center" Visibility="Hidden"/>
                     <ComboBox x:Name="cboWorkLevel" Grid.Row="4" Grid.Column="5" Margin="1" HorizontalContentAlignment="Center" 
                                               VerticalContentAlignment="Center" Visibility="Hidden"/>
-                    
+
                     <Grid Grid.Row="0" Grid.Column="6" Grid.RowSpan="5">
                         <Grid.RowDefinitions>
                             <RowDefinition Height="6*" />
                             <RowDefinition Height="*" />
                         </Grid.RowDefinitions>
-                        
-                        
+
+
                         <DataGrid x:Name="dgdProcess" Grid.RowSpan="2" Style="{DynamicResource DataGridSet1}">
                             <DataGrid.RowStyle>
                                 <Style TargetType="DataGridRow">
@@ -927,8 +927,8 @@
                 </Grid>
 
             </Grid>
-            
-            
+
+
         </Grid>
     </Grid>
 </UserControl>

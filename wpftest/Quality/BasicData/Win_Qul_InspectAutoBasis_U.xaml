@@ -445,7 +445,8 @@
                 <Grid.RowDefinitions>
                     <RowDefinition Height="131*"/>
                     <RowDefinition Height="25*"/>
-                    <RowDefinition Height="390*"/>
+                    <RowDefinition Height="365*"/>
+                    <RowDefinition Height="25*"/>
                 </Grid.RowDefinitions>
                 <GroupBox x:Name="gbxInput" Grid.Row="0" IsHitTestVisible="False">
                     <Grid>
@@ -524,7 +525,7 @@
                         </Label>
                         <TextBox x:Name="txtProcess" Grid.Row="3" Grid.Column="1" IsReadOnly="True" 
                                  Text="{Binding Process}" Tag="{Binding ProcessID}" Style="{DynamicResource TextBoxInputNecessary_Q}"
-                                 Keyboard.KeyDown="txtProcess_KeyDown"/>
+                                 Keyboard.KeyDown="txtProcess_KeyDown" Height="23" Margin="1,0" VerticalAlignment="Bottom"/>
                         <Button x:Name="btnPfProcess" Grid.Row="3" Grid.Column="2" Visibility="Hidden"
                                 Click="btnPfProcess_Click">
                             <Image Source="{DynamicResource btiPlusFind}" />
@@ -543,7 +544,7 @@
                             </Viewbox>
                         </Label>
                         <TextBox x:Name="txtCarModel" Grid.Row="4" Grid.Column="1" Style="{DynamicResource TextBoxInputArea_Q}"
-                                 Text="{Binding Model}" Tag="{Binding BuyerModelID}" Keyboard.KeyDown="TxtCarModel_KeyDown"/>
+                                 Text="{Binding Model}" Tag="{Binding BuyerModelID}" Keyboard.KeyDown="TxtCarModel_KeyDown" Height="23" Margin="1,0" VerticalAlignment="Bottom"/>
                         <Button x:Name="btnPfCarModel" Grid.Row="4" Grid.Column="2" 
                                 Click="BtnPfCarModel_Click">
                             <Image Source="{DynamicResource btiPlusFind}" />
@@ -844,6 +845,14 @@
                             ,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}"/>
                     </DataGrid.Columns>
                 </DataGrid>
+                <Grid Grid.Row="3">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+                    <Viewbox Grid.Row="0" HorizontalAlignment="Left" Style="{DynamicResource ViewBoxSetMaxMinHeight_Q}">
+                        <TextBlock Text="☞ 관리구분 : S-특별특성항목, D-일상검사항목, P-정기검사항목 ex) SP-특별특성_정기검사항목 입니다." Foreground="Blue" Style="{DynamicResource TextBlockInViewBoxOneLine_Q}"/>
+                    </Viewbox>
+                </Grid>
             </Grid>
         </Grid>
     </Grid>

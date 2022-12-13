@@ -8,7 +8,6 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using WizMes_ANT.PopUP;
-using WizMes_ANT.PopUp;
 
 namespace WizMes_ANT
 {
@@ -229,70 +228,6 @@ namespace WizMes_ANT
             }
         }
 
-        //최종고객사 라벨 클릭시
-        private void lblInCustomer_Click(object sender, MouseButtonEventArgs e)
-        {
-            if (chkInCustomer.IsChecked == true)
-            {
-                chkInCustomer.IsChecked = false;
-                txtInCustomer.IsEnabled = false;
-                btnInCustomer.IsEnabled = false;
-            }
-            else
-            {
-                chkInCustomer.IsChecked = true;
-                txtInCustomer.IsEnabled = true;
-                btnInCustomer.IsEnabled = true;
-                txtInCustomer.Focus();
-            }
-        }
-
-        //최종고객사 체크
-        private void ChkInCustomer_Checked(object sender, RoutedEventArgs e)
-        {
-            chkInCustomer.IsChecked = true;
-            txtInCustomer.IsEnabled = true;
-            btnInCustomer.IsEnabled = true;
-            txtInCustomer.Focus();
-        }
-
-        //최종고객사 체크 해제
-        private void ChkInCustomer_Unchecked(object sender, RoutedEventArgs e)
-        {
-            chkInCustomer.IsChecked = false;
-            txtInCustomer.IsEnabled = false;
-            btnInCustomer.IsEnabled = false;
-        }
-
-        //최종고객사-조건 텍스트박스 키다운 이벤트
-        private void txtInCustomer_KeyDown(object sender, KeyEventArgs e)
-        {
-            try
-            {
-                if (e.Key == Key.Enter)
-                {
-                    pf.ReturnCode(txtInCustomer, 0, "");
-                }
-            }
-            catch (Exception ee)
-            {
-                MessageBox.Show("오류지점 - txtInCustomer_KeyDown : " + ee.ToString());
-            }
-        }
-
-        //최종고객사-조건 플러스파인더 버튼
-        private void btnInCustomer_Click(object sender, RoutedEventArgs e)
-        {
-            try
-            {
-                pf.ReturnCode(txtInCustomer, 0, "");
-            }
-            catch (Exception ee)
-            {
-                MessageBox.Show("오류지점 - btnInCustomer_Click : " + ee.ToString());
-            }
-        }
-
         //거래처 라벨 클릭시
         private void lblCustomer_Click(object sender, MouseButtonEventArgs e)
         {
@@ -327,6 +262,8 @@ namespace WizMes_ANT
             txtCustomer.IsEnabled = false;
             btnCustomer.IsEnabled = false;
         }
+
+
 
         //거래처-조건 텍스트박스 키다운 이벤트
         private void txtCustomer_KeyDown(object sender, KeyEventArgs e)
@@ -401,7 +338,7 @@ namespace WizMes_ANT
             {
                 if (e.Key == Key.Enter)
                 {
-                    pf.ReturnCode(txtArticle, 77, txtArticle.Text);
+                    pf.ReturnCode(txtArticle, 81, txtArticle.Text);
                 }
             }
             catch (Exception ee)
@@ -410,12 +347,12 @@ namespace WizMes_ANT
             }
         }
 
-        //품명 플러스파인더 버튼
+        //품명 플러스파인더 버튼(품번으로 변경요청, 2020.03.26, 장가빈)
         private void btnArticle_Click(object sender, RoutedEventArgs e)
         {
             try
             {
-                pf.ReturnCode(txtArticle, 77, txtArticle.Text);
+                pf.ReturnCode(txtArticle, 81, txtArticle.Text);
             }
             catch (Exception ee)
             {
@@ -457,29 +394,13 @@ namespace WizMes_ANT
         //라디오버튼 OrderNo 버튼 클릭
         private void rbnOrderNo_Click(object sender, RoutedEventArgs e)
         {
-            Check_bdrOrder();
+            //hidden 2020.01.25 안씀
         }
 
         //라디오버튼 OrderID 버튼 클릭
         private void rbnManageNum_Click(object sender, RoutedEventArgs e)
         {
-            Check_bdrOrder();
-        }
-
-        private void Check_bdrOrder()
-        {
-            if (rbnManageNum.IsChecked == true)
-            {
-                tbkRadioOptionNum.Text = " 관리번호";
-                dgdtxtcol_ManageNum.Visibility = Visibility.Visible;
-                dgdtxtcol_OrderNo.Visibility = Visibility.Hidden;
-            }
-            else if (rbnOrderNo.IsChecked == true)
-            {
-                tbkRadioOptionNum.Text = " Order No";
-                dgdtxtcol_ManageNum.Visibility = Visibility.Hidden;
-                dgdtxtcol_OrderNo.Visibility = Visibility.Visible;
-            }
+            //hidden 2020.01.25 안씀
         }
         #endregion
 
@@ -538,53 +459,34 @@ namespace WizMes_ANT
         //삭제버튼 클릭
         private void btnDelete_Click(object sender, RoutedEventArgs e)
         {
-            using (Loading lw = new Loading(beDelete))
+            try
             {
-                lw.ShowDialog();
-            }
-        }
 
-        private void beDelete()
-        {
-            //삭제버튼 비활성화
-            btnDelete.IsEnabled = false;
-
-            Dispatcher.BeginInvoke(new Action(() =>
-            {
-                //로직
-                try
+                if (lstOutwarePrint.Count == 0)
                 {
-                    if (lstOutwarePrint.Count == 0)
+                    MessageBox.Show("삭제할 데이터가 지정되지 않았습니다. 삭제 데이터를 지정하고 눌러주세요.");
+                }
+                else
+                {
+                    if (MessageBox.Show("선택하신 항목을 삭제하시겠습니까?", "삭제 전 확인", MessageBoxButton.YesNo) == MessageBoxResult.Yes)
                     {
-                        MessageBox.Show("삭제할 데이터가 지정되지 않았습니다. 삭제 데이터를 지정하고 눌러주세요.");
-                    }
-                    else
-                    {
-                        if (MessageBox.Show("선택하신 항목을 삭제하시겠습니까?", "삭제 전 확인", MessageBoxButton.YesNo) == MessageBoxResult.Yes)
+
+                        foreach (Win_ord_OutWare_Scan_CodeView RemoveData in lstOutwarePrint)
                         {
-
-                            foreach (Win_ord_OutWare_Scan_CodeView RemoveData in lstOutwarePrint)
+                            if (DeleteData(RemoveData.OutwareID))
                             {
-                                if (DeleteData(RemoveData.OutwareID))
-                                {
-                                    rowNum = 0;
-                                    re_Search(rowNum);
-                                }
+                                rowNum = 0;
+                                re_Search(rowNum);
                             }
-                            lstOutwarePrint.Clear();
                         }
+                        lstOutwarePrint.Clear();
                     }
                 }
-                catch (Exception ee)
-                {
-                    MessageBox.Show("오류지점 - btnDelete_Click : " + ee.ToString());
-                }
-            }), System.Windows.Threading.DispatcherPriority.Background);
-
-            Dispatcher.BeginInvoke(new Action(() =>
+            }
+            catch (Exception ee)
             {
-                btnDelete.IsEnabled = true;
-            }), System.Windows.Threading.DispatcherPriority.Background);
+                MessageBox.Show("오류지점 - btnDelete_Click : " + ee.ToString());
+            }
         }
 
         //닫기버튼 클릭
@@ -604,85 +506,54 @@ namespace WizMes_ANT
         //검색버튼 클릭
         private void btnSearch_Click(object sender, RoutedEventArgs e)
         {
-            using (Loading lw = new Loading(beSearch))
+            try
             {
-                lw.ShowDialog();
+                rowNum = 0;
+                re_Search(rowNum);
             }
-        }
-
-        private void beSearch()
-        {
-            //검색버튼 비활성화
-            btnSearch.IsEnabled = false;
-
-            Dispatcher.BeginInvoke(new Action(() =>
+            catch (Exception ee)
             {
-                //로직
-                try
-                {
-                    rowNum = 0;
-                    re_Search(rowNum);
-                }
-                catch (Exception ee)
-                {
-                    MessageBox.Show("오류지점 - btnSearch_Click : " + ee.ToString());
-                }
-            }), System.Windows.Threading.DispatcherPriority.Background);
-
-            Dispatcher.BeginInvoke(new Action(() =>
-            {
-                btnSearch.IsEnabled = true;
-            }), System.Windows.Threading.DispatcherPriority.Background);
+                MessageBox.Show("오류지점 - btnSearch_Click : " + ee.ToString());
+            }
         }
 
         //저장버튼 클릭
         private void btnSave_Click(object sender, RoutedEventArgs e)
         {
-            using (Loading lw = new Loading(beSave))
+            try
             {
-                lw.ShowDialog();
-            }
-        }
+                CantBtnControl();           //버튼 컨트롤
 
-        private void beSave()
-        {
-            //저장버튼 비활성화
-            btnSave.IsEnabled = false;
-
-            Dispatcher.BeginInvoke(new Action(() =>
-            {
-                //로직
-                try
+                if (SaveData(strFlag))
                 {
-                    CantBtnControl();           //버튼 컨트롤
-
-                    if (SaveData(strFlag))
+                    if (strFlag.Equals("I"))
                     {
-                        if (strFlag.Equals("I"))
-                        {
-                            var outwareCount = dgdOutware.Items.Count;
-                            rowNum = outwareCount;
-                        }
-                        
-                        //2021-06-02 
-                        TextBoxClear(); // 저장했으면 클리어 해야지
-                                       
-                        strFlag = string.Empty;
+                        var outwareCount = dgdOutware.Items.Count;
 
-                        re_Search(rowNum);
-                        EventStatus = false;
+                        rowNum = outwareCount;
+                        //re_Search(rowNum);
+
                     }
-                }
-                catch (Exception ee)
-                {
-                    MessageBox.Show("오류지점 - btnSave_Click : " + ee.ToString());
-                }
-            }), System.Windows.Threading.DispatcherPriority.Background);
+                    //else if (strFlag.Equals("U"))
+                    //{
+                    //    re_Search(rowNum);
+                    //}
+                    //2021-06-02 
+                    TextBoxClear(); // 저장했으면 클리어 해야지
+                    //re_Search(rowNum);
+                    strFlag = string.Empty;
+                    //TextBoxClear(); //20200526 이거 때문에 거래처가 클리어 되서 수정할때 테그값이 없었음
 
-            Dispatcher.BeginInvoke(new Action(() =>
+
+                    re_Search(rowNum);
+                    EventStatus = false;
+                }
+
+            }
+            catch (Exception ee)
             {
-                btnSave.IsEnabled = true;
-            }), System.Windows.Threading.DispatcherPriority.Background);
+                MessageBox.Show("오류지점 - btnSave_Click : " + ee.ToString());
+            }
         }
 
         //취소버튼 클릭
@@ -702,6 +573,7 @@ namespace WizMes_ANT
                 {
                     re_Search(rowNum);
                 }
+
                 strFlag = string.Empty;
             }
             catch (Exception ee)
@@ -1305,10 +1177,10 @@ namespace WizMes_ANT
 
                             txtKCustom.Text = DR["CustomName"].ToString();
                             txtKCustom.Tag = DR["CustomID"].ToString();
-                            txtOutCustom.Text = DR["DvlyPlace"].ToString();
-                            txtOutCustom.Tag = DR["DvlyPlaceID"].ToString();
-                            txtBuyerName.Text = DR["InCustomName"].ToString();
-                            txtBuyerName.Tag = DR["InCustomID"].ToString();
+                            txtOutCustom.Text = DR["CustomName"].ToString();
+                            txtOutCustom.Tag = DR["CustomID"].ToString();
+                            txtBuyerName.Text = DR["CustomName"].ToString();
+                            txtBuyerName.Tag = DR["CustomID"].ToString();
                             if (txtArticle_InGroupBox.Text == string.Empty) { txtArticle_InGroupBox.Text = DR["Article"].ToString(); }
                             if (txtArticle_InGroupBox.Tag == null)
                             {
@@ -1454,11 +1326,15 @@ namespace WizMes_ANT
                 sqlParameter.Add("EDate", chkOutwareDay.IsChecked == true ?
                                             dtpToDate.ToString().Substring(0, 10).Replace("-", "") : "");
 
-                sqlParameter.Add("ChkCustomID", chkCustomer.IsChecked == true ? 1 : 0);
-                sqlParameter.Add("CustomID", chkCustomer.IsChecked == true ? (txtCustomer.Tag == null ? "" : txtCustomer.Tag.ToString()) : "");
+                //sqlParameter.Add("ChkCustomID", chkCustomer.IsChecked == true ?
+                //                                (txtCustomer.Tag.ToString() != null ? 1 : 2) : 0);
 
-                sqlParameter.Add("ChkInCustomID", chkInCustomer.IsChecked == true ? 1 : 0);
-                sqlParameter.Add("InCustomID", chkInCustomer.IsChecked == true ? (txtInCustomer.Tag == null ? "" : txtInCustomer.Tag.ToString()) : "");
+                sqlParameter.Add("ChkCustomID", chkCustomer.IsChecked == true ? (txtCustomer.Tag != null ? 1 : 2) : 0);
+
+                //sqlParameter.Add("CustomID", chkCustomer.IsChecked == true ? (txtCustomer.Tag.ToString()) : "");
+
+                sqlParameter.Add("CustomID", chkCustomer.IsChecked == true ? (txtCustomer.Tag == null ? "" : txtCustomer.Tag) : "");
+
 
                 sqlParameter.Add("Custom", txtCustomer.Text == "" ? "" : txtCustomer.Text);
 
@@ -2174,10 +2050,16 @@ namespace WizMes_ANT
                         DataRow DR = dt.Rows[0];
                         txtKCustom.Text = DR["KCustom"].ToString(); //20210526
                         txtKCustom.Tag = DR["CustomID"].ToString();
-                        txtBuyerName.Text = DR["InKCustom"].ToString();
-                        txtBuyerName.Tag = DR["InCustomID"].ToString();
-                        txtOutCustom.Text = DR["DvlyPlace"].ToString();
-                        txtOutCustom.Tag = DR["DvlyPlaceID"].ToString();
+                        txtBuyerName.Text = DR["KCustom"].ToString();
+                        txtBuyerName.Tag = DR["CustomID"].ToString();
+                        txtOutCustom.Text = DR["KCustom"].ToString();
+                        txtOutCustom.Tag = DR["CustomID"].ToString();
+                        //if (txtKCustom.Text == string.Empty) { txtKCustom.Text = DR["KCustom"].ToString(); }
+                        //if (txtKCustom.Tag == null) { txtKCustom.Tag = DR["CustomID"].ToString(); }
+                        //if (txtBuyerName.Text == string.Empty) { txtBuyerName.Text = DR["KCustom"].ToString(); }
+                        //if (txtBuyerName.Tag == null) { txtBuyerName.Tag = DR["CustomID"].ToString(); }
+                        //if (txtOutCustom.Text == string.Empty) { txtOutCustom.Text = DR["KCustom"].ToString(); }
+                        //if (txtOutCustom.Tag == null) { txtOutCustom.Tag = DR["CustomID"].ToString(); }
 
                         if (txtArticle_InGroupBox.Text == string.Empty) { txtArticle_InGroupBox.Text = DR["Article"].ToString(); }
                         if (txtArticle_InGroupBox.Tag == null)
@@ -2187,12 +2069,14 @@ namespace WizMes_ANT
                         }
 
                         if (txtArticleID_InGroupBox.Text == string.Empty)
+                        {
                             txtArticleID_InGroupBox.Text = DR["ArticleID"].ToString();
+                        }
 
-                        txtOutRoll.Text = DR["OutSumRoll"].ToString();
-                        txtOutQty.Text = DR["OutSumQty"].ToString();
                         //if (txtOutQty.Text == string.Empty) { txtOutQty.Text = DR["OrderQty"].ToString(); }
 
+                        //txtBuyerModel.Text = DR["BuyerModel"].ToString();
+                        //txtBuyerModel.Tag = DR["BuyerModelID"].ToString();
                         txtBuyerArticleNo.Text = DR["BuyerArticleNo"].ToString();
 
                     }
@@ -2666,7 +2550,7 @@ namespace WizMes_ANT
             txtBuyerName.Tag = null;
             txtRemark.Text = string.Empty;
             txtOutCustom.Text = string.Empty;
-            txtOutCustom.Tag = null;
+
         }
 
         private void SumScanQty()
