@@ -456,7 +456,7 @@
                                                ToolTipService.ShowDuration="2000" />
                                     </Viewbox>
                                     <Viewbox Style="{DynamicResource ViewBoxSetMaxMinHeight}" >
-                                        <TextBlock x:Name="TextBlockMachineMapping" Grid.Column="0" Text="공정설비 매핑" 
+                                        <TextBlock x:Name="TextBlockMachineMapping" Grid.Column="0" Text="공정호기 매핑" 
                                                    Style="{DynamicResource TextBlockInViewBoxInput}"/>
                                     </Viewbox>
                                 </StackPanel>
