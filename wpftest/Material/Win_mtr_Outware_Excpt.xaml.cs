@@ -6,6 +6,8 @@ using System.Data.SqlClient;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using System.Windows.Media;
+using WizMes_ANT.PopUp;
 using WizMes_ANT.PopUP;
 
 namespace WizMes_ANT
@@ -15,6 +17,7 @@ namespace WizMes_ANT
     /// </summary> 
     public partial class Win_mtr_Outware_Excpt : UserControl
     {
+        Lib lib = new Lib();
         private int rowNum = 0;
         private string strFlag = string.Empty;
         private string chkLabelID;
@@ -40,6 +43,9 @@ namespace WizMes_ANT
             cboOutClssSrh.SelectedIndex = 0;
 
             tgnMoveByQty_Click(sender, e);
+
+            AccessGrantUnitPrice();
+            //InputMethod.SetIsInputMethodEnabled(this.txtAmount, false);
         }
 
         #region 추가, 수정 / 저장 후, 취소 메서드
@@ -883,22 +889,30 @@ namespace WizMes_ANT
             if (e.Key == Key.Enter)
             {
                 e.Handled = true;
-                MainWindow.pf.ReturnCode(txtArticle, (int)Defind_CodeFind.DCF_BuyerArticleNo, "");
+                MainWindow.pf.ReturnCode(txtArticle, (int)Defind_CodeFind.DCF_Article, "");
 
                 if (txtArticle.Tag != null)
                 {
                     getArticleInfo(txtArticle.Tag.ToString());
+
+                    txtBuyerAritcle.Text = txtArticle.Text;
+                    txtBuyerAritcle.Tag = txtArticle.Tag;
+
                 }
+
             }
         }
         // 품번 플러스파인더 버튼 이벤트
         private void btnPfArticle_Click(object sender, RoutedEventArgs e)
         {
-            MainWindow.pf.ReturnCode(txtArticle, (int)Defind_CodeFind.DCF_BuyerArticleNo, "");
+            MainWindow.pf.ReturnCode(txtArticle, (int)Defind_CodeFind.DCF_Article, "");
 
             if (txtArticle.Tag != null)
             {
                 getArticleInfo(txtArticle.Tag.ToString());
+
+                txtBuyerAritcle.Text = txtArticle.Text;
+                txtBuyerAritcle.Tag = txtArticle.Tag;
             }
         }
 
@@ -1179,6 +1193,7 @@ namespace WizMes_ANT
                         label.Num = num;
 
                         label.Qty = stringFormatN0(txtBarCode.Text);
+                        //label.UnitClssName = cboUnitClss.ToString();
                         dgdSub.Items.Add(label);
 
                         // 데이터 그리드 등록 후 바코드 초기화
@@ -1744,7 +1759,11 @@ namespace WizMes_ANT
 
         private void re_Search(int rowNum)
         {
-            FillGrid();
+            //FillGrid();
+            using (Loading lw = new Loading(FillGrid))
+            {
+                lw.ShowDialog();
+            }
 
             if (dgdMain.Items.Count > 0)
             {
@@ -1884,6 +1903,7 @@ namespace WizMes_ANT
                                 BuyerID = dr["BuyerID"].ToString(),
                                 BuyerName = dr["BuyerName"].ToString(),
                                 OutCustom = dr["OutCustom"].ToString(),
+                                DvlyCustom = dr["DvlyCustom"].ToString(),
 
                                 OutSubType = dr["OutSubType"].ToString() // OutSubType - 1:ID기준, 2:수량기준, 3:부분처리
                             };
@@ -1960,6 +1980,7 @@ namespace WizMes_ANT
                                 LabelGubun = dr["LabelGubun"].ToString(), // 2 - ?, 3 - ?, 7 - 공정이동ID : wk_LabelPrint (라벨 발행 테이블) 에서 가져오는듯??
                                 ArticleID = dr["ArticleID"].ToString(),
                                 Qty = stringFormatN0(dr["OutQty"]),
+
                                 LabelGubunName = dr["LabelGubunName"].ToString(),
 
                                 //InspectApprovalYN = dr["InspectApprovalYN"].ToString(),
@@ -1967,6 +1988,7 @@ namespace WizMes_ANT
                                 Article = dr["Article"].ToString(),
                                 //ProcessID = dr["ProcessID"].ToString(),
                                 //CustomID = dr["CustomID"].ToString(),
+                                UnitPrice = stringFormatN0(dr["UnitPrice"]),
 
                                 //Custom = dr["Custom"].ToString(),
                                 UnitClss = dr["UnitClss"].ToString(),
@@ -2386,7 +2408,7 @@ namespace WizMes_ANT
                     sqlParameter.Add("OutType", 0); // CM_Code 테이블의 OUTTYP - 출고방식 : 0 : 수동 / 1 : 검사기준 자동 / 2: 기타출고 / 3 : PDA출고 > 사무실에서 하는거니까 0!!!!
                     sqlParameter.Add("OutSubType", 2);//tgnMoveByID.IsChecked == false ? (tgnMoveByQty.IsChecked == true ? "2" : "3") : "1"); // 1 : ID기준, 2 : 수량기준, 3 : 부분처리
 
-                    sqlParameter.Add("Amount", 0);
+                    sqlParameter.Add("Amount", ConvertDouble(txtAmount.Text));
                     sqlParameter.Add("VatAmount", 0);
                     sqlParameter.Add("VatINDYN", "");
 
@@ -2394,6 +2416,7 @@ namespace WizMes_ANT
                     sqlParameter.Add("ToLocID", ""); //후창고 ㅂㅂ 
                     sqlParameter.Add("UnitClss", cboUnitClss.SelectedValue != null ? cboUnitClss.SelectedValue.ToString().Trim() : "");
                     //sqlParameter.Add("ArticleID", txtArticle.Tag != null ? txtArticle.Tag.ToString() : "");
+                    sqlParameter.Add("DvlyCustomID", txtDvlyCustom.Tag != null ? txtDvlyCustom.Tag.ToString() : "");
                     sqlParameter.Add("UserID", MainWindow.CurrentUser);
 
                     // OutSubType - 1 : ID기준 / 2 : 수량 기준 / 3 : 부분처리 => 추가하기
@@ -2468,7 +2491,7 @@ namespace WizMes_ANT
                                 sqlParameter.Add("OutQty", ConvertDouble(WinMoveSub.Qty));
                                 sqlParameter.Add("OutRoll", 1); // 박스 갯수 - 라벨 하나당 박스 1개로 처리 하니, 1로 저장
 
-                                sqlParameter.Add("UnitPrice", 0);
+                                sqlParameter.Add("UnitPrice", WinMoveSub.UnitPrice != null && !WinMoveSub.UnitPrice.Trim().Equals("") ? ConvertDouble(WinMoveSub.UnitPrice) : 0); //단가 추가
                                 sqlParameter.Add("UserID", MainWindow.CurrentUser);
                                 sqlParameter.Add("CustomBoxID", "");
                                 sqlParameter.Add("ArticleID", txtArticle.Tag != null ? txtArticle.Tag.ToString() : "");
@@ -2478,7 +2501,7 @@ namespace WizMes_ANT
 
 
                                 Procedure pro2 = new Procedure();
-                                pro2.Name = "xp_Outware_iOutwareSub";
+                                pro2.Name = "xp_Outware_iOutwareSub_Ex";
                                 pro2.OutputUseYN = "N";
                                 pro2.OutputName = "REQ_ID";
                                 pro2.OutputLength = "10";
@@ -2737,7 +2760,7 @@ namespace WizMes_ANT
                                 sqlParameter.Add("OutQty", ConvertDouble(WinMoveSub.Qty));
                                 sqlParameter.Add("OutRoll", 1); // 박스 갯수 - 라벨 하나당 박스 1개로 처리 하니, 1로 저장
 
-                                sqlParameter.Add("UnitPrice", 0);
+                                sqlParameter.Add("UnitPrice", WinMoveSub.UnitPrice != null && !WinMoveSub.UnitPrice.Trim().Equals("") ? ConvertDouble(WinMoveSub.UnitPrice) : 0); //단가 추가
                                 sqlParameter.Add("UserID", MainWindow.CurrentUser);
                                 sqlParameter.Add("CustomBoxID", "");
                                 sqlParameter.Add("ArticleID", txtArticle.Tag != null ? txtArticle.Tag.ToString() : "");
@@ -2747,7 +2770,7 @@ namespace WizMes_ANT
                                 //sqlParameter.Add("Spec", "");
 
                                 Procedure pro2 = new Procedure();
-                                pro2.Name = "xp_Outware_iOutwareSub";
+                                pro2.Name = "xp_Outware_iOutwareSub_Ex";
                                 pro2.OutputUseYN = "N";
                                 pro2.OutputName = "REQ_ID";
                                 pro2.OutputLength = "10";
@@ -3134,12 +3157,31 @@ namespace WizMes_ANT
             if (e.Key == Key.Enter)
             {
                 MainWindow.pf.ReturnCode(txtCustom, (int)Defind_CodeFind.DCF_CUSTOM, "");
+
+                if (txtCustom.Tag != null
+                    && txtCustom.Text != "")
+                {
+                    txtOutCustom.Text = txtCustom.Text;
+                    txtDvlyCustom.Text = txtCustom.Text;
+                    txtDvlyCustom.Tag = txtCustom.Tag;
+
+                }
             }
         }
 
         private void btnCustom_Click(object sender, RoutedEventArgs e)
         {
             MainWindow.pf.ReturnCode(txtCustom, (int)Defind_CodeFind.DCF_CUSTOM, "");
+
+            if (txtCustom.Tag != null
+                    && txtCustom.Text != "")
+            {
+                txtOutCustom.Text = txtCustom.Text;
+                txtDvlyCustom.Text = txtCustom.Text;
+                txtDvlyCustom.Tag = txtCustom.Tag;
+
+            }
+
         }
 
         private void dtpSDateSrh_KeyDown(object sender, KeyEventArgs e)
@@ -3226,7 +3268,7 @@ namespace WizMes_ANT
                 int rowCount = dgdSub.Items.IndexOf(dgdSub.CurrentItem);
                 int colCount = dgdSub.Columns.IndexOf(dgdSub.CurrentCell.Column);
                 int StartColumnCount = 1; //DataGridSub.Columns.IndexOf(dgdtpeMCoperationRateScore);
-                int EndColumnCount = 4; //DataGridSub.Columns.IndexOf(dgdtpeComments);
+                int EndColumnCount = 5; //DataGridSub.Columns.IndexOf(dgdtpeComments);
 
                 if (e.Key == Key.Enter)
                 {
@@ -3369,6 +3411,214 @@ namespace WizMes_ANT
         }
         #endregion
 
+<<<<<<< Updated upstream
+=======
+<<<<<<< HEAD
+        //품명 라벨체크
+        private void lblArticleNo_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+        {
+            if (chkArticleNo.IsChecked == true)
+            {
+                chkArticleNo.IsChecked = false;
+            }
+            else
+            {
+                chkArticleNo.IsChecked = true;
+            }
+        }
+
+        //품명 체크 
+        private void chkArticleNo_Checked(object sender, RoutedEventArgs e)
+        {
+            chkArticleNo.IsChecked = true;
+
+            txtArticleNo.IsEnabled = true;
+
+            btnPfArticleNo.IsEnabled = true;
+        }
+        //품명 안체크
+        private void chkArticleNo_Unchecked(object sender, RoutedEventArgs e)
+        {
+            chkArticleNo.IsChecked = false;
+
+            txtArticleNo.IsEnabled = false;
+
+            btnPfArticleNo.IsEnabled = false;
+        }
+        //품명 키다운 
+        private void txtArticleNo_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Enter)
+            {
+                e.Handled = true;
+                MainWindow.pf.ReturnCode(txtArticleNo, 7077, "");
+            }
+        }
+
+        //품명 플러스파인더
+        private void btnPfArticleNoSrh_Click(object sender, RoutedEventArgs e)
+        {
+            MainWindow.pf.ReturnCode(txtArticleNo, 7077, "");
+        }
+
+        //품번 플라스파인더
+        private void TxtBuyerAritcle_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Enter)
+            {
+                e.Handled = true;
+                MainWindow.pf.ReturnCode(txtCustom, (int)Defind_CodeFind.DCF_BuyerArticleNo, "");
+
+                txtArticle.Text = txtBuyerAritcle.Text;
+                txtArticle.Tag = txtBuyerAritcle.Tag;
+
+            }
+        }
+
+        private void BtnPfBuyerAritcle_Click(object sender, RoutedEventArgs e)
+        {
+            MainWindow.pf.ReturnCode(txtCustom, (int)Defind_CodeFind.DCF_BuyerArticleNo, "");
+            txtArticle.Text = txtBuyerAritcle.Text;
+            txtArticle.Tag = txtBuyerAritcle.Tag;
+        }
+
+
+        //납품장소
+        private void BtnDvlyCustom_Click(object sender, RoutedEventArgs e)
+        {
+            //MainWindow.pf.ReturnCode(txtCustom, (int)Defind_CodeFind.DCF_CUSTOM, "");
+        }
+
+        private void TxtDvlyCustom_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Enter)
+            {
+                MainWindow.pf.ReturnCode(txtDvlyCustom, (int)Defind_CodeFind.DCF_CUSTOM, "");
+
+            }
+        }
+
+        private void TextBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            try
+            {
+                SumColorQty();
+            }
+            catch (Exception ee)
+            {
+                MessageBox.Show("오류지점 - txtQty_KeyDown : " + ee.ToString());
+            }
+        }
+
+        #region 서브 그리드 수량 합계
+        private void SumColorQty()
+        {
+            try
+            {
+                double UnitPrice = 0;
+
+                for (int i = 0; i < dgdSub.Items.Count; i++)
+                {
+                    var label = dgdSub.Items[i] as LabelList2;
+                    if (label.UnitPrice != null)
+                    {
+                        UnitPrice += lib.returnDouble(label.UnitPrice.ToString());
+                    }
+                }
+
+                txtAmount.Text = lib.returnNumStringZero(UnitPrice.ToString());
+
+            }
+            catch (Exception ee)
+            {
+                MessageBox.Show("오류지점 - SumQty : " + ee.ToString());
+            }
+        }
+
+        #endregion
+
+        private void TextBox_PreviewKeyDown(object sender, KeyEventArgs e)
+        {
+            SumColorQty();
+        }
+
+
+        #region 단가 접근 권한
+        //단가 접근 권한 체크
+        private void AccessGrantUnitPrice()
+        {
+            try
+            {
+                Dictionary<string, object> sqlParameter = new Dictionary<string, object>();
+                sqlParameter.Add("@CodeGbn", "PAU");
+                sqlParameter.Add("@CodeName", MainWindow.CurrentUser);
+
+                DataSet ds = DataStore.Instance.ProcedureToDataSet("xp_Outware_sCmCode_AccessGrantUnitPrice", sqlParameter, false);
+
+                if (ds != null)
+                {
+                    DataTable dt = null;
+                    dt = ds.Tables[0];
+
+                    if (dt.Rows.Count == 0)
+                    {
+                        //txtAmount.Visibility = Visibility.Hidden;
+                        //lblAmount.Visibility = Visibility.Hidden;
+                        GridAmount.Visibility = Visibility.Hidden;
+                        txtAmount.IsReadOnly = true;
+                        GridAmount.IsReadOnly = true;
+
+
+                        return;
+                    }
+                    else
+                    {
+                        DataRowCollection drc = dt.Rows;
+                        foreach (DataRow dr in drc)
+                        {
+                            var AGUP = new AccessGrantUnitPrice()
+                            {
+                                Code_ID = dr["Code_ID"].ToString(),
+                                Code_name = dr["Code_name"].ToString()
+                            };
+
+                            if (AGUP.Code_name == MainWindow.CurrentUser)
+                            {
+                                //txtAmount.Visibility = Visibility.Visible;
+                                //lblAmount.Visibility = Visibility.Visible;
+                                GridAmount.Visibility = Visibility.Visible;
+                                txtAmount.IsReadOnly = true;
+                                GridAmount.IsReadOnly = true;
+
+                                //txtAmount.Background = Brushes.White;
+                            }
+                            else
+                            {
+                                txtAmount.IsReadOnly = false;
+                                GridAmount.IsReadOnly = false;
+                                //txtAmount.Visibility = Visibility.Hidden;
+                                //lblAmount.Visibility = Visibility.Hidden;
+                                GridAmount.Visibility = Visibility.Hidden;
+                                //txtAmount.IsReadOnly = true;
+                                //txtAmount.Background = Brushes.GreenYellow;
+                            }
+
+                        }
+                    }
+                }
+            }
+            catch (Exception ee)
+            {
+                MessageBox.Show("오류지점 - AccessGrantUnitPrice : " + ee.ToString());
+            }
+        }
+
+        #endregion
+
+
+=======
+>>>>>>> 07c15a3453169f09b71b57b53ece53b0b0eb32b1
+>>>>>>> Stashed changes
     }
 
 

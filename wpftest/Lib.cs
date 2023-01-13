@@ -2768,7 +2768,7 @@ namespace WizMes_ANT
 
                 Dictionary<string, object> sqlParameter = new Dictionary<string, object>();
                 sqlParameter.Clear();
-                sqlParameter.Add("sCompanyID", "0001");
+                sqlParameter.Add("sCompanyID", MainWindow.CompanyID);
                 sqlParameter.Add("sMenuID", MenuID);
                 sqlParameter.Add("sWorkFlag", "");
                 sqlParameter.Add("sWorkDate", DateTime.Now.ToString("yyyyMMdd"));

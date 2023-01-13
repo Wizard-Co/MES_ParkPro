@@ -26,7 +26,7 @@ namespace WizMes_ANT
         public static string CompanyID = string.Empty;
         public static PlusFinder pf = new PlusFinder();
         public static PlusFinder pf2 = new PlusFinder(); //2021-11-10 자재입고반품에서 2번 연속으로 띄워야되서 하나 더 추가함
-        public string mfont { get; set; }
+        public string mfont { get; set; } //
         Lib lib = new Lib();
         public string[] strFavorites = null;
 
@@ -39,7 +39,7 @@ namespace WizMes_ANT
         public int TheFont { get; set; }
         public double TheHeight { get; set; }
         public double TheWidth { get; set; }
-
+       //aa
         // 넘겨줄 임시 데이터 변수(수주 진행 및 마감 -> 수주등록 화면으로)
         public static List<string> tempContent = new List<string>();
         // 넘겨줄 임시 데이터 변수(품목별 불량현황 -> 스크린샷 popup)

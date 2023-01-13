@@ -4006,6 +4006,8 @@ namespace WizMes_ANT
 
         public string LabelPrintYN { get; set; } // 출하단가
         public string ProdQtyPerBox { get; set; }
+
+        public string DvlyCustom { get; set; }
     }
 
     class Win_mtr_Move_U_CodeView2Sub : BaseView
@@ -4079,6 +4081,7 @@ namespace WizMes_ANT
         public string DefectQty { get; set; }
 
         public string DQty { get; set; } // 불량 수량
+        public string UnitPrice { get; set; } // 단가
 
     }
 
@@ -4100,6 +4103,13 @@ namespace WizMes_ANT
         public string BuyerArticleNo { get; set; }
 
     }
+
+    class AccessGrantUnitPrice
+    {
+        public string Code_ID { get; set; }
+        public string Code_name { get; set; }
+    }
+
 
     #endregion 코드뷰 CodeView
 }

@@ -3647,7 +3647,7 @@ namespace WizMes_ANT
                 p_Command.CommandType = CommandType.StoredProcedure;
                 p_Command.Parameters.Clear();
 
-                p_Command.Parameters.AddWithValue("@sCompanyID", "0001");
+                p_Command.Parameters.AddWithValue("@sCompanyID", MainWindow.CompanyID);
                 p_Command.Parameters.AddWithValue("@sMenuID", "");
                 p_Command.Parameters.AddWithValue("@sWorkFlag", crudGubun);
                 p_Command.Parameters.AddWithValue("@sWorkDate", DateTime.Now.ToString("yyyyMMdd"));
@@ -3730,7 +3730,7 @@ namespace WizMes_ANT
                     p_Command.CommandType = CommandType.StoredProcedure;
                     p_Command.Parameters.Clear();
 
-                    p_Command.Parameters.AddWithValue("@sCompanyID", "0001");
+                    p_Command.Parameters.AddWithValue("@sCompanyID", MainWindow.CompanyID);
                     p_Command.Parameters.AddWithValue("@sMenuID", "");
                     p_Command.Parameters.AddWithValue("@sWorkFlag", "S"); //seGubun과 workFlag는 다름
                     p_Command.Parameters.AddWithValue("@sWorkDate", stDate);

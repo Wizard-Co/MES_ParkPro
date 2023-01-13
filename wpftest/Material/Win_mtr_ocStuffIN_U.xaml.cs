@@ -2711,7 +2711,7 @@ namespace WizMes_ANT
                     sqlParameter.Add("JobFlag", strFlag);
                     sqlParameter.Add("StuffInID", txtStuffInID.Text != null && !txtStuffInID.Text.Trim().Equals("") ? txtStuffInID.Text : "");
                     sqlParameter.Add("StuffDate", dtpDate.SelectedDate != null ? dtpDate.SelectedDate.Value.ToString("yyyyMMdd") : "");
-                    sqlParameter.Add("CompanyID", cboCompanySite.SelectedValue != null ? cboCompanySite.SelectedValue.ToString() : "0001");
+                    sqlParameter.Add("CompanyID", cboCompanySite.SelectedValue != null ? cboCompanySite.SelectedValue.ToString() : MainWindow.CompanyID);
                     sqlParameter.Add("StuffClss", cboStuffClss.SelectedValue != null ? cboStuffClss.SelectedValue.ToString() : "");
 
                     sqlParameter.Add("CustomID", txtCustom.Tag != null && !txtCustom.Tag.ToString().Trim().Equals("") ? txtCustom.Tag.ToString() : "");
