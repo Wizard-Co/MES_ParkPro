@@ -347,9 +347,9 @@
                         <RowDefinition Height="*" />
                         <RowDefinition Height="*" />
                     </Grid.RowDefinitions>
-                    
-                   
-                    
+
+
+
 
                     <!-- 0 Row-->
                     <Label Grid.Column="0" Grid.Row="0"  Style="{DynamicResource LabelInputArea}" >
@@ -358,17 +358,8 @@
                         </Viewbox>
                     </Label>
                     <TextBox x:Name="txtCode" Grid.Column="1" Grid.Row="0" Style="{DynamicResource TextBoxInputAutoCreate}"
-<<<<<<< Updated upstream
                              MaxLength="10"
                              IsReadOnly="False" Text="{Binding ArticleID}"/>
-=======
-<<<<<<< HEAD
-                             IsReadOnly="False" Text="{Binding ArticleID}" MaxLength="10"/>
-=======
-                             MaxLength="10"
-                             IsReadOnly="False" Text="{Binding ArticleID}"/>
->>>>>>> 07c15a3453169f09b71b57b53ece53b0b0eb32b1
->>>>>>> Stashed changes
 
                     <!-- 주요관심품목, 사용안함 -->
                     <Label Grid.Column="3" Grid.Row="0"  Style="{DynamicResource LabelInputArea}" Visibility="Visible">
@@ -446,7 +437,7 @@
                     <ComboBox x:Name="cboSupplyType" Grid.Column="1" Grid.Row="12" Style="{DynamicResource ComboBoxInputString}" Background="#fff2d2"
                               SelectedValue="{Binding SupplyType}" DropDownClosed="cboSupplyType_DropDownClosed"/>
 
-                    
+
                     <!-- 7 Row -->
                     <Label Grid.Column="0" Grid.Row="7"  Style="{DynamicResource LabelInputArea}">
                         <Viewbox Style="{DynamicResource ViewBoxSetMaxMinHeight}">
@@ -685,8 +676,8 @@
                         </Viewbox>
                     </Label>
 
-                    
-                    
+
+
                     <Grid Grid.Column="4" Grid.Row="11">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="4*" />
@@ -746,10 +737,10 @@
 
                 <Grid Grid.Row="0" Grid.Column="1" >
                     <Grid.RowDefinitions>
-                        <RowDefinition Height="1*" />
+                        <RowDefinition Height="2*" />
                         <RowDefinition Height="0.2*" />
                         <RowDefinition Height="10*" />
-                        <!--<RowDefinition Height="5*" />-->
+                        <RowDefinition Height="10*" />
                     </Grid.RowDefinitions>
 
                     <!-- 자료 추가중, 수정중 메시지 -->
@@ -836,8 +827,7 @@
                         </DataGrid>
                     </GroupBox>
 
-                    <DataGrid x:Name="dgdCustomArticle" IsReadOnly="True" Style="{DynamicResource DataGridSet1}"  Grid.Row="3"
-                              Visibility="Hidden">
+                    <DataGrid x:Name="dgdCustomArticle" IsReadOnly="True" Style="{DynamicResource DataGridSet1}"  Grid.Row="3">
 
                         <!--dgx:DataGridFilter.IsAutoFilterEnabled="True"-->
                         <DataGrid.Columns>

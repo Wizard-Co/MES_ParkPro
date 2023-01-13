@@ -189,21 +189,11 @@ namespace WizMes_ANT
             this.cboProductGrpID.DisplayMemberPath = "code_name";
             this.cboProductGrpID.SelectedValuePath = "code_id";
 
-<<<<<<< Updated upstream
-=======
-<<<<<<< HEAD
-
-=======
->>>>>>> Stashed changes
             // 제품군
             ObservableCollection<CodeView> ovcBigMiSmal = ComboBoxUtil.Instance.Gf_DB_CM_GetComCodeDataset(null, "BIGMISMAL", "Y", "");
             this.cboBigMiSmal.ItemsSource = ovcBigMiSmal;
             this.cboBigMiSmal.DisplayMemberPath = "code_name";
             this.cboBigMiSmal.SelectedValuePath = "code_id";
-<<<<<<< Updated upstream
-=======
->>>>>>> 07c15a3453169f09b71b57b53ece53b0b0eb32b1
->>>>>>> Stashed changes
             // 부품분류
             //List<string[]> lstPart = new List<string[]>();
             //string[] Part01 = new string[] { "0", "완제품" };
@@ -385,14 +375,7 @@ namespace WizMes_ANT
             grdInput2.IsHitTestVisible = false;
             //grdMtrInfo.IsEnabled = false;
             //grdFTP.IsEnabled = false;
-<<<<<<< Updated upstream
             cboBigMiSmal.IsHitTestVisible = false;
-=======
-<<<<<<< HEAD
-=======
-            cboBigMiSmal.IsHitTestVisible = false;
->>>>>>> 07c15a3453169f09b71b57b53ece53b0b0eb32b1
->>>>>>> Stashed changes
             ImageOnlySeeMode();
 
 
@@ -412,14 +395,7 @@ namespace WizMes_ANT
             //grdFTP.IsEnabled = true;azzz
 
             chkBuySaleMainYN.IsChecked = false;
-<<<<<<< Updated upstream
             cboBigMiSmal.IsHitTestVisible = true;
-=======
-<<<<<<< HEAD
-=======
-            cboBigMiSmal.IsHitTestVisible = true;
->>>>>>> 07c15a3453169f09b71b57b53ece53b0b0eb32b1
->>>>>>> Stashed changes
             ImageSaveUpdateMode();
 
             btnImgSeeCheckAndSetting();
@@ -558,13 +534,6 @@ namespace WizMes_ANT
             cboFTAMgrYN.SelectedIndex = 1; //FTA중점
             cboBigMiSmal.SelectedIndex = 0; //대중소 구분
 
-<<<<<<< Updated upstream
-=======
-<<<<<<< HEAD
-
-=======
->>>>>>> 07c15a3453169f09b71b57b53ece53b0b0eb32b1
->>>>>>> Stashed changes
             txtCode.IsReadOnly = false;
             txtBuyerArticleNo.Focus();
         }
@@ -1321,14 +1290,7 @@ namespace WizMes_ANT
 
                     //sqlParameter.Add("sArticleID", strFlag.Trim().Equals("I") ? "" : txtCode.Text);
                     sqlParameter.Add("sArticleID", txtCode.Text != null && !txtCode.Text.Trim().Equals("") ? txtCode.Text : "");
-<<<<<<< Updated upstream
-=======
-<<<<<<< HEAD
                     sqlParameter.Add("CompanyID", MainWindow.CompanyID);
-=======
->>>>>>> Stashed changes
-                    sqlParameter.Add("CompanyID", "0001");
->>>>>>> 07c15a3453169f09b71b57b53ece53b0b0eb32b1
                     sqlParameter.Add("sArticle", txtName.Text.Trim().Equals("") ? txtBuyerArticleNo.Text : txtName.Text);
                     sqlParameter.Add("BuyerArticleNo", txtBuyerArticleNo.Text);
 
@@ -1373,10 +1335,6 @@ namespace WizMes_ANT
                     sqlParameter.Add("sFreeStuffinYN", cboFreeStuffinYN.SelectedValue != null ? cboFreeStuffinYN.SelectedValue.ToString() : ""); //무검사 입고품 여부Y/N
                     sqlParameter.Add("sBigMiSmalGbn", cboBigMiSmal.SelectedValue != null ? cboBigMiSmal.SelectedValue.ToString() : ""); //대중소추가 
 
-<<<<<<< Updated upstream
-=======
-
->>>>>>> Stashed changes
 
                     #region 추가
                     if (strFlag.Equals("I"))
@@ -1388,8 +1346,7 @@ namespace WizMes_ANT
                         pro1.OutputUseYN = "N";
                         pro1.OutputName = "sArticleID";
                         pro1.OutputLength = "10";
-<<<<<<< Updated upstream
-                        
+
                         Prolist.Add(pro1);
                         ListParameter.Add(sqlParameter);
 
@@ -1411,89 +1368,6 @@ namespace WizMes_ANT
                                     flag = true;
                                 }
                             }
-                        }
-                        else
-                        {
-=======
-<<<<<<< HEAD
-
-                        Prolist.Add(pro1);
-                        ListParameter.Add(sqlParameter);
-
-=======
-                        
-                        Prolist.Add(pro1);
-                        ListParameter.Add(sqlParameter);
-
->>>>>>> 07c15a3453169f09b71b57b53ece53b0b0eb32b1
-                        List<KeyValue> list_Result = new List<KeyValue>();
-                        list_Result = DataStore.Instance.ExecuteAllProcedureOutputGetCS_NewLog(Prolist, ListParameter, "C");
-                        //string sGetID = string.Empty;
-                        if (list_Result[0].key.ToLower() == "success")
-                        {
-                            list_Result.RemoveAt(0);
-                            for (int i = 0; i < list_Result.Count; i++)
-<<<<<<< HEAD
-=======
-                            {
-                                KeyValue kv = list_Result[i];
-                                if (kv.key == "sArticleID")
-                                {
-                                    GetKey = kv.value;
-
-                                    AASS = kv.value;
-
-                                    flag = true;
-                                }
-                            }
-                        }
-                        else
-                        {
->>>>>>> Stashed changes
-                            MessageBox.Show("[저장실패]\r\n" + list_Result[0].value.ToString());
-                            flag = false;
-                            //return false;
-                        }
-
-                        Prolist.Clear();
-                        ListParameter.Clear();
-
-                        //Dictionary<string, int> outputParam = new Dictionary<string, int>();
-                        //outputParam.Add("sArticleID", 5);
-                        //Dictionary<string, string> dicResult = DataStore.Instance.ExecuteProcedureOutputNoTran("xp_Article_iArticle", sqlParameter, outputParam, true);
-
-                        //GetKey = dicResult["sArticleID"];
-
-                        //if ((GetKey != string.Empty) && (GetKey != "9999"))
-                        //{
-                        //    flag = true;
-
-                            // 공정 선택한거 넣기
-                            for (int i = 0; i < dgdProcess.Items.Count; i++)
->>>>>>> 07c15a3453169f09b71b57b53ece53b0b0eb32b1
-                            {
-                                KeyValue kv = list_Result[i];
-                                if (kv.key == "sArticleID")
-                                {
-                                    GetKey = kv.value;
-
-<<<<<<< Updated upstream
-=======
-<<<<<<< HEAD
-                                    AASS = kv.value;
-=======
->>>>>>> Stashed changes
-                                    //sqlParameter.Add("sArticleID", GetKey);
-                                    sqlParameter.Add("sArticleID", txtCode.Text);
-                                    sqlParameter.Add("sProcessID", WinProcess.ProcessID);
-                                    sqlParameter.Add("UseYN", "Y");
-                                    sqlParameter.Add("UserID", MainWindow.CurrentUser);
->>>>>>> 07c15a3453169f09b71b57b53ece53b0b0eb32b1
-
-                                    flag = true;
-                                }
-                            }
-<<<<<<< HEAD
                         }
                         else
                         {
@@ -1553,24 +1427,6 @@ namespace WizMes_ANT
                         {
                             flag = true;
                         }
-=======
-
-                            string[] Confirm = new string[2];
-                            Confirm = DataStore.Instance.ExecuteAllProcedureOutputNew_NewLog(Prolist, ListParameter, "C");
-                            if (Confirm[0] != "success")
-                            {
-                                MessageBox.Show("[저장실패]\r\n" + Confirm[1].ToString());
-                                flag = false;
-                                return false;
-                            }
-                            else
-                            {
-                                flag = true;
-                            }
-<<<<<<< Updated upstream
-=======
->>>>>>> 07c15a3453169f09b71b57b53ece53b0b0eb32b1
->>>>>>> Stashed changes
                         //}
                         //else
                         //{
@@ -1764,15 +1620,7 @@ namespace WizMes_ANT
 
             //    }
             //}
-<<<<<<< Updated upstream
-            
-=======
-<<<<<<< HEAD
 
-=======
-            
->>>>>>> 07c15a3453169f09b71b57b53ece53b0b0eb32b1
->>>>>>> Stashed changes
             if (cboArticleGrp.SelectedIndex == -1 || cboArticleGrp.SelectedValue == null)
             {
                 MessageBox.Show("품명그룹을 선택해주세요");
@@ -1862,7 +1710,7 @@ namespace WizMes_ANT
         }
 
         #endregion 유효성 검사
-        
+
         //품목이 있는지 체크(추가시에만)
         private bool GetArticleByName(string strArticleName)
         {
@@ -1888,15 +1736,7 @@ namespace WizMes_ANT
                         {
                             flag = false;
                         }
-<<<<<<< Updated upstream
- 
-=======
-<<<<<<< HEAD
 
-=======
- 
->>>>>>> 07c15a3453169f09b71b57b53ece53b0b0eb32b1
->>>>>>> Stashed changes
                     }
                 }
             }

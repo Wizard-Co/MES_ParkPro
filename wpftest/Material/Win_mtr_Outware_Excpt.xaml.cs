@@ -1806,9 +1806,14 @@ namespace WizMes_ANT
                 sqlParameter.Add("CustomID", "");
 
                 sqlParameter.Add("Custom", chkCustomSrh.IsChecked == true && !txtCustomSrh.Text.Trim().Equals("") ? txtCustomSrh.Text : "");
-                sqlParameter.Add("ChkArticleID", chkArticleSrh.IsChecked == true ? 1 : 0); // chkBuyerArticleNo.IsChecked == true ? 1 : 0);
-                sqlParameter.Add("ArticleID", chkArticleSrh.IsChecked == true ? (txtArticleSrh.Tag != null ? txtArticleSrh.Tag.ToString() : "") : "");
-                sqlParameter.Add("Article", "");//
+                //sqlParameter.Add("ChkArticleID", chkArticleSrh.IsChecked == true ? 1 : 0); // chkBuyerArticleNo.IsChecked == true ? 1 : 0);
+
+                sqlParameter.Add("ChkArticleID", chkArticleNo.IsChecked == true ? 1 : 0); // chkBuyerArticleNo.IsChecked == true ? 1 : 0);
+                sqlParameter.Add("ArticleID", "");
+                sqlParameter.Add("Article", chkArticleNo.IsChecked == true && !txtArticleNo.Text.Trim().Equals("") ? txtArticleNo.Text : "");
+
+                //sqlParameter.Add("ArticleID", chkArticleSrh.IsChecked == true ? (txtArticleSrh.Tag != null ? txtArticleSrh.Tag.ToString() : "") : "");
+                //sqlParameter.Add("Article", "");//
 
                 //sqlParameter.Add("ChkArticleID", 0);// chkArticleSrh.IsChecked == true ? 1 : 0);
                 //sqlParameter.Add("ArticleID", "");// chkArticleSrh.IsChecked == true ? (txtArticleSrh.Tag != null ? txtArticleSrh.Tag.ToString() : "") : "");
@@ -1823,6 +1828,10 @@ namespace WizMes_ANT
                 sqlParameter.Add("ToLocID", chkToLocSrh.IsChecked == true ? (cboToLocSrh.SelectedValue != null ? cboToLocSrh.SelectedValue.ToString() : "") : ""); // 후 창고
 
                 sqlParameter.Add("BuyerDirectYN", chkDirectYN.IsChecked == true ? "Y" : "");
+
+                sqlParameter.Add("nBuyerArticleNo", chkArticleSrh.IsChecked == true ? 1 : 0);
+                sqlParameter.Add("BuyerArticleNo", chkArticleSrh.IsChecked == true && !txtArticleSrh.Text.Trim().Equals("") ? txtArticleSrh.Text : "");
+
                 //sqlParameter.Add("nBuyerArticleNo", chkArticleSrh.IsChecked == true ? 1 : 0);
                 //sqlParameter.Add("BuyerArticleNo", chkArticleSrh.IsChecked == true && !txtArticleSrh.Text.Trim().Equals("") ? txtArticleSrh.Text : "");
 
@@ -3411,9 +3420,6 @@ namespace WizMes_ANT
         }
         #endregion
 
-<<<<<<< Updated upstream
-=======
-<<<<<<< HEAD
         //품명 라벨체크
         private void lblArticleNo_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
@@ -3616,9 +3622,6 @@ namespace WizMes_ANT
         #endregion
 
 
-=======
->>>>>>> 07c15a3453169f09b71b57b53ece53b0b0eb32b1
->>>>>>> Stashed changes
     }
 
 

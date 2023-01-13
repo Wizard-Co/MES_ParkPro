@@ -9,6 +9,7 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 using WizMes_ANT.PopUP;
+using WizMes_ANT.PopUp;
 
 namespace WizMes_ANT
 {
@@ -282,8 +283,9 @@ namespace WizMes_ANT
                             rowNum = 0;
                         }
 
-                        if (Procedure.Instance.DeleteData(WinArticleBomList.ArticleID, WinArticleBomList.PARENTArticleID,
-                            "sArticleID", "sParentArticleID", "xp_Article_dArticleBOM"))
+                        //if (Procedure.Instance.DeleteData(WinArticleBomList.ArticleID, WinArticleBomList.PARENTArticleID,
+                        //    "sArticleID", "sParentArticleID", "xp_Article_dArticleBOM"))
+                        if (DeleteData(WinArticleBomList.ArticleID, WinArticleBomList.PARENTArticleID, WinArticleBomList.SubArticleID))
                         {
                             this.DataContext = null;
                             //rowNum -= 1;
@@ -292,6 +294,39 @@ namespace WizMes_ANT
                     }
                 }
             }
+        }
+
+        //삭제 
+        private bool DeleteData(string ArticleID, string PARENTArticleID, string SubArticleID)
+        {
+            bool flag = false;
+
+            try
+            {
+                Dictionary<string, object> sqlParameter = new Dictionary<string, object>();
+                sqlParameter.Clear();
+                sqlParameter.Add("sArticleID", ArticleID);
+                sqlParameter.Add("sParentArticleID", PARENTArticleID);
+                sqlParameter.Add("sSubArticleID", SubArticleID);
+
+                string[] result = DataStore.Instance.ExecuteProcedure("xp_Article_dArticleBOM", sqlParameter, false);
+
+                if (result[0].Equals("success"))
+                {
+                    //MessageBox.Show("성공 *^^*");
+                    flag = true;
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("오류 발생, 오류 내용 : " + ex.ToString());
+            }
+            finally
+            {
+                DataStore.Instance.CloseConnection();
+            }
+
+            return flag;
         }
 
         //닫기
@@ -304,35 +339,46 @@ namespace WizMes_ANT
         //조회
         private void btnSearch_Click(object sender, RoutedEventArgs e)
         {
+            using (Loading lw = new Loading(FillGrid2))
+            {
+                lw.ShowDialog();
+            }
+
+            if (tlvItemList.Items.Count == 0)
+            {
+                this.DataContext = null;
+                MessageBox.Show("조회된 데이터가 없습니다.");
+                return;
+            }
             //검색버튼 비활성화
-            btnSearch.IsEnabled = false;
+            //btnSearch.IsEnabled = false;
 
-            Dispatcher.BeginInvoke(new Action(() =>
+            //Dispatcher.BeginInvoke(new Action(() =>
 
-            {
-                Thread.Sleep(2000);
+            //{
+            //    Thread.Sleep(2000);
 
-                ArticleBomCnt = 0;
-                rowNum = 0;
+            //    ArticleBomCnt = 0;
+            //    rowNum = 0;
 
-                re_Search(rowNum);
+            //    re_Search(rowNum);
 
-                if (tlvItemList.Items.Count > 0)
-                {
-                    tblArticleBomCnt.Text = "▶검색결과 : " + stringFormatN0(ArticleBomCnt) + "건";
-                }
+            //    if (tlvItemList.Items.Count > 0)
+            //    {
+            //        tblArticleBomCnt.Text = "▶검색결과 : " + stringFormatN0(ArticleBomCnt) + "건";
+            //    }
 
-            }), System.Windows.Threading.DispatcherPriority.Background);
+            //}), System.Windows.Threading.DispatcherPriority.Background);
 
 
 
-            Dispatcher.BeginInvoke(new Action(() =>
+            //Dispatcher.BeginInvoke(new Action(() =>
 
-            {
+            //{
 
-                btnSearch.IsEnabled = true;
+            //    btnSearch.IsEnabled = true;
 
-            }), System.Windows.Threading.DispatcherPriority.Background);
+            //}), System.Windows.Threading.DispatcherPriority.Background);
 
 
         }
@@ -681,7 +727,12 @@ namespace WizMes_ANT
                                 UnitClssName = dr["UnitClssName"].ToString(),
                                 Weight = dr["Weight"].ToString(),
                                 UseYN = dr["UseYN"].ToString(),
-                                BuyerArticleNo = dr["BuyerArticleNo"].ToString()
+                                BuyerArticleNo = dr["BuyerArticleNo"].ToString(),
+
+                                SubArticleID = dr["SubArticleID"].ToString(),
+                                SubArticleName = dr["SubArticleName"].ToString(),
+                                chkSub = dr["chkSub"].ToString(),
+                                chkSubMe = dr["chkSubMe"].ToString(), //본인대체품인지
                             };
 
                             ItemList.Qty = Lib.Instance.returnNumString(ItemList.Qty);
@@ -806,7 +857,11 @@ namespace WizMes_ANT
 
                             BeforeLVL = ItemList.LVL;
 
+                            tblArticleBomCnt.Text = "▶ 검색결과 : " + i + " 건";
+
+
                         } //foreach 문 끝 
+
                     }
                 }
             }
@@ -834,6 +889,10 @@ namespace WizMes_ANT
                 {
                     this.DataContext = WinArticleBomList;
                     txtArticle.Tag = WinArticleBomList.ArticleID;
+                    txtParentArticle.Tag = WinArticleBomList.PARENTArticleID;
+                    txtSubArticle.Tag = WinArticleBomList.SubArticleID;
+                    // ↑소요량 수정불가 현상을 위해 추가 2022.05.06 (프로시저 저장시 상위품명의 코드를 찾지 못해서 소요량 수정이 정상적으로 작동하지 않음 )
+
 
                     if (WinArticleBomList.UseYN.Equals("Y"))
                     {
@@ -843,6 +902,27 @@ namespace WizMes_ANT
                     {
                         chkUseClss.IsChecked = true;
                     }
+
+                    //대체품여부 체크
+                    if (WinArticleBomList.chkSub.Equals("Y"))
+                    {
+                        chkSub.IsChecked = true;
+                    }
+                    else
+                    {
+                        chkSub.IsChecked = false;
+                    }
+
+                    //본인 대체품 여부
+                    if (WinArticleBomList.chkSubMe.Equals("Y"))
+                    {
+                        chkSubMe.IsChecked = true;
+                    }
+                    else
+                    {
+                        chkSubMe.IsChecked = false;
+                    }
+
                 }
             }
         }
@@ -906,6 +986,8 @@ namespace WizMes_ANT
                         && txtArticle.Tag.ToString().Trim().Equals(txtParentArticle.Tag.ToString().Trim()))
                     {
                         txtParentArticle.Tag = "";
+                        txtSubArticle.Tag = "";
+
                     }
 
                     Dictionary<string, object> sqlParameter = new Dictionary<string, object>();
@@ -921,6 +1003,11 @@ namespace WizMes_ANT
                     sqlParameter.Add("FromDate", dtpFromDate.SelectedDate.Value.ToString("yyyyMMdd"));
                     sqlParameter.Add("ToDate", dtpToDate.SelectedDate.Value.ToString("yyyyMMdd"));
                     sqlParameter.Add("UseYN", chkUseClss.IsChecked == true ? "N" : "Y");
+
+
+                    sqlParameter.Add("sSubArticleID", txtSubArticle.Tag != null && !txtSubArticle.Text.Trim().Equals("") ? txtSubArticle.Tag.ToString() : "");
+
+                    sqlParameter.Add("chkSub", chkSub.IsChecked == true ? "Y" : "N"); //대체품여부 체크
                     sqlParameter.Add("UserID", MainWindow.CurrentUser);
                     sqlParameter.Add("OutMsg", "");
 
@@ -938,7 +1025,7 @@ namespace WizMes_ANT
                         ListParameter.Add(sqlParameter);
 
                         string[] Confirm = new string[2];
-                        Confirm = DataStore.Instance.ExecuteAllProcedureOutputNew_NewLog(Prolist, ListParameter,"C");
+                        Confirm = DataStore.Instance.ExecuteAllProcedureOutputNew_NewLog(Prolist, ListParameter, "C");
                         if (Confirm[0] != "success")
                         {
                             MessageBox.Show("[저장실패]\r\n" + Confirm[1].ToString());
@@ -967,7 +1054,7 @@ namespace WizMes_ANT
                         ListParameter.Add(sqlParameter);
 
                         string[] Confirm = new string[2];
-                        Confirm = DataStore.Instance.ExecuteAllProcedureOutputNew_NewLog(Prolist, ListParameter,"U");
+                        Confirm = DataStore.Instance.ExecuteAllProcedureOutputNew_NewLog(Prolist, ListParameter, "U");
                         if (Confirm[0] != "success")
                         {
                             MessageBox.Show("[저장실패]\r\n" + Confirm[1].ToString());
@@ -1577,7 +1664,63 @@ namespace WizMes_ANT
             Lib.Instance.CheckIsNumeric((TextBox)sender, e);
         }
 
+        //대체품 입력칸 키다운
+        private void TxtSubArticle_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Enter)
+            {
+                MainWindow.pf.ReturnCode(txtSubArticle, (int)Defind_CodeFind.DCF_BuyerArticleNo, "");
 
+                if (txtSubArticle.Tag != null)
+                {
+                    getArticleInfo(txtSubArticle.Tag.ToString());
+                }
+            }
+        }
+        //대체품 입력칸 플러스파인더
+        private void BtnPfSubArticle_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                MainWindow.pf.ReturnCode(txtSubArticle, (int)Defind_CodeFind.DCF_BuyerArticleNo, "");
+
+                if (txtSubArticle.Tag != null)
+                {
+                    getArticleInfo(txtSubArticle.Tag.ToString());
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("오류 발생, 오류 내용 : " + ex.ToString());
+            }
+        }
+
+        //대체품여부
+        private void Viewbox_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+        {
+            if (chkSub.IsChecked == true)
+            {
+                chkSub.IsChecked = false;
+            }
+            else
+            {
+                chkSub.IsChecked = true;
+            }
+        }
+
+
+        //본인대체품 확인
+        private void Viewbox_MouseLeftButtonUp_1(object sender, MouseButtonEventArgs e)
+        {
+            if (chkSubMe.IsChecked == true)
+            {
+                chkSubMe.IsChecked = false;
+            }
+            else
+            {
+                chkSubMe.IsChecked = true;
+            }
+        }
     }
 
     class Win_com_ArticleBOM_ItemList : BaseView
@@ -1624,6 +1767,12 @@ namespace WizMes_ANT
         public string BuyerArticleNo { get; set; }
 
         public string FirstColumnCV2 { get; set; }
+
+        public string SubArticleID { get; set; }
+        public string SubArticleName { get; set; }
+        public string chkSub { get; set; }
+        public string chkSubMe { get; set; }
+
 
     }
 
