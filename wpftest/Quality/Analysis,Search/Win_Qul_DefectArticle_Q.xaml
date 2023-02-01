@@ -130,9 +130,9 @@
                     <Image Source="{DynamicResource btiPlusFind}" />
                 </Button>
             </Grid>-->
-            
-            
-            
+
+
+
             <Grid Grid.Column="2" Grid.Row="1">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="75*" />
@@ -196,6 +196,10 @@
                 <RadioButton x:Name="rbnInspoint5" Grid.Column="5" HorizontalAlignment="Center" VerticalAlignment="Center" HorizontalContentAlignment="Center"
                                  VerticalContentAlignment="Center" Content="출하" Margin="-2" />
             </Grid>
+
+            <Viewbox Grid.Row="3" Grid.Column="3" Grid.ColumnSpan="5" HorizontalAlignment="Center" Style="{DynamicResource ViewBoxSetMaxMinHeight}" >
+                <TextBlock Text="※ 조회 월로부터 직전 12개월의 정보를 조회합니다" FontWeight="Bold" Foreground="Blue" />
+            </Viewbox>
 
             <!--검색, 닫기-->
             <Grid Grid.Row="0" Grid.Column="4" Grid.RowSpan="4">
@@ -406,12 +410,13 @@
                         <ColumnDefinition Width="54*"/>
                     </Grid.ColumnDefinitions>
                     <Grid.RowDefinitions>
-                        <RowDefinition Height="30*"/>
+                        <RowDefinition Height="15*"/>
                         <RowDefinition Height="90*"/>
+                        <RowDefinition Height="20*"/>
+                        <RowDefinition Height="15*"/>
                         <RowDefinition Height="45*"/>
                         <RowDefinition Height="45*"/>
                         <RowDefinition Height="45*"/>
-                        <RowDefinition Height="10*"/>
                     </Grid.RowDefinitions>
 
                     <Label x:Name="lblGubun" Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="0"
@@ -491,19 +496,96 @@
                             <TextBlock Text="불량지수&#x0a;  (건수)" Style="{DynamicResource TextBlockInViewBoxInput_AllSector_OneBlock_Long_Q}"/>
                         </Viewbox>
                     </Label>
-                    <Label x:Name="lblModelOccupy" Grid.Row="2"
+
+                    <Viewbox Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="10" HorizontalAlignment="Left" Style="{DynamicResource ViewBoxSetMaxMinHeight}" >
+                        <TextBlock Text=" ※ 구분별로 최대 상위12개의 불량정보가 아래에 표기됩니다" FontWeight="Bold" Foreground="Blue" Margin="0,5,0,1"/>
+                    </Viewbox>
+
+                    <Label Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="3"
+                           Style="{DynamicResource LabelInputArea_Q}">
+                        <Viewbox Style="{DynamicResource ViewBoxSetMaxMinHeight_Q}">
+                            <TextBlock Text="구  분" Style="{DynamicResource TextBlockInViewBoxInput_AllSector_TwoBlock_Q}"/>
+                        </Viewbox>
+                    </Label>
+                    <Label  Grid.Column="3" Grid.Row="3" Style="{DynamicResource LabelInputArea_Q}" >
+                        <Viewbox Style="{DynamicResource ViewBoxSetMaxMinHeight_Q}">
+                            <TextBlock Text="1" Style="{DynamicResource TextBlockInViewBoxInput_AllSector_OneBlock_Q}"/>
+                        </Viewbox>
+                    </Label>
+                    <Label  Grid.Column="4" Grid.Row="3" Style="{DynamicResource LabelInputArea_Q}" >
+                        <Viewbox Style="{DynamicResource ViewBoxSetMaxMinHeight_Q}">
+                            <TextBlock Text="2" Style="{DynamicResource TextBlockInViewBoxInput_AllSector_OneBlock_Q}"/>
+                        </Viewbox>
+                    </Label>
+                    <Label  Grid.Column="5" Grid.Row="3" Style="{DynamicResource LabelInputArea_Q}" >
+                        <Viewbox Style="{DynamicResource ViewBoxSetMaxMinHeight_Q}">
+                            <TextBlock Text="3" Style="{DynamicResource TextBlockInViewBoxInput_AllSector_OneBlock_Q}"/>
+                        </Viewbox>
+                    </Label>
+                    <Label  Grid.Column="6" Grid.Row="3" Style="{DynamicResource LabelInputArea_Q}" >
+                        <Viewbox Style="{DynamicResource ViewBoxSetMaxMinHeight_Q}">
+                            <TextBlock Text="4" Style="{DynamicResource TextBlockInViewBoxInput_AllSector_OneBlock_Q}"/>
+                        </Viewbox>
+                    </Label>
+                    <Label  Grid.Column="7" Grid.Row="3" Style="{DynamicResource LabelInputArea_Q}" >
+                        <Viewbox Style="{DynamicResource ViewBoxSetMaxMinHeight_Q}">
+                            <TextBlock Text="5" Style="{DynamicResource TextBlockInViewBoxInput_AllSector_OneBlock_Q}"/>
+                        </Viewbox>
+                    </Label>
+                    <Label  Grid.Column="8" Grid.Row="3" Style="{DynamicResource LabelInputArea_Q}" >
+                        <Viewbox Style="{DynamicResource ViewBoxSetMaxMinHeight_Q}">
+                            <TextBlock Text="6" Style="{DynamicResource TextBlockInViewBoxInput_AllSector_OneBlock_Q}"/>
+                        </Viewbox>
+                    </Label>
+                    <Label  Grid.Column="9" Grid.Row="3" Style="{DynamicResource LabelInputArea_Q}" >
+                        <Viewbox Style="{DynamicResource ViewBoxSetMaxMinHeight_Q}">
+                            <TextBlock Text="7" Style="{DynamicResource TextBlockInViewBoxInput_AllSector_OneBlock_Q}"/>
+                        </Viewbox>
+                    </Label>
+                    <Label  Grid.Column="10" Grid.Row="3" Style="{DynamicResource LabelInputArea_Q}" >
+                        <Viewbox Style="{DynamicResource ViewBoxSetMaxMinHeight_Q}">
+                            <TextBlock Text="8" Style="{DynamicResource TextBlockInViewBoxInput_AllSector_OneBlock_Q}"/>
+                        </Viewbox>
+                    </Label>
+                    <Label  Grid.Column="11" Grid.Row="3" Style="{DynamicResource LabelInputArea_Q}" >
+                        <Viewbox Style="{DynamicResource ViewBoxSetMaxMinHeight_Q}">
+                            <TextBlock Text="9" Style="{DynamicResource TextBlockInViewBoxInput_AllSector_OneBlock_Q}"/>
+                        </Viewbox>
+                    </Label>
+                    <Label  Grid.Column="12" Grid.Row="3" Style="{DynamicResource LabelInputArea_Q}" >
+                        <Viewbox Style="{DynamicResource ViewBoxSetMaxMinHeight_Q}">
+                            <TextBlock Text="10" Style="{DynamicResource TextBlockInViewBoxInput_AllSector_OneBlock_Q}"/>
+                        </Viewbox>
+                    </Label>
+                    <Label  Grid.Column="13" Grid.Row="3" Style="{DynamicResource LabelInputArea_Q}" >
+                        <Viewbox Style="{DynamicResource ViewBoxSetMaxMinHeight_Q}">
+                            <TextBlock Text="11" Style="{DynamicResource TextBlockInViewBoxInput_AllSector_OneBlock_Q}"/>
+                        </Viewbox>
+                    </Label>
+                    <Label  Grid.Column="14" Grid.Row="3" Style="{DynamicResource LabelInputArea_Q}" >
+                        <Viewbox Style="{DynamicResource ViewBoxSetMaxMinHeight_Q}">
+                            <TextBlock Text="12" Style="{DynamicResource TextBlockInViewBoxInput_AllSector_OneBlock_Q}"/>
+                        </Viewbox>
+                    </Label>
+                    <Label  Grid.Column="15" Grid.Row="3" Style="{DynamicResource LabelInputArea_Q}" >
+                        <Viewbox Style="{DynamicResource ViewBoxSetMaxMinHeight_Q}">
+                            <TextBlock Text="합계" Style="{DynamicResource TextBlockInViewBoxInput_AllSector_OneBlock_Q}"/>
+                        </Viewbox>
+                    </Label>
+
+                    <Label x:Name="lblModelOccupy" Grid.Row="4"
                             Style="{DynamicResource LabelInputArea_Q}" Grid.ColumnSpan="2" >
                         <Viewbox Style="{DynamicResource ViewBoxSetMaxMinHeight_Q}">
                             <TextBlock Text="점유제품" Style="{DynamicResource TextBlockInViewBoxInput_AllSector_OneBlock_Long_Q}"/>
                         </Viewbox>
                     </Label>
-                    <Label x:Name="lblDefectType" Grid.Row="3" 
+                    <Label x:Name="lblDefectType" Grid.Row="5" 
                             Style="{DynamicResource LabelInputArea_Q}" Grid.ColumnSpan="2" >
                         <Viewbox Style="{DynamicResource ViewBoxSetMaxMinHeight_Q}">
                             <TextBlock Text="불량유형" Style="{DynamicResource TextBlockInViewBoxInput_AllSector_OneBlock_Long_Q}"/>
                         </Viewbox>
                     </Label>
-                    <Label x:Name="lblDefectWorker" Grid.Row="4"
+                    <Label x:Name="lblDefectWorker" Grid.Row="6"
                             Style="{DynamicResource LabelInputArea_Q}" Grid.ColumnSpan="2" >
                         <Viewbox Style="{DynamicResource ViewBoxSetMaxMinHeight_Q}">
                             <TextBlock Text="작 업 자" Style="{DynamicResource TextBlockInViewBoxInput_AllSector_OneBlock_Three_Q}"/>
@@ -525,24 +607,24 @@
                             </Style>
                         </DataGrid.ColumnHeaderStyle>
                         <DataGrid.Columns>
-                            <DataGridTextColumn Header="1월" Binding="{Binding Path=M1}" Width="55*" CellStyle="{StaticResource NumericDataGridCell}"/>
-                            <DataGridTextColumn Header="2월" Binding="{Binding Path=M2}" Width="55*" CellStyle="{StaticResource NumericDataGridCell}"/>
-                            <DataGridTextColumn Header="3월" Binding="{Binding Path=M3}" Width="55*" CellStyle="{StaticResource NumericDataGridCell}"/>
-                            <DataGridTextColumn Header="4월" Binding="{Binding Path=M4}" Width="55*" CellStyle="{StaticResource NumericDataGridCell}"/>
-                            <DataGridTextColumn Header="5월" Binding="{Binding Path=M5}" Width="55*" CellStyle="{StaticResource NumericDataGridCell}"/>
-                            <DataGridTextColumn Header="6월" Binding="{Binding Path=M6}" Width="55*" CellStyle="{StaticResource NumericDataGridCell}"/>
-                            <DataGridTextColumn Header="7월" Binding="{Binding Path=M7}" Width="54*" CellStyle="{StaticResource NumericDataGridCell}"/>
-                            <DataGridTextColumn Header="8월" Binding="{Binding Path=M8}" Width="54*" CellStyle="{StaticResource NumericDataGridCell}"/>
-                            <DataGridTextColumn Header="9월" Binding="{Binding Path=M9}" Width="54*" CellStyle="{StaticResource NumericDataGridCell}"/>
-                            <DataGridTextColumn Header="10월" Binding="{Binding Path=M10}" Width="54*" CellStyle="{StaticResource NumericDataGridCell}"/>
-                            <DataGridTextColumn Header="11월" Binding="{Binding Path=M11}" Width="54*" CellStyle="{StaticResource NumericDataGridCell}"/>
-                            <DataGridTextColumn Header="12월" Binding="{Binding Path=M12}" Width="54*" CellStyle="{StaticResource NumericDataGridCell}"/>
-                            <DataGridTextColumn Header="합계" Binding="{Binding Path=M13}" Width="54*" CellStyle="{StaticResource NumericDataGridCell}"/>
+                            <DataGridTextColumn Header="1월" Binding="{Binding Path=M1}" Width="55*" ElementStyle="{StaticResource DataGridCellRight}"/>
+                            <DataGridTextColumn Header="2월" Binding="{Binding Path=M2}" Width="55*" ElementStyle="{StaticResource DataGridCellRight}"/>
+                            <DataGridTextColumn Header="3월" Binding="{Binding Path=M3}" Width="55*" ElementStyle="{StaticResource DataGridCellRight}"/>
+                            <DataGridTextColumn Header="4월" Binding="{Binding Path=M4}" Width="55*" ElementStyle="{StaticResource DataGridCellRight}"/>
+                            <DataGridTextColumn Header="5월" Binding="{Binding Path=M5}" Width="55*" ElementStyle="{StaticResource DataGridCellRight}"/>
+                            <DataGridTextColumn Header="6월" Binding="{Binding Path=M6}" Width="55*" ElementStyle="{StaticResource DataGridCellRight}"/>
+                            <DataGridTextColumn Header="7월" Binding="{Binding Path=M7}" Width="54*" ElementStyle="{StaticResource DataGridCellRight}"/>
+                            <DataGridTextColumn Header="8월" Binding="{Binding Path=M8}" Width="54*" ElementStyle="{StaticResource DataGridCellRight}"/>
+                            <DataGridTextColumn Header="9월" Binding="{Binding Path=M9}" Width="54*" ElementStyle="{StaticResource DataGridCellRight}"/>
+                            <DataGridTextColumn Header="10월" Binding="{Binding Path=M10}" Width="54*" ElementStyle="{StaticResource DataGridCellRight}"/>
+                            <DataGridTextColumn Header="11월" Binding="{Binding Path=M11}" Width="54*" ElementStyle="{StaticResource DataGridCellRight}"/>
+                            <DataGridTextColumn Header="12월" Binding="{Binding Path=M12}" Width="54*" ElementStyle="{StaticResource DataGridCellRight}"/>
+                            <DataGridTextColumn Header="합계" Binding="{Binding Path=M13}" Width="54*" ElementStyle="{StaticResource DataGridCellRight}"/>
                         </DataGrid.Columns>
                     </DataGrid>
-                    
+
                     <!--점유모델-->
-                    <DataGrid x:Name="dgdDefectArticle_ModelOccupy" Grid.Column="2" Grid.ColumnSpan="14" Grid.Row="2" 
+                    <DataGrid x:Name="dgdDefectArticle_ModelOccupy" Grid.Column="2" Grid.ColumnSpan="14" Grid.Row="4" ScrollViewer.CanContentScroll="False"
                               HeadersVisibility="Row" ScrollViewer.HorizontalScrollBarVisibility="Hidden" ScrollViewer.VerticalScrollBarVisibility="Hidden" Style="{DynamicResource DataGridSetNoHeader}" >
                         <DataGrid.RowHeaderStyle>
                             <Style TargetType="{x:Type DataGridRowHeader}">
@@ -551,19 +633,19 @@
                             </Style>
                         </DataGrid.RowHeaderStyle>
                         <DataGrid.Columns>
-                            <DataGridTextColumn Header="M1" Binding="{Binding Path=M1}" Width="55*" CellStyle="{StaticResource DataGridCellAndCentering}" />
-                            <DataGridTextColumn Header="M2" Binding="{Binding Path=M2}" Width="55*" CellStyle="{StaticResource DataGridCellAndCentering}" />
-                            <DataGridTextColumn Header="M3" Binding="{Binding Path=M3}" Width="55*" CellStyle="{StaticResource DataGridCellAndCentering}" />
-                            <DataGridTextColumn Header="M4" Binding="{Binding Path=M4}" Width="55*" CellStyle="{StaticResource DataGridCellAndCentering}" />
-                            <DataGridTextColumn Header="M5" Binding="{Binding Path=M5}" Width="55*" CellStyle="{StaticResource DataGridCellAndCentering}" />
-                            <DataGridTextColumn Header="M6" Binding="{Binding Path=M6}" Width="55*" CellStyle="{StaticResource DataGridCellAndCentering}"/>
-                            <DataGridTextColumn Header="M7" Binding="{Binding Path=M7}" Width="54*" CellStyle="{StaticResource DataGridCellAndCentering}"/>
-                            <DataGridTextColumn Header="M8" Binding="{Binding Path=M8}" Width="54*" CellStyle="{StaticResource DataGridCellAndCentering}"/>
-                            <DataGridTextColumn Header="M9" Binding="{Binding Path=M9}" Width="54*" CellStyle="{StaticResource DataGridCellAndCentering}"/>
-                            <DataGridTextColumn Header="M10" Binding="{Binding Path=M10}" Width="54*" CellStyle="{StaticResource DataGridCellAndCentering}"/>
-                            <DataGridTextColumn Header="M11" Binding="{Binding Path=M11}" Width="54*" CellStyle="{StaticResource DataGridCellAndCentering}"/>
-                            <DataGridTextColumn Header="M12" Binding="{Binding Path=M12}" Width="54*" CellStyle="{StaticResource DataGridCellAndCentering}"/>
-                            <DataGridTextColumn Header="M13" Binding="{Binding Path=M13}" Width="54*" CellStyle="{StaticResource DataGridCellAndCentering}"/>
+                            <DataGridTextColumn Header="M1" Binding="{Binding Path=M1}" Width="55*" ElementStyle="{StaticResource DataGridCellCenter}" />
+                            <DataGridTextColumn Header="M2" Binding="{Binding Path=M2}" Width="55*" ElementStyle="{StaticResource DataGridCellCenter}" />
+                            <DataGridTextColumn Header="M3" Binding="{Binding Path=M3}" Width="55*" ElementStyle="{StaticResource DataGridCellCenter}" />
+                            <DataGridTextColumn Header="M4" Binding="{Binding Path=M4}" Width="55*" ElementStyle="{StaticResource DataGridCellCenter}" />
+                            <DataGridTextColumn Header="M5" Binding="{Binding Path=M5}" Width="55*" ElementStyle="{StaticResource DataGridCellCenter}" />
+                            <DataGridTextColumn Header="M6" Binding="{Binding Path=M6}" Width="55*" ElementStyle="{StaticResource DataGridCellCenter}"/>
+                            <DataGridTextColumn Header="M7" Binding="{Binding Path=M7}" Width="54*" ElementStyle="{StaticResource DataGridCellCenter}"/>
+                            <DataGridTextColumn Header="M8" Binding="{Binding Path=M8}" Width="54*" ElementStyle="{StaticResource DataGridCellCenter}"/>
+                            <DataGridTextColumn Header="M9" Binding="{Binding Path=M9}" Width="54*" ElementStyle="{StaticResource DataGridCellCenter}"/>
+                            <DataGridTextColumn Header="M10" Binding="{Binding Path=M10}" Width="54*" ElementStyle="{StaticResource DataGridCellCenter}"/>
+                            <DataGridTextColumn Header="M11" Binding="{Binding Path=M11}" Width="54*" ElementStyle="{StaticResource DataGridCellCenter}"/>
+                            <DataGridTextColumn Header="M12" Binding="{Binding Path=M12}" Width="54*" ElementStyle="{StaticResource DataGridCellCenter}"/>
+                            <DataGridTextColumn Header="M13" Binding="{Binding Path=M13}" Width="54*" ElementStyle="{StaticResource DataGridCellCenter}"/>
                         </DataGrid.Columns>
                     </DataGrid>
 
@@ -583,7 +665,7 @@
 
 
                     <!--불량유형-->
-                    <DataGrid x:Name="dgdDefectArticle_DefectType" Grid.Column="2" Grid.ColumnSpan="14" Grid.Row="3" 
+                    <DataGrid x:Name="dgdDefectArticle_DefectType" Grid.Column="2" Grid.ColumnSpan="14" Grid.Row="5" ScrollViewer.CanContentScroll="False"
                               HeadersVisibility="Row"  ScrollViewer.HorizontalScrollBarVisibility="Hidden" ScrollViewer.VerticalScrollBarVisibility="Hidden"  Style="{DynamicResource DataGridSetNoHeader}">
                         <DataGrid.RowHeaderStyle>
                             <Style TargetType="{x:Type DataGridRowHeader}">
@@ -592,19 +674,19 @@
                             </Style>
                         </DataGrid.RowHeaderStyle>
                         <DataGrid.Columns>
-                            <DataGridTextColumn Header="M1" Binding="{Binding Path=M1}" Width="55*" CellStyle="{StaticResource DataGridCellAndCentering}" />
-                            <DataGridTextColumn Header="M2" Binding="{Binding Path=M2}" Width="55*" CellStyle="{StaticResource DataGridCellAndCentering}" />
-                            <DataGridTextColumn Header="M3" Binding="{Binding Path=M3}" Width="55*" CellStyle="{StaticResource DataGridCellAndCentering}" />
-                            <DataGridTextColumn Header="M4" Binding="{Binding Path=M4}" Width="55*" CellStyle="{StaticResource DataGridCellAndCentering}" />
-                            <DataGridTextColumn Header="M5" Binding="{Binding Path=M5}" Width="55*" CellStyle="{StaticResource DataGridCellAndCentering}" />
-                            <DataGridTextColumn Header="M6" Binding="{Binding Path=M6}" Width="55*" CellStyle="{StaticResource DataGridCellAndCentering}"/>
-                            <DataGridTextColumn Header="M7" Binding="{Binding Path=M7}" Width="54*" CellStyle="{StaticResource DataGridCellAndCentering}"/>
-                            <DataGridTextColumn Header="M8" Binding="{Binding Path=M8}" Width="54*" CellStyle="{StaticResource DataGridCellAndCentering}"/>
-                            <DataGridTextColumn Header="M9" Binding="{Binding Path=M9}" Width="54*" CellStyle="{StaticResource DataGridCellAndCentering}"/>
-                            <DataGridTextColumn Header="M10" Binding="{Binding Path=M10}" Width="54*" CellStyle="{StaticResource DataGridCellAndCentering}"/>
-                            <DataGridTextColumn Header="M11" Binding="{Binding Path=M11}" Width="54*" CellStyle="{StaticResource DataGridCellAndCentering}"/>
-                            <DataGridTextColumn Header="M12" Binding="{Binding Path=M12}" Width="54*" CellStyle="{StaticResource DataGridCellAndCentering}"/>
-                            <DataGridTextColumn Header="M13" Binding="{Binding Path=M13}" Width="54*" CellStyle="{StaticResource DataGridCellAndCentering}"/>
+                            <DataGridTextColumn Header="M1" Binding="{Binding Path=M1}" Width="55*" ElementStyle="{StaticResource DataGridCellCenter}" />
+                            <DataGridTextColumn Header="M2" Binding="{Binding Path=M2}" Width="55*" ElementStyle="{StaticResource DataGridCellCenter}" />
+                            <DataGridTextColumn Header="M3" Binding="{Binding Path=M3}" Width="55*" ElementStyle="{StaticResource DataGridCellCenter}" />
+                            <DataGridTextColumn Header="M4" Binding="{Binding Path=M4}" Width="55*" ElementStyle="{StaticResource DataGridCellCenter}" />
+                            <DataGridTextColumn Header="M5" Binding="{Binding Path=M5}" Width="55*" ElementStyle="{StaticResource DataGridCellCenter}" />
+                            <DataGridTextColumn Header="M6" Binding="{Binding Path=M6}" Width="55*" ElementStyle="{StaticResource DataGridCellCenter}"/>
+                            <DataGridTextColumn Header="M7" Binding="{Binding Path=M7}" Width="54*" ElementStyle="{StaticResource DataGridCellCenter}"/>
+                            <DataGridTextColumn Header="M8" Binding="{Binding Path=M8}" Width="54*" ElementStyle="{StaticResource DataGridCellCenter}"/>
+                            <DataGridTextColumn Header="M9" Binding="{Binding Path=M9}" Width="54*" ElementStyle="{StaticResource DataGridCellCenter}"/>
+                            <DataGridTextColumn Header="M10" Binding="{Binding Path=M10}" Width="54*" ElementStyle="{StaticResource DataGridCellCenter}"/>
+                            <DataGridTextColumn Header="M11" Binding="{Binding Path=M11}" Width="54*" ElementStyle="{StaticResource DataGridCellCenter}"/>
+                            <DataGridTextColumn Header="M12" Binding="{Binding Path=M12}" Width="54*" ElementStyle="{StaticResource DataGridCellCenter}"/>
+                            <DataGridTextColumn Header="M13" Binding="{Binding Path=M13}" Width="54*" ElementStyle="{StaticResource DataGridCellCenter}"/>
                         </DataGrid.Columns>
                     </DataGrid>
 
@@ -623,7 +705,7 @@
                     </DataGrid>
 
                     <!--작업자-->
-                    <DataGrid x:Name="dgdDefectArticle_Worker" Grid.Column="2" Grid.ColumnSpan="14" Grid.Row="4" 
+                    <DataGrid x:Name="dgdDefectArticle_Worker" Grid.Column="2" Grid.ColumnSpan="14" Grid.Row="6" ScrollViewer.CanContentScroll="False"
                               HeadersVisibility="Row" ScrollViewer.HorizontalScrollBarVisibility="Hidden" ScrollViewer.VerticalScrollBarVisibility="Hidden" Style="{DynamicResource DataGridSetNoHeader}" >
                         <DataGrid.RowHeaderStyle>
                             <Style TargetType="{x:Type DataGridRowHeader}">
@@ -634,19 +716,19 @@
                             </Style>
                         </DataGrid.RowHeaderStyle>
                         <DataGrid.Columns>
-                            <DataGridTextColumn Header="M1" Binding="{Binding Path=M1}" Width="55*" CellStyle="{StaticResource DataGridCellAndCentering}" />
-                            <DataGridTextColumn Header="M2" Binding="{Binding Path=M2}" Width="55*" CellStyle="{StaticResource DataGridCellAndCentering}" />
-                            <DataGridTextColumn Header="M3" Binding="{Binding Path=M3}" Width="55*" CellStyle="{StaticResource DataGridCellAndCentering}" />
-                            <DataGridTextColumn Header="M4" Binding="{Binding Path=M4}" Width="55*" CellStyle="{StaticResource DataGridCellAndCentering}" />
-                            <DataGridTextColumn Header="M5" Binding="{Binding Path=M5}" Width="55*" CellStyle="{StaticResource DataGridCellAndCentering}" />
-                            <DataGridTextColumn Header="M6" Binding="{Binding Path=M6}" Width="55*" CellStyle="{StaticResource DataGridCellAndCentering}"/>
-                            <DataGridTextColumn Header="M7" Binding="{Binding Path=M7}" Width="54*" CellStyle="{StaticResource DataGridCellAndCentering}"/>
-                            <DataGridTextColumn Header="M8" Binding="{Binding Path=M8}" Width="54*" CellStyle="{StaticResource DataGridCellAndCentering}"/>
-                            <DataGridTextColumn Header="M9" Binding="{Binding Path=M9}" Width="54*" CellStyle="{StaticResource DataGridCellAndCentering}"/>
-                            <DataGridTextColumn Header="M10" Binding="{Binding Path=M10}" Width="54*" CellStyle="{StaticResource DataGridCellAndCentering}"/>
-                            <DataGridTextColumn Header="M11" Binding="{Binding Path=M11}" Width="54*" CellStyle="{StaticResource DataGridCellAndCentering}"/>
-                            <DataGridTextColumn Header="M12" Binding="{Binding Path=M12}" Width="54*" CellStyle="{StaticResource DataGridCellAndCentering}"/>
-                            <DataGridTextColumn Header="M13" Binding="{Binding Path=M13}" Width="54*" CellStyle="{StaticResource DataGridCellAndCentering}"/>
+                            <DataGridTextColumn Header="M1" Binding="{Binding Path=M1}" Width="55*" ElementStyle="{StaticResource DataGridCellCenter}" />
+                            <DataGridTextColumn Header="M2" Binding="{Binding Path=M2}" Width="55*" ElementStyle="{StaticResource DataGridCellCenter}" />
+                            <DataGridTextColumn Header="M3" Binding="{Binding Path=M3}" Width="55*" ElementStyle="{StaticResource DataGridCellCenter}" />
+                            <DataGridTextColumn Header="M4" Binding="{Binding Path=M4}" Width="55*" ElementStyle="{StaticResource DataGridCellCenter}" />
+                            <DataGridTextColumn Header="M5" Binding="{Binding Path=M5}" Width="55*" ElementStyle="{StaticResource DataGridCellCenter}" />
+                            <DataGridTextColumn Header="M6" Binding="{Binding Path=M6}" Width="55*" ElementStyle="{StaticResource DataGridCellCenter}"/>
+                            <DataGridTextColumn Header="M7" Binding="{Binding Path=M7}" Width="54*" ElementStyle="{StaticResource DataGridCellCenter}"/>
+                            <DataGridTextColumn Header="M8" Binding="{Binding Path=M8}" Width="54*" ElementStyle="{StaticResource DataGridCellCenter}"/>
+                            <DataGridTextColumn Header="M9" Binding="{Binding Path=M9}" Width="54*" ElementStyle="{StaticResource DataGridCellCenter}"/>
+                            <DataGridTextColumn Header="M10" Binding="{Binding Path=M10}" Width="54*" ElementStyle="{StaticResource DataGridCellCenter}"/>
+                            <DataGridTextColumn Header="M11" Binding="{Binding Path=M11}" Width="54*" ElementStyle="{StaticResource DataGridCellCenter}"/>
+                            <DataGridTextColumn Header="M12" Binding="{Binding Path=M12}" Width="54*" ElementStyle="{StaticResource DataGridCellCenter}"/>
+                            <DataGridTextColumn Header="M13" Binding="{Binding Path=M13}" Width="54*" ElementStyle="{StaticResource DataGridCellCenter}"/>
                         </DataGrid.Columns>
                     </DataGrid>
                 </Grid>

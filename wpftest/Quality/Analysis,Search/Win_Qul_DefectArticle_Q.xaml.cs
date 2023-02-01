@@ -337,22 +337,16 @@ namespace WizMes_ANT
             btnSearch.IsEnabled = false;
 
             Dispatcher.BeginInvoke(new Action(() =>
-
             {
-                Thread.Sleep(2000);
-
                 //로직
                 re_Search(0);
 
             }), System.Windows.Threading.DispatcherPriority.Background);
 
 
-
             Dispatcher.BeginInvoke(new Action(() =>
-
             {
                 btnSearch.IsEnabled = true;
-
             }), System.Windows.Threading.DispatcherPriority.Background);
         }
 
@@ -791,6 +785,89 @@ namespace WizMes_ANT
         }
 
 
+        private void testModel()
+        {
+            WinModelName = new Win_Qul_DefectArticle_Q_ModelOccupy_CodeView
+            {
+                DefectQty = "96",
+                DefectCount = "3",
+                GroupingName = "32076 7270",
+                SumDefectQty = "137",
+                SumDefectCount = "11",
+
+                DefectQtyRate = "70.00",
+                DefectCountRate = "27.00",
+            };
+            PieChartProductValue.Items.Add(WinModelName);
+
+            WinModelName = new Win_Qul_DefectArticle_Q_ModelOccupy_CodeView
+            {
+                DefectQty = "34",
+                DefectCount = "3",
+                GroupingName = "32076 7311",
+                SumDefectQty = "137",
+                SumDefectCount = "11",
+
+                DefectQtyRate = "25.00",
+                DefectCountRate = "27.00",
+            };
+            PieChartProductValue.Items.Add(WinModelName);
+
+            WinModelName = new Win_Qul_DefectArticle_Q_ModelOccupy_CodeView
+            {
+                DefectQty = "5",
+                DefectCount = "4",
+                GroupingName = "32060-7262",
+                SumDefectQty = "137",
+                SumDefectCount = "11",
+
+                DefectQtyRate = "4.00",
+                DefectCountRate = "36.00",
+            };
+            PieChartProductValue.Items.Add(WinModelName);
+
+            WinModelName = new Win_Qul_DefectArticle_Q_ModelOccupy_CodeView
+            {
+                DefectQty = "2",
+                DefectCount = "1",
+                GroupingName = "25471-2T000",
+                SumDefectQty = "137",
+                SumDefectCount = "11",
+
+                DefectQtyRate = "1.00",
+                DefectCountRate = "9.00",
+            };
+            PieChartProductValue.Items.Add(WinModelName);
+
+
+
+            WinTypeName = new Win_Qul_DefectArticle_Q_DefectType_CodeView
+            {
+                DefectQty = "136",
+                DefectCount = "10",
+                GroupingName = "찍힘",
+                SumDefectQty = "137",
+                SumDefectCount = "11",
+
+                DefectQtyRate = "99.00",
+                DefectCountRate = "91.00",
+            };
+            PieChartTypeValue.Items.Add(WinTypeName);
+
+            WinTypeName = new Win_Qul_DefectArticle_Q_DefectType_CodeView
+            {
+                DefectQty = "1",
+                DefectCount = "1",
+                GroupingName = "면취량",
+                SumDefectQty = "137",
+                SumDefectCount = "11",
+
+                DefectQtyRate = "1.00",
+                DefectCountRate = "9.00",
+            };
+            PieChartTypeValue.Items.Add(WinTypeName);
+        }
+
         //제품별 불량 dgdDefectArticle_ModelOccupy 데이터그리드 조회
         private void FillGridModel()
         {
@@ -857,6 +934,9 @@ namespace WizMes_ANT
                     {
                         DataRowCollection drc = dt.Rows;
 
+                        //원그래프를 시작해보자
+                        PieData pd = new PieData();
+
                         for (int j = 0; j < dt.Rows.Count; j++)
                         {
                             DataRow dr = dt.Rows[j];
@@ -876,6 +956,15 @@ namespace WizMes_ANT
 
                             DataGridRow dgr = lib.GetRow(0, dgdDefectArticle_ModelOccupy);
                             var ModelName = dgr.Item as Win_Qul_DefectArticle_Q_ModelOccupy_CodeView;
+
+                            // ------- 원그래프 값 설정 -------
+                            double value = 0.0;
+                            if (WinModelName.DefectQtyRate == string.Empty)
+                                WinModelName.DefectQtyRate = "0";
+
+                            value = Convert.ToDouble(WinModelName.DefectQtyRate);
+                            pd.AddSlice(WinModelName.GroupingName, value);
+                            // --------------------------------
 
                             if (j < dt.Rows.Count)
                             {
@@ -960,6 +1049,35 @@ namespace WizMes_ANT
                                 }
                             }
                         }
+
+                        // ------- 원그래프 값 설정 -------
+                        if (dt.Rows.Count > 0)
+                        {
+                            foreach (var n in pd.Slice)
+                            {
+                                var pieSeries = new PieSeries
+                                {
+                                    Title = n.Key,
+                                    Values = new ChartValues<double> { n.Value },
+                                    Fill = new SolidColorBrush(lvcProductPieChart.GetNextDefaultColor())
+                                };
+
+                                //계열, 범례, 데이터레이블을 보여주라!!
+                                pieSeries.DataLabels = true;
+                                lvcProductPieChart.Series.Add(pieSeries);
+
+                                //조각 설정
+                                var ChartDataGrid = new ChartGrid()
+                                {
+                                    ColorName = n.Key,
+                                    FillColor = pieSeries.Fill.ToString(),
+                                    Percentage = n.Value.ToString()
+                                };
+
+                                pieSeries.LabelPoint = Point => pieSeries.Title + ", " + ChartDataGrid.Percentage + "%";
+                            }
+                        }
+                        // --------------------------------
 
                         //불량수량을 넣을 수 있을까
                         for (int i = 0; i < dt.Rows.Count; i++)
@@ -1078,7 +1196,7 @@ namespace WizMes_ANT
             }
 
             //원그래프소환
-            FillChartModel();
+            //FillChartModel();
         }
 
 
@@ -1091,18 +1209,15 @@ namespace WizMes_ANT
                 PieData pd = new PieData();
 
                 int TargetCount = PieChartProductValue.Items.Count;
-
                 for (int i = 0; i < TargetCount; i++)
                 {
                     DataGridRow dgr = lib.GetRow(i, PieChartProductValue);
                     var ViewReceiver = dgr.Item as Win_Qul_DefectArticle_Q_ModelOccupy_CodeView;
 
-
                     double value = 0.0;
                     if (ViewReceiver.DefectQtyRate == string.Empty)
-                    {
                         ViewReceiver.DefectQtyRate = "0";
-                    }
+
                     value = Convert.ToDouble(ViewReceiver.DefectQtyRate);
                     pd.AddSlice(ViewReceiver.GroupingName, value);
                 }
@@ -1214,6 +1329,9 @@ namespace WizMes_ANT
                     {
                         DataRowCollection drc = dt.Rows;
 
+                        //원그래프를 시작해보자
+                        PieData pd = new PieData();
+
                         for (int j = 0; j < dt.Rows.Count; j++)
                         {
                             DataRow dr = dt.Rows[j];
@@ -1234,6 +1352,14 @@ namespace WizMes_ANT
                             DataGridRow dgr = lib.GetRow(0, dgdDefectArticle_DefectType);
                             var TypeName = dgr.Item as Win_Qul_DefectArticle_Q_DefectType_CodeView;
 
+                            // ---------- 원그래프 값 설정 ----------
+                            double value = 0.0;
+                            if (WinTypeName.DefectQtyRate == string.Empty)
+                                WinTypeName.DefectQtyRate = "0";
+
+                            value = Convert.ToDouble(WinTypeName.DefectQtyRate);
+                            pd.AddSlice(WinTypeName.GroupingName, value);
+                            // -----------------------------------
 
                             if (j < dt.Rows.Count)
                             {
@@ -1319,6 +1445,35 @@ namespace WizMes_ANT
                                 }
                             }
                         }
+
+                        // ---------- 원그래프 값 설정 ----------
+                        if (dt.Rows.Count > 0)
+                        {
+                            foreach (var n in pd.Slice)
+                            {
+                                var pieSeries = new PieSeries
+                                {
+                                    Title = n.Key,
+                                    Values = new ChartValues<double> { n.Value },
+                                    Fill = new SolidColorBrush(lvcTypePieChart.GetNextDefaultColor())
+                                };
+
+                                //계열, 범례, 데이터레이블을 보여주라!!
+                                pieSeries.DataLabels = true;
+                                pieSeries.LabelPoint = Point => pieSeries.Title + ", " + n.Value + "%";
+
+                                lvcTypePieChart.Series.Add(pieSeries);
+
+                                //조각 설정
+                                var ChartDataGrid = new ChartGrid()
+                                {
+                                    ColorName = n.Key,
+                                    FillColor = pieSeries.Fill.ToString(),
+                                    Percentage = n.Value.ToString()
+                                };
+                            }
+                        }
+                        // -----------------------------------
 
                         //불량수량을 넣을 수 있을까
                         for (int i = 0; i < dt.Rows.Count; i++)
@@ -1437,7 +1592,7 @@ namespace WizMes_ANT
             }
 
             //원그래프소환
-            FillChartType();
+            //FillChartType();
         }
 
 
@@ -1450,7 +1605,6 @@ namespace WizMes_ANT
                 PieData pd = new PieData();
 
                 int TargetCount = PieChartTypeValue.Items.Count;
-
                 for (int i = 0; i < TargetCount; i++)
                 {
                     DataGridRow dgr = lib.GetRow(i, PieChartTypeValue);
@@ -1458,9 +1612,8 @@ namespace WizMes_ANT
 
                     double value = 0.0;
                     if (ViewReceiver.DefectQtyRate == string.Empty)
-                    {
                         ViewReceiver.DefectQtyRate = "0";
-                    }
+
                     value = Convert.ToDouble(ViewReceiver.DefectQtyRate);
                     pd.AddSlice(ViewReceiver.GroupingName, value);
                 }
