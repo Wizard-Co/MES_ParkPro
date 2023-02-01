@@ -6,12 +6,12 @@ using System.Collections.ObjectModel;
 using System.Data;
 using System.Windows;
 using System.Windows.Controls;
-using WizMes_SamickSDT.PopUp;
-using WizMes_SamickSDT.PopUP;
+using WizMes_ANT.PopUp;
+using WizMes_ANT.PopUP;
 using System.Windows.Input;
 using System.Threading;
 
-namespace WizMes_SamickSDT
+namespace WizMes_ANT
 {
     /**************************************************************************************************
     '** System 명 : WizMES

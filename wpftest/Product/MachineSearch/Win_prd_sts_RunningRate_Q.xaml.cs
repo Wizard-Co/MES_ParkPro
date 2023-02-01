@@ -6,13 +6,13 @@ using System.Collections.ObjectModel;
 using System.Data;
 using System.Windows;
 using System.Windows.Controls;
-using WizMes_SamickSDT.PopUp;
-using WizMes_SamickSDT.PopUP;
+using WizMes_ANT.PopUp;
+using WizMes_ANT.PopUP;
 using System.Windows.Input;
 using System.Threading;
 using WPF.MDI;
 
-namespace WizMes_SamickSDT
+namespace WizMes_ANT
 {
     /**************************************************************************************************
     '** System 명 : WizMES
@@ -448,12 +448,12 @@ namespace WizMes_SamickSDT
                     }
                     else
                     {
-                        Type type = Type.GetType("WizMes_SamickSDT." + MainWindow.mMenulist[i].ProgramID.Trim(), true);
+                        Type type = Type.GetType("WizMes_ANT." + MainWindow.mMenulist[i].ProgramID.Trim(), true);
                         object uie = Activator.CreateInstance(type);
 
                         MainWindow.mMenulist[i].subProgramID = new MdiChild()
                         {
-                            Title = "SamickSDT [" + MainWindow.mMenulist[i].MenuID.Trim() + "] " + MainWindow.mMenulist[i].Menu.Trim() +
+                            Title = "ANT [" + MainWindow.mMenulist[i].MenuID.Trim() + "] " + MainWindow.mMenulist[i].Menu.Trim() +
                                     " (→" + MainWindow.mMenulist[i].ProgramID + ")",
                             Height = SystemParameters.PrimaryScreenHeight * 0.8,
                             MaxHeight = SystemParameters.PrimaryScreenHeight * 0.85,

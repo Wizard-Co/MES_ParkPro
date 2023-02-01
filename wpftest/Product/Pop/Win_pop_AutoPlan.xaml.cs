@@ -185,9 +185,9 @@ namespace WizMes_ANT.PopUp
                                 OrderNo = dr["OrderNo"].ToString(),
                                 OrderID = dr["OrderID"].ToString(),
                                 DvlyDate =dr["DvlyDate"].ToString(),
-                                OrderQty = dr["OrderQty"].ToString(),
-                                OrderInstQy = dr["OrderInstQy"].ToString(),
-                                notOrderInstQty = dr["notOrderInstQty"].ToString(),
+                                OrderQty = stringFormatN0(dr["OrderQty"]),
+                                OrderInstQy = stringFormatN0(dr["OrderInstQy"]),
+                                notOrderInstQty = stringFormatN0(dr["notOrderInstQty"]),
                                 OrderSeq = dr["OrderSeq"].ToString(),
 
                             };

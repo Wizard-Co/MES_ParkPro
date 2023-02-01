@@ -376,19 +376,22 @@ namespace WizMes_ANT
                 AllCheck.IsChecked = false;
 
             }), System.Windows.Threading.DispatcherPriority.Background);
-            
+
         }
 
         //삭제
         private void btnDelete_Click(object sender, RoutedEventArgs e)
         {
             var InputView = dgdMain.SelectedItem as Win_prd_PlanInputView_U_CodeView;
-
             if (InputView != null)
             {
                 if (MessageBox.Show("선택한 항목을 삭제하시겠습니까?", "삭제 전 확인", MessageBoxButton.YesNo) == MessageBoxResult.Yes)
                 {
-                    beDelete();
+                    using (Loading ld = new Loading(beDelete))
+                    {
+                        ld.ShowDialog();
+                    }
+
                     if (dgdMain.Items.Count == 0)
                     {
                         this.DataContext = null;
@@ -396,13 +399,9 @@ namespace WizMes_ANT
                         return;
                     }
                 }
-
             }
             else
-            {
                 MessageBox.Show("삭제할 데이터를 선택해주세요.");
-            }
-      
         }
 
         //닫기
@@ -426,7 +425,7 @@ namespace WizMes_ANT
             //PnlListPrint.IsOpen = true;
 
             // 체크된것 갯수 세기
-            
+
             for (int i = 0; i < dgdMain.Items.Count; i++)
             {
                 var Main = dgdMain.Items[i] as Win_prd_PlanInputView_U_CodeView;
@@ -561,12 +560,11 @@ namespace WizMes_ANT
         //조회
         private void FillGrid()
         {
+            ovcPlanView.Clear();
             dgdTotal.Items.Clear();
 
             if (dgdMain.Items.Count > 0)
-            {
                 dgdMain.Items.Clear();
-            }
 
             try
             {
@@ -596,7 +594,7 @@ namespace WizMes_ANT
                 int i = 0;
                 DataTable dt = ds.Tables[0];
                 if (dt.Rows.Count > 0)
-                { 
+                {
                     DataRowCollection drc = dt.Rows;
                     //ObservableCollection<CodeView> ovcArticleGrpID = ComboBoxUtil.Instance.GetArticleCode_SetComboBox("", 0);
 
@@ -671,7 +669,7 @@ namespace WizMes_ANT
                         {
                             WinPlanOrder.KCustom = "";
                             dgdTotal.Items.Add(WinPlanOrder);
-                        }            
+                        }
                     }
 
                     //txtSumOrderQty.Text = string.Format("{0:N0}", sumOrder);
@@ -787,7 +785,7 @@ namespace WizMes_ANT
                         }
                     }
                 }
-               
+
             }
             catch (Exception ex)
             {
@@ -804,12 +802,9 @@ namespace WizMes_ANT
         //저장
         private void btnSave_Click(object sender, RoutedEventArgs e)
         {
-            if (SaveData())
+            using (Loading lw = new Loading(beSave))
             {
-                using (Loading lw = new Loading(beSave))
-                {
-                    lw.ShowDialog();
-                }
+                lw.ShowDialog();
             }
         }
 
@@ -846,18 +841,22 @@ namespace WizMes_ANT
 
         private void beDelete()
         {
-            foreach (Win_prd_PlanInputView_U_CodeView PlanView in ovcPlanView)
-            {
+            btnDelete.IsEnabled = false;
 
-                if (PlanView != null)
+            Dispatcher.BeginInvoke(new Action(() =>
+            {
+                foreach (Win_prd_PlanInputView_U_CodeView PlanView in ovcPlanView)
                 {
-                    if (DeleteData(PlanView.InstID))
-                    {
-                        rowNum = 0;
-                        FillGrid();
-                    }
+                    if (PlanView != null)
+                        DeleteData(PlanView.InstID);
                 }
-            }
+
+                rowNum = 0;
+                FillGrid();
+
+            }), System.Windows.Threading.DispatcherPriority.Background);
+
+            btnDelete.IsEnabled = true;
         }
 
         //취소
@@ -928,7 +927,7 @@ namespace WizMes_ANT
                     sqlParameter.Add("nInstDetSeq", i + 1);
                     sqlParameter.Add("sStartDate", WinPlanSub.StartDate);
                     sqlParameter.Add("sEndDate", WinPlanSub.EndDate);
-                    sqlParameter.Add("nInstQty", double.Parse(WinPlanSub.InstQty.Replace(",", "")));
+                    sqlParameter.Add("nInstQty", int.Parse(WinPlanSub.InstQty.Replace(",", "")));
                     //temp = pidOne.InstQty.Replace(",", "");
                     sqlParameter.Add("sInstSubRemark", WinPlanSub.InstRemark);
                     sqlParameter.Add("MachineID", WinPlanSub.MachineID);
@@ -985,7 +984,7 @@ namespace WizMes_ANT
         //삭제 
         private bool DeleteData(string InstID)
         {
-            bool flag = false;
+            bool flag = true;
 
             try
             {
@@ -994,16 +993,24 @@ namespace WizMes_ANT
                 sqlParameter.Add("InstID", InstID);
                 sqlParameter.Add("OutMessage", "");
 
-                string[] result = DataStore.Instance.ExecuteProcedure_NewLog("xp_PlanInput_dPlanInput", sqlParameter, "D");
+                //string[] result = DataStore.Instance.ExecuteProcedure_NewLog("xp_PlanInput_dPlanInput", sqlParameter, "D");
+                DataSet ds = DataStore.Instance.ProcedureToDataSet("xp_PlanInput_dPlanInput", sqlParameter, false);
 
-                if (result[0].Equals("success"))
+                if (ds != null && ds.Tables.Count > 0)
                 {
-                    //MessageBox.Show("성공 *^^*");
-                    flag = true;
-                }
-                else
-                {
-                    MessageBox.Show("삭제 실패, 실패 이유 : " + result[1]);
+                    DataTable dt = ds.Tables[0];
+                    int i = 0;
+
+                    if (dt.Rows.Count > 0)
+                    {
+                        // 문제가 있을 경우에는, OutMessage 하나만 가져오기 때문에, 
+                        // 컬럼이 1개인 경우에 해당 메시지를 출력
+                        if (dt.Columns.Count == 1)
+                        {
+                            MessageBox.Show(dt.Rows[0].ItemArray[0].ToString());
+                            flag = false;
+                        }
+                    }
                 }
             }
             catch (Exception ex)
@@ -1779,7 +1786,7 @@ namespace WizMes_ANT
                     pastesheet.PrintOutEx();
                 }
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 MessageBox.Show(ex.Message);
             }
@@ -1986,7 +1993,7 @@ namespace WizMes_ANT
 
                 Dictionary<string, object> sqlParameter = new Dictionary<string, object>();
                 sqlParameter.Clear();
-   
+
                 sqlParameter.Add("grp_InstID", grp_InstID);
                 sqlParameter.Add("order_InstID", @order_InstID);
 
@@ -2195,22 +2202,16 @@ namespace WizMes_ANT
                     Main.IsCheck = true;
 
                     if (ovcPlanView.Contains(Main) == false)
-                    {
                         ovcPlanView.Add(Main);
-                    }
                 }
                 else
                 {
                     Main.IsCheck = false;
 
                     if (ovcPlanView.Contains(Main) == true)
-                    {
                         ovcPlanView.Remove(Main);
-                    }
                 }
-
             }
-
         }
 
         private void chkC_Unchecked(object sender, RoutedEventArgs e)
@@ -2299,7 +2300,7 @@ namespace WizMes_ANT
                     //MainWindow.plInputFlag_SavePrint = false;
                     MainWindow.plInput.Clear();
                 }
-                
+
             }
         }
 
@@ -2400,7 +2401,7 @@ namespace WizMes_ANT
             var WPPUSC = dgdSub.SelectedItem as Win_prd_PlanInputView_U_Sub_CodeView;
             ComboBox comboBoxMtrExceptYN = sender as ComboBox;
 
-            if(WPPUSC != null && WPPUSC.MtrExceptYN != null)
+            if (WPPUSC != null && WPPUSC.MtrExceptYN != null)
             {
                 WPPUSC.MtrExceptYN = comboBoxMtrExceptYN.SelectedValue.ToString();
             }

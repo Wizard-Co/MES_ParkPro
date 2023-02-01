@@ -50,16 +50,19 @@
 
         <DataGrid x:Name="dgdMain" Grid.Row="1" Grid.ColumnSpan="2" Style="{DynamicResource DataGridSet1}">
             <DataGrid.Columns>
-                <DataGridTextColumn Header="수주일자" Binding="{Binding AcptDate}" Width="auto"/>
-                <DataGridTextColumn Header="거래처" Binding="{Binding KCustom}" Width="auto"/>
-                <DataGridTextColumn Header="품번" Binding="{Binding BuyerArticleNo}" Width="auto"/>
-                <DataGridTextColumn Header="품명" Binding="{Binding Article}" Width="auto"/>
-                <DataGridTextColumn Header="오더번호" Binding="{Binding OrderNo}" Width="auto"/>
+                <DataGridTextColumn Header="수주일자" Binding="{Binding AcptDate}" Width="auto" ElementStyle="{StaticResource DataGridCellCenter}"/>
+                <DataGridTextColumn Header="거래처" Binding="{Binding KCustom}" Width="auto" ElementStyle="{StaticResource DataGridCellLeft}"/>
+                <DataGridTextColumn Header="품번" Binding="{Binding BuyerArticleNo}" Width="auto" ElementStyle="{StaticResource DataGridCellLeft}"/>
+                <DataGridTextColumn Header="품명" Binding="{Binding Article}" Width="auto" ElementStyle="{StaticResource DataGridCellLeft}"/>
+                <DataGridTextColumn Header="오더번호" Binding="{Binding OrderNo}" Width="auto" ElementStyle="{StaticResource DataGridCellCenter}"/>
                 <DataGridTextColumn Header="오더ID" Binding="{Binding OrderID}" Width="auto" Visibility="Hidden"/>
-                <DataGridTextColumn Header="납기일" Binding="{Binding DvlyDate}" Width="auto"/>
-                <DataGridTextColumn Header="수주량" Binding="{Binding OrderQty}" Width="auto"/>
-                <DataGridTextColumn Header="계획량" Binding="{Binding OrderInstQy}" Width="auto"/>
-                <DataGridTextColumn Header="미계획량" Binding="{Binding notOrderInstQty}" Width="auto"/>
+                <DataGridTextColumn Header="납기일" Binding="{Binding DvlyDate}" Width="auto" ElementStyle="{StaticResource DataGridCellCenter}" />
+                <DataGridTextColumn Header="수주량" Binding="{Binding OrderQty, StringFormat = '#,###.#'}" ElementStyle="{StaticResource DataGridCellRight}"
+                                           />
+                <DataGridTextColumn Header="계획량" Binding="{Binding OrderInstQy, StringFormat = '#,###.#'}" ElementStyle="{StaticResource DataGridCellRight}"
+                                            />
+                <DataGridTextColumn Header="미계획량" Binding="{Binding notOrderInstQty, StringFormat = '#,###.#'}" ElementStyle="{StaticResource DataGridCellRight}"
+                                            />
             </DataGrid.Columns>
         </DataGrid>
 
@@ -74,7 +77,7 @@
                 <DataGridTextColumn Width="auto" Header="지시수량" />
                 <DataGridTextColumn Width="auto" Header="시작일" />
                 <DataGridTextColumn Width="auto" Header="종료일"  />
-  
+
             </DataGrid.Columns>
         </DataGrid>
     </Grid>

@@ -234,8 +234,10 @@
                         <DataGridTextColumn Header="품번" Width="auto" Binding="{Binding BuyerArticleNo}" />
                         <DataGridTextColumn Header="품명" Width="auto" Binding="{Binding Article}" />
                         <DataGridTextColumn Header="공정" Width="auto" Binding="{Binding Process}" />
-                        <DataGridTextColumn Header="지시수량" Width="auto" Binding="{Binding InstQty}" />
-                        <DataGridTextColumn Header="지시순번" Width="auto" Binding="{Binding InstDetSeq}" />
+                        <DataGridTextColumn Header="지시수량" Width="auto" Binding="{Binding InstQty, StringFormat = '#,###.#'}"
+                                            CellStyle="{StaticResource NumericDataGridCell}"/>
+                        <DataGridTextColumn Header="지시순번" Width="auto" Binding="{Binding InstDetSeq}" 
+                                            CellStyle="{StaticResource NumericDataGridCell}"/>
                     </DataGrid.Columns>
                 </DataGrid>
 

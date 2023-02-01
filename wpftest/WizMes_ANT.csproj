@@ -465,8 +465,11 @@
     <Compile Include="Product\MachineSearch\Win_prd_Repair_Q.xaml.cs">
       <DependentUpon>Win_prd_Repair_Q.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Product\MachineSearch\Win_prd_RunningRate_Q.xaml.cs">
-      <DependentUpon>Win_prd_RunningRate_Q.xaml</DependentUpon>
+    <Compile Include="Product\MachineSearch\Win_prd_sts_RunningRateDetail_Q.xaml.cs">
+      <DependentUpon>Win_prd_sts_RunningRateDetail_Q.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Product\MachineSearch\Win_prd_sts_RunningRate_Q.xaml.cs">
+      <DependentUpon>Win_prd_sts_RunningRate_Q.xaml</DependentUpon>
     </Compile>
     <Compile Include="Product\MachineSearch\Win_prd_TemperWorkLog_Q.xaml.cs">
       <DependentUpon>Win_prd_TemperWorkLog_Q.xaml</DependentUpon>
@@ -1016,7 +1019,11 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Product\MachineSearch\Win_prd_RunningRate_Q.xaml">
+    <Page Include="Product\MachineSearch\Win_prd_sts_RunningRateDetail_Q.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Product\MachineSearch\Win_prd_sts_RunningRate_Q.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

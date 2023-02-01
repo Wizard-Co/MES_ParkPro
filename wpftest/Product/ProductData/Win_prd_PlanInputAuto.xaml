@@ -287,7 +287,7 @@
                         <ColumnDefinition  Width="*"/>
                         <ColumnDefinition  Width="*"/>
                     </Grid.ColumnDefinitions>
-                   
+
                     <Button x:Name="btnExcel" Grid.Column="2" Click="btnExcel_Click">
                         <StackPanel Orientation="Horizontal">
                             <Image Source="{DynamicResource btiExcel}" Style="{DynamicResource imgSize}" VerticalAlignment="Center"/>
@@ -321,18 +321,18 @@
                           SelectionChanged="DgdMain_SelectionChanged" 
                           Style="{DynamicResource DataGridSet1}">
                     <DataGrid.Columns>
-                        <DataGridTextColumn Header="순" Width="auto" Binding="{Binding Num}" />
-                        <DataGridTextColumn Header="편성일자" Width="auto" Binding="{Binding InstDate}" />
-                        <DataGridTextColumn Header="편성번호" Width="auto" Binding="{Binding InstID}" />
-                        <DataGridTextColumn Header="수주일자" Width="auto" Binding="{Binding AcptDate}" />
-                        <DataGridTextColumn Header="품번" Width="auto" Binding="{Binding BuyerArticleNo}" />
-                        <DataGridTextColumn Header="품명" Width="auto" Binding="{Binding Article}" />
-                        <DataGridTextColumn Header="관리번호" Width="auto" Binding="{Binding OrderID}" />
-                        <DataGridTextColumn Header="납기일" Width="auto" Binding="{Binding DvlyDate}" />
-                        <DataGridTextColumn Header="수주량" Width="auto" Binding="{Binding OrderQty}" />
-                        <DataGridTextColumn Header="계획량" Width="auto" Binding="{Binding OrderInstQty}" />
-                        <DataGridTextColumn Header="누계계획량" Width="auto" Binding="{Binding SumInstQty}" />
-                        <DataGridTextColumn Header="미계획량" Width="auto" Binding="{Binding NonePlanQty}" />
+                        <DataGridTextColumn Header="순" Width="auto" Binding="{Binding Num}" CellStyle="{StaticResource NumericDataGridCell}"/>
+                        <DataGridTextColumn Header="편성일자" Width="auto" Binding="{Binding InstDate}" ElementStyle="{StaticResource DataGridCellCenter}"/>
+                        <DataGridTextColumn Header="편성번호" Width="auto" Binding="{Binding InstID}" ElementStyle="{StaticResource DataGridCellCenter}"/>
+                        <DataGridTextColumn Header="수주일자" Width="auto" Binding="{Binding AcptDate}" ElementStyle="{StaticResource DataGridCellCenter}"/>
+                        <DataGridTextColumn Header="품번" Width="auto" Binding="{Binding BuyerArticleNo}" ElementStyle="{StaticResource DataGridCellLeft}"/>
+                        <DataGridTextColumn Header="품명" Width="auto" Binding="{Binding Article}" ElementStyle="{StaticResource DataGridCellLeft}" />
+                        <DataGridTextColumn Header="관리번호" Width="auto" Binding="{Binding OrderID}" ElementStyle="{StaticResource DataGridCellCenter}"/>
+                        <DataGridTextColumn Header="납기일" Width="auto" Binding="{Binding DvlyDate}" ElementStyle="{StaticResource DataGridCellCenter}"/>
+                        <DataGridTextColumn Header="수주량" Width="auto" Binding="{Binding OrderQty, StringFormat = '#,###.#'}" CellStyle="{StaticResource NumericDataGridCell}"/>
+                        <DataGridTextColumn Header="계획량" Width="auto" Binding="{Binding OrderInstQty, StringFormat = '#,###.#'}" CellStyle="{StaticResource NumericDataGridCell}"/>
+                        <DataGridTextColumn Header="누계계획량" Width="auto" Binding="{Binding SumInstQty, StringFormat = '#,###.#'}" CellStyle="{StaticResource NumericDataGridCell}"/>
+                        <DataGridTextColumn Header="미계획량" Width="auto" Binding="{Binding NonePlanQty, StringFormat = '#,###.#'}" CellStyle="{StaticResource NumericDataGridCell}"/>
                     </DataGrid.Columns>
                 </DataGrid>
 
@@ -422,14 +422,14 @@
                                 <DataGridTemplateColumn x:Name="Article" Width="*">
                                     <DataGridTemplateColumn.CellTemplate>
                                         <DataTemplate>
-                                            <TextBlock Text="{Binding Article}" VerticalAlignment="Center" TextAlignment="Center" Padding="5 0" />
+                                            <TextBlock Text="{Binding Article}" VerticalAlignment="Center" TextAlignment="Left" Padding="5 0" />
                                         </DataTemplate>
                                     </DataGridTemplateColumn.CellTemplate>
                                 </DataGridTemplateColumn>
                                 <DataGridTemplateColumn x:Name="Process" Width="*">
                                     <DataGridTemplateColumn.CellTemplate>
                                         <DataTemplate>
-                                            <TextBlock Text="{Binding Process}" VerticalAlignment="Center" TextAlignment="Right" Padding="5 0 3 0" />
+                                            <TextBlock Text="{Binding Process}" VerticalAlignment="Center" TextAlignment="Left" Padding="5 0 3 0" />
                                         </DataTemplate>
                                     </DataGridTemplateColumn.CellTemplate>
                                 </DataGridTemplateColumn>
@@ -450,7 +450,7 @@
                                 <DataGridTemplateColumn x:Name="StartDate" Width="*">
                                     <DataGridTemplateColumn.CellTemplate>
                                         <DataTemplate>
-                                            <TextBlock Text="{Binding StartDate}" VerticalAlignment="Center" TextAlignment="Right" Padding="5 0 3 0" />
+                                            <TextBlock Text="{Binding StartDate}" VerticalAlignment="Center" TextAlignment="Center" Padding="5 0 3 0" />
                                         </DataTemplate>
                                     </DataGridTemplateColumn.CellTemplate>
                                 </DataGridTemplateColumn>
@@ -458,7 +458,7 @@
                                 <DataGridTemplateColumn x:Name="EndDate" Width="*">
                                     <DataGridTemplateColumn.CellTemplate>
                                         <DataTemplate>
-                                            <TextBlock Text="{Binding EndDate}" VerticalAlignment="Center" TextAlignment="Right" Padding="5 0 3 0" />
+                                            <TextBlock Text="{Binding EndDate}" VerticalAlignment="Center" TextAlignment="Center" Padding="5 0 3 0" />
                                         </DataTemplate>
                                     </DataGridTemplateColumn.CellTemplate>
                                 </DataGridTemplateColumn>
