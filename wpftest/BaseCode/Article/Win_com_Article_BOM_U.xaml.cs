@@ -1721,6 +1721,20 @@ namespace WizMes_ANT
                 chkSubMe.IsChecked = true;
             }
         }
+
+        private void tlvItemList_PreviewMouseWheel(object sender, MouseWheelEventArgs e)
+        {
+            if (!e.Handled)
+            {
+                e.Handled = true;
+                var evtArg = new MouseWheelEventArgs(e.MouseDevice, e.Timestamp, e.Delta)
+                { RoutedEvent = MouseWheelEvent, Source = sender };
+
+                var parent = ((Control)sender).Parent as UIElement;
+                if (parent != null)
+                    parent.RaiseEvent(evtArg);
+            }
+        }
     }
 
     class Win_com_ArticleBOM_ItemList : BaseView

@@ -680,92 +680,96 @@
                                     <DataGridTextColumn Header="MenuID" Width="auto" Visibility="Hidden"/>
                                 </DataGrid.Columns>
                             </DataGrid>
-                            <local:TreeListView x:Name="tlvMenuSetting" AllowsColumnReorder="True" Visibility="Visible"
-                                                HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
-                                                VirtualizingStackPanel.IsVirtualizing="True"
-                                                VirtualizingStackPanel.VirtualizationMode="Recycling">
-                                <local:TreeListView.ItemTemplate>
-                                    <HierarchicalDataTemplate ItemsSource="{Binding Children}" />
-                                </local:TreeListView.ItemTemplate>
-                                <local:TreeListView.Columns>
-                                    <!--Create the first column containing the expand button and the type name.-->
-                                    <GridViewColumn x:Name="gvcMenuName" Header="메뉴명" Width="300">
-                                        <GridViewColumn.CellTemplate>
-                                            <DataTemplate>
-                                                <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
-                                                    <!--The Expander Button (can be used in any column (typically the first one))-->
-                                                    <local:TreeListViewExpander />
-                                                    <!--Display the name of the DataElement-->
-                                                    <TextBlock Text="{Binding Menu}" />
-                                                </StackPanel>
-                                            </DataTemplate>
-                                        </GridViewColumn.CellTemplate>
-                                    </GridViewColumn>
-                                    <!--Create a second column containing the number of children.-->
-                                    <GridViewColumn x:Name="gvcGunbun" Header="사용구분" Width="80">
-                                        <GridViewColumn.CellTemplate>
-                                            <DataTemplate>
-                                                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
-                                                    <CheckBox x:Name="chkGubun" 
+
+                            <ScrollViewer>
+                                <local:TreeListView x:Name="tlvMenuSetting" AllowsColumnReorder="True" Visibility="Visible"
+                                                    ScrollViewer.CanContentScroll="False" PreviewMouseWheel="tlvMenuSetting_PreviewMouseWheel"
+                                                    HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
+                                                    VirtualizingStackPanel.IsVirtualizing="True"
+                                                    VirtualizingStackPanel.VirtualizationMode="Recycling">
+                                    <local:TreeListView.ItemTemplate>
+                                        <HierarchicalDataTemplate ItemsSource="{Binding Children}" />
+                                    </local:TreeListView.ItemTemplate>
+                                    <local:TreeListView.Columns>
+                                        <!--Create the first column containing the expand button and the type name.-->
+                                        <GridViewColumn x:Name="gvcMenuName" Header="메뉴명" Width="300">
+                                            <GridViewColumn.CellTemplate>
+                                                <DataTemplate>
+                                                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                                                        <!--The Expander Button (can be used in any column (typically the first one))-->
+                                                        <local:TreeListViewExpander />
+                                                        <!--Display the name of the DataElement-->
+                                                        <TextBlock Text="{Binding Menu}" />
+                                                    </StackPanel>
+                                                </DataTemplate>
+                                            </GridViewColumn.CellTemplate>
+                                        </GridViewColumn>
+                                        <!--Create a second column containing the number of children.-->
+                                        <GridViewColumn x:Name="gvcGunbun" Header="사용구분" Width="80">
+                                            <GridViewColumn.CellTemplate>
+                                                <DataTemplate>
+                                                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
+                                                        <CheckBox x:Name="chkGubun" 
                                                               Checked="chkGubun_Checked" Unchecked="chkGubun_Unchecked"
                                                               IsChecked="{Binding UseChk}" IsEnabled="{Binding isEnabled}"/>
-                                                </StackPanel>
-                                            </DataTemplate>
-                                        </GridViewColumn.CellTemplate>
-                                    </GridViewColumn>
-                                    <!--Create a third column containing the brush of the material.-->
-                                    <GridViewColumn x:Name="gvcSearch" Header="조회" Width="80">
-                                        <GridViewColumn.CellTemplate>
-                                            <DataTemplate>
-                                                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
-                                                    <CheckBox x:Name="chkSearch" Checked="chkSearch_Checked" Unchecked="chkSearch_Unchecked"
+                                                    </StackPanel>
+                                                </DataTemplate>
+                                            </GridViewColumn.CellTemplate>
+                                        </GridViewColumn>
+                                        <!--Create a third column containing the brush of the material.-->
+                                        <GridViewColumn x:Name="gvcSearch" Header="조회" Width="80">
+                                            <GridViewColumn.CellTemplate>
+                                                <DataTemplate>
+                                                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
+                                                        <CheckBox x:Name="chkSearch" Checked="chkSearch_Checked" Unchecked="chkSearch_Unchecked"
                                                               IsChecked="{Binding SelectChk}" IsEnabled="{Binding isEnabled}"/>
-                                                </StackPanel>
-                                            </DataTemplate>
-                                        </GridViewColumn.CellTemplate>
-                                    </GridViewColumn>
-                                    <GridViewColumn x:Name="gvcAdd" Header="추가" Width="80">
-                                        <GridViewColumn.CellTemplate>
-                                            <DataTemplate>
-                                                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
-                                                    <CheckBox x:Name="chkAdd" Checked="chkAdd_Checked" Unchecked="chkAdd_Unchecked"
+                                                    </StackPanel>
+                                                </DataTemplate>
+                                            </GridViewColumn.CellTemplate>
+                                        </GridViewColumn>
+                                        <GridViewColumn x:Name="gvcAdd" Header="추가" Width="80">
+                                            <GridViewColumn.CellTemplate>
+                                                <DataTemplate>
+                                                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
+                                                        <CheckBox x:Name="chkAdd" Checked="chkAdd_Checked" Unchecked="chkAdd_Unchecked"
                                                               IsChecked="{Binding AddNewChk}" IsEnabled="{Binding isEnabled}"/>
-                                                </StackPanel>
-                                            </DataTemplate>
-                                        </GridViewColumn.CellTemplate>
-                                    </GridViewColumn>
-                                    <GridViewColumn x:Name="gvcUpdate" Header="수정" Width="80">
-                                        <GridViewColumn.CellTemplate>
-                                            <DataTemplate>
-                                                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
-                                                    <CheckBox x:Name="chkUpdate" Checked="chkUpdate_Checked" Unchecked="chkUpdate_Unchecked" 
+                                                    </StackPanel>
+                                                </DataTemplate>
+                                            </GridViewColumn.CellTemplate>
+                                        </GridViewColumn>
+                                        <GridViewColumn x:Name="gvcUpdate" Header="수정" Width="80">
+                                            <GridViewColumn.CellTemplate>
+                                                <DataTemplate>
+                                                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
+                                                        <CheckBox x:Name="chkUpdate" Checked="chkUpdate_Checked" Unchecked="chkUpdate_Unchecked" 
                                                               IsChecked="{Binding UpdateChk}" IsEnabled="{Binding isEnabled}"/>
-                                                </StackPanel>
-                                            </DataTemplate>
-                                        </GridViewColumn.CellTemplate>
-                                    </GridViewColumn>
-                                    <GridViewColumn x:Name="gvcDelete" Header="삭제" Width="80">
-                                        <GridViewColumn.CellTemplate>
-                                            <DataTemplate>
-                                                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
-                                                    <CheckBox x:Name="chkDelete" Checked="chkDelete_Checked" Unchecked="chkDelete_Unchecked"
+                                                    </StackPanel>
+                                                </DataTemplate>
+                                            </GridViewColumn.CellTemplate>
+                                        </GridViewColumn>
+                                        <GridViewColumn x:Name="gvcDelete" Header="삭제" Width="80">
+                                            <GridViewColumn.CellTemplate>
+                                                <DataTemplate>
+                                                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
+                                                        <CheckBox x:Name="chkDelete" Checked="chkDelete_Checked" Unchecked="chkDelete_Unchecked"
                                                               IsChecked="{Binding DeleteChk}" IsEnabled="{Binding isEnabled}"/>
-                                                </StackPanel>
-                                            </DataTemplate>
-                                        </GridViewColumn.CellTemplate>
-                                    </GridViewColumn>
-                                    <GridViewColumn x:Name="gvcPrint" Header="출력" Width="80">
-                                        <GridViewColumn.CellTemplate>
-                                            <DataTemplate>
-                                                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
-                                                    <CheckBox x:Name="chkPrint" Checked="chkPrint_Checked" Unchecked="chkPrint_Unchecked"
+                                                    </StackPanel>
+                                                </DataTemplate>
+                                            </GridViewColumn.CellTemplate>
+                                        </GridViewColumn>
+                                        <GridViewColumn x:Name="gvcPrint" Header="출력" Width="80">
+                                            <GridViewColumn.CellTemplate>
+                                                <DataTemplate>
+                                                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
+                                                        <CheckBox x:Name="chkPrint" Checked="chkPrint_Checked" Unchecked="chkPrint_Unchecked"
                                                               IsChecked="{Binding PrintChk}" IsEnabled="{Binding isEnabled}"/>
-                                                </StackPanel>
-                                            </DataTemplate>
-                                        </GridViewColumn.CellTemplate>
-                                    </GridViewColumn>
-                                </local:TreeListView.Columns>
-                            </local:TreeListView>
+                                                    </StackPanel>
+                                                </DataTemplate>
+                                            </GridViewColumn.CellTemplate>
+                                        </GridViewColumn>
+                                    </local:TreeListView.Columns>
+                                </local:TreeListView>
+                            </ScrollViewer>
                         </Grid>
                     </TabItem>
 

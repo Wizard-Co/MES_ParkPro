@@ -276,91 +276,94 @@
                                 VerticalContentAlignment="Center" Content="-" Click="btnFolding_Click"/>
                     </Grid>
                 </Grid>
-                <local:TreeListView x:Name="tlvItemList" AllowsColumnReorder="True" Grid.Row="1" 
-                                    HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="1"
-                                    SelectedItemChanged="TlvItemList_SelectedItemChanged">
-                    <local:TreeListView.Columns>
 
-                        <GridViewColumn Header="품번" Width="auto" >
-                            <GridViewColumn.CellTemplate>
+                <ScrollViewer Grid.Row="1">
+                    <local:TreeListView x:Name="tlvItemList" AllowsColumnReorder="True"
+                                        ScrollViewer.CanContentScroll="False" PreviewMouseWheel="tlvItemList_PreviewMouseWheel"
+                                        HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="1"
+                                        SelectedItemChanged="TlvItemList_SelectedItemChanged">
+                        <local:TreeListView.Columns>
 
-                                <DataTemplate>
-                                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center" >
-                                        <!--The Expander Button (can be used in any column (typically the first one))-->
-                                        <local:TreeListViewExpander />
-                                        <!--Display the name of the DataElement-->
-                                        <TextBlock Text="{Binding FirstColumnCV}" />
-                                    </StackPanel>
-                                </DataTemplate>
+                            <GridViewColumn Header="품번" Width="auto" >
+                                <GridViewColumn.CellTemplate>
 
-                            </GridViewColumn.CellTemplate>
-                        </GridViewColumn>
-                        <GridViewColumn x:Name="gvcArticle" Header="품명" Width="auto">
-                            <GridViewColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <StackPanel Orientation="Horizontal" VerticalAlignment="Center" >
+                                            <!--The Expander Button (can be used in any column (typically the first one))-->
+                                            <local:TreeListViewExpander />
+                                            <!--Display the name of the DataElement-->
+                                            <TextBlock Text="{Binding FirstColumnCV}" />
+                                        </StackPanel>
+                                    </DataTemplate>
 
-                                <DataTemplate>
-                                    <TextBlock Text="{Binding Article}" VerticalAlignment="Center" />
-                                </DataTemplate>
+                                </GridViewColumn.CellTemplate>
+                            </GridViewColumn>
+                            <GridViewColumn x:Name="gvcArticle" Header="품명" Width="auto">
+                                <GridViewColumn.CellTemplate>
 
-                            </GridViewColumn.CellTemplate>
-                        </GridViewColumn>
+                                    <DataTemplate>
+                                        <TextBlock Text="{Binding Article}" VerticalAlignment="Center" />
+                                    </DataTemplate>
 
-                        <GridViewColumn Header="소요량" Width="auto" >
-                            <GridViewColumn.CellTemplate>
-                                <DataTemplate>
-                                    <TextBlock Text="{Binding Qty}" TextAlignment="Right" VerticalAlignment="Center" />
-                                </DataTemplate>
-                            </GridViewColumn.CellTemplate>
-                        </GridViewColumn>
-                        <GridViewColumn Header="단위" Width="auto">
-                            <GridViewColumn.CellTemplate>
-                                <DataTemplate>
-                                    <TextBlock Text="{Binding UnitClssName}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                                </DataTemplate>
-                            </GridViewColumn.CellTemplate>
-                        </GridViewColumn>
-                        <GridViewColumn Header="중량(Kg)" Width="auto" >
-                            <GridViewColumn.CellTemplate>
-                                <DataTemplate>
-                                    <TextBlock Text="{Binding Weight}" TextAlignment="Right" VerticalAlignment="Center"/>
-                                </DataTemplate>
-                            </GridViewColumn.CellTemplate>
-                        </GridViewColumn>
-                        <GridViewColumn Header="스크랩량" Width="auto" >
-                            <GridViewColumn.CellTemplate>
-                                <DataTemplate>
-                                    <TextBlock Text="{Binding LossQty}" TextAlignment="Right" VerticalAlignment="Center"/>
-                                </DataTemplate>
-                            </GridViewColumn.CellTemplate>
-                        </GridViewColumn>
-                        <GridViewColumn Header="스크랩발생률" Width="auto" >
-                            <GridViewColumn.CellTemplate>
-                                <DataTemplate>
-                                    <TextBlock Text="{Binding ScraptRate}" TextAlignment="Right" VerticalAlignment="Center"/>
-                                </DataTemplate>
-                            </GridViewColumn.CellTemplate>
-                        </GridViewColumn>
-                        <GridViewColumn Header="적용시작일" Width="auto" >
-                            <GridViewColumn.CellTemplate>
-                                <DataTemplate>
-                                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Stretch" VerticalAlignment="Center">
-                                        <TextBlock Text="{Binding FromDate_CV}" />
-                                    </StackPanel>
-                                </DataTemplate>
-                            </GridViewColumn.CellTemplate>
-                        </GridViewColumn>
-                        <GridViewColumn Header="적용종료일" Width="auto" >
-                            <GridViewColumn.CellTemplate>
-                                <DataTemplate>
-                                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Stretch" VerticalAlignment="Center">
-                                        <TextBlock Text="{Binding ToDate_CV}" />
-                                    </StackPanel>
-                                </DataTemplate>
-                            </GridViewColumn.CellTemplate>
-                        </GridViewColumn>
-                    </local:TreeListView.Columns>
-                </local:TreeListView>
+                                </GridViewColumn.CellTemplate>
+                            </GridViewColumn>
 
+                            <GridViewColumn Header="소요량" Width="auto" >
+                                <GridViewColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <TextBlock Text="{Binding Qty}" TextAlignment="Right" VerticalAlignment="Center" />
+                                    </DataTemplate>
+                                </GridViewColumn.CellTemplate>
+                            </GridViewColumn>
+                            <GridViewColumn Header="단위" Width="auto">
+                                <GridViewColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <TextBlock Text="{Binding UnitClssName}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                    </DataTemplate>
+                                </GridViewColumn.CellTemplate>
+                            </GridViewColumn>
+                            <GridViewColumn Header="중량(Kg)" Width="auto" >
+                                <GridViewColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <TextBlock Text="{Binding Weight}" TextAlignment="Right" VerticalAlignment="Center"/>
+                                    </DataTemplate>
+                                </GridViewColumn.CellTemplate>
+                            </GridViewColumn>
+                            <GridViewColumn Header="스크랩량" Width="auto" >
+                                <GridViewColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <TextBlock Text="{Binding LossQty}" TextAlignment="Right" VerticalAlignment="Center"/>
+                                    </DataTemplate>
+                                </GridViewColumn.CellTemplate>
+                            </GridViewColumn>
+                            <GridViewColumn Header="스크랩발생률" Width="auto" >
+                                <GridViewColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <TextBlock Text="{Binding ScraptRate}" TextAlignment="Right" VerticalAlignment="Center"/>
+                                    </DataTemplate>
+                                </GridViewColumn.CellTemplate>
+                            </GridViewColumn>
+                            <GridViewColumn Header="적용시작일" Width="auto" >
+                                <GridViewColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Stretch" VerticalAlignment="Center">
+                                            <TextBlock Text="{Binding FromDate_CV}" />
+                                        </StackPanel>
+                                    </DataTemplate>
+                                </GridViewColumn.CellTemplate>
+                            </GridViewColumn>
+                            <GridViewColumn Header="적용종료일" Width="auto" >
+                                <GridViewColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Stretch" VerticalAlignment="Center">
+                                            <TextBlock Text="{Binding ToDate_CV}" />
+                                        </StackPanel>
+                                    </DataTemplate>
+                                </GridViewColumn.CellTemplate>
+                            </GridViewColumn>
+                        </local:TreeListView.Columns>
+                    </local:TreeListView>
+                </ScrollViewer>
 
                 <Grid Grid.Row="2" Grid.Column="1">
                     <Grid.ColumnDefinitions>

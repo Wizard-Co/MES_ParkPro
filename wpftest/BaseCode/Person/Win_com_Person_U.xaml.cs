@@ -3246,13 +3246,26 @@ namespace WizMes_ANT
 
 
 
+
+
+
         #endregion // FTP 파일 삭제
 
         #endregion // Content - FTP : 사진올리기, 삭제, 보기
 
+        private void tlvMenuSetting_PreviewMouseWheel(object sender, MouseWheelEventArgs e)
+        {
+            if (!e.Handled)
+            {
+                e.Handled = true;
+                var evtArg = new MouseWheelEventArgs(e.MouseDevice, e.Timestamp, e.Delta)
+                { RoutedEvent = MouseWheelEvent, Source = sender };
 
-
-
+                var parent = ((Control)sender).Parent as UIElement;
+                if (parent != null)
+                    parent.RaiseEvent(evtArg);
+            }
+        }
     }
 
     class Win_com_Person_U_CodeView : BaseView
