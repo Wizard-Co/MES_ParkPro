@@ -1037,7 +1037,7 @@ namespace WizMes_ANT
                                 PartGBNName = dr["PartGBNName"].ToString(),
                                 UseingType = dr["UseingType"].ToString(),
                                 UseingTypeName = dr["UseingTypeName"].ToString(),
-                                //Weight = stringFormatN4(dr["Weight"]), // 주석
+                                Weight = stringFormatN2(dr["Weight"]), // 주석
                                 UseClss = dr["UseClss"].ToString(),
 
                                 Spec = dr["Spec"].ToString(),
@@ -1088,11 +1088,13 @@ namespace WizMes_ANT
 
                                 UnitPriceClss = dr["UnitPriceClss"].ToString(),
 
-                                FreeStuffinYN = dr["FreeStuffinYN"].ToString(), // 무검사입고품여부
+                                //FreeStuffinYN = dr["FreeStuffinYN"].ToString(), // 무검사입고품여부
 
-                                BigMiSmalGbn = dr["BigMiSmalGbn"].ToString(), // 
+                                //BigMiSmalGbn = dr["BigMiSmalGbn"].ToString(), // 
 
-
+                                Exdiameter = stringFormatN2(dr["Exdiameter"]),
+                                InDiameter = stringFormatN2(dr["InDiameter"]),
+                                Length = stringFormatN2(dr["Length"]),
 
 
                                 ProdDiffiLevel = stringFormatN2(dr["ProdDiffiLevel"])
@@ -1334,6 +1336,16 @@ namespace WizMes_ANT
 
                     sqlParameter.Add("sFreeStuffinYN", cboFreeStuffinYN.SelectedValue != null ? cboFreeStuffinYN.SelectedValue.ToString() : ""); //무검사 입고품 여부Y/N
                     sqlParameter.Add("sBigMiSmalGbn", cboBigMiSmal.SelectedValue != null ? cboBigMiSmal.SelectedValue.ToString() : ""); //대중소추가 
+
+
+                    //sqlParameter.Add("sExDiameter", txtExdiameter.Text != null && !txtExdiameter.Text.Trim().Equals("") ? ConvertDouble(txtExdiameter.Text) : 0);
+                    //sqlParameter.Add("sInDiameter", txtInDiameter.Text != null && !txtInDiameter.Text.Trim().Equals("") ? ConvertDouble(txtInDiameter.Text) : 0);
+                    //sqlParameter.Add("sWeight", txtWeight.Text != null && !txtWeight.Text.Trim().Equals("") ? ConvertDouble(txtWeight.Text) : 0);
+                    //sqlParameter.Add("sLength", txtLength.Text != null && !txtLength.Text.Trim().Equals("") ? ConvertDouble(txtLength.Text) : 0);
+
+                    //sqlParameter.Add("sFreeStuffinYN", cboFreeStuffinYN.SelectedValue != null ? cboFreeStuffinYN.SelectedValue.ToString() : ""); //무검사 입고품 여부Y/N
+                    //sqlParameter.Add("sBigMiSmalGbn", cboBigMiSmal.SelectedValue != null ? cboBigMiSmal.SelectedValue.ToString() : ""); //대중소추가 
+
 
 
                     #region 추가
@@ -1598,12 +1610,15 @@ namespace WizMes_ANT
                     return flag;
                 }
 
+            #if ANT_2 == false
                 if (txtCode.Text.Trim().Equals(""))
                 {
                     MessageBox.Show("코드가 입력되지 않았습니다.");
                     flag = false;
                     return flag;
                 }
+            #endif
+
                 // 2020.02.20 품번이 필수 입력이 되어야함!!!
                 if (txtBuyerArticleNo.Text.Trim().Equals(""))
                 {

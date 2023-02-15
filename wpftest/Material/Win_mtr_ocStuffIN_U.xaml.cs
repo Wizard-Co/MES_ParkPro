@@ -1879,13 +1879,14 @@ namespace WizMes_ANT
             cboPriceClss.SelectedIndex = 0;
             cboVatInd.SelectedIndex = 0;
             // 6. 검수자 - 로그인한 아이디
-            txtCustomInspector.Text = MainWindow.CurrentUser;
+            //txtCustomInspector.Text = MainWindow.CurrentUser;
+            txtCustomInspector.Text = MainWindow.CurrentName;
             // 7. 전창고, 후창고 - 첫번째 선택
             //cboFromLoc.SelectedIndex = 0;
             cboToLoc.SelectedIndex = 0;
             cboFreeStuffinYN.SelectedIndex = 0; //검사필요여부 기본값 Y
 
-
+            
             // 검수일자 오늘날짜
             dtpCustomInspectDate.SelectedDate = DateTime.Today;
 

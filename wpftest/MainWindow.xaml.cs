@@ -23,6 +23,7 @@ namespace WizMes_ANT
         public static List<MenuViewModel> mMenulist = new List<MenuViewModel>();
         public static MdiContainer MainMdiContainer = new MdiContainer();
         public static string CurrentUser = string.Empty;
+        public static string CurrentName = string.Empty;
         public static string CompanyID = string.Empty;
         public static PlusFinder pf = new PlusFinder();
         public static PlusFinder pf2 = new PlusFinder(); //2021-11-10 자재입고반품에서 2번 연속으로 띄워야되서 하나 더 추가함
@@ -123,6 +124,7 @@ namespace WizMes_ANT
                 // UserMenu 테이블을 이용해서 정보를 가져오기 위한 매개변수
                 //  : 아이디를 세팅
                 MainWindow.CurrentUser = login.strLogRegID;
+                MainWindow.CurrentName = login.strUserName;
                 MainWindow.CurrentPersonID = login.PersonID;
                 //MainWindow.CurrentUser = "admin";
 

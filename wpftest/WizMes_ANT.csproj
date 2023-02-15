@@ -39,7 +39,7 @@
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DefineConstants>TRACE;DEBUG;ANT_2</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <Prefer32Bit>false</Prefer32Bit>
@@ -601,8 +601,8 @@
     <Compile Include="Quality\BasicData\Win_Qul_Drawing_U.xaml.cs">
       <DependentUpon>Win_Qul_Drawing_U.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Quality\BasicData\Win_Qul_Education_U.xaml.cs">
-      <DependentUpon>Win_Qul_Education_U.xaml</DependentUpon>
+    <Compile Include="BaseCode\Person\Win_hr_Education_U.xaml.cs">
+      <DependentUpon>Win_hr_Education_U.xaml</DependentUpon>
     </Compile>
     <Compile Include="Quality\BasicData\Win_Qul_InspectAutoBasis_U.xaml.cs">
       <DependentUpon>Win_Qul_InspectAutoBasis_U.xaml</DependentUpon>
@@ -612,8 +612,8 @@
       <DependentUpon>Win_Qul_InspectCode_U.xaml</DependentUpon>
     </Compile>
     <Compile Include="Quality\BasicData\Win_Qul_InspectCode_U_CodeView.cs" />
-    <Compile Include="Quality\BasicData\Win_Qul_License_U.xaml.cs">
-      <DependentUpon>Win_Qul_License_U.xaml</DependentUpon>
+    <Compile Include="BaseCode\Person\Win_hr_License_U.xaml.cs">
+      <DependentUpon>Win_hr_License_U.xaml</DependentUpon>
     </Compile>
     <Compile Include="Quality\BasicData\Win_Qul_MeasureMachine_U.xaml.cs">
       <DependentUpon>Win_Qul_MeasureMachine_U.xaml</DependentUpon>
@@ -1191,7 +1191,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Quality\BasicData\Win_Qul_Education_U.xaml">
+    <Page Include="BaseCode\Person\Win_hr_Education_U.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -1203,7 +1203,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Quality\BasicData\Win_Qul_License_U.xaml">
+    <Page Include="BaseCode\Person\Win_hr_License_U.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

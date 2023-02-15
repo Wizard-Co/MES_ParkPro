@@ -3473,7 +3473,7 @@ namespace WizMes_ANT
             if (e.Key == Key.Enter)
             {
                 e.Handled = true;
-                MainWindow.pf.ReturnCode(txtCustom, (int)Defind_CodeFind.DCF_BuyerArticleNo, "");
+                MainWindow.pf.ReturnCode(txtBuyerAritcle, (int)Defind_CodeFind.DCF_BuyerArticleNo, "");
 
                 txtArticle.Text = txtBuyerAritcle.Text;
                 txtArticle.Tag = txtBuyerAritcle.Tag;
@@ -3483,7 +3483,7 @@ namespace WizMes_ANT
 
         private void BtnPfBuyerAritcle_Click(object sender, RoutedEventArgs e)
         {
-            MainWindow.pf.ReturnCode(txtCustom, (int)Defind_CodeFind.DCF_BuyerArticleNo, "");
+            MainWindow.pf.ReturnCode(txtBuyerAritcle, (int)Defind_CodeFind.DCF_BuyerArticleNo, "");
             txtArticle.Text = txtBuyerAritcle.Text;
             txtArticle.Tag = txtBuyerAritcle.Tag;
         }

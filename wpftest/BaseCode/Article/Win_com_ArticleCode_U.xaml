@@ -564,22 +564,69 @@
                                 <RowDefinition Height="*"/>
                             </Grid.RowDefinitions>
                             <!-- 14 Row -->
-                            <Label Grid.Column="0" Grid.Row="0"  Style="{DynamicResource LabelInputArea}">
+                            <Label Grid.Column="0" Grid.Row="0"  Style="{DynamicResource LabelInputArea}" Visibility="Hidden">
                                 <Viewbox Style="{DynamicResource ViewBoxSetMaxMinHeight}">
                                     <TextBlock Text="도면번호" Style="{DynamicResource TextBlockInViewBoxInput}"/>
                                 </Viewbox>
                             </Label>
-                            <TextBox x:Name="txtCoatingSpec" Grid.Column="1" Grid.Row="0" Grid.ColumnSpan="2" Style="{DynamicResource TextBoxInputArea}"
+                            <TextBox x:Name="txtCoatingSpec" Grid.Column="1" Grid.Row="0" Grid.ColumnSpan="2" Style="{DynamicResource TextBoxInputArea}" Visibility="Hidden"
                              Text="{Binding CoatingSpec}" KeyDown="txtCoatingSpec_KeyDown"/>
 
+                            <Label Grid.Column="0" Grid.Row="0"  Style="{DynamicResource LabelInputArea}" >
+                                <Viewbox Style="{DynamicResource ViewBoxSetMaxMinHeight}">
+                                    <TextBlock  Text="내   경" Style="{DynamicResource TextBlockInViewBoxInput}"/>
+                                </Viewbox>
+                            </Label>
 
-                            <Label Grid.Column="3" Grid.Row="0" Grid.ColumnSpan="2" Style="{DynamicResource LabelInputArea}">
+                            <TextBox x:Name="txtInDiameter" Grid.Column="1" Grid.Row="0"
+                             Text="{Binding InDiameter}" Style="{DynamicResource TextBoxInput_Number_Right}"  />
+
+                            <!--10 Row-->
+                            <!--외경으로 되어있구나-->
+                            <Label Grid.Column="2" Grid.Row="0"  Style="{DynamicResource LabelInputArea}">
+                                <Viewbox Style="{DynamicResource ViewBoxSetMaxMinHeight}">
+                                    <TextBlock Text="외경" Style="{DynamicResource TextBlockInViewBoxInput}"/>
+                                </Viewbox>
+                            </Label>
+                            <TextBox x:Name="txtExdiameter" Grid.Column="3" Grid.Row="0" 
+                                     Style="{DynamicResource TextBoxInput_Number_Right}" Text="{Binding Exdiameter}" />
+
+                            <!-- 12 Row -->
+                            <Label Grid.Column="6" Grid.Row="0"  Style="{DynamicResource LabelInputArea}">
+                                <Viewbox Style="{DynamicResource ViewBoxSetMaxMinHeight}">
+                                    <TextBlock Text="중   량" Style="{DynamicResource TextBlockInViewBoxInput}"/>
+                                </Viewbox>
+                            </Label>
+
+                            <Grid Grid.Row="0" Grid.Column="7">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="2.8*" />
+                                    <ColumnDefinition Width="*" />
+                                </Grid.ColumnDefinitions>
+                                <TextBox x:Name="txtWeight" Grid.Column="0" Grid.Row="0" 
+                                         Style="{DynamicResource TextBoxInput_Number_Right}" Text="{Binding Weight}"/>
+                                <Label Grid.Column="1" Grid.Row="0"  Style="{DynamicResource LabelInputArea}">
+                                    <Viewbox Style="{DynamicResource ViewBoxSetMaxMinHeight}">
+                                        <TextBlock Text="Kg" Style="{DynamicResource TextBlockInViewBoxInput}"/>
+                                    </Viewbox>
+                                </Label>
+                            </Grid>
+
+                            <Label Grid.Column="4" Grid.Row="0" Style="{DynamicResource LabelInputArea}">
+                                <Viewbox Style="{DynamicResource ViewBoxSetMaxMinHeight}">
+                                    <TextBlock  Text="길   이" Style="{DynamicResource TextBlockInViewBoxInput}"  />
+                                </Viewbox>
+                            </Label>
+                            <TextBox x:Name="txtLength" Grid.Column="5" Grid.Row="0" Style="{DynamicResource TextBoxInput_Number_Right}"
+                                     Text="{Binding Length}" />
+                            
+                            <Label Grid.Column="3" Grid.Row="1" Grid.ColumnSpan="2" Style="{DynamicResource LabelInputArea}" Visibility="Hidden">
                                 <Viewbox Style="{DynamicResource ViewBoxSetMaxMinHeight}">
                                     <TextBlock Text="무검사 입고품 여부" Style="{DynamicResource TextBlockInViewBoxInput}"/>
                                 </Viewbox>
                             </Label>
-                            <ComboBox x:Name="cboFreeStuffinYN" Grid.Column="5" Grid.Row="0" Style="{DynamicResource ComboBoxInputString}" Background="#fff2d2"
-                              SelectedValue="{Binding FreeStuffinYN}" DropDownClosed="cboFreeStuffinYN_DropDownClosed"/>
+                            <ComboBox x:Name="cboFreeStuffinYN" Grid.Column="5" Grid.Row="1" Style="{DynamicResource ComboBoxInputString}" Background="#fff2d2"
+                              SelectedValue="{Binding FreeStuffinYN}" DropDownClosed="cboFreeStuffinYN_DropDownClosed" Visibility="Hidden"/>
 
                             <!--<Label Grid.Column="0" Grid.Row="0"  Style="{DynamicResource LabelInputArea}" >
                                 <Viewbox Style="{DynamicResource ViewBoxSetMaxMinHeight}">
@@ -737,14 +784,14 @@
 
                 <Grid Grid.Row="0" Grid.Column="1" >
                     <Grid.RowDefinitions>
-                        <RowDefinition Height="2*" />
+                        <RowDefinition Height="*" />
                         <RowDefinition Height="0.2*" />
                         <RowDefinition Height="10*" />
-                        <RowDefinition Height="10*" />
+                        
                     </Grid.RowDefinitions>
 
                     <!-- 자료 추가중, 수정중 메시지 -->
-                    <Grid Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3">
+                    <Grid Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3" Visibility="Hidden">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*" />
                             <ColumnDefinition Width="0.2*" />
@@ -827,7 +874,8 @@
                         </DataGrid>
                     </GroupBox>
 
-                    <DataGrid x:Name="dgdCustomArticle" IsReadOnly="True" Style="{DynamicResource DataGridSet1}"  Grid.Row="3">
+                    <DataGrid x:Name="dgdCustomArticle" IsReadOnly="True" Style="{DynamicResource DataGridSet1}"  Grid.Row="3" 
+                              Visibility="Hidden">
 
                         <!--dgx:DataGridFilter.IsAutoFilterEnabled="True"-->
                         <DataGrid.Columns>

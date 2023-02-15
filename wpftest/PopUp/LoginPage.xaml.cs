@@ -12,6 +12,7 @@ namespace WizMes_ANT.PopUp
     public partial class LoginPage : Window
     {
         public string strLogRegID = string.Empty;
+        public string strUserName = string.Empty;
 
         public string PersonID = "";
         public string exPassword = "";
@@ -228,6 +229,8 @@ namespace WizMes_ANT.PopUp
                         //PersonID
                         PersonID = dt.Rows[0]["PersonID"].ToString();
                     }
+
+                    strUserName = UserName;
                 }
             }
             DataStore.Instance.CloseConnection(); //2021-09-13 현달씨 DBClose
