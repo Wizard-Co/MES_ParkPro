@@ -220,7 +220,7 @@ namespace WizMes_ANT
                 sqlParameter.Add("sToDate", dtpSDate.SelectedDate != null ? dtpEDate.SelectedDate.Value.ToString("yyyyMMdd") : "");
 
                 //DataSet ds = DataStore.Instance.ProcedureToDataSet("xp_prd_sMCRunningRate_WPF_20201012", sqlParameter, false);
-                DataSet ds = DataStore.Instance.ProcedureToDataSet("xp_prd_sMCRunningRate_WPF_20210517_MIS", sqlParameter, false);
+                DataSet ds = DataStore.Instance.ProcedureToDataSet("xp_prd_sMCRunningRate_WPF", sqlParameter, false);
                 if (ds != null && ds.Tables.Count > 0)
                 {
                     DataTable dt = ds.Tables[0];

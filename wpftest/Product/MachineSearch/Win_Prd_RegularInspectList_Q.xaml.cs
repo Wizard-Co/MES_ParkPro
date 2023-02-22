@@ -689,7 +689,7 @@ namespace WizMes_ANT
                 sqlParameter.Add("chkMCID", chkMcPartName.IsChecked == true ? 1 : 0);
                 sqlParameter.Add("MCID", chkMcPartName.IsChecked == true ? (txtMcPartName.Tag != null ?
                     txtMcPartName.Tag.ToString() : "") : "");
-                ds = DataStore.Instance.ProcedureToDataSet("xp_McRegularInspect_sMcRegularInspectDaily_20211104", sqlParameter, false);
+                ds = DataStore.Instance.ProcedureToDataSet("xp_McRegularInspect_sMcRegularInspectDailyList", sqlParameter, false);
                 
                 if (ds != null && ds.Tables.Count > 0)
                 {

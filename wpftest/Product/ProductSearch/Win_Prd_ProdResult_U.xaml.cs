@@ -158,9 +158,9 @@ namespace WizMes_ANT
             txtCT.IsEnabled = false;
 
             // 작업자, 호기 수정 가능 하도록
-            //txtWorker.IsEnabled = false;
-            //btnPfWorker.IsEnabled = false;
-            //cboMachine.IsEnabled = false;
+            txtWorker.IsEnabled = false;
+            btnPfWorker.IsEnabled = false;
+            cboMachine.IsEnabled = false;
 
             SaveUpdateHeaderMode();
 

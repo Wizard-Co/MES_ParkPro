@@ -372,8 +372,7 @@ namespace WizMes_ANT
                 sqlParameter.Add("MachineID", MachineID);
 
 
-                //DataSet ds = DataStore.Instance.ProcedureToDataSet("xp_prd_ProdNoWorkSumMachine_s_20210210", sqlParameter, false);
-                DataSet ds = DataStore.Instance.ProcedureToDataSet("xp_prd_ProdNoWorkSumMachine_s_20210517", sqlParameter, false); //2021-05-19
+                DataSet ds = DataStore.Instance.ProcedureToDataSet("xp_prd_sProdNoWorkSumMachine", sqlParameter, false); 
                 if (ds != null && ds.Tables.Count > 0)
                 {
                     DataTable dt = ds.Tables[0];

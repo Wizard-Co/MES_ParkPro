@@ -85,7 +85,7 @@ namespace WizMes_ANT.PopUp
                 sqlParameter.Add("MachineNo", MachineNo);
                 sqlParameter.Add("Name", Name);
 
-                DataSet ds = DataStore.Instance.ProcedureToDataSet("xp_prd_sNoWork_Test", sqlParameter, false);
+                DataSet ds = DataStore.Instance.ProcedureToDataSet("xp_prd_sNoWorkSub", sqlParameter, false);
 
                 if (ds != null && ds.Tables.Count > 0)
                 {
@@ -149,7 +149,7 @@ namespace WizMes_ANT.PopUp
                 sqlParameter.Add("MachineNo", MachineNo);
                 sqlParameter.Add("Name", Name);
 
-                DataSet ds = DataStore.Instance.ProcedureToDataSet("xp_prd_sNoWork_Test_20200911", sqlParameter, false);
+                DataSet ds = DataStore.Instance.ProcedureToDataSet("xp_prd_sNoWorkDiff", sqlParameter, false);
 
                 if (ds != null && ds.Tables.Count > 0)
                 {
@@ -222,7 +222,7 @@ namespace WizMes_ANT.PopUp
                 sqlParameter.Add("sToDate", strEDate);
                 sqlParameter.Add("MCID", strMCID);
 
-                DataSet ds = DataStore.Instance.ProcedureToDataSet("xp_prd_sNoWork_20200911", sqlParameter, false);
+                DataSet ds = DataStore.Instance.ProcedureToDataSet("xp_prd_sNoWork", sqlParameter, false);
 
                 if (ds != null && ds.Tables.Count > 0)
                 {

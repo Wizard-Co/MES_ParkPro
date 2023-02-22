@@ -700,7 +700,7 @@ namespace WizMes_ANT
                 sqlParameter.Add("sProcessID", strProcessID);
                 sqlParameter.Add("sMachineID", strMachineID);
                 sqlParameter.Add("sArticleNo", txtArticle.Text);
-                ds = DataStore.Instance.ProcedureToDataSet("xp_MachineGoal_sMachineGoal_20210311", sqlParameter, false);
+                ds = DataStore.Instance.ProcedureToDataSet("xp_MachineGoal_sMachineGoal", sqlParameter, false);
 
                 if (ds != null && ds.Tables.Count > 0)
                 {

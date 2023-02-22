@@ -434,7 +434,7 @@ namespace WizMes_ANT
                 sqlParameter.Add("chkBuyerArticleNo", chkBuyerArticleNo.IsChecked == true ? 1 : 0);
                 sqlParameter.Add("BuyerArticleNo", !txtBuyerArticleNo.Text.Trim().Equals("") ? txtBuyerArticleNo.Text : "");
 
-                DataSet ds = DataStore.Instance.ProcedureToDataSet("xp_prd_ProdSumPersonMonth_s_20200911", sqlParameter, false);
+                DataSet ds = DataStore.Instance.ProcedureToDataSet("xp_prd_sProdSumPersonMonth", sqlParameter, false);
 
                 if (ds != null && ds.Tables.Count > 0)
                 {

@@ -449,8 +449,7 @@ namespace WizMes_ANT
                 sqlParameter.Add("chkCustomID", chkCustom.IsChecked == true ? 1 : 0);
                 sqlParameter.Add("CustomID", txtCustom.Tag != null ? txtCustom.Tag.ToString() : "");
 
-                //DataSet ds = DataStore.Instance.ProcedureToDataSet("xp_prd_ProdSumPersonArticle_s_20200911", sqlParameter, false);
-                DataSet ds = DataStore.Instance.ProcedureToDataSet("xp_prd_ProdSumPersonArticle_s_20210517", sqlParameter, false); //2021-05-19
+                DataSet ds = DataStore.Instance.ProcedureToDataSet("xp_prd_sProdSumPersonArticle", sqlParameter, false); //2021-05-19
                 if (ds != null && ds.Tables.Count > 0)
                 {
                     DataTable dt = ds.Tables[0];
