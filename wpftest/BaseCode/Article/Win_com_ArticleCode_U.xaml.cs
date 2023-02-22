@@ -1330,21 +1330,13 @@ namespace WizMes_ANT
                     sqlParameter.Add("sComments", txtComments.Text);
                     sqlParameter.Add("sPART_ATTR", cboPART_ATTR.SelectedIndex == -1 || cboPART_ATTR.SelectedValue == null ? "" : cboPART_ATTR.SelectedValue.ToString());
                     sqlParameter.Add("sPatternID", cboPattern.SelectedIndex == -1 || cboPattern.SelectedValue == null ? "" : cboPattern.SelectedValue.ToString());
-
-
                     sqlParameter.Add("sCoatingSpec", txtCoatingSpec.Text); //도면번호
 
-                    sqlParameter.Add("sFreeStuffinYN", cboFreeStuffinYN.SelectedValue != null ? cboFreeStuffinYN.SelectedValue.ToString() : ""); //무검사 입고품 여부Y/N
-                    sqlParameter.Add("sBigMiSmalGbn", cboBigMiSmal.SelectedValue != null ? cboBigMiSmal.SelectedValue.ToString() : ""); //대중소추가 
 
-
-                    //sqlParameter.Add("sExDiameter", txtExdiameter.Text != null && !txtExdiameter.Text.Trim().Equals("") ? ConvertDouble(txtExdiameter.Text) : 0);
-                    //sqlParameter.Add("sInDiameter", txtInDiameter.Text != null && !txtInDiameter.Text.Trim().Equals("") ? ConvertDouble(txtInDiameter.Text) : 0);
-                    //sqlParameter.Add("sWeight", txtWeight.Text != null && !txtWeight.Text.Trim().Equals("") ? ConvertDouble(txtWeight.Text) : 0);
-                    //sqlParameter.Add("sLength", txtLength.Text != null && !txtLength.Text.Trim().Equals("") ? ConvertDouble(txtLength.Text) : 0);
-
-                    //sqlParameter.Add("sFreeStuffinYN", cboFreeStuffinYN.SelectedValue != null ? cboFreeStuffinYN.SelectedValue.ToString() : ""); //무검사 입고품 여부Y/N
-                    //sqlParameter.Add("sBigMiSmalGbn", cboBigMiSmal.SelectedValue != null ? cboBigMiSmal.SelectedValue.ToString() : ""); //대중소추가 
+                    sqlParameter.Add("sExDiameter", txtExdiameter.Text != null && !txtExdiameter.Text.Trim().Equals("") ? ConvertDouble(txtExdiameter.Text) : 0);
+                    sqlParameter.Add("sInDiameter", txtInDiameter.Text != null && !txtInDiameter.Text.Trim().Equals("") ? ConvertDouble(txtInDiameter.Text) : 0);
+                    sqlParameter.Add("sWeight", txtWeight.Text != null && !txtWeight.Text.Trim().Equals("") ? ConvertDouble(txtWeight.Text) : 0);
+                    sqlParameter.Add("sLength", txtLength.Text != null && !txtLength.Text.Trim().Equals("") ? ConvertDouble(txtLength.Text) : 0);
 
 
 
