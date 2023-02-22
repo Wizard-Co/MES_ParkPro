@@ -24,7 +24,7 @@ using WizMes_ANT.Properties;
 namespace WizMes_ANT
 {
     /// <summary> 
-    /// 데이터 처리 클래스
+    /// 데이터 처리 클래스   s
     /// </summary>
     public class DataStore
     {
