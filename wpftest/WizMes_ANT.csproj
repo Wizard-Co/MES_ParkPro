@@ -429,9 +429,6 @@
     <Compile Include="Product\MachineData\Win_prd_EvalBasis_U.xaml.cs">
       <DependentUpon>Win_prd_EvalBasis_U.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Product\MachineData\Win_prd_MCArticleRunningGoal_U.xaml.cs">
-      <DependentUpon>Win_prd_MCArticleRunningGoal_U.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Product\MachineData\Win_prd_MCCode_U.xaml.cs">
       <DependentUpon>Win_prd_MCCode_U.xaml</DependentUpon>
     </Compile>
@@ -971,10 +968,6 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Product\MachineData\Win_prd_EvalBasis_U.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Product\MachineData\Win_prd_MCArticleRunningGoal_U.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

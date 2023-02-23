@@ -707,6 +707,11 @@ namespace WizMes_ANT
                                 str = mMenuviewModel.Menu.Trim();
                                 mMenulist.Add(mMenuviewModel);
                             }
+                            else if ((mMenuviewModel.MenuID.Substring(0, 1)).Equals("6"))
+                            {
+                                str = mMenuviewModel.Menu.Trim();
+                                mMenulist.Add(mMenuviewModel);
+                            }
                             else if ((mMenuviewModel.MenuID.Substring(0, 1)).Equals("7"))
                             {
                                 str = mMenuviewModel.Menu.Trim();
