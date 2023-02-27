@@ -1103,29 +1103,24 @@ namespace WizMes_ANT
                     sqlParameter.Add("Weight", txtWeight.Text != string.Empty ? txtWeight.Text.Replace(",","") : "0");
                     sqlParameter.Add("Spec", txtSpec.Text != null ? txtSpec.Text : "");
                     sqlParameter.Add("ProdCustomName", txtProdCustomName.Text != null ? txtProdCustomName.Text : "");
-                    sqlParameter.Add("ProdOrderDate", chkProdOrderDate.IsChecked==true ? 
-                        dtpProdOrderDate.SelectedDate.Value.ToString("yyyyMMdd") : "");
+                    sqlParameter.Add("ProdOrderDate", chkProdOrderDate.IsChecked==true ? dtpProdOrderDate.SelectedDate.Value.ToString("yyyyMMdd") : "");
 
-                    sqlParameter.Add("ProdDueDate", chkProdDueDate.IsChecked == true ? 
-                        dtpProdDueDate.SelectedDate.Value.ToString("yyyyMMdd") : "");
-                    sqlParameter.Add("ProdCompDate", chkProdCompDate.IsChecked == true ? 
-                        dtpProdCompDate.SelectedDate.Value.ToString("yyyyMMdd") : "");
+                    sqlParameter.Add("ProdDueDate", chkProdDueDate.IsChecked == true ? dtpProdDueDate.SelectedDate.Value.ToString("yyyyMMdd") : "");
+                    sqlParameter.Add("ProdCompDate", chkProdCompDate.IsChecked == true ? dtpProdCompDate.SelectedDate.Value.ToString("yyyyMMdd") : "");
                     sqlParameter.Add("Comments", txtComments.Text != null ? txtComments.Text : "");
                     sqlParameter.Add("AttFile1", txtAttFile1.Text);
                     sqlParameter.Add("AttPath1", "");
 
                     sqlParameter.Add("AttFile2", txtAttFile2.Text);
-                    sqlParameter.Add("AttFile3", txtAttFile3.Text);
                     sqlParameter.Add("AttPath2", "");
+                    sqlParameter.Add("AttFile3", txtAttFile3.Text);
                     sqlParameter.Add("AttPath3", "");
                     sqlParameter.Add("dvlYN", cboDevYN.SelectedValue.ToString());
 
                     sqlParameter.Add("EvalScore", txtEvalscore.Text.Equals(string.Empty)!=true ? txtEvalscore.Text : "0");
                     sqlParameter.Add("EvalGrade", txtEvalGrade.Text);
-                    sqlParameter.Add("EvalDate", dtpEvalDate.SelectedDate != null ?
-                        dtpEvalDate.SelectedDate.Value.ToString("yyyyMMdd") : "");
-                    sqlParameter.Add("SetDate", cboMD.SelectedValue.ToString() == "0" ? 
-                        dtpSetDateM.SelectedDate.Value.ToString("yyyyMM") : dtpSetDateD.SelectedDate.Value.ToString("yyyyMMdd"));
+                    sqlParameter.Add("EvalDate", dtpEvalDate.SelectedDate != null ? dtpEvalDate.SelectedDate.Value.ToString("yyyyMMdd") : "");
+                    sqlParameter.Add("SetDate", cboMD.SelectedValue.ToString() == "0" ? dtpSetDateM.SelectedDate.Value.ToString("yyyyMM") : dtpSetDateD.SelectedDate.Value.ToString("yyyyMMdd"));
                     sqlParameter.Add("StorgeLocation", cboStorgeLocation.SelectedValue.ToString());
                     
                     sqlParameter.Add("MoldPerson", txtMoldPerson.Text);
@@ -1134,15 +1129,10 @@ namespace WizMes_ANT
                     sqlParameter.Add("RealCavity", txtRealCavity.Text != string.Empty ? txtRealCavity.Text.Replace(",", "") : "0");
                     sqlParameter.Add("SetProdQty", txtSetProdQty.Text != string.Empty ? txtSetProdQty.Text.Replace(",", "") : "0");
 
-                    sqlParameter.Add("SetCheckProdQty", txtSetCheckProdQty.Text != string.Empty ? 
-                        txtSetCheckProdQty.Text.Replace(",", "") : "0");
-                    //sqlParameter.Add("SetWashingProdQty", txtSetWashingProdQty.Text != string.Empty ?
-                    //    txtSetWashingProdQty.Text.Replace(",", "") : "0" );
-                    sqlParameter.Add("SetWashingProdQty", 0);   // 그냥 항목을 빼기로 했다..=> 2019.02.13  최준호
-                    sqlParameter.Add("nSetHitCount", txtSetinitHitCount.Text != string.Empty ?
-                        txtSetinitHitCount.Text.Replace(",", "") : "0" );
-                    sqlParameter.Add("sSetHitCountDate", chkSetInitHitCountDate.IsChecked == true ? 
-                        dtpSetInitHitCountDate.SelectedDate.Value.ToString("yyyyMMdd") : "");
+                    sqlParameter.Add("SetCheckProdQty", txtSetCheckProdQty.Text != string.Empty ? txtSetCheckProdQty.Text.Replace(",", "") : "0");
+                    sqlParameter.Add("SetWashingProdQty", 0);   
+                    sqlParameter.Add("nSetHitCount", txtSetinitHitCount.Text != string.Empty ? txtSetinitHitCount.Text.Replace(",", "") : "0" );
+                    sqlParameter.Add("sSetHitCountDate", chkSetInitHitCountDate.IsChecked == true ? dtpSetInitHitCountDate.SelectedDate.Value.ToString("yyyyMMdd") : "");
                     sqlParameter.Add("sProductionArticleID", txtArticle.Text != null ? txtArticle.Text : "");
                     sqlParameter.Add("BuyerModelName", txtBuyerModel.Text != null ? txtBuyerModel.Text : "");
 
@@ -1207,6 +1197,7 @@ namespace WizMes_ANT
                                 if (txtAttFile1.Text != string.Empty)       //첨부파일 1
                                 {
                                     AttachYesNo = true;
+                                    FTP_Delete_File(sGetID, txtAttFile1.Text, FullPath1);
                                     FTP_Save_File(sGetID, txtAttFile1.Text, FullPath1);
                                 }
                                 if (txtAttFile2.Text != string.Empty)       //첨부파일 2
