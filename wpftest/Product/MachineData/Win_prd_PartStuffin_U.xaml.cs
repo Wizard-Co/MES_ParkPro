@@ -174,7 +174,7 @@ namespace WizMes_ANT
         //상단 거래처
         private void btnPfCustom_Click(object sender, RoutedEventArgs e)
         {
-            MainWindow.pf.ReturnCode(txtCustomSearch, (int)Defind_CodeFind.DCF_CUSTOM, "");
+            MainWindow.pf.ReturnCode(txtCustom, (int)Defind_CodeFind.DCF_CUSTOM, "");
             txtCustom.Focus();
         }
 

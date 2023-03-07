@@ -27,6 +27,7 @@ namespace WizMes_ANT
         public static string CompanyID = string.Empty;
         public static PlusFinder pf = new PlusFinder();
         public static PlusFinder pf2 = new PlusFinder(); //2021-11-10 자재입고반품에서 2번 연속으로 띄워야되서 하나 더 추가함
+        public static List<object> objList = new List<object>();
         public string mfont { get; set; } //
         Lib lib = new Lib();
         public string[] strFavorites = null;

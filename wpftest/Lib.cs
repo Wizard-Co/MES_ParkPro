@@ -3207,6 +3207,38 @@ namespace WizMes_ANT
             }
         }
 
+        public string FindMoldNo(string strMoldID)
+        {
+            string strReturn = string.Empty;
+
+            try
+            {
+                string sql = "SELECT MoldNo                              ";
+                sql += "    FROM dvl_Mold                                ";
+                sql += "   WHERE 1          = 1                          ";
+                sql += "   and   MoldID     = '" + strMoldID + "'           ";
+
+                DataSet ds = DataStore.Instance.QueryToDataSet(sql);
+                if (ds != null && ds.Tables.Count > 0)
+                {
+                    DataTable dt = ds.Tables[0];
+                    if (dt.Rows.Count > 0)
+                    {
+                        strReturn = dt.Rows[0]["MoldNo"].ToString();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("오류 발생,오류 내용 : " + ex.ToString());
+            }
+            finally
+            {
+                DataStore.Instance.CloseConnection();
+            }
+
+            return strReturn;
+        }
     }
 
     public class TextBoxColumnControl : TextBox
