@@ -186,6 +186,9 @@
     <Compile Include="BaseCode\Article\Win_com_ArticleCode_U.xaml.cs">
       <DependentUpon>Win_com_ArticleCode_U.xaml</DependentUpon>
     </Compile>
+    <Compile Include="BaseCode\Article\Win_com_ArticleConditioin_U.xaml.cs">
+      <DependentUpon>Win_com_ArticleConditioin_U.xaml</DependentUpon>
+    </Compile>
     <Compile Include="BaseCode\Article\Win_com_Article_BOM_U.xaml.cs">
       <DependentUpon>Win_com_Article_BOM_U.xaml</DependentUpon>
     </Compile>
@@ -632,6 +635,10 @@
     <Compile Include="ViewModel\MainViewModel.cs" />
     <Compile Include="ViewModel\ViewModelLocator.cs" />
     <Page Include="BaseCode\Article\Win_com_ArticleCode_U.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="BaseCode\Article\Win_com_ArticleConditioin_U.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

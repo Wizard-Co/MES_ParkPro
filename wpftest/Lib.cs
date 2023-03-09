@@ -378,6 +378,9 @@ namespace WizMes_ANT
             {
                 e.Handled = true;
             }
+            //한글 입력방지
+            InputMethod.SetIsInputMethodEnabled(sender, false);
+
         }
 
         /// <summary>

@@ -49,8 +49,6 @@ namespace WizMes_ANT
         string strImagePath = string.Empty;
         string strFullPath = string.Empty;
 
-        string AASS = string.Empty;
-
         List<string[]> listFtpFile = new List<string[]>();
         List<string[]> deleteListFtpFile = new List<string[]>(); // 삭제할 파일 리스트
         private FTP_EX _ftp = null;
@@ -532,7 +530,7 @@ namespace WizMes_ANT
             cboProductGrpID.SelectedIndex = 0; //제품군
             cboPartGBNID.SelectedIndex = 0; //부품분류
             cboFTAMgrYN.SelectedIndex = 1; //FTA중점
-            cboBigMiSmal.SelectedIndex = 0; //대중소 구분
+            cboBigMiSmal.SelectedIndex = 3; //대중소 구분
 
             txtCode.IsReadOnly = false;
             txtBuyerArticleNo.Focus();
@@ -1347,7 +1345,7 @@ namespace WizMes_ANT
 
                         Procedure pro1 = new Procedure();
                         pro1.Name = "xp_Article_iArticle";
-                        pro1.OutputUseYN = "N";
+                        pro1.OutputUseYN = "Y";
                         pro1.OutputName = "sArticleID";
                         pro1.OutputLength = "10";
 
@@ -1366,9 +1364,6 @@ namespace WizMes_ANT
                                 if (kv.key == "sArticleID")
                                 {
                                     GetKey = kv.value;
-
-                                    AASS = kv.value;
-
                                     flag = true;
                                 }
                             }
@@ -1383,15 +1378,6 @@ namespace WizMes_ANT
                         Prolist.Clear();
                         ListParameter.Clear();
 
-                        //Dictionary<string, int> outputParam = new Dictionary<string, int>();
-                        //outputParam.Add("sArticleID", 5);
-                        //Dictionary<string, string> dicResult = DataStore.Instance.ExecuteProcedureOutputNoTran("xp_Article_iArticle", sqlParameter, outputParam, true);
-
-                        //GetKey = dicResult["sArticleID"];
-
-                        //if ((GetKey != string.Empty) && (GetKey != "9999"))
-                        //{
-                        //    flag = true;
 
                         // 공정 선택한거 넣기
                         for (int i = 0; i < dgdProcess.Items.Count; i++)
@@ -1402,8 +1388,7 @@ namespace WizMes_ANT
                                 sqlParameter = new Dictionary<string, object>();
                                 sqlParameter.Clear();
 
-                                //sqlParameter.Add("sArticleID", GetKey);
-                                sqlParameter.Add("sArticleID", txtCode.Text);
+                                sqlParameter.Add("sArticleID", GetKey);
                                 sqlParameter.Add("sProcessID", WinProcess.ProcessID);
                                 sqlParameter.Add("UseYN", "Y");
                                 sqlParameter.Add("UserID", MainWindow.CurrentUser);
@@ -1431,13 +1416,6 @@ namespace WizMes_ANT
                         {
                             flag = true;
                         }
-                        //}
-                        //else
-                        //{
-                        //    MessageBox.Show("[저장실패]\r\n" + GetKey);
-                        //    flag = false;
-                        //    return false;
-                        //}
                     }
                     #endregion // 추가
 
