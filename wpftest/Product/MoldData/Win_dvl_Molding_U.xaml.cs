@@ -400,18 +400,10 @@ namespace WizMes_ANT
                 this.DataContext = null;
 
             }
-
-            dtpEvalDate.SelectedDate = DateTime.Today;
-            //dtpProdCompDate.SelectedDate = DateTime.Today;
+            txtMoldID.Text = string.Empty;
             dtpProdDueDate.SelectedDate = DateTime.Today;
             dtpProdOrderDate.SelectedDate = DateTime.Today;
-            //dtpSetDateM.SelectedDate = DateTime.Today;
-            //dtpSetDateD.SelectedDate = DateTime.Today;
-            // dtpSetInitHitCountDate.SelectedDate = DateTime.Today;
-
             cboStorgeLocation.SelectedIndex = 0;
-            //cboDevYN.SelectedIndex = 0;
-            //cboMD.SelectedIndex = 0;
         }
 
         //수정
@@ -1056,22 +1048,9 @@ namespace WizMes_ANT
                             {
                                 MoldID = dr["MoldID"].ToString(),
                                 Num = i,
-                                //ChangeCheckGbn = dr["ChangeCheckGbn"].ToString(),
-                                //CycleProdQty = dr["CycleProdQty"].ToString(),
                                 McPartID = dr["McPartID"].ToString(),
                                 MCPartName = dr["MCPartName"].ToString(),
-                                //StartSetDate = dr["StartSetDate"].ToString(),
-                                //StartSetProdQty = dr["StartSetProdQty"].ToString()
                             };
-
-                            //if (Lib.Instance.IsNumOrAnother(WinMoldParts.CycleProdQty))
-                            //{
-                            //    WinMoldParts.CycleProdQty = Lib.Instance.returnNumStringZero(WinMoldParts.CycleProdQty);
-                            //}
-                            //if (Lib.Instance.IsNumOrAnother(WinMoldParts.StartSetProdQty))
-                            //{
-                            //    WinMoldParts.StartSetProdQty = Lib.Instance.returnNumStringZero(WinMoldParts.StartSetProdQty);
-                            //}
 
                             dgdPartsCode.Items.Add(WinMoldParts);
                         }
@@ -1107,8 +1086,7 @@ namespace WizMes_ANT
                     Dictionary<string, object> sqlParameter = new Dictionary<string, object>();
                     sqlParameter.Add("MoldID", strMoldID);
                     sqlParameter.Add("sCompanyID", "0001");
-                    sqlParameter.Add("MoldNo", txtMoldNo.Text); //LotNo입니다..
-                    sqlParameter.Add("sMoldTypeName", TextBoxMoldType.Text); //LotNo입니다..
+                    sqlParameter.Add("MoldNo", txtMoldNo.Text); 
                     sqlParameter.Add("sProductionArticleID", txtArticle.Tag == null ? "" : txtArticle.Tag.ToString());
 
                     sqlParameter.Add("BuyerModelID", txtBuyerModel.Text);
@@ -1154,6 +1132,7 @@ namespace WizMes_ANT
                     sqlParameter.Add("sMoldKind", "");
 
                     sqlParameter.Add("sMoldTypeID", "");
+                    sqlParameter.Add("sEvalGrade", txtEvalGrade.Text.ToString());
 
                     #region 추가
 
@@ -1235,7 +1214,6 @@ namespace WizMes_ANT
                         {
                             MessageBox.Show("[저장실패]\r\n" + list_Result[0].value.ToString());
                             flag = false;
-                            //return false;
                         }
                     }
 
@@ -1370,37 +1348,58 @@ namespace WizMes_ANT
 
         /// <summary>
         /// 입력사항 체크
+        /// 금형LotNo, 차종, 품번, 품명, 고객사명, 보관장소 필수
         /// </summary>
         /// <returns></returns>
         private bool CheckData()
         {
             bool flag = true;
 
-            if (txtArticle.Text.Length <= 0 || txtArticle.Text.Equals(""))
+            //금형LotNo txtBuyerArticleNo
+            if (txtMoldNo.Text == null && txtMoldNo.Text.ToString().Trim().Equals(""))
             {
-                MessageBox.Show("품명이 입력되지 않았습니다.");
                 flag = false;
+                MessageBox.Show("금형LotNo를 입력해주세요.", "필수입력 오류");
                 return flag;
             }
 
-            if (txtMoldNo.Text.Length <= 0 || txtMoldNo.Text.Equals(""))
+            //차종 txtBuyerArticleNo
+            if (txtBuyerModel.Text == null && txtBuyerModel.Text.ToString().Trim().Equals(""))
             {
-                MessageBox.Show("금형LotNo이 입력되지 않았습니다.");
                 flag = false;
+                MessageBox.Show("차종을 입력해주세요.", "필수입력 오류");
                 return flag;
             }
 
-            if (txtBuyerModel.Text.Length <= 0 || txtBuyerModel.Text.Equals(""))
+            //품번 txtBuyerArticleNo
+            if (txtBuyerArticleNo.Text == null && txtBuyerArticleNo.Text.ToString().Trim().Equals(""))
             {
-                MessageBox.Show("차종이 입력되지 않았습니다.");
                 flag = false;
+                MessageBox.Show("품번을 입력해주세요.", "필수입력 오류");
                 return flag;
             }
 
-            if (cboStorgeLocation.SelectedValue == null)
+            //품명 txtBuyerArticleNo
+            if (txtBuyerArticleNo.Text == null && txtBuyerArticleNo.Text.ToString().Trim().Equals(""))
             {
-                MessageBox.Show("보관위치가 선택되지 않았습니다.");
                 flag = false;
+                MessageBox.Show("품명을 입력해주세요.", "필수입력 오류");
+                return flag;
+            }
+
+            //고객사명 txtKCustom
+            if (txtKCustom.Text == null && txtKCustom.Text.ToString().Trim().Equals(""))
+            {
+                flag = false;
+                MessageBox.Show("고객사명을 입력해주세요.", "필수입력 오류");
+                return flag;
+            }
+
+            //보관장소
+            if (cboStorgeLocation.SelectedValue == null || cboStorgeLocation.SelectedIndex == 0)
+            {
+                flag = false;
+                MessageBox.Show("보관위치를 선택해주세요.", "필수입력 오류");
                 return flag;
             }
 
@@ -2095,7 +2094,7 @@ namespace WizMes_ANT
             if (e.Key == Key.Enter)
             {
                 MainWindow.pf.ReturnCode(txtArticle, 1, "");
-                //SetBuyerArticleNo(txtArticle.Tag);
+                SetBuyerArticleNo(txtArticle.Tag);
             }
         }
 
@@ -2114,8 +2113,7 @@ namespace WizMes_ANT
 
                 if (obj != null)
                 {
-                    //string sql = "select mca.BuyerArticleNo from mt_Article as ma left outer join mt_customArticle as mca on mca.articleid = ma.articleid ";
-                    string sql = "select ma.BuyerArticleNo from mt_Article as ma ";
+                    string sql = "select ma.BuyerArticleNo, ma.Article, ma.ArticleID from mt_Article as ma ";
                     sql += "where ma.ArticleID = '" + obj.ToString() + "'   ";
 
                     DataSet ds = DataStore.Instance.QueryToDataSet(sql);
@@ -2125,6 +2123,8 @@ namespace WizMes_ANT
                         if (dt.Rows.Count > 0)
                         {
                             txtBuyerArticleNo.Text = dt.Rows[0].ItemArray[0].ToString();
+                            txtArticle.Text = dt.Rows[0].ItemArray[1].ToString();
+                            txtArticle.Tag = dt.Rows[0].ItemArray[2].ToString();
                         }
                     }
                 }
@@ -2144,7 +2144,6 @@ namespace WizMes_ANT
             if (e.Key == Key.Enter)
             {
                 MainWindow.pf.ReturnCode(txtKCustom, 0, "");
-                Console.WriteLine(txtKCustom.Tag.ToString());
             }
         }
         private void txtBuyerModel_KeyDown(object sender, KeyEventArgs e)
@@ -2369,12 +2368,25 @@ namespace WizMes_ANT
             DatePickerProdCompDate.IsEnabled = false;
         }
 
-       
-
-        private void ButtonSabun_Click(object sender, RoutedEventArgs e)
+        private void txtBuyerArticleNo_KeyDown(object sender, KeyEventArgs e)
         {
-            MainWindow.pf.ReturnCode(TextBoxSabun, 92, TextBoxSabun.Text);
-            SetBuyerArticleNo(TextBoxSabun.Tag.ToString());
+            if (e.Key == Key.Enter)
+            {
+                MainWindow.pf.ReturnCode(txtBuyerArticleNo, 76, "");
+                SetBuyerArticleNo(txtBuyerArticleNo.Tag);
+            }
+        }
+
+        private void btnPfBuyerArticleNo_Click(object sender, RoutedEventArgs e)
+        {
+            MainWindow.pf.ReturnCode(txtBuyerArticleNo, 76, "");
+            SetBuyerArticleNo(txtBuyerArticleNo.Tag);
+        }
+
+        private void btnPfKCustom_Click(object sender, RoutedEventArgs e)
+        {
+            MainWindow.pf.ReturnCode(txtKCustom, 0, "");
+            SetBuyerArticleNo(txtBuyerArticleNo.Tag);
         }
     }
 

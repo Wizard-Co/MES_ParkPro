@@ -220,7 +220,7 @@
                             <CheckBox x:Name="chkMoldNoSrh" Checked="chkMoldNoSrh_Checked" 
                                       Unchecked="chkMoldNoSrh_Unchecked"/>
                         </Viewbox>
-                        <TextBlock Text="금형번호(%)" Margin="-5, 0, 0, 0"/>
+                        <TextBlock Text="금형번호" Margin="-5, 0, 0, 0"/>
                     </StackPanel>
                 </Label>
                 <TextBox x:Name="txtMoldNoSrh" Grid.Column="1" Padding="0" IsEnabled="False"
@@ -458,10 +458,9 @@
                       SelectionChanged="dgdMain_SelectionChanged">
                 <DataGrid.Columns>
                     <DataGridTextColumn Header="" Binding="{Binding Num}"/>
-                    <DataGridTextColumn Header="금형ID" Binding="{Binding MoldID}" Visibility="Hidden"/>
-                    <DataGridTextColumn Header="금형번호" Binding="{Binding MoldNo}"/>
-                    <DataGridTextColumn Header="금형TYPE" Binding="{Binding MoldType}"/>
-                    <DataGridTextColumn Header="사번" Binding="{Binding ArticleID}"/>
+                    <DataGridTextColumn Header="금형번호" Binding="{Binding MoldID}"/>
+                    <DataGridTextColumn Header="금형LotNo" Binding="{Binding MoldNo}"/>
+                    <DataGridTextColumn Header="사번" Binding="{Binding ArticleID}" Visibility="Hidden"/>
                     <DataGridTextColumn Header="차종" Binding="{Binding BuyerModelName}"/>
                     <DataGridTextColumn Header="품번" Binding="{Binding BuyerArticleNo}"/>
                     <DataGridTextColumn Header="가로Size(mm)" Binding="{Binding MoldSizeX}"/>
@@ -762,73 +761,44 @@
                             </StackPanel>
                         </Label>
                         <DatePicker x:Name="dtpSetInitHitCountDate" Grid.Row="12" Grid.Column="6" Margin="1" 
-                                        SelectedDate="{Binding SetInitHitCountDate_CV}" IsEnabled="False"/>
-                        <!--점수 등급-->
-                        <Grid Grid.Row="13" Grid.Column="5" >
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="*"/>
-                                <ColumnDefinition Width="*"/>
-                            </Grid.ColumnDefinitions>
-                            <Label Grid.Column="0" Margin="1" HorizontalContentAlignment="Center"
-                                       VerticalContentAlignment="Center" Content="점수"/>
-                            <TextBox x:Name="txtEvalscore" Grid.Column="1" Margin="1" Text="{Binding Evalscore}" Style="{DynamicResource readOnlyTextBox}"
-                                         IsReadOnly="True"/>
-                        </Grid>
-                        <Grid Grid.Row="13" Grid.Column="6" >
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="*"/>
-                                <ColumnDefinition Width="*"/>
-                            </Grid.ColumnDefinitions>
-                            <Label Grid.Column="0" Margin="1" HorizontalContentAlignment="Center"
-                                       VerticalContentAlignment="Center" Content="등급"/>
-                            <TextBox x:Name="txtEvalGrade" Grid.Column="1" Margin="1" Text="{Binding EvalGrade}" Style="{DynamicResource readOnlyTextBox}"
-                                         IsReadOnly="True"/>
-                        </Grid>
-
-                        <!--평가일자 만들기-->
-                        <Label Grid.Row="14" Grid.Column="5" Margin="1" HorizontalContentAlignment="Center"
-                                   VerticalContentAlignment="Center" Content="평가일자" />
-                        <DatePicker x:Name="dtpEvalDate" Grid.Row="14" Grid.Column="6" Margin="1" 
-                                        SelectedDate="{Binding EvalDate_CV}"/>
-                        <!--왼쪽화면-->
+                                        SelectedDate="{Binding SetHitCountDate_CV}" IsEnabled="False"/>
+                        
+                        <!--금형번호-->
                         <Label Grid.Row="0" Grid.Column="0" Margin="1" HorizontalContentAlignment="Center"
                                VerticalContentAlignment="Center" Content="금형번호" />
-                        <TextBox x:Name="txtMoldNo" Grid.Row="0" Grid.Column="1" Margin="1" Grid.ColumnSpan="3"
+                        <TextBox x:Name="txtMoldID" Grid.Row="0" Grid.Column="1" Margin="1" Grid.ColumnSpan="3"
+                                 Text="{Binding MoldID}" Style="{DynamicResource readOnlyTextBox}" IsReadOnly="True"/>
+
+                        <!--금형LotNo-->
+                        <Label Grid.Row="1" Grid.Column="0" Margin="1" HorizontalContentAlignment="Center"
+                               VerticalContentAlignment="Center" Content="금형LotNo" />
+                        <TextBox x:Name="txtMoldNo" Grid.Row="1" Grid.Column="1" Margin="1" Grid.ColumnSpan="3"
                                  Text="{Binding MoldNo}" Style="{DynamicResource essentialTextBox}"/>
 
-                        <!--금형타입 만들기 MoldType-->
-                        <Label Grid.Row="1" Grid.Column="0" Margin="1" HorizontalContentAlignment="Center"
-                               VerticalContentAlignment="Center" Content="금형Type" />
-                        <TextBox x:Name="TextBoxMoldType" Grid.Row="1" Grid.Column="1" Margin="1" Grid.ColumnSpan="3"
-                                 Text="{Binding MoldType}" Style="{DynamicResource essentialTextBox}"/>
-
-                        <!--사번 만들기 MoldType-->
-                        <Label Grid.Row="2" Grid.Column="0" Margin="1" HorizontalContentAlignment="Center"
-                               VerticalContentAlignment="Center" Content="사    번"  Visibility="Hidden"/>
-                        <TextBox x:Name="TextBoxSabun" Grid.Row="2" Grid.Column="1" Margin="1" Grid.ColumnSpan="3"
-                                 Text="{Binding Sabun}"   Visibility="Hidden"/>
-                        <Button x:Name="ButtonSabun" Grid.Column="4" Grid.Row="2" 
-                                Click="ButtonSabun_Click"  Visibility="Hidden">
-                            <Image Source="{DynamicResource btiPlusFind}" />
-                        </Button>
-
+                        <!--차종-->
                         <Label Grid.Row="2" Grid.Column="0" Margin="1" HorizontalContentAlignment="Center"
                                VerticalContentAlignment="Center" Content="차     종" />
                         <TextBox x:Name="txtBuyerModel" Grid.Row="2" Grid.Column="1" Margin="1"
                                  Grid.ColumnSpan="3" Text="{Binding BuyerModelName}"  Tag="{Binding BuyerModelID}"
                                  Keyboard.KeyDown="txtBuyerModel_KeyDown" Style="{DynamicResource essentialTextBox}"/>
-                        <Button x:Name="btnPfBuyerModel" Grid.Row="2" Grid.Column="4" Margin="1" Visibility="Hidden"
+                        <Button x:Name="btnPfBuyerModel" Grid.Row="2" Grid.Column="4" Margin="1" Visibility="Visible"
                                 Click="btnPfBuyerModel_Click">
                             <Image Source="{DynamicResource btiPlusFind}" />
                         </Button>
 
-
+                        <!--품번-->
                         <Label Grid.Row="3" Grid.Column="0" Margin="1" HorizontalContentAlignment="Center" 
                                Content="품     번" VerticalContentAlignment="Center"/>
-                        <TextBox x:Name="txtBuyerArticleNo" Grid.Row="3" Grid.Column="1" Margin="1" Grid.ColumnSpan="3" 
-                                 Text="{Binding BuyerArticleNo}" IsEnabled="False"/>
+                        <TextBox x:Name="txtBuyerArticleNo" Grid.Row="3" Grid.Column="1" Margin="1" Grid.ColumnSpan="3"  
+                                 Style="{DynamicResource essentialTextBox}" KeyDown="txtBuyerArticleNo_KeyDown"
+                                 Text="{Binding BuyerArticleNo}" Tag="{Binding ProductionArticleID}"/>
+                        <Button x:Name="btnPfBuyerArticleNo" Grid.Row="3" Grid.Column="4" Margin="1" Visibility="Visible"
+                                Click="btnPfBuyerArticleNo_Click">
+                            <Image Source="{DynamicResource btiPlusFind}" />
+                        </Button>
 
-                        <!-- MoldKind Text로 입력하게 합시다.!-->
+
+                        <!--품명-->
                         <Label Grid.Row="4" Grid.Column="0" Margin="1" HorizontalContentAlignment="Center"
                                VerticalContentAlignment="Center" Content="품     명" />
                         <TextBox x:Name="txtArticle" Grid.Row="4" Grid.Column="1" Margin="1" Grid.ColumnSpan="3"
@@ -839,11 +809,16 @@
                             <Image Source="{DynamicResource btiPlusFind}" />
                         </Button>
 
+                        <!--고객사명-->
                         <Label Grid.Row="5" Grid.Column="0" Margin="1" HorizontalContentAlignment="Center"
                                VerticalContentAlignment="Center" Content="고객사명" />
                         <TextBox x:Name="txtKCustom" Grid.Row="5" Grid.Column="1" Margin="1" Grid.ColumnSpan="3"
                                  Text="{Binding KCustom}" Keyboard.KeyDown="txtKCustom_KeyDown"
                                  Tag="{Binding CustomID}" Style="{DynamicResource essentialTextBox}"/>
+                        <Button x:Name="btnPfKCustom" Grid.Row="5" Grid.Column="4" Margin="1" Visibility="Visible"
+                                Click="btnPfKCustom_Click">
+                            <Image Source="{DynamicResource btiPlusFind}" />
+                        </Button>
 
                         <!--가로세로 높이 만들기-->
                         <Label Grid.Row="6" Grid.Column="0" Margin="1" HorizontalContentAlignment="Center"
@@ -862,10 +837,10 @@
                         <TextBox x:Name="txtMoldQuality" Grid.Row="8" Grid.Column="1" Margin="1" 
                                  Background="White" Text="{Binding MoldQuality}" />
 
-                        <Label Grid.Row="9" Grid.Column="2" Margin="1" HorizontalContentAlignment="Center"
+                        <!--<Label Grid.Row="9" Grid.Column="2" Margin="1" HorizontalContentAlignment="Center"
                                VerticalContentAlignment="Center" Content="금 형 ID" Visibility="Collapsed"/>
                         <TextBox x:Name="txtMoldID" Grid.Row="9" Grid.Column="3" Margin="1" Grid.ColumnSpan="2"
-                                 Style="{StaticResource readOnlyTextBox}" Text="{Binding MoldID}" Visibility="Hidden"/>
+                                 Style="{StaticResource readOnlyTextBox}" Text="{Binding MoldID}" Visibility="Hidden"/>-->
 
                         <!--사용여부-->
                         <Label Grid.Row="9" Grid.Column="0" Margin="1" HorizontalContentAlignment="Center"
@@ -883,6 +858,7 @@
                         <TextBox x:Name="txtRealCavity" Grid.Row="10" Grid.Column="3" Grid.ColumnSpan="1" 
                                  Margin="1" Text="{Binding RealCavity}"/>
 
+                        <!--보관위치-->
                         <Label Grid.Row="11" Grid.Column="0" Margin="1" HorizontalContentAlignment="Center"
                                VerticalContentAlignment="Center" Content="보관위치" />
                         <ComboBox x:Name="cboStorgeLocation" Grid.Row="11" Grid.Column="1" Margin="1" 
@@ -898,8 +874,11 @@
                         <TextBox x:Name="txtComments" Grid.Row="13" Grid.Column="1" Grid.RowSpan="5" Margin="1" Style="{DynamicResource TextBoxInputArea}"
                                   VerticalScrollBarVisibility="Visible" AcceptsReturn="True" TextWrapping="Wrap" Text="{Binding Comments}" Grid.ColumnSpan="4" />
 
-                        <!--<TextBox x:Name="txtComments" Grid.Row="12" Grid.Column="1" Grid.RowSpan="3" Grid.ColumnSpan="4" Style="{DynamicResource TextBoxInputArea}"
-                                     VerticalScrollBarVisibility="Visible" AcceptsReturn="True" TextWrapping="Wrap" Text="{Binding Remark}" />-->
+                        <!--등급-->
+                        <Label Grid.Row="13" Grid.Column="5" Margin="1" HorizontalContentAlignment="Center"
+                                       VerticalContentAlignment="Center" Content="등급"/>
+                        <TextBox x:Name="txtEvalGrade" Grid.Row="13" Grid.Column="6" Margin="1" 
+                                 Text="{Binding EvalGrade}" />
 
                     </Grid>
                 </Grid>
