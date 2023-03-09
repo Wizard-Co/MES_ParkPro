@@ -37,19 +37,20 @@ namespace WizMes_ANT
         List<Win_com_ArticleConditioin_U_CodeView> lstOutwarePrint = new List<Win_com_ArticleConditioin_U_CodeView>();
         Win_com_ArticleConditioin_U_Sub_CodeView ComboboxSub = new Win_com_ArticleConditioin_U_Sub_CodeView();
 
+
         // 수정 정보를 보관하기 위한 변수
         //List<Win_com_ArticleConditioin_U_Sub_CodeView> lstBoxID = new List<Win_com_ArticleConditioin_U_Sub_CodeView>();
         List<Win_com_ArticleConditioin_U_Sub_CodeView> ListOutwareSub = new List<Win_com_ArticleConditioin_U_Sub_CodeView>();
-        public List<ConditionList> lstConditionList = new List<ConditionList>();
+
         int rowNum = 0;                          // 조회시 데이터 줄 번호 저장용도
         string strFlag = string.Empty;           // 추가, 수정 구분 
         string GetKey = "";
 
-        string strArticleID = "";
+
         int rowSubNum = 0;
 
         List<string> LabelGroupList = new List<string>();         // packing ID 스캔에 따른 LabelID를 모아 담을 리스트 그릇입니다.
-        bool EventStatus = false;        // 추가 / 수정 상태확인을 위한 이벤트 bool
+
 
         public Win_com_ArticleConditioin_U()
         {
@@ -130,9 +131,6 @@ namespace WizMes_ANT
 
 
 
-
-
-
         #endregion
 
         #region 버튼 모음
@@ -140,6 +138,11 @@ namespace WizMes_ANT
         private void btnReMainAdd_Click(object sender, RoutedEventArgs e)
         {
             strFlag = "U";
+
+            txtArticle.Text = "";
+            txtArticle.Tag = null;
+            txtBuyerArticle.Text = "";
+
             CanBtnControl();
 
         }
@@ -147,14 +150,13 @@ namespace WizMes_ANT
         //추가버튼 클릭
         private void btnAdd_Click(object sender, RoutedEventArgs e)
         {
-            //2021-06-02
-            EventStatus = true;
-            TextBoxClear(); // 추가누르면 다시 클리어 해 줘야지
+       
             try
             {
                 strFlag = "I";
 
                 this.DataContext = null;
+                txtArticle.Tag = null;
                 CanBtnControl();                             //버튼 컨트롤
 
 
@@ -171,12 +173,8 @@ namespace WizMes_ANT
                 }
 
 
-                //SelectArticleID(strArticleID); // 정보가져와라
-
-
                 //CM_CODE에 등록된 놈들 가져와서 뿌리기
                 FillgridSaGathItem();
-
 
 
             }
@@ -271,7 +269,7 @@ namespace WizMes_ANT
         {
             if (txtArticle.Tag == null)
             {
-                MessageBox.Show("품명 정보가 입력되지 않았습니다.");
+                MessageBox.Show("품번 정보가 입력되지 않았습니다.");
                 return;
             }
 
@@ -385,7 +383,7 @@ namespace WizMes_ANT
             if (getArticle != null)
             {
                 this.DataContext = getArticle;
-
+                txtArticle.Tag = getArticle.ArticleID;
                 FillGridSub(getArticle.ArticleID);
 
                 if (dgdOutwareSub.Items.Count > 0)
@@ -438,11 +436,7 @@ namespace WizMes_ANT
                 {
                     dgdOutware.SelectedIndex = rowNum;
                 }
-                //else
-                //{
-                //    this.DataContext = null;
-                //    return;
-                //}
+
             }
             catch (Exception ee)
             {
@@ -500,9 +494,9 @@ namespace WizMes_ANT
                             };
 
                             dgdCondition.ConditionDate = DatePickerFormat(dgdCondition.ConditionDate);
-
                             dgdOutware.Items.Add(dgdCondition);
 
+                            txtArticle.Tag = dgdCondition.ArticleID;
                         }
 
 
@@ -552,8 +546,6 @@ namespace WizMes_ANT
 
                             var CondtionSub = new Win_com_ArticleConditioin_U_Sub_CodeView()
                             {
-                                //ReqItemNo = (i + 1).ToString(),
-                                //SetItemCode = dr["SetItemCode"].ToString(),
 
                                 CodeID = dr["CodeID"].ToString(),
                                 CodeName = dr["CodeName"].ToString(),
@@ -615,7 +607,7 @@ namespace WizMes_ANT
                     DataTable dt = ds.Tables[0];
                     int i = 0;
 
-                    //dataGrid.Items.Clear();
+
                     if (dt.Rows.Count == 0)
                     {
                         MessageBox.Show("조회된 데이터가 없습니다.");
@@ -629,7 +621,6 @@ namespace WizMes_ANT
                             i++;
                             var SaGathItem = new Win_com_ArticleConditioin_U_Sub_CodeView()
                             {
-                                //Num = i.ToString(),
 
                                 CodeID = dr["CodeID"].ToString(),
                                 CodeName = dr["CodeName"].ToString(),
@@ -665,32 +656,15 @@ namespace WizMes_ANT
                 && CheckCondtion.CodeName != null)
             {
 
-            if (CheckIsCondi(CheckCondtion.CodeName, true) == false)
-            {
-                MessageBox.Show("해당 라벨은 이미 등록되어 있습니다.");
-                return;
-            }
-
-            //if (CheckCondtion.CodeName != null && CheckCondtion.CodeName.Trim().Equals(CheckCondtion.CodeName))
-            //    {
-            //        MessageBox.Show("이미 입력된 조건명입니다.");
-            //        CheckCondtion.CodeID = "";
-            //        CheckCondtion.CodeName = "";
-
-            //        return;
-            //    }
+                if (CheckIsCondi(CheckCondtion.CodeName, true) == false)
+                {
+                    MessageBox.Show("해당 라벨은 이미 등록되어 있습니다.");
+                    return;
+                }
 
             }
 
-        //}
 
-
-
-
-
-        //}
-
-        //setNumSubDgd();
         }
 
         // 중복으로 라벨 등록하는걸 막기 위한 체크 이벤트
@@ -765,13 +739,13 @@ namespace WizMes_ANT
                             sqlParameter.Add("sArticleID", strID);
                             sqlParameter.Add("sSetItemCode", SelectItem.CodeID);
                             sqlParameter.Add("sSpec", SelectItem.Spec);
-                            sqlParameter.Add("sSpecMin", ConvertDouble(SelectItem.SpecMin));
-                            sqlParameter.Add("sSpecMax", ConvertDouble(SelectItem.SpecMax));
+                            sqlParameter.Add("sSpecMin", SelectItem.SpecMin == null ? 0 : ConvertDouble(SelectItem.SpecMin));
+                            sqlParameter.Add("sSpecMax", SelectItem.SpecMax == null ? 0 : ConvertDouble(SelectItem.SpecMax));
 
                             sqlParameter.Add("sSpecTextMin", SelectItem.SpecTextMin);
                             sqlParameter.Add("sSpecTextMax", SelectItem.SpecTextMax);
-                            sqlParameter.Add("sWarningSpecMin", ConvertDouble(SelectItem.WarningSpecMin));
-                            sqlParameter.Add("sWarningSpecMax", ConvertDouble(SelectItem.WarningSpecMax));
+                            sqlParameter.Add("sWarningSpecMin", SelectItem.WarningSpecMin == null ? 0 : ConvertDouble(SelectItem.WarningSpecMin));
+                            sqlParameter.Add("sWarningSpecMax", SelectItem.WarningSpecMax == null ? 0 : ConvertDouble(SelectItem.WarningSpecMax));
                             sqlParameter.Add("sWarningSpecPecntYN", SelectItem.WarningSpecPecntYN);
 
                             sqlParameter.Add("sComments", SelectItem.Comments);
@@ -808,7 +782,7 @@ namespace WizMes_ANT
                     #endregion
 
                     #region 수정
-                    
+
                     else if (strFlag.Equals("U"))
                     {
                         if (Procedure.Instance.DeleteData(strID, "sArticleID", "xp_Condition_dConditionArticleAll"))
@@ -856,7 +830,7 @@ namespace WizMes_ANT
                             {
                                 MessageBox.Show("[저장실패]\r\n" + Confirm[1].ToString());
                                 flag = false;
-                                //return false;
+
                             }
                             else
                             {
@@ -907,9 +881,8 @@ namespace WizMes_ANT
                 if (AllCondtion.SpecMin != ""
                     && AllCondtion.SpecMin != null)
                 {
-                    //lstSelect.Add(allItem);
-                    // 2020.03.18 수정
-                    // lstSelect 에 이미 있는 코드라면, 메시지 띄우기.
+
+                    // ListOutwareSub 에 이미 있는 코드라면, 메시지 띄우기.
                     if (ListOutwareSub.Count > 0)
                     {
                         bool good = true;
@@ -942,11 +915,6 @@ namespace WizMes_ANT
                 }
             }
 
-            // 에러 메시지 띄우기
-            //if (MsgCnt > 0)
-            //{
-            //    MessageBox.Show(Msg + "위의 품목(들)은 이미 등록되어 있습니다.");
-            //}
 
         }
 
@@ -964,8 +932,6 @@ namespace WizMes_ANT
             }
 
             return flag;
-
-
         }
         #endregion
 
@@ -1091,7 +1057,7 @@ namespace WizMes_ANT
             ButtonDataGridSubRowDel.IsEnabled = true; //서브그리드 삭제 버튼
 
 
-            
+
         }
         //저장, 취소일 때
         private void CantBtnControl()
@@ -1115,14 +1081,13 @@ namespace WizMes_ANT
 
             ButtonDataGridSubRowAdd.IsEnabled = false; //서브그리드 추가 버튼
             ButtonDataGridSubRowDel.IsEnabled = false; //서브그리드 삭제 버튼
-        }
 
-        private void TextBoxClear()
-        {
+
 
 
         }
 
+        
 
 
         // 천자리 콤마, 소수점 버리기
@@ -1181,58 +1146,6 @@ namespace WizMes_ANT
             }
         }
 
-        //관리번호 숫자만 입력
-        private void txtOrderID_PreviewTextInput(object sender, TextCompositionEventArgs e)
-        {
-            try
-            {
-                lib.CheckIsNumeric((TextBox)sender, e);
-            }
-            catch (Exception ee)
-            {
-                MessageBox.Show("오류지점 - txtOrderID_PreviewTextInput : " + ee.ToString());
-            }
-        }
-
-        //박스에 숫자만 입력
-        private void txtOutRoll_PreviewTextInput(object sender, TextCompositionEventArgs e)
-        {
-            try
-            {
-                lib.CheckIsNumeric((TextBox)sender, e);
-            }
-            catch (Exception ee)
-            {
-                MessageBox.Show("오류지점 - txtOutRoll_PreviewTextInput : " + ee.ToString());
-            }
-        }
-
-        //수량에 숫자만 입력
-        private void txtOutQty_PreviewTextInput(object sender, TextCompositionEventArgs e)
-        {
-            try
-            {
-                lib.CheckIsNumeric((TextBox)sender, e);
-            }
-            catch (Exception ee)
-            {
-                MessageBox.Show("오류지점 - txtOutQty_PreviewTextInput : " + ee.ToString());
-            }
-        }
-
-        //검색조건 - 관리번호에 숫자만 입력
-        private void txtRadioOptionNum_PreviewTextInput(object sender, TextCompositionEventArgs e)
-        {
-            try
-            {
-                lib.CheckIsNumeric((TextBox)sender, e);
-            }
-            catch (Exception ee)
-            {
-                MessageBox.Show("오류지점 - txtRadioOptionNum_PreviewTextInput : " + ee.ToString());
-            }
-        }
-
 
         private void chkReq_Click(object sender, RoutedEventArgs e)
         {
@@ -1263,41 +1176,7 @@ namespace WizMes_ANT
             }
         }
 
-
-
-        private void dgdOutwareSubRequest_MouseDoubleClick(object sender, MouseButtonEventArgs e)
-        {
-            // 추가 상태로 들어와야 하고
-            if (EventStatus == true)
-            {
-                var ViewReceiver = dgdOutwareSub.CurrentCell.Item as Win_com_ArticleConditioin_U_Sub_CodeView;   //dgdOutRequest.SelectedItem as Win_out_OutwareReq_U_View;
-                if (ViewReceiver != null)
-                {
-                    string eventer = ((DataGridCell)sender).Column.Header.ToString();
-
-                    if (eventer == "수량")//(((eventer == "수량")) || (ButtonTag == "2") && (eventer == "Comments"))
-                    {
-                        List<TextBox> list = new List<TextBox>();
-                        lib.FindChildGroup<TextBox>(dgdOutwareSub, "txtQty", ref list);
-                        int target = dgdOutwareSub.Items.IndexOf(dgdOutwareSub.CurrentCell.Item);  //dgdOutRequest.SelectedIndex;
-                        TextBox TextBoxComments = list[target];
-
-                        TextBoxComments.IsReadOnly = false;
-                        TextBoxComments.Focus();
-
-                        Dispatcher.BeginInvoke((ThreadStart)delegate
-                        {
-                            TextBoxComments.Focus();
-                        });
-                    }
-                }
-            }
-        }
-
-        private void dgdOutwareSubRequest_KeyDown(object sender, KeyEventArgs e)
-        {
-
-        }
+        
 
         private void DataGrid_SizeChange(object sender, SizeChangedEventArgs e)
         {
@@ -1318,24 +1197,6 @@ namespace WizMes_ANT
         }
 
 
-
-
-
-        // 서브그리드 삭제 시 → Num 재정렬
-        private void setNumSubDgd()
-        {
-            int index = 0;
-            for (int i = 0; i < dgdOutwareSub.Items.Count; i++)
-            {
-                var Sub = dgdOutwareSub.Items[i] as Win_com_ArticleConditioin_U_Sub_CodeView;
-                if (Sub != null)
-                {
-                    index++;
-                    Sub.Num = index;
-                }
-            }
-        }
-
         private void ButtonDataGridSubRowAdd_Click(object sender, RoutedEventArgs e)
         {
             try
@@ -1353,8 +1214,7 @@ namespace WizMes_ANT
             try
             {
                 SubRowDel();
-                //SumOutQty();
-                //SumAmout();
+
             }
             catch (Exception ee)
             {
@@ -1574,11 +1434,16 @@ namespace WizMes_ANT
         {
             try
             {
-                if (strFlag.Equals("I") || strFlag.Equals("U"))
+                if (EventLabel.Visibility == Visibility.Visible)
                 {
+
                     DataGridCell cell = sender as DataGridCell;
+
                     cell.IsEditing = true;
+
+
                 }
+
             }
             catch (Exception ee)
             {
@@ -1650,6 +1515,31 @@ namespace WizMes_ANT
                 getArticleInfo(txtArticle.Tag.ToString());
             }
 
+            //품명있는거 찾기
+            if (txtArticle.Tag != null
+                && strFlag.Equals("I")
+                )
+            {
+                for (int k = 0; k < dgdOutware.Items.Count; k++)
+                {
+                    var dgdMain = dgdOutware.Items[k] as Win_com_ArticleConditioin_U_CodeView;
+
+                    if (dgdMain != null)
+                    {
+                        if (dgdMain.ArticleID != null && dgdMain.ArticleID.Trim().Equals(txtArticle.Tag))
+                        {
+                            txtArticle.Text = "";
+                            txtArticle.Tag = null;
+                            txtBuyerArticle.Text = "";
+                            MessageBox.Show("이미 입력된 품명입니다.");
+
+                            return;
+                        }
+                    }
+                }
+            }
+
+
         }
 
         private void btnPfArticle_Click(object sender, RoutedEventArgs e)
@@ -1661,6 +1551,31 @@ namespace WizMes_ANT
             if (txtArticle.Tag != null)
             {
                 getArticleInfo(txtArticle.Tag.ToString());
+            }
+
+            //품명있는거 찾기
+            if (txtArticle.Tag != null
+                && strFlag.Equals("I")
+                )
+            {
+                for (int k = 0; k < dgdOutware.Items.Count; k++)
+                {
+                    var dgdMain = dgdOutware.Items[k] as Win_com_ArticleConditioin_U_CodeView;
+
+                    if (dgdMain != null)
+                    {
+                        if (dgdMain.ArticleID != null && dgdMain.ArticleID.Trim().Equals(txtArticle.Tag))
+                        {
+                            MessageBox.Show("이미 입력된 품번입니다.");
+
+                            txtArticle.Text = "";
+                            txtArticle.Tag = null;
+                            txtBuyerArticle.Text = "";
+
+                            return;
+                        }
+                    }
+                }
             }
 
         }
@@ -1686,7 +1601,7 @@ namespace WizMes_ANT
 
                         var getArticleInfo = new ArticleInfo
                         {
-  
+
                             BuyerArticleNo = dr["BuyerArticleNo"].ToString(),
                             Article = dr["Article"].ToString(),
 
@@ -1694,10 +1609,10 @@ namespace WizMes_ANT
                         };
 
                         txtBuyerArticle.Text = getArticleInfo.Article;
-                      
+
                     }
 
-                 
+
                 }
             }
             catch (Exception ex)
@@ -1768,19 +1683,19 @@ namespace WizMes_ANT
         {
             if (e.Key == Key.Enter)
             {
-                
+
                 var OcReqSub = dgdOutwareSub.CurrentItem as Win_com_ArticleConditioin_U_Sub_CodeView;
-                
+
 
                 if (OcReqSub != null)
                 {
                     TextBox tb = new TextBox();
 
-                    //MainWindow.pf.ReturnCode(tb, 76, OcReqSub.BuyerArticleNo == null ? "" : OcReqSub.BuyerArticleNo);
+                   
                     e.Handled = true;
 
-                    
-                     MainWindow.pf.ReturnCode(tb, 7076, "");
+
+                    MainWindow.pf.ReturnCode(tb, 7076, "");
 
                     //조건명 있는거 찾기
                     for (int k = 0; k < dgdOutwareSub.Items.Count; k++)
@@ -1803,20 +1718,19 @@ namespace WizMes_ANT
 
                     if (tb.Tag != null)
                     {
- 
+
                         OcReqSub.CodeID = tb.Tag.ToString();
                         OcReqSub.CodeName = tb.Text;
-                        
+
                     }
 
-                    
 
 
                 }
             }
         }
 
-        
+
     }
 
 
@@ -1874,45 +1788,6 @@ namespace WizMes_ANT
         public string CodeName { get; set; }
     }
 
-    public class ConditionList : INotifyPropertyChanged
-    {
-        public int ChkCount { get; set; }
-
-        public string ArticleID { get; set; }
-        public string CodeID { get; set; }
-
-        public string SetItemCode { get; set; }
-        public string CodeName { get; set; }
-        public string Spec { get; set; }
-
-        public string SpecMin { get; set; }
-        public string SpecMax { get; set; }
-        public string SpecTextMin { get; set; }
-        public string SpecTextMax { get; set; }
-        public string WarningSpecMin { get; set; }
-        public string WarningSpecMax { get; set; }
-        public string WarningSpecPecntYN { get; set; }
-        public string Comments { get; set; }
-
-        public List<ConditionList> Children { get; set; }
-
-        public event PropertyChangedEventHandler PropertyChanged;
-        private void RaisePropertyChanged(string propertyName)
-        {
-            if (this.PropertyChanged != null)
-                this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
-
-            if (propertyName == "SpecMin")
-            {
-                foreach (ConditionList child in this.Children)
-                    child.SpecMin = this.SpecMin;
-            }
-
-        }
-
-
-
-    }
 
 
 
