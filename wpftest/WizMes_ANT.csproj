@@ -480,12 +480,24 @@
     <Compile Include="Product\MachineSearch\Win_Prd_WorkLog_Q.xaml.cs">
       <DependentUpon>Win_Prd_WorkLog_Q.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Product\MoldData\Win_dvl_InOutWare_Mold_U.xaml.cs">
+      <DependentUpon>Win_dvl_InOutWare_Mold_U.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Product\MoldData\Win_dvl_InOutWare_Mold_U_CodeView.cs" />
     <Compile Include="Product\MoldData\Win_dvl_Molding_U.xaml.cs">
       <DependentUpon>Win_dvl_Molding_U.xaml</DependentUpon>
     </Compile>
     <Compile Include="Product\MoldData\Win_dvl_MoldRegularInspectBasis_U.xaml.cs">
       <DependentUpon>Win_dvl_MoldRegularInspectBasis_U.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Product\MoldData\Win_dvl_MoldRegularInspect_U.xaml.cs">
+      <DependentUpon>Win_dvl_MoldRegularInspect_U.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Product\MoldData\Win_dvl_MoldRegularInspect_U_CodeView.cs" />
+    <Compile Include="Product\MoldData\Win_dvl_MoldRepair_U.xaml.cs">
+      <DependentUpon>Win_dvl_MoldRepair_U.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Product\MoldData\Win_dvl_MoldRepair_U_CodeView.cs" />
     <Compile Include="Product\Pop\NoWorkInfo.xaml.cs">
       <DependentUpon>NoWorkInfo.xaml</DependentUpon>
     </Compile>
@@ -1018,11 +1030,23 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="Product\MoldData\Win_dvl_InOutWare_Mold_U.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Product\MoldData\Win_dvl_Molding_U.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Product\MoldData\Win_dvl_MoldRegularInspectBasis_U.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Product\MoldData\Win_dvl_MoldRegularInspect_U.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Product\MoldData\Win_dvl_MoldRepair_U.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
