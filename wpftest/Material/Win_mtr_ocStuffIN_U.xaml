@@ -698,7 +698,7 @@
                             </Viewbox>
                         </Label>
                         <ComboBox x:Name="cboArticleGrp" Grid.Row="2" Grid.Column="5" Style="{StaticResource ComboBoxInputString}"
-                                  SelectedValue="{Binding ArticleGrpID}" IsHitTestVisible="True"/>
+                                  SelectedValue="{Binding ArticleGrpID}" IsEnabled="False" IsHitTestVisible="True"/>
 
                         <Label Grid.Row="5" Grid.Column="0" Style="{DynamicResource LabelInputArea}" >
                             <Viewbox Style="{DynamicResource ViewBoxSetMaxMinHeight}">
@@ -723,7 +723,7 @@
                                 <TextBlock Text="입고 단위" Style="{DynamicResource TextBlockInViewBoxInput}"/>
                             </Viewbox>
                         </Label>
-                        <ComboBox x:Name="cboUnit" Grid.Row="4" Grid.Column="5" 
+                        <ComboBox x:Name="cboUnit" Grid.Row="4" Grid.Column="5" IsEnabled="False"
                                   SelectedValue="{Binding UnitClss}" Style="{StaticResource ComboBoxInputString}"/>
 
                         <Label Grid.Row="5" Grid.Column="4" Style="{DynamicResource LabelInputArea}" >
@@ -732,7 +732,7 @@
                             </Viewbox>
                         </Label>
                         <ComboBox x:Name="cboPriceClss" Grid.Row="5" Grid.Column="5" Background="White" Style="{StaticResource ComboBoxInputString}"
-                                  SelectedValue="{Binding Priceclss}"></ComboBox>
+                                  SelectedValue="{Binding Priceclss}" IsEnabled="False"></ComboBox>
 
                         <!--<Label Grid.Row="7" Grid.Column="0" Margin="1" Content="환     율"
                                HorizontalContentAlignment="Center" VerticalContentAlignment="Center"></Label>
