@@ -119,14 +119,16 @@ namespace WizMes_ANT
         {
             if (e.Key == Key.Enter)
             {
-                MainWindow.pf.ReturnCode(txtArticleSrh, (int)Defind_CodeFind.DCF_BuyerArticleNo, "");
+                MainWindow.pf.ReturnCodeGLS(txtArticleSrh, 77, "");
+                //MainWindow.pf.ReturnCode(txtArticleSrh, (int)Defind_CodeFind.DCF_BuyerArticleNo, "");
             }
         }
 
         //
         private void BtnPfArticleSrh_Click(object sender, RoutedEventArgs e)
         {
-            MainWindow.pf.ReturnCode(txtArticleSrh, (int)Defind_CodeFind.DCF_BuyerArticleNo, "");
+            MainWindow.pf.ReturnCodeGLS(txtArticleSrh, 77, "");
+            //MainWindow.pf.ReturnCode(txtArticleSrh, (int)Defind_CodeFind.DCF_BuyerArticleNo, "");
         }
 
         //검색 조건 라디오 버튼 체크(상향식)
@@ -1167,7 +1169,8 @@ namespace WizMes_ANT
         {
             if (e.Key == Key.Enter)
             {
-                MainWindow.pf.ReturnCode(txtParentArticle, (int)Defind_CodeFind.DCF_BuyerArticleNo, "");
+                MainWindow.pf.ReturnCodeGLS(txtParentArticle, 77, "");
+                //MainWindow.pf.ReturnCode(txtParentArticle, (int)Defind_CodeFind.DCF_BuyerArticleNo, "");
 
                 if (txtParentArticle.Tag != null)
                 {
@@ -1180,7 +1183,8 @@ namespace WizMes_ANT
         //상위품명
         private void btnPfParentArticle_Click(object sender, RoutedEventArgs e)
         {
-            MainWindow.pf.ReturnCode(txtParentArticle, (int)Defind_CodeFind.DCF_BuyerArticleNo, "");
+            MainWindow.pf.ReturnCodeGLS(txtParentArticle, 77, "");
+            //MainWindow.pf.ReturnCode(txtParentArticle, (int)Defind_CodeFind.DCF_BuyerArticleNo, "");
 
             if (txtParentArticle.Tag != null)
             {
@@ -1193,7 +1197,8 @@ namespace WizMes_ANT
         {
             if (e.Key == Key.Enter)
             {
-                MainWindow.pf.ReturnCode(txtArticle, (int)Defind_CodeFind.DCF_BuyerArticleNo, "");
+                MainWindow.pf.ReturnCodeGLS(txtArticle, 77, "");
+                //MainWindow.pf.ReturnCode(txtArticle, (int)Defind_CodeFind.DCF_BuyerArticleNo, "");
 
                 if (txtArticle.Tag != null)
                 {
@@ -1207,7 +1212,8 @@ namespace WizMes_ANT
         {
             try
             {
-                MainWindow.pf.ReturnCode(txtArticle, (int)Defind_CodeFind.DCF_BuyerArticleNo, "");
+                MainWindow.pf.ReturnCodeGLS(txtArticle, 77, "");
+                //MainWindow.pf.ReturnCode(txtArticle, (int)Defind_CodeFind.DCF_BuyerArticleNo, "");
 
                 if (txtArticle.Tag != null)
                 {

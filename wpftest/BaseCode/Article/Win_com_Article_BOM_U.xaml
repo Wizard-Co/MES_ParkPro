@@ -421,7 +421,7 @@
                                         <ColumnDefinition Width="3*" />
                                     </Grid.ColumnDefinitions>
                                     <TextBox x:Name="txtParentArticle" Grid.Column="0"  Style="{DynamicResource TextBoxInputNecessary}"
-                                             Keyboard.KeyDown="txtParentArticle_KeyDown" Text="{Binding ParentBuyerArticleNO}" Tag="{Binding PARENTArticleID}"/>
+                                             Keyboard.KeyDown="txtParentArticle_KeyDown" Text="{Binding ArticleP}" Tag="{Binding PARENTArticleID}"/>
                                     <Button x:Name="btnPfParentArticle" Grid.Column="1" Click="btnPfParentArticle_Click">
                                         <Image Source="{DynamicResource btiPlusFind}" />
                                     </Button>
@@ -441,7 +441,7 @@
                                         <ColumnDefinition Width="64*" />
                                     </Grid.ColumnDefinitions>
                                     <TextBox x:Name="txtArticle" Grid.Column="0" Margin="1" Style="{DynamicResource TextBoxInputNecessary}"
-                                             Keyboard.KeyDown="txtArticle_KeyDown" Text="{Binding BuyerArticleNo}" Tag="{Binding ArticleID}" Grid.ColumnSpan="2"/>
+                                             Keyboard.KeyDown="txtArticle_KeyDown" Text="{Binding Article}" Tag="{Binding ArticleID}" Grid.ColumnSpan="2"/>
                                     <Button x:Name="btnPfArticle" Grid.Column="2" Click="btnPfArticle_Click">
                                         <Image Source="{DynamicResource btiPlusFind}" />
                                     </Button>

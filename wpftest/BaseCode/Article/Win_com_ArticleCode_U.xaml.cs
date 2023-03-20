@@ -1288,8 +1288,10 @@ namespace WizMes_ANT
                     Dictionary<string, object> sqlParameter = new Dictionary<string, object>();
                     sqlParameter.Clear();
 
-                    //sqlParameter.Add("sArticleID", strFlag.Trim().Equals("I") ? "" : txtCode.Text);
+
                     sqlParameter.Add("sArticleID", txtCode.Text != null && !txtCode.Text.Trim().Equals("") ? txtCode.Text : "");
+                    //sqlParameter.Add("sArticleID", strFlag.Trim().Equals("I") ? "" : txtCode.Text);
+
                     sqlParameter.Add("CompanyID", MainWindow.CompanyID);
                     sqlParameter.Add("sArticle", txtName.Text.Trim().Equals("") ? txtBuyerArticleNo.Text : txtName.Text);
                     sqlParameter.Add("BuyerArticleNo", txtBuyerArticleNo.Text);
@@ -1303,7 +1305,7 @@ namespace WizMes_ANT
                     //sqlParameter.Add("Weight", ConvertDouble(txtWeight.Text)); // 입력란 없음 → 0으로 세팅
 
                     sqlParameter.Add("sUseClss", chkNotUse.IsChecked == true ? "*" : "");
-                    //sqlParameter.Add("sSpec", txtSpec.Text);
+                    //sqlParameter.Add("sSpec", txtSpec.T-ext);
                     sqlParameter.Add("sSpec", txtSpec.Text != null ? txtSpec.Text.Trim() : "");
 
 
@@ -1345,7 +1347,7 @@ namespace WizMes_ANT
 
                         Procedure pro1 = new Procedure();
                         pro1.Name = "xp_Article_iArticle";
-                        pro1.OutputUseYN = "Y";
+                        pro1.OutputUseYN = "N";
                         pro1.OutputName = "sArticleID";
                         pro1.OutputLength = "10";
 
@@ -1378,7 +1380,7 @@ namespace WizMes_ANT
                         Prolist.Clear();
                         ListParameter.Clear();
 
-
+                    
                         // 공정 선택한거 넣기
                         for (int i = 0; i < dgdProcess.Items.Count; i++)
                         {
@@ -1388,6 +1390,7 @@ namespace WizMes_ANT
                                 sqlParameter = new Dictionary<string, object>();
                                 sqlParameter.Clear();
 
+                                //sqlParameter.Add("sArticleID", txtCode.Text != null && !txtCode.Text.Trim().Equals("") ? txtCode.Text : "");
                                 sqlParameter.Add("sArticleID", GetKey);
                                 sqlParameter.Add("sProcessID", WinProcess.ProcessID);
                                 sqlParameter.Add("UseYN", "Y");
