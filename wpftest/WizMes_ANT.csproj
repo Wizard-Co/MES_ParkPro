@@ -1424,6 +1424,7 @@
     <Resource Include="Images\icon_informationMark_32.png" />
     <Resource Include="Quality\Analysis,Search\x-bar.PNG" />
     <Resource Include="Images\icon_MES.JPG" />
+    <Resource Include="Images\Upload.bmp" />
     <Content Include="x64\liblept172.dll">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

@@ -1379,6 +1379,26 @@ namespace WizMes_ANT
             }
         }
 
+        private void ChildbtnUploadEvent(object sender, ExecutedRoutedEventArgs e)
+        {
+            Object obj = MainMdiContainer.ActiveMdiChild.Content;
+            if (obj != null)
+            {
+                UserControl CurrentUserControl = obj as UserControl;
+                if (CurrentUserControl != null)
+                {
+                    object objPrint = CurrentUserControl.FindName("btnUpload");
+                    if (objPrint != null)
+                    {
+                        if ((objPrint as Button).IsEnabled == true)
+                        {
+                            (objPrint as Button).RaiseEvent(new RoutedEventArgs(ButtonBase.ClickEvent));
+                        }
+                    }
+                }
+            }
+        }
+
         private void btnUpAndDown_Click(object sender, RoutedEventArgs e)
         {
             if (bdrFavorite.Width < 20)

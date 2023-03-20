@@ -18,6 +18,7 @@
         <RoutedUICommand x:Key="MainSave" Text="저장(S)" />
         <RoutedUICommand x:Key="MainExcel" Text="엑셀(E)" />
         <RoutedUICommand x:Key="MainPrint" Text="인쇄(P)" />
+        <RoutedUICommand x:Key="MainUpload" Text="업로드(I)" />
     </Window.Resources>
     <Window.CommandBindings>
         <CommandBinding Command="{StaticResource MainSearch}" Executed="ChildbtnSearchEvent" />
@@ -29,6 +30,7 @@
         <CommandBinding Command="{StaticResource MainSave}" Executed="ChildbtnSaveEvent" />
         <CommandBinding Command="{StaticResource MainExcel}" Executed="ChildbtnExcelEvent" />
         <CommandBinding Command="{StaticResource MainPrint}" Executed="ChildbtnPrintEvent" />
+        <CommandBinding Command="{StaticResource MainUpload}" Executed="ChildbtnUploadEvent" />
     </Window.CommandBindings>
     <Window.InputBindings>
         <KeyBinding Key="F" Modifiers="Alt" Command="{StaticResource MainSearch}" />
@@ -40,6 +42,7 @@
         <KeyBinding Key="S" Modifiers="Alt" Command="{StaticResource MainSave}" />
         <KeyBinding Key="E" Modifiers="Alt" Command="{StaticResource MainExcel}" />
         <KeyBinding Key="P" Modifiers="Alt" Command="{StaticResource MainPrint}" />
+        <KeyBinding Key="I" Modifiers="Alt" Command="{StaticResource MainUpload}" />
     </Window.InputBindings>
     <Grid>
         <Grid.ColumnDefinitions>

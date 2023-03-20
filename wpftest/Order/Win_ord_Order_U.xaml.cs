@@ -7,6 +7,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using WizMes_ANT.PopUP;
+using WizMes_ANT.PopUp;
 
 namespace WizMes_ANT
 {
@@ -139,65 +140,52 @@ namespace WizMes_ANT
         //콤보박스 만들기
         private void SetComboBox()
         {
+            // 가공 구분
             ObservableCollection<CodeView> ovcWork = ComboBoxUtil.Instance.GetCode_SetComboBox("Work", null);
             cboWork.ItemsSource = ovcWork;
             cboWork.DisplayMemberPath = "code_name";
             cboWork.SelectedValuePath = "code_id";
 
-            cboWorkSrh.ItemsSource = ovcWork;
-            cboWorkSrh.DisplayMemberPath = "code_name";
-            cboWorkSrh.SelectedValuePath = "code_id";
-
+            // 주문 형태
             ObservableCollection<CodeView> oveOrderForm = ComboBoxUtil.Instance.Gf_DB_CM_GetComCodeDataset(null, "ORDFRM", "Y", "", "");
             cboOrderForm.ItemsSource = oveOrderForm;
             cboOrderForm.DisplayMemberPath = "code_name";
             cboOrderForm.SelectedValuePath = "code_id";
 
-
-            ObservableCollection<CodeView> oveOrderNo = ComboBoxUtil.Instance.Gf_DB_CM_GetComCodeDataset(null, "ORDFLG", "Y", "", "");
-            cboOrderNO.ItemsSource = oveOrderNo;
-            cboOrderNO.DisplayMemberPath = "code_name";
-            cboOrderNO.SelectedValuePath = "code_id";
-
+            // 주문 구분
             ObservableCollection<CodeView> ovcOrderClss = ComboBoxUtil.Instance.Gf_DB_CM_GetComCodeDataset(null, "ORDGBN", "Y", "", "");
             cboOrderClss.ItemsSource = ovcOrderClss;
             cboOrderClss.DisplayMemberPath = "code_name";
             cboOrderClss.SelectedValuePath = "code_id";
 
+            // 주문 구분 (검색)
             cboOrderClassSrh.ItemsSource = ovcOrderClss;
             cboOrderClassSrh.DisplayMemberPath = "code_name";
             cboOrderClassSrh.SelectedValuePath = "code_id";
+            cboOrderClassSrh.SelectedIndex = 0;
 
+            // 주문 기준
             ObservableCollection<CodeView> ovcWorkUnitClss = ComboBoxUtil.Instance.Gf_DB_CM_GetComCodeDataset(null, "CMMUNIT", "Y", "", "");
-            //cboWorkUnitClss.ItemsSource = ovcWorkUnitClss;
-            //cboWorkUnitClss.DisplayMemberPath = "code_name";
-            //cboWorkUnitClss.SelectedValuePath = "code_id";
-
             cboUnitClss.ItemsSource = ovcWorkUnitClss;
             cboUnitClss.DisplayMemberPath = "code_name";
             cboUnitClss.SelectedValuePath = "code_id";
 
+            // 품명 종류
             ObservableCollection<CodeView> ovcArticleGrpID = ComboBoxUtil.Instance.GetArticleCode_SetComboBox("", 0);
             cboArticleGroup.ItemsSource = ovcArticleGrpID;
             cboArticleGroup.DisplayMemberPath = "code_name";
             cboArticleGroup.SelectedValuePath = "code_id";
 
-            //List<string> strValue = new List<string>();
-            //strValue.Add("진행");
-            //strValue.Add("완료");
+            // 부가세 별도
+            /*List<string> strVAT_Value = new List<string>();
+            strVAT_Value.Add("Y");
+            strVAT_Value.Add("N");
+            strVAT_Value.Add("0");
 
-            List<string[]> strNewYN = new List<string[]>();
-            string[] strYes = { "0", "Y" };
-            string[] strNo = { "1", "N" };
-            strNewYN.Add(strYes);
-            strNewYN.Add(strNo);
-
-            ObservableCollection<CodeView> cboNewYN = ComboBoxUtil.Instance.Direct_SetComboBox(strNewYN);
-
-            this.cboCloseClssSrh.ItemsSource = cboNewYN;
-            this.cboCloseClssSrh.DisplayMemberPath = "code_name";
-            this.cboCloseClssSrh.SelectedValuePath = "code_id";
-
+            ObservableCollection<CodeView> cboVAT_YN = ComboBoxUtil.Instance.Direct_SetComboBox(strVAT_Value);
+            cboVAT_YN.ItemsSource = cboVAT_YN;
+            cboVAT_YN.DisplayMemberPath = "code_name";
+            cboVAT_YN.SelectedValuePath = "code_name";*/
 
             List<string[]> strArray = new List<string[]>();
             string[] strOne = { "", "진행" };
@@ -205,44 +193,29 @@ namespace WizMes_ANT
             strArray.Add(strOne);
             strArray.Add(strTwo);
 
-            ObservableCollection<CodeView> cboCloseClssSrh = ComboBoxUtil.Instance.Direct_SetComboBox(strArray);
-            this.cboCloseClssSrh.ItemsSource = cboCloseClssSrh;
-            this.cboCloseClssSrh.DisplayMemberPath = "code_name";
-            this.cboCloseClssSrh.SelectedValuePath = "code_id";
+            // 완료 구분
+            ObservableCollection<CodeView> ovcCloseClssSrh = ComboBoxUtil.Instance.Direct_SetComboBox(strArray);
+            cboCloseClssSrh.ItemsSource = ovcCloseClssSrh;
+            cboCloseClssSrh.DisplayMemberPath = "code_name";
+            cboCloseClssSrh.SelectedValuePath = "code_id";
+            cboCloseClssSrh.SelectedIndex = 0;
 
-            List<string> strVAT_Value = new List<string>();
-            strVAT_Value.Add("Y");
-            strVAT_Value.Add("N");
-            strVAT_Value.Add("0");
-
-            ObservableCollection<CodeView> cboVAT_YN = ComboBoxUtil.Instance.Direct_SetComboBox(strVAT_Value);
-            this.cboVAT_YN.ItemsSource = cboVAT_YN;
-            this.cboVAT_YN.DisplayMemberPath = "code_name";
-            this.cboVAT_YN.SelectedValuePath = "code_name";
-
+            // 수주 구분
             ObservableCollection<CodeView> oveOrderFlag = ComboBoxUtil.Instance.Gf_DB_CM_GetComCodeDataset(null, "ORDFLG", "Y", "", "");
             //영업, 생산오더만 보여주기 위해.            
             oveOrderFlag.RemoveAt(2);
             //카운트 4에서 하나 지우고 나면 카운트 3돼서 또 2번 지움
             oveOrderFlag.RemoveAt(2);
 
-            //검색조건 수주구분 콤보박스
             cboOrderFlag.ItemsSource = oveOrderFlag;
             cboOrderFlag.DisplayMemberPath = "code_name";
             cboOrderFlag.SelectedValuePath = "code_id";
+            cboOrderFlag.SelectedIndex = 1;
 
-            cboOrderFlag.SelectedIndex = 1;   //영업오더가 먼저 보이는 게 맞겠지???
-
-            //추가, 수정시 수구주분 콤보박스
             cboOrderNO.ItemsSource = oveOrderFlag;
             cboOrderNO.DisplayMemberPath = "code_name";
             cboOrderNO.SelectedValuePath = "code_id";
-
-
-
-
-
-
+            cboOrderNO.SelectedIndex = 1;
         }
 
         #region 체크박스 연동동작(상단)
@@ -250,8 +223,7 @@ namespace WizMes_ANT
         //수주일자
         private void lblDateSrh_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
-            if (ChkDateSrh.IsChecked == true) { ChkDateSrh.IsChecked = false; }
-            else { ChkDateSrh.IsChecked = true; }
+            ChkDateSrh.IsChecked = ChkDateSrh.IsChecked == true ? false : true;
         }
 
         //수주일자
@@ -288,8 +260,7 @@ namespace WizMes_ANT
         //거래처
         private void lblCustomSrh_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
-            if (chkCustomSrh.IsChecked == true) { chkCustomSrh.IsChecked = false; }
-            else { chkCustomSrh.IsChecked = true; }
+            chkCustomSrh.IsChecked = chkCustomSrh.IsChecked == true ? false : true;
         }
 
         //거래처
@@ -310,9 +281,7 @@ namespace WizMes_ANT
         private void txtCustomSrh_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.Key == Key.Enter)
-            {
                 MainWindow.pf.ReturnCode(txtCustomSrh, (int)Defind_CodeFind.DCF_CUSTOM, "");
-            }
         }
 
         //거래처
@@ -321,153 +290,37 @@ namespace WizMes_ANT
             MainWindow.pf.ReturnCode(txtCustomSrh, (int)Defind_CodeFind.DCF_CUSTOM, "");
         }
 
-        //품명
-        private void lblArticleSrh_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+        //최종고객사
+        private void lblInCustomSrh_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
-            //if (chkArticleSrh.IsChecked == true) { chkArticleSrh.IsChecked = false; }
-            //else { chkArticleSrh.IsChecked = true; }
+            chkInCustomSrh.IsChecked = chkInCustomSrh.IsChecked == true ? false : true;
         }
 
-        //품명
-        private void chkArticleSrh_Checked(object sender, RoutedEventArgs e)
+        //최종고객사
+        private void chkInCustomSrh_Checked(object sender, RoutedEventArgs e)
         {
-            //txtArticleSrh.IsEnabled = true;
-            //btnPfArticleSrh.IsEnabled = true;
+            txtInCustomSrh.IsEnabled = true;
+            btnPfInCustomSrh.IsEnabled = true;
         }
 
-        //품명
-        private void chkArticleSrh_Unchecked(object sender, RoutedEventArgs e)
+        //최종고객사
+        private void chkInCustomSrh_Unchecked(object sender, RoutedEventArgs e)
         {
-            //txtArticleSrh.IsEnabled = false;
-            //btnPfArticleSrh.IsEnabled = false;
+            txtInCustomSrh.IsEnabled = false;
+            btnPfInCustomSrh.IsEnabled = false;
         }
 
-        //품명
-        private void txtArticleSrh_KeyDown(object sender, KeyEventArgs e)
-        {
-            //if (e.Key == Key.Enter)
-            //{
-            //    MainWindow.pf.ReturnCode(txtArticleSrh, (int)Defind_CodeFind.DCF_Article, "");
-            //}
-        }
-
-        //품명
-        private void btnPfArticleSrh_Click(object sender, RoutedEventArgs e)
-        {
-            //MainWindow.pf.ReturnCode(txtArticleSrh, (int)Defind_CodeFind.DCF_Article, "");
-        }
-
-        //차종
-        private void lblModelIDSrh_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
-        {
-            if (chkBuyerModelIDSrh.IsChecked == true) { chkBuyerModelIDSrh.IsChecked = false; }
-            else { chkBuyerModelIDSrh.IsChecked = true; }
-        }
-
-        //차종
-        private void chkBuyerModelIDSrh_Checked(object sender, RoutedEventArgs e)
-        {
-            txtBuyerModelIDSrh.IsEnabled = true;
-            btnPfBuyerModelIDSrh.IsEnabled = true;
-        }
-
-        //차종
-        private void chkBuyerModelIDSrh_Unchecked(object sender, RoutedEventArgs e)
-        {
-            txtBuyerModelIDSrh.IsEnabled = false;
-            btnPfBuyerModelIDSrh.IsEnabled = false;
-        }
-
-        //차종
-        private void txtBuyerModelIDSrh_KeyDown(object sender, KeyEventArgs e)
+        //최종고객사
+        private void txtInCustomSrh_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.Key == Key.Enter)
-            {
-                MainWindow.pf.ReturnCode(txtBuyerModelIDSrh, (int)Defind_CodeFind.DCF_BUYERMODEL, "");
-            }
+                MainWindow.pf.ReturnCode(txtInCustomSrh, (int)Defind_CodeFind.DCF_BUYERMODEL, "");
         }
 
-        //차종
-        private void btnPfBuyerModelIDSrh_Click(object sender, RoutedEventArgs e)
+        //최종고객사
+        private void btnPfInCustomSrh_Click(object sender, RoutedEventArgs e)
         {
-            MainWindow.pf.ReturnCode(txtBuyerModelIDSrh, (int)Defind_CodeFind.DCF_BUYERMODEL, "");
-        }
-
-        //품명 라벨 클릭
-        private void LabelArticleSearch_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
-        {
-            try
-            {
-                if (CheckBoxArticleSearch.IsChecked == true)
-                {
-                    CheckBoxArticleSearch.IsChecked = false;
-                }
-                else
-                {
-                    CheckBoxArticleSearch.IsChecked = true;
-                }
-            }
-            catch (Exception ee)
-            {
-                MessageBox.Show("오류지점 - " + ee.ToString());
-            }
-        }
-
-        //품명 체크박스 체크
-        private void CheckBoxArticleSearch_Checked(object sender, RoutedEventArgs e)
-        {
-            try
-            {
-                TextBoxArticleSearch.IsEnabled = true;
-                ButtonArticleSearch.IsEnabled = true;
-            }
-            catch (Exception ee)
-            {
-                MessageBox.Show("오류지점 - " + ee.ToString());
-            }
-        }
-
-        //품명 체크박스 체크해제
-        private void CheckBoxArticleSearch_Unchecked(object sender, RoutedEventArgs e)
-        {
-            try
-            {
-                TextBoxArticleSearch.IsEnabled = false;
-                ButtonArticleSearch.IsEnabled = false;
-            }
-            catch (Exception ee)
-            {
-                MessageBox.Show("오류지점 - " + ee.ToString());
-            }
-        }
-
-        //품명 텍스트박스 키다운 이벤트
-        private void TextBoxArticleSearch_KeyDown(object sender, KeyEventArgs e)
-        {
-            try
-            {
-                if (e.Key == Key.Enter)
-                {
-                    pf.ReturnCode(TextBoxArticleSearch, 77, "");
-                }
-            }
-            catch (Exception ee)
-            {
-                MessageBox.Show("오류지점 - " + ee.ToString());
-            }
-        }
-
-        //품명 플러스파인더 버튼
-        private void ButtonArticleSearch_Click(object sender, RoutedEventArgs e)
-        {
-            try
-            {
-                pf.ReturnCode(TextBoxArticleSearch, 77, "");
-            }
-            catch (Exception ee)
-            {
-                MessageBox.Show("오류지점 - " + ee.ToString());
-            }
+            MainWindow.pf.ReturnCode(txtInCustomSrh, (int)Defind_CodeFind.DCF_BUYERMODEL, "");
         }
 
         //검색조건 - 품번 라벨 클릭
@@ -547,27 +400,87 @@ namespace WizMes_ANT
             }
         }
 
-        //OrderNo 텍스트박스 키다운 이벤트
-        private void TextBoxOrderNo_KeyDown(object sender, KeyEventArgs e)
+        //품명 라벨 클릭
+        private void LabelArticleSearch_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+        {
+            try
+            {
+                if (CheckBoxArticleSearch.IsChecked == true)
+                {
+                    CheckBoxArticleSearch.IsChecked = false;
+                }
+                else
+                {
+                    CheckBoxArticleSearch.IsChecked = true;
+                }
+            }
+            catch (Exception ee)
+            {
+                MessageBox.Show("오류지점 - " + ee.ToString());
+            }
+        }
+
+        //품명 체크박스 체크
+        private void CheckBoxArticleSearch_Checked(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                TextBoxArticleSearch.IsEnabled = true;
+                ButtonArticleSearch.IsEnabled = true;
+            }
+            catch (Exception ee)
+            {
+                MessageBox.Show("오류지점 - " + ee.ToString());
+            }
+        }
+
+        //품명 체크박스 체크해제
+        private void CheckBoxArticleSearch_Unchecked(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                TextBoxArticleSearch.IsEnabled = false;
+                ButtonArticleSearch.IsEnabled = false;
+            }
+            catch (Exception ee)
+            {
+                MessageBox.Show("오류지점 - " + ee.ToString());
+            }
+        }
+
+        //품명 텍스트박스 키다운 이벤트
+        private void TextBoxArticleSearch_KeyDown(object sender, KeyEventArgs e)
         {
             try
             {
                 if (e.Key == Key.Enter)
                 {
-                    txtCustom.Focus();
+                    pf.ReturnCode(TextBoxArticleSearch, 77, TextBoxArticleSearch.Text);
                 }
             }
             catch (Exception ee)
             {
-                MessageBox.Show("오류지점 - TextBoxOrderNo_KeyDown : " + ee.ToString());
+                MessageBox.Show("오류지점 - " + ee.ToString());
+            }
+        }
+
+        //품명 플러스파인더 버튼
+        private void ButtonArticleSearch_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                pf.ReturnCode(TextBoxArticleSearch, 77, TextBoxArticleSearch.Text);
+            }
+            catch (Exception ee)
+            {
+                MessageBox.Show("오류지점 - " + ee.ToString());
             }
         }
 
         //수주번호
         private void lblOrderIDSrh_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
-            if (chkOrderIDSrh.IsChecked == true) { chkOrderIDSrh.IsChecked = false; }
-            else { chkOrderIDSrh.IsChecked = true; }
+            chkOrderIDSrh.IsChecked = chkOrderIDSrh.IsChecked == true ? false : true;
         }
 
         //수주번호
@@ -604,8 +517,7 @@ namespace WizMes_ANT
         //가공구분
         private void lblWorkSrh_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
-            if (chkWorkSrh.IsChecked == true) { chkWorkSrh.IsChecked = false; }
-            else { chkWorkSrh.IsChecked = true; }
+            chkWorkSrh.IsChecked = chkWorkSrh.IsChecked == true ? false : true;
         }
 
         //가공구분
@@ -623,8 +535,7 @@ namespace WizMes_ANT
         //주문구분
         private void lblOrderClassSrh_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
-            if (chkOrderClassSrh.IsChecked == true) { chkOrderClassSrh.IsChecked = false; }
-            else { chkOrderClassSrh.IsChecked = true; }
+            chkOrderClassSrh.IsChecked = chkOrderClassSrh.IsChecked == true ? false : true;
         }
 
         //주문구분
@@ -789,13 +700,11 @@ namespace WizMes_ANT
             btnSave.Visibility = Visibility.Hidden;
             btnCancel.Visibility = Visibility.Hidden;
             btnExcel.Visibility = Visibility.Visible;
+            btnUpload.IsEnabled = true;
+
             grdInput.IsHitTestVisible = false;
             lblMsg.Visibility = Visibility.Hidden;
             dgdMain.IsHitTestVisible = true;
-
-            //서브그리드 false
-            SubGridAdd.IsEnabled = false;
-            DataGridSub.IsHitTestVisible = false;
         }
 
         /// <summary>
@@ -810,21 +719,11 @@ namespace WizMes_ANT
             btnSave.Visibility = Visibility.Visible;
             btnCancel.Visibility = Visibility.Visible;
             btnExcel.Visibility = Visibility.Hidden;
+            btnUpload.IsEnabled = false;
+
             grdInput.IsHitTestVisible = true;
             lblMsg.Visibility = Visibility.Visible;
             dgdMain.IsHitTestVisible = false;
-
-            //서브그리드 true
-            SubGridAdd.IsEnabled = true;
-            DataGridSub.IsHitTestVisible = true;
-
-            if (strFlag.Equals("I"))
-            {
-                cboOrderForm.SelectedIndex = 1;
-                cboOrderClss.SelectedIndex = 0;
-                cboUnitClss.SelectedIndex = 0;
-                //cboWorkUnitClss.SelectedIndex = 0;
-            }
         }
 
         //추가
@@ -832,6 +731,8 @@ namespace WizMes_ANT
         {
             strFlag = "I";
             this.DataContext = null;
+
+            txtAmount.Text = "0";
 
             //cboVAT_YN 부가세별도 값은 Y로 기본 값 셋팅
             cboVAT_YN.SelectedIndex = 0;
@@ -844,15 +745,9 @@ namespace WizMes_ANT
 
             CantBtnControl();
 
-            if (dgdNeedStuff.Items.Count > 0)
-            {
-                dgdNeedStuff.Items.Clear();
-            }
-
-            cboOrderForm.SelectedIndex = 0;
-            cboOrderNO.SelectedIndex = 0;
+            cboOrderNO.SelectedIndex = 1;
+            cboOrderForm.SelectedIndex = 1;
             cboArticleGroup.SelectedIndex = 0;
-            //cboAutoInspect.SelectedIndex = 0;
             cboOrderClss.SelectedIndex = 0;
             cboUnitClss.SelectedIndex = 0;
             cboWork.SelectedIndex = 0;
@@ -861,18 +756,10 @@ namespace WizMes_ANT
             dtpDvlyDate.SelectedDate = DateTime.Today;
             btnNeedStuff.IsEnabled = true;
             tbkMsg.Text = "자료 입력 중";
-            rowNum = dgdMain.SelectedIndex;
-
-            //추가버튼을 누르면 cboOrderNO 콤보박스에 커서가 가도록
-            //내수에 콤보박스 열리는 거 불편하다 해서 주석처리 하고, 포커스만 줘야겠다.
-            //아몰라.... 그냥 거래처에 포커스 줄래. 
-            //cboOrderNO.IsDropDownOpen = true;
-            //cboOrderNO.Focus();
-            txtCustom.Focus();
-
-
-
-
+            rowNum = Math.Max(0, dgdMain.SelectedIndex);
+            
+            if (dgdNeedStuff.Items.Count > 0)
+                dgdNeedStuff.Items.Clear();
         }
 
         //수정
@@ -895,58 +782,65 @@ namespace WizMes_ANT
         //삭제
         private void btnDelete_Click(object sender, RoutedEventArgs e)
         {
-            OrderView = dgdMain.SelectedItem as Win_ord_Order_U_CodeView;
-
-            if (OrderView == null)
+            using (Loading ld = new Loading(beDelete))
             {
-                MessageBox.Show("삭제할 데이터가 지정되지 않았습니다. 삭제데이터를 지정하고 눌러주세요");
+                ld.ShowDialog();
             }
-            else
+        }
+
+        private void beDelete()
+        {
+            btnDelete.IsEnabled = false;
+
+            Dispatcher.BeginInvoke(new Action(() =>
             {
-                string sql = "select OrderID from pl_Input where OrderID = " + OrderView.OrderID;
+                OrderView = dgdMain.SelectedItem as Win_ord_Order_U_CodeView;
 
-                DataSet ds = DataStore.Instance.QueryToDataSet(sql);
-
-                if (ds != null && ds.Tables.Count > 0)
+                if (OrderView == null)
                 {
-                    DataTable dt = ds.Tables[0];
-                    if (dt.Rows.Count > 0)
+                    MessageBox.Show("삭제할 데이터가 지정되지 않았습니다. 삭제데이터를 지정하고 눌러주세요");
+                }
+                else
+                {
+                    string sql = "select OrderID from pl_Input where OrderID = " + OrderView.OrderID;
+
+                    DataSet ds = DataStore.Instance.QueryToDataSet(sql);
+                    if (ds != null && ds.Tables.Count > 0)
                     {
-                        sql = "select OrderID from OutWare where OrderID = " + OrderView.OrderID;
-
-                        ds = DataStore.Instance.QueryToDataSet(sql);
-
-                        if (ds != null && ds.Tables.Count > 0)
+                        DataTable dt = ds.Tables[0];
+                        if (dt.Rows.Count > 0)
                         {
-                            dt = ds.Tables[0];
-                            if (dt.Rows.Count > 0)
+                            sql = "select OrderID from OutWare where OrderID = " + OrderView.OrderID;
+
+                            ds = DataStore.Instance.QueryToDataSet(sql);
+                            if (ds != null && ds.Tables.Count > 0)
                             {
-                                MessageBox.Show("해당 수주 건은 생산 진행중이오니, 삭제하시려면 생산부터 작업지시까지 먼저 삭제해주세요.");
-                            }
-                            else
-                            {
-                                MessageBox.Show("해당 수주 건은 작업지시 진행중이오니, 삭제하시려면 작업지시 먼저 삭제해주세요.");
+                                dt = ds.Tables[0];
+                                string msg = dt.Rows.Count > 0 ?
+                                    "해당 수주 건은 생산 진행중이오니, 삭제하시려면 생산부터 작업지시까지 먼저 삭제해주세요" :
+                                    "해당 수주 건은 작업지시 진행중이오니, 삭제하시려면 작업지시 먼저 삭제해주세요";
+                                MessageBox.Show(msg);
                             }
                         }
-                    }
-                    else
-                    {
-                        if (MessageBox.Show("선택하신 항목을 삭제하시겠습니까?", "삭제 전 확인", MessageBoxButton.YesNo) == MessageBoxResult.Yes)
+                        else
                         {
-                            if (dgdMain.Items.Count > 0 && dgdMain.SelectedItem != null)
+                            if (MessageBox.Show("선택하신 항목을 삭제하시겠습니까?", "삭제 전 확인", MessageBoxButton.YesNo) == MessageBoxResult.Yes)
                             {
-                                rowNum = dgdMain.SelectedIndex;
-                            }
+                                if (dgdMain.Items.Count > 0 && dgdMain.SelectedItem != null)
+                                    rowNum = dgdMain.SelectedIndex;
 
-                            if (DeleteData(OrderView.OrderID))
-                            {
-                                rowNum -= 1;
-                                re_Search(rowNum);
+                                if (DeleteData(OrderView.OrderID))
+                                {
+                                    rowNum = Math.Max(0, rowNum - 1);
+                                    re_Search(rowNum);
+                                }
                             }
                         }
                     }
                 }
-            }
+            }), System.Windows.Threading.DispatcherPriority.Background);
+
+            btnDelete.IsEnabled = true;
         }
 
         //닫기
@@ -959,25 +853,56 @@ namespace WizMes_ANT
         //검색
         private void btnSearch_Click(object sender, RoutedEventArgs e)
         {
+            using (Loading ld = new Loading(beSearch))
+            {
+                ld.ShowDialog();
+            }
+        }
+
+        private void beSearch()
+        {
             rowNum = 0;
-            re_Search(rowNum);
+            btnSearch.IsEnabled = false;
+
+            Dispatcher.BeginInvoke(new Action(() =>
+            {
+                //로직
+                re_Search(rowNum);
+            }), System.Windows.Threading.DispatcherPriority.Background);
+
+            btnSearch.IsEnabled = true;
         }
 
         //저장
         private void btnSave_Click(object sender, RoutedEventArgs e)
         {
-            if (SaveData(strFlag))
+            using (Loading ld = new Loading(beSave))
             {
-                CanBtnControl();
-                lblMsg.Visibility = Visibility.Hidden;
-                dgdMain.IsHitTestVisible = true;
-                btnNeedStuff.IsEnabled = false;
-                //re_Search(rowNum); //2021-04-28 저장 후 재조회 안되게 막음
-                re_Search(rowNum);
-                PrimaryKey = string.Empty;
-                rowNum = 0;
-                MessageBox.Show("저장이 완료되었습니다."); //2021-04-28 저장되면 저장이 완료되었다는 메세지 띄우기
+                ld.ShowDialog();
             }
+        }
+
+        private void beSave()
+        {
+            btnSave.IsEnabled = false;
+
+            Dispatcher.BeginInvoke(new Action(() =>
+            {
+                //로직
+                if (SaveData(strFlag))
+                {
+                    CanBtnControl();
+                    lblMsg.Visibility = Visibility.Hidden;
+                    dgdMain.IsHitTestVisible = true;
+                    btnNeedStuff.IsEnabled = false;
+                    re_Search(rowNum);
+                    PrimaryKey = string.Empty;
+                    rowNum = 0;
+                    MessageBox.Show("저장이 완료되었습니다.");
+                }
+            }), System.Windows.Threading.DispatcherPriority.Background);
+
+            btnSave.IsEnabled = true;
         }
 
         //취소
@@ -1051,7 +976,39 @@ namespace WizMes_ANT
             lib = null;
         }
 
-        //
+        // 주문일괄 업로드
+        private void btnUpload_Click(object sender, RoutedEventArgs e)
+        {
+            MessageBox.Show("개발중인 기능입니다\n빠른시일내로 업데이트 될 예정입니다.");
+            return;
+
+            try
+            {
+                Microsoft.Office.Interop.Excel.Application excelapp;
+                Microsoft.Office.Interop.Excel.Workbook workbook;
+                Microsoft.Office.Interop.Excel.Worksheet worksheet;
+                Microsoft.Office.Interop.Excel.Range workrange;
+
+                Microsoft.Win32.OpenFileDialog file = new Microsoft.Win32.OpenFileDialog();
+                file.Filter = "Excel files (*.xls,*xlsx)|*.xls;*xlsx|All files (*.*)|*.*";
+
+                file.InitialDirectory = "C:\\";
+
+                if (file.ShowDialog() == true)
+                {
+                    excelapp = new Microsoft.Office.Interop.Excel.Application();
+                    workbook = excelapp.Workbooks.Add(file.FileName);
+                    worksheet = workbook.Sheets["Sheet"];
+
+                    
+                }
+            } 
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message.ToString());
+            }
+        }
+
         private int SelectItem(string strPrimary, DataGrid dataGrid)
         {
             int index = 0;
@@ -1083,84 +1040,59 @@ namespace WizMes_ANT
 
             if (dgdMain.Items.Count > 0)
             {
-                if (PrimaryKey.Equals(string.Empty))
-                {
-                    dgdMain.SelectedIndex = selectedIndex;
-                }
-                else
-                {
-                    dgdMain.SelectedIndex = SelectItem(PrimaryKey, dgdMain);
-                }
+                dgdMain.SelectedIndex = PrimaryKey.Equals(string.Empty) ? 
+                    selectedIndex : SelectItem(PrimaryKey, dgdMain);
             }
             else
-            {
-                this.DataContext = null;
-            }
+                DataContext = null;
 
-            //CalculGridSum();
+            CalculGridSum();
         }
 
         //실조회
         private void FillGrid()
         {
             if (dgdMain.Items.Count > 0)
-            {
                 dgdMain.Items.Clear();
-            }
-
-            if (dgdNeedStuff.Items.Count > 0)
-            {
-                dgdNeedStuff.Items.Clear();
-            }
 
             try
             {
-
-                string BuyerModelSrh = string.Empty;
-
-                if (chkBuyerModelIDSrh.IsChecked == true && txtBuyerModelIDSrh.Tag != null
-                    && txtBuyerModelIDSrh.Text.Length > 0)
-                    BuyerModelSrh = txtBuyerModelIDSrh.Tag.ToString();
-
-                //string nCloseClss = string.Empty;
-                //if(chkCloseClssSrh.IsChecked == true && cboCloseClssSrh.SelectedValue.ToString() == "1")
-                //{
-                //    nCloseClss = "1";
-                //}
-                //else if(chkCloseClssSrh.IsChecked == true && cboCloseClssSrh.SelectedValue.ToString() == "0")
-                //{
-                //    nCloseClss = "";
-                //}
-                //else
-                //{
-                //    nCloseClss = "2";
-                //}
-
                 Dictionary<string, object> sqlParameter = new Dictionary<string, object>();
                 sqlParameter.Clear();
                 sqlParameter.Add("ChkDate", ChkDateSrh.IsChecked == true ? 1 : 0);
                 sqlParameter.Add("SDate", ChkDateSrh.IsChecked == true ? dtpSDate.SelectedDate.Value.ToString("yyyyMMdd") : "");
                 sqlParameter.Add("EDate", ChkDateSrh.IsChecked == true ? dtpEDate.SelectedDate.Value.ToString("yyyyMMdd") : "");
+
+                // 거래처
                 sqlParameter.Add("ChkCustom", chkCustomSrh.IsChecked == true ? 1 : 0);
                 sqlParameter.Add("CustomID", chkCustomSrh.IsChecked == true ? (txtCustomSrh.Tag != null ? txtCustomSrh.Tag.ToString() : "") : "");
+                // 최종고객사
+                sqlParameter.Add("ChkInCustom", chkInCustomSrh.IsChecked == true ? 1 : 0);
+                sqlParameter.Add("InCustomID", chkInCustomSrh.IsChecked == true ? (txtInCustomSrh.Tag != null ? txtInCustomSrh.Tag.ToString() : "") : "");
 
+
+                // 품번
                 sqlParameter.Add("ChkArticleID", CheckBoxBuyerArticleNoSearch.IsChecked == true ? 1 : 0);
                 sqlParameter.Add("ArticleID", CheckBoxBuyerArticleNoSearch.IsChecked == true ? (TextBoxBuyerArticleNoSearch.Tag == null ? "" : TextBoxBuyerArticleNoSearch.Tag.ToString()) : "");
-                sqlParameter.Add("ChkBuyerModelID", chkBuyerModelIDSrh.IsChecked == true ? 1 : 0);
-                sqlParameter.Add("BuyerModelID", chkBuyerModelIDSrh.IsChecked == true ? (txtBuyerModelIDSrh.Tag == null ? "" : txtBuyerModelIDSrh.Tag.ToString()) : "");
-                sqlParameter.Add("ChkOrderID", chkOrderIDSrh.IsChecked == true ? 1 : 0);
+                // 품명
+                sqlParameter.Add("ChkArticle", CheckBoxArticleSearch.IsChecked == true ? 1 : 0);
+                sqlParameter.Add("Article", CheckBoxArticleSearch.IsChecked == true ? (TextBoxArticleSearch.Text == string.Empty ? "" : TextBoxArticleSearch.Text) : "");
 
+
+                // 관리번호
+                sqlParameter.Add("ChkOrderID", chkOrderIDSrh.IsChecked == true ? (rbnOrderID.IsChecked == true ? 1 : 2) : 0);
                 sqlParameter.Add("OrderID", chkOrderIDSrh.IsChecked == true ? (txtOrderIDSrh.Text == string.Empty ? "" : txtOrderIDSrh.Text) : "");
+                // 완료구분
                 sqlParameter.Add("ChkCloseClss", chkCloseClssSrh.IsChecked == true ? 1 : 0);
-                sqlParameter.Add("CloseClss", chkCloseClssSrh.IsChecked == true ? (cboCloseClssSrh.SelectedValue == null ? "" : cboCloseClssSrh.SelectedValue.ToString()) : "");
-                sqlParameter.Add("ChkWorkID", chkWorkSrh.IsChecked == true ? 1 : 0);
-                sqlParameter.Add("WorkID", chkWorkSrh.IsChecked == true ? (cboWorkSrh.SelectedValue == null ? "" : cboWorkSrh.SelectedValue.ToString()) : "");
+                sqlParameter.Add("CloseClss", chkCloseClssSrh.IsChecked == true ? (cboCloseClssSrh.SelectedValue == null ? "" : cboCloseClssSrh.SelectedValue.ToString()) : "");                
 
+
+                // 주문구분
                 sqlParameter.Add("ChkOrderClss", chkOrderClassSrh.IsChecked == true ? 1 : 0);
                 sqlParameter.Add("OrderClss", chkOrderClassSrh.IsChecked == true ? (cboOrderClassSrh.SelectedValue == null ? "" : cboOrderClassSrh.SelectedValue.ToString()) : "");
+                // 수주구분
                 sqlParameter.Add("ChkOrderFlag", chkOrderFlag.IsChecked == true ? 1 : 0);
                 sqlParameter.Add("OrderFlag", chkOrderFlag.IsChecked == true ? (cboOrderFlag.SelectedValue == null ? "" : cboOrderFlag.SelectedValue.ToString()) : "");
-
 
 
                 DataSet ds = DataStore.Instance.ProcedureToDataSet_LogWrite("xp_ord_sOrder", sqlParameter, true, "R");
@@ -1263,6 +1195,13 @@ namespace WizMes_ANT
                         }
                     }
                 }
+
+                if (dgdMain.Items.Count > 0)
+                {
+                    dgdMain.Focus();
+                    dgdMain.SelectedIndex = rowNum;
+                    dgdMain.CurrentCell = dgdMain.SelectedCells[0];
+                }
             }
             catch (Exception ex)
             {
@@ -1325,62 +1264,21 @@ namespace WizMes_ANT
 
                     if (WinOrder.UnitClss.Equals("0"))
                     {
-                        numYDS += Int64.Parse(WinOrder.OrderQty.Replace(",", ""));
-                        numTotal += double.Parse(WinOrder.Amount.Replace(",", ""));
+                        numYDS += long.Parse(lib.CheckNullZero(WinOrder.OrderQty.Replace(",", "")));
+                        numTotal += double.Parse(lib.CheckNullZero(WinOrder.UnitPrice.Replace(",", "")));
                     }
                     else
                     {
-                        numYDS += Int64.Parse(WinOrder.OrderQty.Replace(",", ""));
-                        numTotal += double.Parse(WinOrder.Amount.Replace(",", ""));
+                        numYDS += long.Parse(lib.CheckNullZero(WinOrder.OrderQty.Replace(",", "")));
+                        numTotal += double.Parse(lib.CheckNullZero(WinOrder.UnitPrice.Replace(",", "")));
                     }
                 }
             }
 
             txtOrderYds.Text = string.Format("{0:N0}", numYDS) + " EA";
-            //txtOrderAmount.Text = string.Format("{0:0,0.0}", numTotal) + " 원";
             txtOrderAmount.Text = string.Format("{0:N0}", numTotal) + " 원";
         }
 
-        #region 안씀
-        //
-        //private void dgdMain_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        //{
-        //    OrderView = dgdMain.SelectedItem as Win_ord_Order_U_CodeView;
-
-        //    if (OrderView != null)
-        //    {
-        //        //셀렉트한 값으로 태그값 넣어주기. 혹시 모르니까.
-        //        txtCustom.Tag = OrderView.CustomID;
-        //        txtArticle.Tag = OrderView.ArticleID;
-
-        //        this.DataContext = OrderView;
-        //        if (OrderView.ProductAutoInspectYN.Equals("Y"))
-        //        {
-        //            cboAutoInspect.SelectedItem = cboY;
-        //        }
-        //        else
-        //        {
-        //            cboAutoInspect.SelectedItem = cboN;
-        //        }
-        //        CallArticleData(OrderView.ArticleID);
-        //        CallCustomData(OrderView.CustomID);
-        //        FillNeedStockQty(OrderView.ArticleID, txtAmount.Text.Replace(",", ""));
-
-
-        //        //납기일자에 값이 있으면 체크, 그게 아니면 해제
-        //        if (!OrderView.DvlyDate.Trim().Equals(""))
-        //        {
-        //            chkDvlyDate.IsChecked = true;
-        //        }
-        //        else
-        //        {
-        //            chkDvlyDate.IsChecked = false;
-        //        }
-
-
-        //    }
-        //}
-        #endregion
         /// <summary>
         /// 실삭제
         /// </summary>
@@ -1434,51 +1332,42 @@ namespace WizMes_ANT
                     Dictionary<string, object> sqlParameter = new Dictionary<string, object>();
                     sqlParameter.Clear();
 
-                    sqlParameter.Add("OrderID", txtOrderID.Text == string.Empty ? "" : txtOrderID.Text);
-                    sqlParameter.Add("CustomID", txtCustom.Tag.ToString());
-                    sqlParameter.Add("OrderNO", TextBoxOrderNo.Text == string.Empty ? "" : TextBoxOrderNo.Text);
-                    sqlParameter.Add("PoNo", txtPONO.Text);
-                    sqlParameter.Add("OrderForm", cboOrderForm.SelectedValue.ToString());
+                    sqlParameter.Add("OrderID", string.IsNullOrEmpty(txtOrderID.Text) ? "" : txtOrderID.Text);
+                    sqlParameter.Add("OrderFlag", cboOrderNO.SelectedValue != null ? cboOrderNO.SelectedValue.ToString() : "");
+                    sqlParameter.Add("OrderForm", cboOrderForm.SelectedValue != null ? cboOrderForm.SelectedValue.ToString() : "");
+                    sqlParameter.Add("OrderNO", string.IsNullOrEmpty(TextBoxOrderNo.Text) ? "" : TextBoxOrderNo.Text);
 
-                    sqlParameter.Add("OrderClss", cboOrderClss.SelectedValue.ToString());
-                    sqlParameter.Add("AcptDate", dtpAcptDate.SelectedDate.Value.ToString("yyyyMMdd"));
-                    sqlParameter.Add("DvlyDate", chkDvlyDate.IsChecked == true ? dtpDvlyDate.SelectedDate.Value.ToString("yyyyMMdd") : "");
-                    //sqlParameter.Add("ArticleID", txtArticle.Tag.ToString());
-                    sqlParameter.Add("ArticleGrpID", cboArticleGroup.SelectedValue.ToString());
-
-                    sqlParameter.Add("DvlyPlace", txtDylvLoc.Text);
-                    sqlParameter.Add("WorkID", cboWork.SelectedValue.ToString());
-                    // sqlParameter.Add("PriceClss", 0);
-                    sqlParameter.Add("ExchRate", 0.00);
-                    sqlParameter.Add("Vat_IND_YN", cboVAT_YN.SelectedValue.ToString());
-
+                    sqlParameter.Add("OrderClss", cboOrderClss.SelectedValue != null ? cboOrderClss.SelectedValue.ToString() : "");
+                    sqlParameter.Add("CustomID", txtCustom.Tag != null ? txtCustom.Tag.ToString() : "");
                     sqlParameter.Add("OrderQty", int.Parse(txtAmount.Text.Replace(",", "")));
+                    sqlParameter.Add("DvlyPlace", string.IsNullOrEmpty(txtDylvLoc.Text) ? "" : txtDylvLoc.Text);
 
-                    //sqlParameter.Add("RePolishingQty", txtRePolishing.Text != null && !txtRePolishing.Text.Trim().Equals("") ? ConvertDouble(txtRePolishing.Text) : 0);
-                    //sqlParameter.Add("NewArticleQty", txtNewArticle.Text != null && !txtNewArticle.Text.Trim().Equals("") ? ConvertDouble(txtNewArticle.Text) : 0);
+                    sqlParameter.Add("UnitClss", cboUnitClss.SelectedValue != null ? cboUnitClss.SelectedValue.ToString() : "");
+                    sqlParameter.Add("InCustomID", txtInCustom.Tag != null ? txtInCustom.Tag.ToString() : "");
+                    //sqlParameter.Add("ArticleGrpID", "");
+                    sqlParameter.Add("ArticleGrpID", cboArticleGroup.SelectedValue != null ? cboArticleGroup.SelectedValue.ToString() : "");
+                    sqlParameter.Add("AcptDate", dtpAcptDate.SelectedDate.Value.ToString("yyyyMMdd"));
 
-                    sqlParameter.Add("UnitClss", cboUnitClss.SelectedValue.ToString());
-
-                    sqlParameter.Add("Remark", txtComments.Text);
-
-
-                    sqlParameter.Add("OrderFlag", 0);
-
-                    sqlParameter.Add("InCustomID", txtCustom.Tag.ToString());
-                    //sqlParameter.Add("UnitPriceClss", articleData.UnitPriceClss);
-                    sqlParameter.Add("UnitPriceClss", "0");
-                    //sqlParameter.Add("WorkUnitClss", cboWorkUnitClss.SelectedValue.ToString());
-
-                    sqlParameter.Add("OrderSpec", "");
-                    sqlParameter.Add("BuyerModelID", txtModel.Tag != null ? txtModel.Tag.ToString() : "");
-                    sqlParameter.Add("ProductAutoInspectYN", cboAutoInspect.SelectedItem == cboY ? "Y" : "N");
+                    sqlParameter.Add("DvlyDate", chkDvlyDate.IsChecked == true ? dtpDvlyDate.SelectedDate.Value.ToString("yyyyMMdd") : "");
                     sqlParameter.Add("UnitPrice", ConvertDouble(txtUnitPrice.Text));
+                    sqlParameter.Add("WorkID", cboWork.SelectedValue != null ? cboWork.SelectedValue.ToString() : "");
+                    sqlParameter.Add("Remark", string.IsNullOrEmpty(txtComments.Text) ? "" : txtComments.Text);
 
+                    sqlParameter.Add("PoNo", string.IsNullOrEmpty(txtPONO.Text) ? "" : txtPONO.Text);
+                    sqlParameter.Add("ExchRate", 0.00);
+                    sqlParameter.Add("UnitPriceClss", "0");
+                    sqlParameter.Add("OrderSpec", "");
+
+                    sqlParameter.Add("BuyerModelID", txtModel.Tag != null ? txtModel.Tag.ToString() : "");
+                    sqlParameter.Add("Vat_IND_YN", "Y");
+                    sqlParameter.Add("ProductAutoInspectYN", "N");
+
+
+                    string sGetID = strFlag.Equals("I") ? string.Empty : txtOrderID.Text;
                     #region 추가
 
                     if (strFlag.Equals("I"))
                     {
-
                         sqlParameter.Add("CreateUserID", MainWindow.CurrentUser);
 
                         Procedure pro1 = new Procedure();
@@ -1492,7 +1381,6 @@ namespace WizMes_ANT
 
                         List<KeyValue> list_Result = new List<KeyValue>();
                         list_Result = DataStore.Instance.ExecuteAllProcedureOutputGetCS_NewLog(Prolist, ListParameter,"C");
-                        string sGetID = string.Empty;
 
                         if (list_Result[0].key.ToLower() == "success")
                         {
@@ -1503,12 +1391,8 @@ namespace WizMes_ANT
                                 if (kv.key == "OrderID")
                                 {
                                     sGetID = kv.value;
-
                                     PrimaryKey = sGetID;
-
                                     flag = true;
-
-
                                 }
                             }
                         }
@@ -1521,37 +1405,6 @@ namespace WizMes_ANT
 
                         Prolist.Clear();
                         ListParameter.Clear();
-
-                        //Sub 그리드 추가
-
-
-
-                        sqlParameter = new Dictionary<string, object>();
-                        sqlParameter.Clear();
-
-                        sqlParameter.Add("OrderID", sGetID);
-                        sqlParameter.Add("OrderSeq", 0);
-                        sqlParameter.Add("ArticleID", txtBuyerArticleNO.Tag.ToString());
-                        sqlParameter.Add("NewProductYN", "");
-                        sqlParameter.Add("Remark", "");
-                        sqlParameter.Add("UnitPriceClss", "0");
-                        sqlParameter.Add("UnitClss", cboUnitClss.SelectedValue.ToString());
-
-                        //sqlParameter.Add("ColorQty", OrderSub.ColorQty == string.Empty ? "0" : OrderSub.ColorQty.ToString().Replace(",", ""));
-                        sqlParameter.Add("ColorQty", int.Parse(txtAmount.Text.Replace(",", "")));
-
-                        sqlParameter.Add("CreateUserID", MainWindow.CurrentUser);
-
-                        Procedure pro2 = new Procedure();
-                        pro2.Name = "xp_ord_iOrderSub";
-                        pro2.OutputUseYN = "N";
-                        pro2.OutputName = "OrderID";
-                        pro2.OutputLength = "10";
-
-                        Prolist.Add(pro2);
-                        ListParameter.Add(sqlParameter);
-
-
                     }
                     #endregion
 
@@ -1574,7 +1427,6 @@ namespace WizMes_ANT
                         sqlParameter = new Dictionary<string, object>();
                         sqlParameter.Clear();
                         sqlParameter.Add("OrderID", txtOrderID.Text);
-                        //sqlParameter.Add("Seq", "");
 
                         Procedure pro4 = new Procedure();
                         pro4.Name = "xp_Order_dOrderColorAll";
@@ -1584,40 +1436,33 @@ namespace WizMes_ANT
 
                         Prolist.Add(pro4);
                         ListParameter.Add(sqlParameter);
-
-
-                        //Sub 그리드 추가
-                        for (int i = 0; i < DataGridSub.Items.Count; i++)
-                        {
-                            var OrderSub = DataGridSub.Items[i] as Win_ord_Order_U_Sub_CodeView;
-
-                            sqlParameter = new Dictionary<string, object>();
-                            sqlParameter.Clear();
-                            sqlParameter.Add("OrderID", txtOrderID.Text);
-                            sqlParameter.Add("OrderSeq", i + 1);
-                            //sqlParameter.Add("ArticleID", OrderSub.ArticleID);
-                            sqlParameter.Add("ArticleID", txtBuyerArticleNO.Tag.ToString());
-                            sqlParameter.Add("NewProductYN", OrderSub.NewProductYN);
-                            sqlParameter.Add("Remark", OrderSub.Remark);
-                            sqlParameter.Add("UnitPriceClss", "0");
-                            sqlParameter.Add("UnitClss", cboUnitClss.SelectedValue.ToString());
-
-                            //sqlParameter.Add("ColorQty", OrderSub.ColorQty == string.Empty ? "0" : OrderSub.ColorQty.ToString().Replace(",", ""));
-                            sqlParameter.Add("ColorQty", int.Parse(txtAmount.Text.Replace(",", "")));
-
-                            sqlParameter.Add("CreateUserID", MainWindow.CurrentUser);
-
-                            Procedure pro2 = new Procedure();
-                            pro2.Name = "xp_ord_iOrderSub";
-                            pro2.OutputUseYN = "N";
-                            pro2.OutputName = "OrderID";
-                            pro2.OutputLength = "10";
-
-                            Prolist.Add(pro2);
-                            ListParameter.Add(sqlParameter);
-                        }
                     }
                     #endregion
+
+                    //Sub 그리드 추가
+                    sqlParameter = new Dictionary<string, object>();
+                    sqlParameter.Clear();
+
+                    sqlParameter.Add("OrderID", sGetID);
+                    sqlParameter.Add("OrderSeq", 1);
+                    sqlParameter.Add("ArticleID", txtBuyerArticleNO.Tag != null ? txtBuyerArticleNO.Tag.ToString() : "");
+                    sqlParameter.Add("ArticleGrpID", cboArticleGroup.SelectedValue != null ? cboArticleGroup.SelectedValue.ToString() : "");
+                    sqlParameter.Add("UnitPrice", ConvertDouble(txtUnitPrice.Text));
+                    sqlParameter.Add("ColorQty", int.Parse(txtAmount.Text.Replace(",", "")));
+                    sqlParameter.Add("NewProductYN", "");
+                    sqlParameter.Add("UnitPriceClss", "1");
+                    sqlParameter.Add("UnitClss", cboUnitClss.SelectedValue.ToString());
+
+                    sqlParameter.Add("CreateUserID", MainWindow.CurrentUser);
+
+                    Procedure pro2 = new Procedure();
+                    pro2.Name = "xp_ord_iOrderSub";
+                    pro2.OutputUseYN = "N";
+                    pro2.OutputName = "OrderID";
+                    pro2.OutputLength = "10";
+
+                    Prolist.Add(pro2);
+                    ListParameter.Add(sqlParameter);
 
                     string[] Confirm = new string[2];
                     Confirm = DataStore.Instance.ExecuteAllProcedureOutputNew_NewLog(Prolist, ListParameter,"U");
@@ -1625,12 +1470,9 @@ namespace WizMes_ANT
                     {
                         MessageBox.Show("[저장실패]\r\n" + Confirm[1].ToString());
                         flag = false;
-                        //return false;
                     }
                     else
-                    {
                         flag = true;
-                    }
                 }
             }
             catch (Exception ex)
@@ -1647,142 +1489,36 @@ namespace WizMes_ANT
 
         private bool CheckData()
         {
-            bool flag = true;
+            string msg = "";
 
             if (txtCustom.Text.Length <= 0 || txtCustom.Tag == null)
+                msg = "거래처가 입력되지 않았습니다. 먼저 거래처를 입력해주세요";
+            else if (txtAmount.Text.Length <= 0)
+                msg = "총 주문량이 입력되지 않았습니다. 먼저 총 주문량을 입력해주세요";
+            else if (cboOrderForm.SelectedValue == null)
+                msg = "주문형태가 선택되지 않았습니다. 먼저 주문형태를 선택해주세요";
+            else if (cboOrderClss.SelectedValue == null)
+                msg = "주문구분이 선택되지 않았습니다. 먼저 주문구분을 선택해주세요";
+            else if (cboUnitClss.SelectedValue == null)
+                msg = "주문기준이 선택되지 않았습니다. 먼저 주문기준을 선택해주세요";
+            else if (cboArticleGroup.SelectedValue == null)
+                msg = "품명종류가 선택되지 않았습니다. 먼저 품명종류를 선택해주세요";
+            else if (cboWork.SelectedValue == null)
+                msg = "가공구분이 선택되지 않았습니다. 먼저 가공구분을 선택해주세요";
+            /*else if (cboVAT_YN.SelectedValue == null)
+                msg = "부가세별도여부가 선택되지 않았습니다. 먼저 부가세별도여부를 선택해주세요");*/
+
+            bool flag = true;
+            if (!string.IsNullOrEmpty(msg))
             {
-                MessageBox.Show("거래처가 입력되지 않았습니다. 먼저 거래처를 입력해주세요");
+                MessageBox.Show(msg);
                 flag = false;
-                return flag;
             }
 
-
-
-            if (txtAmount.Text.Length <= 0)
-            {
-                MessageBox.Show("총 주문량이 입력되지 않았습니다. 먼저 총 주문량을 입력해주세요");
-                flag = false;
-                return flag;
-            }
-
-            if (cboOrderForm.SelectedValue == null)
-            {
-                MessageBox.Show("주문형태가 선택되지 않았습니다. 먼저 주문형태를 선택해주세요");
-                flag = false;
-                return flag;
-            }
-
-            if (cboOrderClss.SelectedValue == null)
-            {
-                MessageBox.Show("주문구분이 선택되지 않았습니다. 먼저 주문구분을 선택해주세요");
-                flag = false;
-                return flag;
-            }
-
-            if (cboUnitClss.SelectedValue == null)
-            {
-                MessageBox.Show("주문기준이 선택되지 않았습니다. 먼저 주문기준을 선택해주세요");
-                flag = false;
-                return flag;
-            }
-
-            //if (cboWorkUnitClss.SelectedValue == null)
-            //{
-            //    MessageBox.Show("수불기준이 선택되지 않았습니다. 먼저 수불기준을 선택해주세요");
-            //    flag = false;
-            //    return flag;
-            //}
-
-            //if (cboArticleGroup.SelectedValue == null)
-            //{
-            //    MessageBox.Show("품명종류가 선택되지 않았습니다. 먼저 품명종류를 선택해주세요");
-            //    flag = false;
-            //    return flag;
-            //}
-
-            if (cboWork.SelectedValue == null)
-            {
-                MessageBox.Show("가공구분이 선택되지 않았습니다. 먼저 가공구분을 선택해주세요");
-                flag = false;
-                return flag;
-            }
-
-            if (cboVAT_YN.SelectedValue == null)
-            {
-                MessageBox.Show("부가세별도여부가 선택되지 않았습니다. 먼저 부가세별도여부를 선택해주세요");
-                flag = false;
-                return flag;
-            }
-
-
-            ////수정시, 작업지시가 내려간 수주라면 품명을 변경하지 못하도록. 2020.03.25, 장가빈
-            //if (strFlag.Equals("U"))
-            //{
-
-            //    List<Procedure> Prolist = new List<Procedure>();
-            //    List<Dictionary<string, object>> ListParameter = new List<Dictionary<string, object>>();
-
-            //    Dictionary<string, object> sqlParameter = new Dictionary<string, object>();
-            //    sqlParameter.Clear();
-            //    sqlParameter.Add("OrderID", txtOrderID.Text);
-            //    sqlParameter.Add("NewArticleID", txtArticle.Tag.ToString().Trim());
-            //    sqlParameter.Add("sMessage", "");
-
-            //    Procedure pro1 = new Procedure();
-            //    pro1.Name = "xp_Order_chkuOrder";
-            //    pro1.OutputUseYN = "Y";
-            //    pro1.OutputName = "sMessage";
-            //    pro1.OutputLength = "1000";
-
-            //    Prolist.Add(pro1);
-            //    ListParameter.Add(sqlParameter);
-
-            //    //동운씨가 만든 아웃풋 값 찾는 방법
-            //    List<KeyValue> list_Result = new List<KeyValue>();
-            //    list_Result = DataStore.Instance.ExecuteAllProcedureOutputGetCS(Prolist, ListParameter);
-
-            //    //Prolist.RemoveAt(0);
-            //    //ListParameter.RemoveAt(0);
-
-            //    string sGetID = string.Empty;
-
-            //    if (list_Result[0].key.ToLower() == "success")
-            //    {
-            //        //list_Result.RemoveAt(0);
-            //        for (int i = 0; i < list_Result.Count; i++)
-            //        {
-            //            KeyValue kv = list_Result[i];
-            //            if (kv.key == "sMessage")
-            //            {
-            //                sGetID = kv.value;
-
-            //                if (sGetID.Equals(""))
-            //                {
-            //                    continue;
-            //                }
-
-            //                MessageBox.Show("알림 : " + sGetID.ToString());
-            //                flag = false;
-
-
-            //                //저장된 원래의 tag값 다시 넣어주기 2020.04.03, 장가빈
-            //                //품명 변경 시도한 tag가 실패 후 계속 남아있는 것을 해결하기 위함.
-            //                txtArticle.Tag = OrderView.ArticleID;
-
-
-            //                //strFlag = string.Empty;
-            //            }
-            //        }
-            //    }
-            //    Prolist.Clear();
-            //    ListParameter.Clear();
-            //    return flag;
-            //}
             return flag;
         }
 
         #region 입력시 Event
-
         //거래처
         private void txtCustom_KeyDown(object sender, KeyEventArgs e)
         {
@@ -1792,19 +1528,13 @@ namespace WizMes_ANT
 
                 if (txtCustom.Tag != null)
                 {
-                    CallCustomData(txtCustom.Tag.ToString());
+                    //CallCustomData(txtCustom.Tag.ToString());
                     txtDylvLoc.Text = txtCustom.Text;
                     txtInCustom.Text = txtCustom.Text;
                     txtInCustom.Tag = txtCustom.Tag;
-
                 }
 
-                //납품거래처 -> 납품 장소 커서이동
-                if (e.Key == Key.Enter)
-                {
-                    e.Handled = true;
-                    txtDylvLoc.Focus();
-                }
+                e.Handled = true;
             }
         }
 
@@ -1815,13 +1545,11 @@ namespace WizMes_ANT
 
             if (txtCustom.Tag != null)
             {
-                CallCustomData(txtCustom.Tag.ToString());
+                //CallCustomData(txtCustom.Tag.ToString());
                 txtDylvLoc.Text = txtCustom.Text;
+                txtInCustom.Text = txtCustom.Text;
+                txtInCustom.Tag = txtCustom.Tag;
             }
-
-            //플러스 파인더 선택 후 납품 장소로 커서 이동
-            txtDylvLoc.Focus();
-
         }
 
         //품명
@@ -2044,32 +1772,10 @@ namespace WizMes_ANT
             dtpDvlyDate.IsEnabled = false;
         }
 
-        ////자재필요량조회 
-        //private void btnNeedStuff_Click(object sender, RoutedEventArgs e)
-        //{
-        //    if (txtArticle.Tag == null)
-        //    {
-        //        MessageBox.Show("먼저 품명을 선택해주세요");
-        //        return;
-        //    }
-
-        //    if (txtAmount.Text.Replace(" ", "").Equals(""))
-        //    {
-        //        MessageBox.Show("먼저 총 주문량을 입력해주세요");
-        //        return;
-        //    }
-
-        //    //자재필요량조회에 필요한 파라미터 값을 넘겨주자, 품명이랑 주문량
-        //    FillNeedStockQty(txtArticle.Tag.ToString(), txtAmount.Text.Replace(",", ""));
-        //}
-
-        //자재필요량조회
         private void FillNeedStockQty(string strArticleID, string strQty)
         {
             if (dgdNeedStuff.Items.Count > 0)
-            {
                 dgdNeedStuff.Items.Clear();
-            }
 
             try
             {
@@ -2138,6 +1844,12 @@ namespace WizMes_ANT
         private string stringFormatN0(object obj)
         {
             return string.Format("{0:N0}", obj);
+        }
+
+        // 천마리 콤마, 소수점 한자리
+        private string stringFormatN1(object obj)
+        {
+            return string.Format("{0:N1}", obj);
         }
 
         // 천마리 콤마, 소수점 두자리
@@ -2235,264 +1947,9 @@ namespace WizMes_ANT
 
             return result;
         }
-
-
         #endregion
 
         #region keyDown 이벤트(커서이동)
-
-        //Order No. -> 납품거래처
-        //private void TxtOrderNO_KeyDown(object sender, KeyEventArgs e)
-        //{
-        //    if (e.Key == Key.Enter)
-        //    {
-        //        e.Handled = true;
-        //        txtCustom.Focus();
-        //    }
-        //}
-
-        ////납품 장소 -> 품명
-        //private void TxtDylvLoc_KeyDown(object sender, KeyEventArgs e)
-        //{
-        //    if (e.Key == Key.Enter)
-        //    {
-        //        e.Handled = true;
-        //        txtArticle.Focus();
-        //    }
-        //}
-
-        //규격 -> 접수 일자 
-        //private void TxtSpec_KeyDown(object sender, KeyEventArgs e)
-        //{
-        //    if (e.Key == Key.Enter)
-        //    {
-        //        e.Handled = true;
-
-        //        //접수일자의 캘린더를 펼치고 
-        //        //dtpAcptDate.IsDropDownOpen = true; 
-
-        //        //2020.02.14 장가빈, 수정시 콤보박스 자동 열리는 것 불편하대서 주석처리 함
-
-        //        //접수일자에 그냥 커서 이동
-        //        dtpAcptDate.Focus();
-
-        //    }
-        //}
-
-        private void DtpAcptDate_KeyDown(object sender, KeyEventArgs e)
-        {
-            if (e.Key == Key.Enter)
-            {
-                e.Handled = true;
-
-                //날짜는 직접 입력하면 되니까, 그냥 가공 구분으로 커서 이동 하자.
-                //dtpAcptDate.IsDropDownOpen = true;
-
-                //가공구분 콤보박스에 커서만 이동되도록
-                cboWork.Focus();
-            }
-        }
-
-        //접수일자 캘린더가 닫히면 납기일자 체크박스로 포커스 이동
-        private void DtpAcptDate_CalendarClosed(object sender, RoutedEventArgs e)
-        {
-            //chkDvlyDate.Focus();
-
-            //가공구분 콤보박스에 커서만 이동되도록
-            cboWork.Focus();
-        }
-
-        //납기일자 체크박스 -> 가공 구분
-        private void ChkDvlyDate_PreviewKeyDown(object sender, KeyEventArgs e)
-        {
-            //체크박스에서 스페이스바를 누르면
-            if (e.Key == Key.Space)
-            {
-                e.Handled = true;
-
-                //체크박스 체크가 되고
-                chkDvlyDate.IsChecked = true;
-
-                //납기일자 데이트피커로 포커스 이동
-                dtpDvlyDate.IsDropDownOpen = true;
-
-            }
-            //그게 아니고 체크박스에서 엔터를 누르면
-            else if (e.Key == Key.Enter)
-            {
-                e.Handled = true;
-
-                //체크박스 체크가 해제인 채
-                chkDvlyDate.IsChecked = false;
-
-                //가공구분 콤보박스 열기
-                //cboWork.IsDropDownOpen = true; //2020.02.14 장가빈, 수정시 콤보박스 자동 열리는 것 불편하대서 주석처리 함
-            }
-        }
-
-        //납기일자 데이트피커가 닫혔을 때 가공구분 콤보박스를 열기
-        private void DtpDvlyDate_CalendarClosed(object sender, RoutedEventArgs e)
-        {
-            //가공구분 콤보박스 열기
-            //cboWork.IsDropDownOpen = true; //2020.02.14 장가빈, 수정시 콤보박스 자동 열리는 것 불편하대서 주석처리 함
-        }
-
-        //가공구분 콤보박스 닫히면 P/O NO.로 포커스 이동
-        private void CboWork_DropDownClosed(object sender, EventArgs e)
-        {
-            txtPONO.Focus();
-        }
-
-        //P/O NO. -> 차종
-        private void TxtPONO_KeyDown(object sender, KeyEventArgs e)
-        {
-            if (e.Key == Key.Enter)
-            {
-                txtModel.Focus();
-            }
-        }
-
-        //품번 -> 주문형태
-        //private void TxtBuyerArticleNO_PreviewKeyDown(object sender, KeyEventArgs e)
-        //{
-        //    //주문 형태 콤보박스 열기
-        //    cboOrderForm.IsDropDownOpen = true;
-        //}
-
-        //주문형태 콤보박스가 닫히면 주문 구분 콤보박스로 열기
-        private void CboOrderForm_DropDownClosed(object sender, EventArgs e)
-        {
-            //cboOrderClss.IsDropDownOpen = true; //2020.02.14 장가빈, 수정시 콤보박스 자동 열리는 것 불편하대서 주석처리 함
-        }
-
-        //주문 구분 콤보박스가 닫히면 총 주문량 텍스트 박스 커서 이동
-        private void CboOrderClss_DropDownClosed(object sender, EventArgs e)
-        {
-            txtAmount.Focus();
-        }
-
-        //총 주문량 -> 주문기준 콤보박스 열기
-        private void TxtAmount_PreviewKeyDown(object sender, KeyEventArgs e)
-        {
-            if (e.Key == Key.Enter)
-            {
-                e.Handled = true;
-                //cboUnitClss.IsDropDownOpen = true;
-                cboUnitClss.Focus();
-            }
-
-            //2020.02.14 장가빈, 수정시 콤보박스 자동 열리는 것 불편하대서 주석처리 함
-
-        }
-
-        //주문 기준 콤보박스가 닫히면 품명 종류 콤보박스 열기
-        private void CboUnitClss_DropDownClosed(object sender, EventArgs e)
-        {
-            //cboArticleGroup.IsDropDownOpen = true; //2020.02.14 장가빈, 수정시 콤보박스 자동 열리는 것 불편하대서 주석처리 함
-        }
-
-        //품명 종류 콤보박스가 닫히면 단가 텍스트 박스 열기
-        private void CboArticleGroup_DropDownClosed(object sender, EventArgs e)
-        {
-            txtUnitPrice.Focus();
-        }
-
-        //단가 텍스트박스에서 부가세 별도 콤보박스 열기
-        private void TxtUnitPrice_PreviewKeyDown(object sender, KeyEventArgs e)
-        {
-            //if (e.Key == Key.Enter)
-            //{
-            //    e.Handled = true;
-
-            //    cboVAT_YN.Focus();
-            //    cboVAT_YN.IsDropDownOpen = true;
-            //}
-
-            //2020.02.14 장가빈, 수정시 콤보박스 자동 열리는 것 불편하대서 주석처리 함
-
-
-            if (e.Key == Key.Enter)
-            {
-                e.Handled = true;
-
-                cboVAT_YN.Focus();
-            }
-        }
-
-        //부가세별도 콤보박스 닫히면 비고사항으로 포커스 이동
-        private void CboVAT_YN_DropDownClosed(object sender, EventArgs e)
-        {
-            txtComments.Focus();
-        }
-
-        //콤보박스 닫히면 납품거래처에 커서가 가도록
-        private void CboOrderNO_DropDownClosed(object sender, EventArgs e)
-        {
-            txtCustom.Focus();
-        }
-
-
-        //주문구분(내수, 수출, 시가공 어쩌구..)
-        private void CboOrderNO_KeyDown(object sender, KeyEventArgs e)
-        {
-            if (e.Key == Key.Enter)
-            {
-                txtCustom.Focus();
-            }
-        }
-
-        //가공구분 키다운
-        private void CboWork_KeyDown(object sender, KeyEventArgs e)
-        {
-            if (e.Key == Key.Enter)
-            {
-                txtPONO.Focus();
-            }
-        }
-
-        //주문형태 키다운
-        private void CboOrderForm_KeyDown(object sender, KeyEventArgs e)
-        {
-            if (e.Key == Key.Enter)
-            {
-                cboOrderClss.Focus();
-            }
-        }
-
-        //주문구분 키다운
-        private void CboOrderClss_KeyDown(object sender, KeyEventArgs e)
-        {
-            if (e.Key == Key.Enter)
-            {
-                txtAmount.Focus();
-            }
-        }
-
-        //주문 기준 키다운
-        private void CboUnitClss_KeyDown(object sender, KeyEventArgs e)
-        {
-            if (e.Key == Key.Enter)
-            {
-                cboArticleGroup.Focus();
-            }
-        }
-        //품명 종류 키다운
-        private void CboArticleGroup_KeyDown(object sender, KeyEventArgs e)
-        {
-            if (e.Key == Key.Enter)
-            {
-                txtUnitPrice.Focus();
-            }
-        }
-
-        //부가세별도 키다운
-        private void CboVAT_YN_KeyDown(object sender, KeyEventArgs e)
-        {
-            if (e.Key == Key.Enter)
-            {
-                txtComments.Focus();
-            }
-        }
 
         //숫자 외에 다른 문자열 못들어오도록
         public bool IsNumeric(string source)
@@ -2563,9 +2020,7 @@ namespace WizMes_ANT
         private void txtInCustom_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.Key == Key.Enter)
-            {
                 MainWindow.pf.ReturnCode(txtInCustom, 72, "");
-            }
         }
 
         //매출거래처
@@ -2575,484 +2030,7 @@ namespace WizMes_ANT
         }
         #endregion keydown 이벤트
 
-
-        #region 서브 그리드 키다운 이벤트
-        //서브 데이터 그리드 품명 텍스트박스 키다운 이벤트
-        private void DataGridSubTextBoxArticle_KeyDown(object sender, KeyEventArgs e)
-        {
-            try
-            {
-                if (strFlag == "I" || strFlag == "U")
-                {
-                    var SubItem = DataGridSub.CurrentItem as Win_ord_Order_U_Sub_CodeView;
-
-                    if (e.Key == Key.Enter)
-                    {
-                        TextBox tb1 = sender as TextBox;
-                        pf.ReturnCode(tb1, 5000, SubItem.Article);
-
-                        if (tb1.Tag != null)
-                        {
-                            SubItem.ArticleID = tb1.Tag.ToString();
-                            SubItem.Article = tb1.Text;
-                        }
-
-                        string FindText = tb1.Text;
-                        string FindTag = tb1.Tag.ToString();
-                        Dictionary<string, object> sqlParameter = new Dictionary<string, object>();
-                        sqlParameter.Clear();
-                        sqlParameter.Add("ArticleID", FindTag);
-                        DataSet ds = DataStore.Instance.ProcedureToDataSet("xp_ord_sArticle", sqlParameter, false);
-
-                        DataTable dt = null;
-                        dt = ds.Tables[0];
-                        if (dt.Rows.Count != 0)
-                        {
-                            //SubItem.Color = dt.Rows[0]["Color"].ToString();
-                            //SubItem.UnitPrice = dt.Rows[0]["UnitPrice"].ToString();
-                            SubItem.Spec = dt.Rows[0]["Spec"].ToString();
-                            //SubItem.Weight = dt.Rows[0]["Weight"].ToString();
-                        }
-                    }
-                }
-            }
-            catch (Exception ee)
-            {
-                MessageBox.Show("오류지점 - DataGridSubTextBoxArticle_KeyDown : " + ee.ToString());
-            }
-        }
-
-        //서브 데이터 그리드 수량 숫자만 입력
-        private void DataGridTextBoxColorQty_PreviewTextInput(object sender, TextCompositionEventArgs e)
-        {
-            try
-            {
-                Lib.Instance.CheckIsNumeric((TextBox)sender, e);
-            }
-            catch (Exception ee)
-            {
-                MessageBox.Show("오류지점 - DataGridTextBoxColorQty_PreviewTextInput : " + ee.ToString());
-            }
-        }
-
-        //서브 데이터 그리드 수량 변경 이벤트
-        private void DataGridTextBoxColorQty_TextChanged(object sender, TextChangedEventArgs e)
-        {
-            try
-            {
-                SumColorQty();
-                SumNewArticleQty();
-            }
-            catch (Exception ee)
-            {
-                MessageBox.Show("오류지점 - DataGridTextBoxColorQty_TextChanged : " + ee.ToString());
-            }
-        }
-        #endregion
-
-        #region 서브 그리드 행 추가, 삭제
-        //데이터 그리드 서브 행 추가 버튼
-        private void ButtonDataGridSubRowAdd_Click(object sender, RoutedEventArgs e)
-        {
-            try
-            {
-                SubRowAdd();
-
-                //int colCount = DataGridSub.Columns.IndexOf(d)
-            }
-            catch (Exception ee)
-            {
-                MessageBox.Show("오류지점 - ButtonDataGridSubRowAdd_Click : " + ee.ToString());
-            }
-        }
-
-        //데이터 그리드 서브 행 삭제 버튼
-        private void ButtonDataGridSubRowDel_Click(object sender, RoutedEventArgs e)
-        {
-            try
-            {
-                SubRowDel();
-                SumColorQty();
-            }
-            catch (Exception ee)
-            {
-                MessageBox.Show("오류지점 - ButtonDataGridSubRowDel_Click : " + ee.ToString());
-            }
-        }
-
-        //서브 그리드 추가
-        private void SubRowAdd()
-        {
-            try
-            {
-                int index = DataGridSub.Items.Count;
-
-                var WOOUSC = new Win_ord_Order_U_Sub_CodeView()
-                {
-                    Num = index + 1,
-                    OrderID = "",
-                    OrderSeq = "",
-                    ArticleID = "",
-                    Article = "",
-
-                    NewProductYN = "",
-                    ColorQty = "",
-                    Remark = "",
-
-
-                    //Color = "",
-                    //UnitPrice = "",
-                    //UnitPriceClss = "",
-                    //OrderEnd = "",
-
-                    //ProdQty = "",
-                    //ProdDate = "",
-                    //ReProdQty = "",
-                    //ReProdDate = "",
-                    //RGB = "",
-                };
-                DataGridSub.Items.Add(WOOUSC);
-            }
-            catch (Exception ee)
-            {
-                MessageBox.Show("오류지점 - SubRowAdd : " + ee.ToString());
-            }
-        }
-
-        //서브 그리드 삭제
-        private void SubRowDel()
-        {
-            try
-            {
-                if (DataGridSub.Items.Count > 0)
-                {
-                    if (DataGridSub.SelectedItem != null)
-                    {
-                        if (DataGridSub.CurrentItem != null)
-                        {
-                            DataGridSub.Items.Remove(DataGridSub.CurrentItem as Win_ord_Order_U_Sub_CodeView);
-                        }
-                        else
-                        {
-                            winordorderusubcodeview.Add(DataGridSub.SelectedItem as Win_ord_Order_U_Sub_CodeView);
-                            DataGridSub.Items.Remove((DataGridSub.Items[DataGridSub.SelectedIndex]) as Win_ord_Order_U_Sub_CodeView);
-
-                            //DataGridSub.Items.Remove((DataGridSub.Items[DataGridSub.Items.Count - 1]) as Win_ord_Order_U_Sub_CodeView);  //마지막 행만 삭제
-                        }
-
-                        DataGridSub.Refresh();
-                    }
-                    else
-                    {
-                        MessageBox.Show("삭제할 데이터를 먼저 선택하세요.");
-                    }
-                }
-            }
-            catch (Exception ee)
-            {
-                MessageBox.Show("오류지점 - SubRowDel : " + ee.ToString());
-            }
-        }
-
-        #endregion
-
-        #region 서브 그리드 수량 합계
-        private void SumColorQty()
-        {
-            try
-            {
-                double ColorQty = 0;
-
-                for (int i = 0; i < DataGridSub.Items.Count; i++)
-                {
-                    var label = DataGridSub.Items[i] as Win_ord_Order_U_Sub_CodeView;
-                    if (label.ColorQty != null)
-                    {
-                        ColorQty += lib.returnDouble(label.ColorQty.ToString());
-                    }
-                }
-
-                txtAmount.Text = lib.returnNumStringZero(ColorQty.ToString());
-
-            }
-            catch (Exception ee)
-            {
-                MessageBox.Show("오류지점 - SumQty : " + ee.ToString());
-            }
-        }
-
-        #endregion
-
-
-        #region 신품수량합계
-        private void SumNewArticleQty()
-        {
-            try
-            {
-                double NewArticleQty = 0; //신품
-                double RePolishing = 0; //재연마
-
-                for (int i = 0; i < DataGridSub.Items.Count; i++)
-                {
-                    var label = DataGridSub.Items[i] as Win_ord_Order_U_Sub_CodeView;
-
-                    //신품 카운트 (신품Y고 수량이 Null 아닐 때)
-                    if (label.ColorQty != null && label.NewProductYN.Equals("Y"))
-                    {
-                        NewArticleQty += lib.returnDouble(label.ColorQty.ToString());
-                    }
-
-                    //재연마 카운트 (신품 N 이고 수량이 Null 아닐 떄 )
-                    if (label.ColorQty != null && label.NewProductYN.Equals("N"))
-                    {
-                        RePolishing += lib.returnDouble(label.ColorQty.ToString());
-                    }
-
-                }
-
-                //txtNewArticle.Text = lib.returnNumStringZero(NewArticleQty.ToString());
-
-                //txtRePolishing.Text = lib.returnNumStringZero(RePolishing.ToString());
-
-            }
-            catch (Exception ee)
-            {
-                MessageBox.Show("오류지점 - SumQty : " + ee.ToString());
-            }
-        }
-
-        #endregion
-
-        #region 서브 데이터그리드 방향키 이동 및 셀 포커스
-        private void DataGridSub_PreviewKeyDown(object sender, KeyEventArgs e)
-        {
-            try
-            {
-                if (e.Key == Key.Down || e.Key == Key.Up || e.Key == Key.Left || e.Key == Key.Right)
-                {
-                    DataGridSub_KeyDown(sender, e);
-                }
-            }
-            catch (Exception ee)
-            {
-                MessageBox.Show("오류지점 - DataGridSub_PreviewKeyDown " + ee.ToString());
-            }
-        }
-
-        private void DataGridSub_KeyDown(object sender, KeyEventArgs e)
-        {
-            try
-            {
-                var SubItem = DataGridSub.CurrentItem as Win_ord_Order_U_Sub_CodeView;
-                int rowCount = DataGridSub.Items.IndexOf(DataGridSub.CurrentItem);
-                int colCount = DataGridSub.Columns.IndexOf(DataGridSub.CurrentCell.Column);
-                int StartColumnCount = 1; //DataGridSub.Columns.IndexOf(dgdtpeMCoperationRateScore);
-                int EndColumnCount = 5; //DataGridSub.Columns.IndexOf(dgdtpeComments);
-
-                if (e.Key == Key.Enter)
-                {
-                    e.Handled = true;
-                    (sender as DataGridCell).IsEditing = false;
-
-                    if (EndColumnCount == colCount && DataGridSub.Items.Count - 1 > rowCount)
-                    {
-                        DataGridSub.SelectedIndex = rowCount + 1;
-                        DataGridSub.CurrentCell = new DataGridCellInfo(DataGridSub.Items[rowCount + 1], DataGridSub.Columns[StartColumnCount]);
-                    }
-                    else if (EndColumnCount > colCount && DataGridSub.Items.Count - 1 > rowCount)
-                    {
-                        DataGridSub.CurrentCell = new DataGridCellInfo(DataGridSub.Items[rowCount], DataGridSub.Columns[colCount + 1]);
-                    }
-                    else if (EndColumnCount == colCount && DataGridSub.Items.Count - 1 == rowCount)
-                    {
-                        btnSave.Focus();
-                    }
-                    else if (EndColumnCount > colCount && DataGridSub.Items.Count - 1 == rowCount)
-                    {
-                        DataGridSub.CurrentCell = new DataGridCellInfo(DataGridSub.Items[rowCount], DataGridSub.Columns[colCount + 1]);
-                    }
-                    else
-                    {
-                        MessageBox.Show("있으면 찾아보자...");
-                    }
-                }
-                else if (e.Key == Key.Down)
-                {
-                    e.Handled = true;
-                    (sender as DataGridCell).IsEditing = false;
-
-                    if (DataGridSub.Items.Count - 1 > rowCount)
-                    {
-                        DataGridSub.SelectedIndex = rowCount + 1;
-                        DataGridSub.CurrentCell = new DataGridCellInfo(DataGridSub.Items[rowCount + 1], DataGridSub.Columns[colCount]);
-                    }
-                    else if (DataGridSub.Items.Count - 1 == rowCount)
-                    {
-                        if (EndColumnCount > colCount)
-                        {
-                            DataGridSub.SelectedIndex = 0;
-                            DataGridSub.CurrentCell = new DataGridCellInfo(DataGridSub.Items[0], DataGridSub.Columns[colCount + 1]);
-                        }
-                        else
-                        {
-                            btnSave.Focus();
-                        }
-                    }
-                }
-                else if (e.Key == Key.Up)
-                {
-                    e.Handled = true;
-                    (sender as DataGridCell).IsEditing = false;
-
-                    if (rowCount > 0)
-                    {
-                        DataGridSub.SelectedIndex = rowCount - 1;
-                        DataGridSub.CurrentCell = new DataGridCellInfo(DataGridSub.Items[rowCount - 1], DataGridSub.Columns[colCount]);
-                    }
-                }
-                else if (e.Key == Key.Left)
-                {
-                    e.Handled = true;
-                    (sender as DataGridCell).IsEditing = false;
-
-                    if (colCount > 0)
-                    {
-                        DataGridSub.CurrentCell = new DataGridCellInfo(DataGridSub.Items[rowCount], DataGridSub.Columns[colCount - 1]);
-                    }
-                }
-                else if (e.Key == Key.Right)
-                {
-                    e.Handled = true;
-                    (sender as DataGridCell).IsEditing = false;
-
-                    if (EndColumnCount > colCount)
-                    {
-                        DataGridSub.CurrentCell = new DataGridCellInfo(DataGridSub.Items[rowCount], DataGridSub.Columns[colCount + 1]);
-                    }
-                    else if (EndColumnCount == colCount)
-                    {
-                        if (DataGridSub.Items.Count - 1 > rowCount)
-                        {
-                            DataGridSub.SelectedIndex = rowCount + 1;
-                            DataGridSub.CurrentCell = new DataGridCellInfo(DataGridSub.Items[rowCount + 1], DataGridSub.Columns[StartColumnCount]);
-                        }
-                        else
-                        {
-                            btnSave.Focus();
-                        }
-                    }
-                }
-            }
-            catch (Exception ee)
-            {
-                MessageBox.Show("오류지점 - DataGridSub_KeyDown " + ee.ToString());
-            }
-        }
-
-        private void DataGridSub_TextFocus(object sender, KeyEventArgs e)
-        {
-            try
-            {
-                Lib.Instance.DataGridINControlFocus(sender, e);
-            }
-            catch (Exception ee)
-            {
-                MessageBox.Show("오류지점 - DataGridSub_TextFocus " + ee.ToString());
-            }
-        }
-
-        private void DataGridSub_GotFocus(object sender, RoutedEventArgs e)
-        {
-            try
-            {
-                if (strFlag.Equals("I") || strFlag.Equals("U"))
-                {
-                    DataGridCell cell = sender as DataGridCell;
-                    cell.IsEditing = true;
-                }
-            }
-            catch (Exception ee)
-            {
-                MessageBox.Show("오류지점 - DataGridSub_GotFocus " + ee.ToString());
-            }
-        }
-
-        private void DataGridSub_MouseUp(object sender, MouseButtonEventArgs e)
-        {
-            try
-            {
-                Lib.Instance.DataGridINBothByMouseUP(sender, e);
-            }
-            catch (Exception ee)
-            {
-                MessageBox.Show("오류지점 - DataGridSub_MouseUp " + ee.ToString());
-            }
-        }
-        #endregion
-
-        private void ChekNewYN_Checked(object sender, RoutedEventArgs e)
-        {
-            CheckBox chkSender = sender as CheckBox;
-            Win_ord_Order_U_Sub_CodeView senderOCReqSub = chkSender.DataContext as Win_ord_Order_U_Sub_CodeView;
-            senderOCReqSub.NewProductYN = "Y";
-
-            senderOCReqSub.NewYNChecked = true;
-        }
-
-        private void ChekNewYN_Unchecked(object sender, RoutedEventArgs e)
-        {
-            CheckBox chkSender = sender as CheckBox;
-            Win_ord_Order_U_Sub_CodeView senderOCReqSub = chkSender.DataContext as Win_ord_Order_U_Sub_CodeView;
-            senderOCReqSub.NewProductYN = "N";
-
-            senderOCReqSub.NewYNChecked = false;
-        }
-
-        private void ComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            ComboboxSub = DataGridSub.CurrentItem as Win_ord_Order_U_Sub_CodeView;
-            ComboBox cboNewYN = (ComboBox)sender;
-
-            if (ComboboxSub == null)
-            {
-                ComboboxSub = DataGridSub.Items[rowSubNum] as Win_ord_Order_U_Sub_CodeView;
-            }
-
-            if (cboNewYN.SelectedValue != null && !cboNewYN.SelectedValue.ToString().Equals(""))
-            {
-
-                var theView = cboNewYN.SelectedItem as CodeView;
-                if (theView != null)
-                {
-                    ComboboxSub.NewRecord = theView.code_name;
-                    ComboboxSub.NewProductYN = theView.code_id;
-                    //cboPriceClss.SelectedValue = 0;
-
-                }
-                sender = cboNewYN;
-            }
-
-        }
-
-        private void ComboBox_Loaded(object sender, RoutedEventArgs e)
-        {
-            ComboBox cboNewYN = (ComboBox)sender;
-
-            //매입,매출 화폐단위(입력)
-            List<string[]> listNewYN = new List<string[]>();
-            string[] New01 = new string[] { "Y", "Y" };
-            string[] New02 = new string[] { "N", "N" };
-            listNewYN.Add(New01);
-            listNewYN.Add(New02);
-
-            ObservableCollection<CodeView> ovcNewYN = ComboBoxUtil.Instance.Direct_SetComboBox(listNewYN);
-            cboNewYN.ItemsSource = ovcNewYN;
-            cboNewYN.DisplayMemberPath = "code_name";
-            cboNewYN.SelectedValuePath = "code_id";
-            cboNewYN.SelectedIndex = 0;
-
-        }
-
+        //자재필요량조회
         private void btnNeedStuff_Click(object sender, RoutedEventArgs e)
         {
             if (txtArticle.Tag == null)
@@ -3080,9 +2058,9 @@ namespace WizMes_ANT
 
                 if (OrderInfo != null)
                 {
-                    this.DataContext = OrderInfo;
+                    DataContext = OrderInfo;
 
-                    String OrderID = OrderInfo.OrderID;
+                    string OrderID = OrderInfo.OrderID;
                     FillGridSub(OrderID);
                 }
             }
@@ -3096,11 +2074,6 @@ namespace WizMes_ANT
         #region 조회Sub
         private void FillGridSub(string strOrderID)
         {
-            if (DataGridSub.Items.Count > 0)
-            {
-                DataGridSub.Items.Clear();
-            }
-
             try
             {
                 Dictionary<string, object> sqlParameter = new Dictionary<string, object>();
@@ -3111,12 +2084,7 @@ namespace WizMes_ANT
                 if (ds != null && ds.Tables.Count > 0)
                 {
                     DataTable dt = ds.Tables[0];
-
-                    if (dt.Rows.Count == 0)
-                    {
-                        //MessageBox.Show("Sub 데이터가 없습니다.");
-                    }
-                    else
+                    if (dt.Rows.Count > 0)
                     {
                         int i = 0;
                         DataRowCollection drc = dt.Rows;
@@ -3130,20 +2098,20 @@ namespace WizMes_ANT
 
                                 OrderID = dr["OrderID"].ToString(),
                                 OrderSeq = dr["OrderSeq"].ToString(),
+                                BuyerArticleNo = dr["BuyerArticleNo"].ToString(),
                                 ArticleID = dr["ArticleID"].ToString(),
                                 Article = dr["Article"].ToString(),
+                                ArticleGrpID = dr["ArticleGrpID"].ToString(),
+                                UnitPrice = stringFormatN0(dr["UnitPrice"]),
                                 ColorQty = dr["ColorQty"].ToString(),
-                                UnitPriceClss = dr["UnitPriceClss"].ToString(),
                                 NewProductYN = dr["NewProductYN"].ToString(),
+                                UnitPriceClss = dr["UnitPriceClss"].ToString(),
                                 Remark = dr["Remark"].ToString(),
                                 Spec = dr["Spec"].ToString(),
                             };
 
-                            DataGridSub.Items.Add(WOOUSC);
                             WOOUSC.ColorQty = Lib.Instance.returnNumStringZero(WOOUSC.ColorQty);
                         }
-
-
                     }
                 }
             }
@@ -3152,8 +2120,6 @@ namespace WizMes_ANT
                 MessageBox.Show("오류지점 - FillGridSub : " + ee.ToString());
             }
         }
-
-
         #endregion
 
         private void txtBuyerArticle_KeyDown(object sender, KeyEventArgs e)
@@ -3162,31 +2128,23 @@ namespace WizMes_ANT
             {
                 if (e.Key == Key.Enter)
                 {
-
                     if (txtCustom != null && txtCustom.Text != "")
-                    {   //선택된 납품거래처에 따른 품명만 보여주게
-                        //MainWindow.pf.ReturnCode(txtArticle, 57, txtCustom.Tag.ToString().Trim());
-
+                    {   
                         //품번을 품명처럼 쓴다고 해서 품번을 조회하도록 2020.03.17, 장가빈
                         MainWindow.pf.ReturnCodeGLS(txtBuyerArticleNO, 7070, txtCustom.Tag.ToString().Trim());
-
                     }
                     else
-                    {   //선택된 납품거래처가 없다면 전체 품명 다 보여주게
-                        //MainWindow.pf.ReturnCode(txtArticle, (int)Defind_CodeFind.DCF_Article, "");
-
+                    {
                         //품번을 품명처럼 쓴다고 해서 품번을 조회하도록 2020.03.17, 장가빈
                         MainWindow.pf.ReturnCodeGLS(txtBuyerArticleNO, 7071, "");
                     }
 
-
                     if (txtBuyerArticleNO.Tag != null)
                     {
                         CallArticleData(txtBuyerArticleNO.Tag.ToString());
+
                         //품명종류 대입(ex.제품 등)
                         cboArticleGroup.SelectedValue = articleData.ArticleGrpID;
-                        //품번 대입
-                        //txtBuyerArticleNO.Text = articleData.BuyerArticleNo;
                         //품명 대입
                         txtArticle.Text = articleData.Article;
                         //단가 대입
@@ -3205,7 +2163,6 @@ namespace WizMes_ANT
             {
                 DataStore.Instance.CloseConnection();
             }
-
         }
 
         private void btnPfBuyerArticle_Click(object sender, RoutedEventArgs e)
@@ -3213,7 +2170,8 @@ namespace WizMes_ANT
             try
             {
                 if (txtCustom != null && txtCustom.Text != "")
-                {   //선택된 납품거래처에 따른 품명만 보여주게
+                {   
+                    //선택된 납품거래처에 따른 품명만 보여주게
                     MainWindow.pf.ReturnCodeGLS(txtBuyerArticleNO, 7070, txtCustom.Tag.ToString().Trim());
                 }
                 else
@@ -3224,10 +2182,9 @@ namespace WizMes_ANT
                 if (txtBuyerArticleNO.Tag != null)
                 {
                     CallArticleData(txtBuyerArticleNO.Tag.ToString());
+
                     //품명종류 대입(ex.제품 등)
                     cboArticleGroup.SelectedValue = articleData.ArticleGrpID;
-                    //품번 대입
-                    //txtBuyerArticleNO.Text = articleData.BuyerArticleNo;
                     //품명 대입
                     txtArticle.Text = articleData.Article;
                     //단가 대입
@@ -3246,12 +2203,21 @@ namespace WizMes_ANT
                 DataStore.Instance.CloseConnection();
             }
         }
+
+        private void rbnOrderNo_Click(object sender, RoutedEventArgs e)
+        {
+            tbkOrderSrh.Text = " 발주번호";
+            dgdtxtOrderID.Visibility = Visibility.Hidden;
+            dgdtxtOrderNo.Visibility = Visibility.Visible;
+        }
+
+        private void rbnOrderID_Click(object sender, RoutedEventArgs e)
+        {
+            tbkOrderSrh.Text = " 관리번호";
+            dgdtxtOrderID.Visibility = Visibility.Visible;
+            dgdtxtOrderNo.Visibility = Visibility.Hidden;
+        }
     }
-
-
-
-
-
 
 
     public class Win_ord_Order_U_CodeView : BaseView
@@ -3565,6 +2531,9 @@ namespace WizMes_ANT
         public string OrderSeq { get; set; }
         public string ArticleID { get; set; }
         public string Article { get; set; }
+        public string ArticleGrpID { get; set; }
+        public string ArticleGrp { get; set; }
+        public string BuyerArticleNo { get; set; }
         public string Color { get; set; }
         public string DesignNo { get; set; }
         public string ColorQty { get; set; }
@@ -3584,6 +2553,24 @@ namespace WizMes_ANT
         public string NewProductYN { get; set; }
         public string NewRecord { get; set; }
         public bool NewYNChecked { get; set; }
+    }
+
+    public class OrderExcel : BaseView
+    {
+        public string AcptDate { get; set; }
+        public string CloseClss { get; set; }
+        public string DvlyDate { get; set; }
+        public string ExpectDate { get; set; }
+        public string OrderFlag { get; set; }
+        public string Custom { get; set; }
+        public string Custom2 { get; set; }
+        public string OrderNo { get; set; }
+        public string OrderForm { get; set; }
+        public string DvlyPlace { get; set; }
+        public string CSManager { get; set; }
+        public string PlanManager { get; set; }
+        public string OrderQty { get; set; }
+        public string OrderClss { get; set; }
     }
 }
 
