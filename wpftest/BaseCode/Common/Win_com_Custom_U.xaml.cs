@@ -145,6 +145,7 @@ namespace WizMes_ANT
 
             gbxInput.IsHitTestVisible = false;
             dgdCustom.IsEnabled = true;
+            
         }
 
         //추가, 수정 클릭 시
@@ -155,7 +156,7 @@ namespace WizMes_ANT
 
             gbxInput.IsHitTestVisible = true;
             dgdCustom.IsEnabled = false;
-
+            
 
         }
 
@@ -215,6 +216,8 @@ namespace WizMes_ANT
             cboFTAMgrYN.SelectedIndex = 1;
 
             CantBtnControl();
+            txtCustomID.IsReadOnly = false;
+
             tbkMsg.Text = "자료 추가 중";
             strFlag = "I";
         }
@@ -226,6 +229,7 @@ namespace WizMes_ANT
             {
                 rowNum = dgdCustom.SelectedIndex;
                 CantBtnControl();
+                txtCustomID.IsReadOnly = true;
                 tbkMsg.Text = "자료 수정 중";
                 strFlag = "U";
             }
@@ -686,7 +690,8 @@ namespace WizMes_ANT
 
                     Dictionary<string, object> sqlParameter = new Dictionary<string, object>();
                     //sqlParameter.Add("sNewCustomID", strCustomID);
-                    sqlParameter.Add("sCustomID", strCustomID);
+                    //sqlParameter.Add("sCustomID", strCustomID);
+                    sqlParameter.Add("sCustomID", txtCustomID.Text !=null && !txtCustomID.Text.Trim().Equals("") ? txtCustomID.Text : "");
                     sqlParameter.Add("sKCustom", txtKCustom.Text);
                     sqlParameter.Add("sShortCustom", txtShortCustom.Text);
                     sqlParameter.Add("sECustom", txtECustom.Text);

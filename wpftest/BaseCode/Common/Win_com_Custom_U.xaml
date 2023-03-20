@@ -319,8 +319,12 @@
                                         <TextBlock Text="코  드" Style="{DynamicResource TextBlockInViewBoxInput}"/>
                                     </Viewbox>
                                 </Label>
-                                <TextBox x:Name="txtCustomID" Grid.Row="0"  IsReadOnly="True" Grid.Column="1" Style="{DynamicResource TextBoxInputAutoCreate}" Text="{Binding CustomID}"/>
-
+                                <TextBox x:Name="txtCustomID" Grid.Row="0"  IsReadOnly="True" Grid.Column="1" 
+                                         Background="#c2fdc3"
+                                         Text="{Binding CustomID}"
+                                         Style="{DynamicResource TextBoxInput_Number_Left}"
+                                         MaxLength="4"/>
+                                <!--Style="{DynamicResource TextBoxInputAutoCreate}"-->
                                 <Label Grid.Row="0" Grid.Column="2"  Style="{DynamicResource LabelInputArea}">
                                     <Viewbox Style="{DynamicResource ViewBoxSetMaxMinHeight}">
                                         <TextBlock Text="국  가"  Style="{DynamicResource TextBlockInViewBoxInput}"/>
