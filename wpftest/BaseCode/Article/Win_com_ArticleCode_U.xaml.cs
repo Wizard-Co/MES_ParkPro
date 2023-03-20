@@ -1290,8 +1290,7 @@ namespace WizMes_ANT
 
 
                     sqlParameter.Add("sArticleID", txtCode.Text != null && !txtCode.Text.Trim().Equals("") ? txtCode.Text : "");
-                    //sqlParameter.Add("sArticleID", strFlag.Trim().Equals("I") ? "" : txtCode.Text);
-
+                    sqlParameter.Add("sNewArticleID", "");
                     sqlParameter.Add("CompanyID", MainWindow.CompanyID);
                     sqlParameter.Add("sArticle", txtName.Text.Trim().Equals("") ? txtBuyerArticleNo.Text : txtName.Text);
                     sqlParameter.Add("BuyerArticleNo", txtBuyerArticleNo.Text);
@@ -1347,8 +1346,9 @@ namespace WizMes_ANT
 
                         Procedure pro1 = new Procedure();
                         pro1.Name = "xp_Article_iArticle";
-                        pro1.OutputUseYN = "N";
-                        pro1.OutputName = "sArticleID";
+                        pro1.OutputUseYN = "Y";
+                        pro1.OutputName = "sNewArticleID";
+                        
                         pro1.OutputLength = "10";
 
                         Prolist.Add(pro1);
@@ -1363,7 +1363,7 @@ namespace WizMes_ANT
                             for (int i = 0; i < list_Result.Count; i++)
                             {
                                 KeyValue kv = list_Result[i];
-                                if (kv.key == "sArticleID")
+                                if (kv.key == "sNewArticleID")
                                 {
                                     GetKey = kv.value;
                                     flag = true;
