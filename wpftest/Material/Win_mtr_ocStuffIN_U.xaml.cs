@@ -1094,6 +1094,7 @@ namespace WizMes_ANT
                         Custom = OcStuffin.Custom, // 업체명
                         Article = OcStuffin.Article, //품명
                         Spec = OcStuffin.Spec,
+
                         StuffDate = OcStuffin.StuffDate,
                         CustomInspector = OcStuffin.CustomInspector,
 
@@ -1102,6 +1103,7 @@ namespace WizMes_ANT
                         LotID = OcStuffin.Lotid, //라벨
                         UnitClssName = OcStuffin.UnitClssName, //단위
                         BuyerArticleNo = OcStuffin.BuyerArticleNo, //품번 
+                        mtrCustomLotno = OcStuffin.mtrCustomLotno, //입고처로트번호 
 
                         kCompany = OcStuffin.kCompany,
 
@@ -1178,12 +1180,16 @@ namespace WizMes_ANT
                     // 스펙 
                     //workrange = worksheet.get_Range("B3");
                     //workrange.Value2 = LeftLabel.Spec;
+                    //입고처로트번호
+                    workrange = worksheet.get_Range("C5"); 
+                    workrange.Value2 = "'" + LeftLabel.mtrCustomLotno;
+
 
                     // 바코드
                     workrange = worksheet.get_Range("B6");
                     workrange.Value2 = "*" + LeftLabel.LotID + "*";
-
-                    workrange = worksheet.get_Range("C5");
+                    //mtrCustomLotno
+                    workrange = worksheet.get_Range("B7");
                     workrange.Value2 = "'" + LeftLabel.LotID;
 
                     //workrange = worksheet.get_Range("A8");
@@ -3406,6 +3412,7 @@ namespace WizMes_ANT
         public string UnitClssName { get; set; }
         public string QtyPerBox { get; set; }
         public string BuyerArticleNo { get; set; }
+        public string mtrCustomLotno { get; set; }
 
         public string kCompany { get; set; }
     }
