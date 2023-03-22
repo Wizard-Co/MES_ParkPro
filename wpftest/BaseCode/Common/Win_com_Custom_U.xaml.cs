@@ -703,7 +703,7 @@ namespace WizMes_ANT
                     sqlParameter.Add("sZipCode", txtZipCode.Text);
 
                     sqlParameter.Add("sOldNNewClss", rbnDoro.IsChecked == true ? "0" : "1");    //0 :도로명, 1: 지번
-                    sqlParameter.Add("sGunMoolMngNo", WinCustom.GunMoolMngNo);
+                    sqlParameter.Add("sGunMoolMngNo", WinCustom.GunMoolMngNo == null ? "" : WinCustom.GunMoolMngNo);
                     sqlParameter.Add("sAddress1", txtAddress1.Text);
                     sqlParameter.Add("sAddress2", txtAddress2.Text);
                     sqlParameter.Add("sAddressAssist", txtAddressAssist.Text);

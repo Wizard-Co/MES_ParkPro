@@ -390,10 +390,10 @@
                 <Grid Grid.Column="0" >
                     <Grid.RowDefinitions>
                         <RowDefinition Height="24*"/>
-                        <RowDefinition Height="1.3*"/>
+                        <RowDefinition Height="2.5*"/>
                     </Grid.RowDefinitions>
                     <!-- std 기준검색 그리드 -->
-                    <DataGrid x:Name="dgdXBar_std" Grid.Row = "0" SelectionChanged="dgdXBar_std_SelectionChanged" Style="{DynamicResource DataGridSet1}" >
+                    <DataGrid x:Name="dgdXBar_std" Grid.Row = "0" SelectionChanged="dgdXBar_std_SelectionChanged" Style="{DynamicResource DataGridSet1}" MouseDoubleClick="dgdXBar_std_MouseDoubleClick">
                         <DataGrid.Columns>
                             <DataGridTextColumn Header="" Width="auto" MinWidth="20" Binding="{Binding Path=STD_NUM}" />
                             <DataGridTextColumn Header="스펙" Width="auto" MaxWidth="0" />
@@ -406,9 +406,16 @@
                             <DataGridTextColumn Header="SEQ" Width="auto" MaxWidth="0" Binding="{Binding Path=STD_SubSeq}" />
                         </DataGrid.Columns>
                     </DataGrid>
-                    <TextBlock x:Name="tbkCount" Grid.Row="1" VerticalAlignment="Center" Text="▶ 검색 결과 : "/>
+                    <Grid Grid.Row="1">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="0.3*"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+                        <TextBlock x:Name="tbkCount" Grid.Row="0" VerticalAlignment="Center" Text="▶ 검색 결과 : "/>
+                        <TextBlock x:Name="tbkCount1" Grid.Row="2" VerticalAlignment="Center" Foreground="Blue" Text="▶ 더블클릭시 품질 상세분석 화면으로 이동합니다."/>
+                    </Grid>
                 </Grid>
-
                 <Grid Grid.Column="1" Grid.ColumnSpan="2" >
                     <Grid.RowDefinitions>
                         <RowDefinition Height="32*" />

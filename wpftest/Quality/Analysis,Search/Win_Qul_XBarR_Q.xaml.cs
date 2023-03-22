@@ -14,6 +14,8 @@ using System.Windows.Controls.Primitives;
 using System.Windows.Input;
 using System.Windows.Media.Imaging;
 using WizMes_ANT.PopUP;
+using WPF.MDI;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.ListView;
 
 namespace WizMes_ANT
 {
@@ -1161,6 +1163,78 @@ namespace WizMes_ANT
 
                     ImgImage.Source = bitmapImage;
 
+                }
+            }
+        }
+
+        private void btnDetail_Click(object sender, RoutedEventArgs e)
+        {
+            var Detail = dgdXBar_std.SelectedItem as Win_Qul_XBarR_Q_View;
+
+            if (Detail != null)
+            {
+
+            }
+        }
+
+        private void dgdXBar_std_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            var Detail = dgdXBar_std.SelectedItem as Win_Qul_XBarR_Q_View;
+
+            if (Detail != null)
+            {
+                string ItemCode = Detail.STD_ArticleID;
+                string ItemName = Detail.STD_Article;
+                string ChkDate = chkMonthDate.IsChecked.ToString();
+                string SDate = dtpFromDate.SelectedDate.Value.ToString("yyyyMM") + "01";
+                string EDate = Convert.ToDateTime(dtpFromDate.SelectedDate.Value.ToString("yyyy-MM") + "-01").AddMonths(1).AddDays(-1).ToString("yyyyMMdd");
+
+                MainWindow.ChartDeatil.Clear();
+                MainWindow.ChartDeatil.Add(ItemCode);
+                MainWindow.ChartDeatil.Add(ItemName);
+                MainWindow.ChartDeatil.Add(ChkDate);
+                MainWindow.ChartDeatil.Add(SDate);
+                MainWindow.ChartDeatil.Add(EDate);
+
+                int i = 0;
+                foreach (MenuViewModel mvm in MainWindow.mMenulist)
+                {
+                    if (mvm.Menu.Equals("품질 상세분석"))
+                    {
+                        break;
+                    }
+                    i++;
+                }
+                try
+                {
+                    if (MainWindow.MainMdiContainer.Children.Contains(MainWindow.mMenulist[i].subProgramID as MdiChild))
+                    {
+                        (MainWindow.mMenulist[i].subProgramID as MdiChild).Focus();
+                    }
+                    else
+                    {
+                        Type type = Type.GetType("WizMes_ANT." + MainWindow.mMenulist[i].ProgramID.Trim(), true);
+                        object uie = Activator.CreateInstance(type);
+
+                        MainWindow.mMenulist[i].subProgramID = new MdiChild()
+                        {
+                            Title = "ANT [" + MainWindow.mMenulist[i].MenuID.Trim() + "] " + MainWindow.mMenulist[i].Menu.Trim() +
+                                    " (→" + MainWindow.mMenulist[i].ProgramID + ")",
+                            Height = SystemParameters.PrimaryScreenHeight * 0.8,
+                            MaxHeight = SystemParameters.PrimaryScreenHeight * 0.85,
+                            Width = SystemParameters.WorkArea.Width * 0.85,
+                            MaxWidth = SystemParameters.WorkArea.Width,
+                            Content = uie as UIElement,
+                            Tag = MainWindow.mMenulist[i]
+                        };
+
+                        Lib.Instance.AllMenuLogInsert(MainWindow.mMenulist[i].MenuID, MainWindow.mMenulist[i].Menu, MainWindow.mMenulist[i].subProgramID);
+                        MainWindow.MainMdiContainer.Children.Add(MainWindow.mMenulist[i].subProgramID as MdiChild);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("해당 화면이 존재하지 않습니다.");
                 }
             }
         }

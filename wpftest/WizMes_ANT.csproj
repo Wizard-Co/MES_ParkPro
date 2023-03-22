@@ -633,6 +633,9 @@
     <Compile Include="Quality\QulEnroll\Win_Qul_PastDefect_U.xaml.cs">
       <DependentUpon>Win_Qul_PastDefect_U.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Quality\QulEnroll\Win_Qul_Sts_AnalDetail_Q.xaml.cs">
+      <DependentUpon>Win_Qul_Sts_AnalDetail_Q.xaml</DependentUpon>
+    </Compile>
     <Compile Include="UserControl2.xaml.cs">
       <DependentUpon>UserControl2.xaml</DependentUpon>
     </Compile>
@@ -1211,6 +1214,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Quality\QulEnroll\Win_Qul_PastDefect_U.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Quality\QulEnroll\Win_Qul_Sts_AnalDetail_Q.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

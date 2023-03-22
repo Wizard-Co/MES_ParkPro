@@ -9,7 +9,9 @@ using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using System.Drawing.Printing;
 using WizMes_ANT.PopUP;
+using WizMes_ANT.PopUp;
 using WPF.MDI;
 
 namespace WizMes_ANT
@@ -56,6 +58,8 @@ namespace WizMes_ANT
         Win_Qul_InspectAuto_U_Sub_CodeView WinInsAutoSub = new Win_Qul_InspectAuto_U_Sub_CodeView();
         ObservableCollection<EcoNoAndBasisID> ovcEvoBasis = new ObservableCollection<EcoNoAndBasisID>();
 
+        List<Win_Qul_InspectAuto_U_CodeView> listLotLabelPrint = new List<Win_Qul_InspectAuto_U_CodeView>();
+
         private Microsoft.Office.Interop.Excel.Application excelapp;
         private Microsoft.Office.Interop.Excel.Workbook workbook;
         private Microsoft.Office.Interop.Excel.Worksheet worksheet;
@@ -77,8 +81,8 @@ namespace WizMes_ANT
 
         //string FTP_ADDRESS = "ftp://wizis.iptime.org/ImageData/AutoInspect";
         //string FTP_ADDRESS = "ftp://wizis.iptime.org/ImageData/AutoInspect";
-        string FTP_ADDRESS = "ftp://" + LoadINI.FileSvr + ":"
-            + LoadINI.FTPPort + LoadINI.FtpImagePath + "/AutoInspect";
+        string FTP_ADDRESS = "ftp://" + LoadINI.FileSvr + ":" + LoadINI.FTPPort + LoadINI.FtpImagePath + "/AutoInspect";
+        string FTP_ADDRESS_ARTICLE = "ftp://" + LoadINI.FileSvr + ":" + LoadINI.FTPPort + LoadINI.FtpImagePath + "/Article";
         //string FTP_ADDRESS = "ftp://222.104.222.145:25000/ImageData/AutoInspect";
         //string FTP_ADDRESS = "ftp://192.168.0.95/ImageData/AutoInspect";
         private const string FTP_ID = "wizuser";
@@ -98,24 +102,26 @@ namespace WizMes_ANT
             DataStore.Instance.InsertLogByFormS(this.GetType().Name, stDate, stTime, "S");
 
             lib.UiLoading(sender);
-            tbnInspect.IsChecked = true;
             chkDate.IsChecked = true;
             btnToday_Click(null, null);
             SetComboBox();
             dtpInOutDate.SelectedDate = DateTime.Today;
             dtpInspectDate.SelectedDate = DateTime.Today;
 
-            strPoint = "9"; //자주검사로 시작
+            strPoint = "5"; // 출하검사로 시작
 
+            tbnInspect.IsChecked = false;
             tbnIncomeInspect.IsChecked = false;
             tbnProcessCycle.IsChecked = false;
-            tbnOutcomeInspect.IsChecked = false;
+            tbnOutcomeInspect.IsChecked = true;
 
             SetControlsToggleChangedHidden();
             lblMilsheet.Visibility = Visibility.Hidden;
             txtMilSheetNo.Visibility = Visibility.Hidden;
 
             cboFML.SelectedIndex = 1;
+
+            tbnOutcomeInspect_Click(null, null);
         }
 
         //
@@ -224,6 +230,8 @@ namespace WizMes_ANT
                 cboProcess.Visibility = Visibility.Hidden;
                 lblMachine.Visibility = Visibility.Hidden;
                 cboMachine.Visibility = Visibility.Hidden;
+
+                btnPrint.Visibility = Visibility.Hidden;
             }
             else
             {
@@ -253,9 +261,7 @@ namespace WizMes_ANT
                 lblMachine.Visibility = Visibility.Visible;
                 cboMachine.Visibility = Visibility.Visible;
 
-
-
-
+                btnPrint.Visibility = Visibility.Hidden;
             }
             else
             {
@@ -285,6 +291,8 @@ namespace WizMes_ANT
                 cboProcess.Visibility = Visibility.Visible;
                 lblMachine.Visibility = Visibility.Visible;
                 cboMachine.Visibility = Visibility.Visible;
+
+                btnPrint.Visibility = Visibility.Hidden;
             }
             else
             {
@@ -317,6 +325,8 @@ namespace WizMes_ANT
                 cboProcess.Visibility = Visibility.Hidden;
                 lblMachine.Visibility = Visibility.Hidden;
                 cboMachine.Visibility = Visibility.Hidden;
+
+                btnPrint.Visibility = Visibility.Visible;
             }
             else
             {
@@ -468,7 +478,6 @@ namespace WizMes_ANT
                     this.DataContext = null;
                     txtLotNO.Text = WinInsAuto.LotID;
                     SetControlsWhenAdd();
-
                 }
                 else
                 {
@@ -499,14 +508,10 @@ namespace WizMes_ANT
 
                 //유지추가가 아니면 sub1 sub2 모두 비워줘야 한다.
                 if (dgdSub1.Items.Count > 0)
-                {
                     dgdSub1.Items.Clear();
-                }
-                if (dgdSub2.Items.Count > 0)
-                {
-                    dgdSub2.Items.Clear();
-                }
 
+                if (dgdSub2.Items.Count > 0)
+                    dgdSub2.Items.Clear();
 
                 txtLotNO.Focus();
             }
@@ -523,45 +528,48 @@ namespace WizMes_ANT
             if (WinInsAuto != null)
             {
                 Wh_Ar_SelectedLastIndex = dgdMain.SelectedIndex;
-                //dgdMain.IsEnabled = false;
                 dgdMain.IsHitTestVisible = false;
                 tbkMsg.Text = "자료 수정 중";
                 lblMsg.Visibility = Visibility.Visible;
                 CantBtnControl();
                 strFlag = "U";
                 txtInspectQty.Text = GetValueCount().ToString();
-                GetLotID(txtLotNO.Text.Trim(), strPoint);
-                txtInspectQty.Text = WinInsAuto.InspectQty;
-                txtTotalDefectQty.Text = WinInsAuto.TotalDefectQty;
             }
         }
 
         //삭제
         private void btnDelete_Click(object sender, RoutedEventArgs e)
         {
-            WinInsAuto = dgdMain.SelectedItem as Win_Qul_InspectAuto_U_CodeView;
-
-            if (WinInsAuto == null)
+            using (Loading ld = new Loading(beDelete))
             {
-                MessageBox.Show("삭제할 데이터가 지정되지 않았습니다. 삭제데이터를 지정하고 눌러주세요");
+                ld.ShowDialog();
             }
-            else
-            {
-                if (MessageBox.Show("선택하신 항목을 삭제하시겠습니까?", "삭제 전 확인", MessageBoxButton.YesNo) == MessageBoxResult.Yes)
-                {
-                    if (dgdMain.Items.Count > 0 && dgdMain.SelectedItem != null)
-                    {
-                        Wh_Ar_SelectedLastIndex = dgdMain.SelectedIndex;
-                    }
+        }
 
-                    if (DeleteData(WinInsAuto.InspectID))
+        private void beDelete()
+        {
+            btnDelete.IsEnabled = false;
+
+            Dispatcher.BeginInvoke(new Action(() =>
+            {
+                if (listLotLabelPrint.Count == 0)
+                {
+                    MessageBox.Show("삭제할 데이터가 지정되지 않았습니다. 삭제 데이터를 지정하고 눌러주세요.");
+                }
+                else
+                {
+                    if (MessageBox.Show("선택하신 항목을 삭제하시겠습니까?", "삭제 전 확인", MessageBoxButton.YesNo) == MessageBoxResult.Yes)
                     {
-                        Wh_Ar_SelectedLastIndex -= 1;
+                        foreach (Win_Qul_InspectAuto_U_CodeView RemoveData in listLotLabelPrint)
+                            DeleteData(RemoveData.InspectID);
+
+                        Wh_Ar_SelectedLastIndex = 0;
                         re_Search(Wh_Ar_SelectedLastIndex);
-                        clear();
                     }
                 }
-            }
+            }), System.Windows.Threading.DispatcherPriority.Background);
+
+            btnDelete.IsEnabled = true;
         }
 
         //닫기
@@ -1075,14 +1083,19 @@ namespace WizMes_ANT
         //검색
         private void btnSearch_Click(object sender, RoutedEventArgs e)
         {
+            using (Loading ld = new Loading(beSearch))
+            {
+                ld.ShowDialog();
+            }
+        }
+
+        private void beSearch()
+        {
             //검색버튼 비활성화
             btnSearch.IsEnabled = false;
 
             Dispatcher.BeginInvoke(new Action(() =>
-
             {
-                Thread.Sleep(2000);
-
                 //로직
                 clear();
                 Wh_Ar_SelectedLastIndex = 0;
@@ -1090,47 +1103,56 @@ namespace WizMes_ANT
 
             }), System.Windows.Threading.DispatcherPriority.Background);
 
-
-
-            Dispatcher.BeginInvoke(new Action(() =>
-
-            {
-                btnSearch.IsEnabled = true;
-
-            }), System.Windows.Threading.DispatcherPriority.Background);
-
+            btnSearch.IsEnabled = true;
         }
 
         //저장
         private void btnSave_Click(object sender, RoutedEventArgs e)
         {
-            if (SaveData(strFlag, txtinspectID.Text))
+            using (Loading ld = new Loading(beSave))
             {
-                CanBtnControl();
-                lblMsg.Visibility = Visibility.Hidden;
-                dgdMain.IsHitTestVisible = true;
-
-                if (strFlag == "I")     //1. 추가 > 저장했다면,
-                {
-                    if (dgdMain.Items.Count > 0)
-                    {
-                        re_Search(dgdMain.Items.Count - 1);
-                        dgdMain.Focus();
-                    }
-                    else
-                    { re_Search(0); }
-                }
-                else        //2. 수정 > 저장했다면,
-                {
-                    re_Search(Wh_Ar_SelectedLastIndex);
-                    dgdMain.Focus();
-
-                    dgdSub1.SelectedIndex = 0;
-                }
-
-
-                strFlag = string.Empty;  // 추가했는지, 수정했는지 알려면 맨 마지막에 flag 값을 비워야 한다.
+                ld.ShowDialog();
             }
+        }
+
+        private void beSave()
+        {
+            //저장버튼 비활성화
+            btnSave.IsEnabled = false;
+
+            Dispatcher.BeginInvoke(new Action(() =>
+            {
+                //로직
+                if (SaveData(strFlag, txtinspectID.Text))
+                {
+                    CanBtnControl();
+                    lblMsg.Visibility = Visibility.Hidden;
+                    dgdMain.IsHitTestVisible = true;
+
+                    if (strFlag == "I")     //1. 추가 > 저장했다면,
+                    {
+                        if (dgdMain.Items.Count > 0)
+                        {
+                            re_Search(dgdMain.Items.Count - 1);
+                            dgdMain.Focus();
+                        }
+                        else
+                        { re_Search(0); }
+                    }
+                    else        //2. 수정 > 저장했다면,
+                    {
+                        re_Search(Wh_Ar_SelectedLastIndex);
+                        dgdMain.Focus();
+
+                        dgdSub1.SelectedIndex = 0;
+                    }
+
+                    strFlag = string.Empty;  // 추가했는지, 수정했는지 알려면 맨 마지막에 flag 값을 비워야 한다.
+                }
+
+            }), System.Windows.Threading.DispatcherPriority.Background);
+
+            btnSave.IsEnabled = true;
         }
 
         //취소
@@ -1242,11 +1264,15 @@ namespace WizMes_ANT
         /// <param name="selectedIndex"></param>
         private void re_Search(int selectedIndex)
         {
+            listLotLabelPrint.Clear();
+
             FillGrid();
 
             if (dgdMain.Items.Count > 0)
             {
+                dgdMain.Focus();
                 dgdMain.SelectedIndex = selectedIndex;
+                dgdMain.CurrentCell = dgdMain.SelectedCells.Count > 0 ? dgdMain.SelectedCells[0] : new DataGridCellInfo();
             }
         }
 
@@ -1256,17 +1282,13 @@ namespace WizMes_ANT
         private void FillGrid()
         {
             if (dgdMain.Items.Count > 0)
-            {
                 dgdMain.Items.Clear();
-            }
+
             if (dgdSub1.Items.Count > 0)
-            {
                 dgdSub1.Items.Clear();
-            }
+
             if (dgdSub2.Items.Count > 0)
-            {
                 dgdSub2.Items.Clear();
-            }
 
             try
             {
@@ -1319,9 +1341,9 @@ namespace WizMes_ANT
                                 ImportSecYN = dr["ImportSecYN"].ToString(),
                                 InpCustomID = dr["InpCustomID"].ToString(),
                                 InpCustomName = dr["InpCustomName"].ToString(),
-                                InpDate = dr["InpDate"].ToString(),
+                                InpDate = dr["InpDate"].ToString().Replace(" ", ""),
                                 InspectBasisID = dr["InspectBasisID"].ToString(),
-                                InspectDate = dr["InspectDate"].ToString(),
+                                InspectDate = dr["InspectDate"].ToString().Replace(" ", ""),
                                 InspectGubun = dr["InspectGubun"].ToString(),
                                 InspectID = dr["InspectID"].ToString(),
                                 InspectLevel = dr["InspectLevel"].ToString(),
@@ -1330,13 +1352,13 @@ namespace WizMes_ANT
                                 InspectUserID = dr["InspectUserID"].ToString(),
                                 IRELevel = dr["IRELevel"].ToString(),
                                 IRELevelName = dr["IRELevelName"].ToString(),
-                                LotID = dr["LotID"].ToString(),
+                                LotID = dr["LotID"].ToString().Trim(),
                                 MachineID = dr["MachineID"].ToString(),
                                 MilSheetNo = dr["MilSheetNo"].ToString(),
                                 Name = dr["Name"].ToString(),
                                 OutCustomID = dr["OutCustomID"].ToString(),
                                 OutCustomName = dr["OutCustomName"].ToString(),
-                                OutDate = dr["OutDate"].ToString(),
+                                OutDate = dr["OutDate"].ToString().Replace(" ", ""),
                                 Process = dr["Process"].ToString(),
                                 ProcessID = dr["ProcessID"].ToString(),
                                 SketchFile = dr["SketchFile"].ToString(),
@@ -1355,19 +1377,13 @@ namespace WizMes_ANT
                             //}
 
                             if (WinQulInsAuto.InpDate.Length > 0)
-                            {
                                 WinQulInsAuto.InpDate_CV = lib.StrDateTimeBar(WinQulInsAuto.InpDate);
-                            }
 
                             if (WinQulInsAuto.InspectDate.Length > 0)
-                            {
                                 WinQulInsAuto.InspectDate_CV = lib.StrDateTimeBar(WinQulInsAuto.InspectDate);
-                            }
 
                             if (WinQulInsAuto.OutDate.Length > 0)
-                            {
                                 WinQulInsAuto.OutDate_CV = lib.StrDateTimeBar(WinQulInsAuto.OutDate);
-                            }
 
                             if (strPoint.Equals("1"))
                             {
@@ -1375,7 +1391,12 @@ namespace WizMes_ANT
                                 {
                                     WinQulInsAuto.INOUTCustomID = WinQulInsAuto.InpCustomID;
                                     WinQulInsAuto.InOutCustom = WinQulInsAuto.InpCustomName;
+                                }
+
+                                if (string.IsNullOrEmpty(WinQulInsAuto.InpDate_CV) == false)
+                                {
                                     WinQulInsAuto.INOUTCustomDate = WinQulInsAuto.InpDate_CV;
+                                    dtpInOutDate.SelectedDate = lib.strConvertDate(WinQulInsAuto.InpDate);
                                 }
                             }
                             else if (strPoint.Equals("5"))
@@ -1384,13 +1405,20 @@ namespace WizMes_ANT
                                 {
                                     WinQulInsAuto.INOUTCustomID = WinQulInsAuto.OutCustomID;
                                     WinQulInsAuto.InOutCustom = WinQulInsAuto.OutCustomName;
+                                }
+
+                                if (string.IsNullOrEmpty(WinQulInsAuto.OutDate_CV) == false)
+                                {
                                     WinQulInsAuto.INOUTCustomDate = WinQulInsAuto.OutDate_CV;
+                                    dtpInOutDate.SelectedDate = lib.strConvertDate(WinQulInsAuto.OutDate);
                                 }
                             }
 
                             dgdMain.Items.Add(WinQulInsAuto);
                             i++;
                         }
+
+                        tbkIndexCount.Text = "▶검색결과 : " + i + " 건";
                     }
                 }
             }
@@ -1466,13 +1494,23 @@ namespace WizMes_ANT
         //
         private void FillGridSub(string strID, string strType)
         {
+            if (strType.Equals("1"))
+            {
+                if (dgdSub1.Items.Count > 0)
+                    dgdSub1.Items.Clear();
+            }
+            else if (strType.Equals("2"))
+            {
+                if (dgdSub2.Items.Count > 0)
+                    dgdSub2.Items.Clear();
+            }
+
             try
             {
                 DataSet ds = null;
                 Dictionary<string, object> sqlParameter = new Dictionary<string, object>();
                 sqlParameter.Clear();
                 sqlParameter.Add("InspectID", strID);
-                sqlParameter.Add("InspectBasisID", "");
                 sqlParameter.Add("InsType", strType);
                 ds = DataStore.Instance.ProcedureToDataSet("xp_Inspect_sAutoInspectSub", sqlParameter, false);
 
@@ -1533,21 +1571,10 @@ namespace WizMes_ANT
 
                                 ValueDefect1 = "",
                                 ValueDefect2 = "",
-                                ValueDefect3 = ""
+                                ValueDefect3 = "",
+                                ValueDefect4 = "",
+                                ValueDefect5 = ""
                             };
-
-                            //WinQulInsAutoSub.CV_Spec = WinQulInsAutoSub.insSpec + "-" +
-                            //    WinQulInsAutoSub.SpecMin + "~" + WinQulInsAutoSub.SpecMax;
-
-                            //if (WinQulInsAutoSub.insType.Replace(" ", "").Equals("1"))
-                            //{
-                            //    dgdSub1.Items.Add(WinQulInsAutoSub);
-                            //}
-                            //else if (WinQulInsAutoSub.insType.Replace(" ","").Equals("2"))
-                            //{
-                            //    dgdSub2.Items.Add(WinQulInsAutoSub);
-                            //}
-
 
                             if (strType.Equals("1"))
                             {
@@ -1564,6 +1591,8 @@ namespace WizMes_ANT
                                 double value1 = 0.0;
                                 double value2 = 0.0;
                                 double value3 = 0.0;
+                                double value4 = 0.0;
+                                double value5 = 0.0;
 
                                 if (!WinQulInsAutoSub.SpecMax.ToString().Equals(""))
                                 {
@@ -1585,6 +1614,14 @@ namespace WizMes_ANT
                                 {
                                     value3 = Convert.ToDouble(WinQulInsAutoSub.InspectValue3.ToString());
                                 }
+                                if (!WinQulInsAutoSub.InspectValue3.ToString().Equals(""))
+                                {
+                                    value4 = Convert.ToDouble(WinQulInsAutoSub.InspectValue4.ToString());
+                                }
+                                if (!WinQulInsAutoSub.InspectValue3.ToString().Equals(""))
+                                {
+                                    value5 = Convert.ToDouble(WinQulInsAutoSub.InspectValue5.ToString());
+                                }
 
                                 if (!(value1 >= minValue && value1 <= maxValue))
                                 {
@@ -1597,6 +1634,14 @@ namespace WizMes_ANT
                                 if (!(value3 >= minValue && value3 <= maxValue))
                                 {
                                     WinQulInsAutoSub.ValueDefect3 = "true";
+                                }
+                                if (!(value4 >= minValue && value4 <= maxValue))
+                                {
+                                    WinQulInsAutoSub.ValueDefect4 = "true";
+                                }
+                                if (!(value5 >= minValue && value5 <= maxValue))
+                                {
+                                    WinQulInsAutoSub.ValueDefect5 = "true";
                                 }
 
                                 dgdSub2.Items.Add(WinQulInsAutoSub);
@@ -1672,6 +1717,8 @@ namespace WizMes_ANT
             {
                 if (CheckData())
                 {
+                    DataStore.Instance.InsertLogByForm(this.GetType().Name, "C");
+
                     Dictionary<string, object> sqlParameter = new Dictionary<string, object>();
                     sqlParameter.Clear();
                     sqlParameter.Add("InspectID", strID);
@@ -1681,7 +1728,7 @@ namespace WizMes_ANT
                     sqlParameter.Add("LotID", txtLotNO.Text);
 
                     sqlParameter.Add("InspectQty", lib.CheckNullZero(txtInspectQty.Text));
-                    sqlParameter.Add("ECONo", cboEcoNO.SelectedValue.ToString());
+                    sqlParameter.Add("ECONo", cboEcoNO.SelectedValue != null ? cboEcoNO.SelectedValue.ToString() : "");
                     sqlParameter.Add("Comments", txtComments.Text);
                     sqlParameter.Add("InspectLevel", cboInspectClss.SelectedValue.ToString());
                     sqlParameter.Add("SketchPath", "");  // txtSKetch.Tag != null ? txtSKetch.Tag.ToString() :
@@ -1872,7 +1919,7 @@ namespace WizMes_ANT
                         }
 
                         List<KeyValue> list_Result = new List<KeyValue>();
-                        list_Result = DataStore.Instance.ExecuteAllProcedureOutputGetCS_NewLog(Prolist, ListParameter,"C");
+                        list_Result = DataStore.Instance.ExecuteAllProcedureOutputGetCS(Prolist, ListParameter);
                         string sGetID = string.Empty;
 
                         if (list_Result[0].key.ToLower() == "success")
@@ -1924,7 +1971,7 @@ namespace WizMes_ANT
                     {
                         sqlParameter.Add("UpdateUserID", MainWindow.CurrentUser);
 
-                        string[] result = DataStore.Instance.ExecuteProcedure_NewLog("xp_Inspect_uAutoInspect", sqlParameter, "U");
+                        string[] result = DataStore.Instance.ExecuteProcedure("xp_Inspect_uAutoInspect", sqlParameter, false);
                         if (!result[0].Equals("success"))
                         {
                             flag = false;
@@ -2152,7 +2199,7 @@ namespace WizMes_ANT
 
             if (cboEcoNO.SelectedValue == null)
             {
-                MessageBox.Show("EO-금형-순번이 선택되지 않았습니다.");
+                MessageBox.Show("EO-기준-순번이 선택되지 않았습니다.");
                 flag = false;
                 return flag;
             }
@@ -2179,6 +2226,13 @@ namespace WizMes_ANT
             if (cboInspectGbn.SelectedValue == null)
             {
                 MessageBox.Show("검사구분이 선택되지 않았습니다.");
+                flag = false;
+                return flag;
+            }
+
+            if (strPoint == "5" && dtpInOutDate.SelectedDate == null)
+            {
+                MessageBox.Show("출고일이 선택되지 않았습니다.");
                 flag = false;
                 return flag;
             }
@@ -2376,14 +2430,10 @@ namespace WizMes_ANT
         private void SetEcoNoCombo(string strArticleID, string strPoint)
         {
             if (cboEcoNO.ItemsSource != null)
-            {
                 cboEcoNO.ItemsSource = null;
-            }
 
             if (ovcEvoBasis.Count > 0)
-            {
                 ovcEvoBasis.Clear();
-            }
 
             ObservableCollection<CodeView> setCollection = new ObservableCollection<CodeView>();
 
@@ -2407,6 +2457,7 @@ namespace WizMes_ANT
                     else
                     {
                         DataRowCollection drc = dt.Rows;
+
 
                         foreach (DataRow dr in drc)
                         {
@@ -2502,14 +2553,10 @@ namespace WizMes_ANT
                         BasisSeq = 1;
 
                         if (dgdSub1.Items.Count > 0)
-                        {
                             dgdSub1.Items.Clear();
-                        }
 
                         if (dgdSub2.Items.Count > 0)
-                        {
                             dgdSub2.Items.Clear();
-                        }
 
                         return;
                     }
@@ -2701,7 +2748,6 @@ namespace WizMes_ANT
                 Dictionary<string, object> sqlParameter = new Dictionary<string, object>();
                 sqlParameter.Clear();
                 sqlParameter.Add("InspectID", txtinspectID.Text);
-                sqlParameter.Add("InspectBasisID", "");
                 sqlParameter.Add("InsType", strType);
                 ds = DataStore.Instance.ProcedureToDataSet("xp_Inspect_sAutoInspectSub", sqlParameter, false);
 
@@ -3266,7 +3312,8 @@ namespace WizMes_ANT
 
                     if (tb1 != null)
                     {
-                        WinInsAutoSub.InspectText1 = tb1.Text;
+                        WinInsAutoSub.InspectText1 = tb1.Text.ToUpper();
+                        tb1.SelectionStart = tb1.Text.Length;
                     }
 
                     sender = tb1;
@@ -3294,7 +3341,8 @@ namespace WizMes_ANT
                         }
                         else
                         {
-                            WinInsAutoSub.InspectText2 = tb1.Text;
+                            WinInsAutoSub.InspectText2 = tb1.Text.ToUpper();
+                            tb1.SelectionStart = tb1.Text.Length;
                         }
                     }
 
@@ -3322,7 +3370,8 @@ namespace WizMes_ANT
                         }
                         else
                         {
-                            WinInsAutoSub.InspectText3 = tb1.Text;
+                            WinInsAutoSub.InspectText3 = tb1.Text.ToUpper();
+                            tb1.SelectionStart = tb1.Text.Length;
                         }
                     }
                     sender = tb1;
@@ -3349,7 +3398,8 @@ namespace WizMes_ANT
                         }
                         else
                         {
-                            WinInsAutoSub.InspectText4 = tb1.Text;
+                            WinInsAutoSub.InspectText4 = tb1.Text.ToUpper();
+                            tb1.SelectionStart = tb1.Text.Length;
                         }
                     }
                     sender = tb1;
@@ -3376,7 +3426,8 @@ namespace WizMes_ANT
                         }
                         else
                         {
-                            WinInsAutoSub.InspectText5 = tb1.Text;
+                            WinInsAutoSub.InspectText5 = tb1.Text.ToUpper();
+                            tb1.SelectionStart = tb1.Text.Length;
                         }
                     }
                     sender = tb1;
@@ -3403,7 +3454,8 @@ namespace WizMes_ANT
                         }
                         else
                         {
-                            WinInsAutoSub.InspectText6 = tb1.Text;
+                            WinInsAutoSub.InspectText6 = tb1.Text.ToUpper();
+                            tb1.SelectionStart = tb1.Text.Length;
                         }
                     }
                     sender = tb1;
@@ -3430,7 +3482,8 @@ namespace WizMes_ANT
                         }
                         else
                         {
-                            WinInsAutoSub.InspectText7 = tb1.Text;
+                            WinInsAutoSub.InspectText7 = tb1.Text.ToUpper();
+                            tb1.SelectionStart = tb1.Text.Length;
                         }
                     }
                     sender = tb1;
@@ -3457,7 +3510,8 @@ namespace WizMes_ANT
                         }
                         else
                         {
-                            WinInsAutoSub.InspectText8 = tb1.Text;
+                            WinInsAutoSub.InspectText8 = tb1.Text.ToUpper();
+                            tb1.SelectionStart = tb1.Text.Length;
                         }
                     }
                     sender = tb1;
@@ -3484,7 +3538,8 @@ namespace WizMes_ANT
                         }
                         else
                         {
-                            WinInsAutoSub.InspectText9 = tb1.Text;
+                            WinInsAutoSub.InspectText9 = tb1.Text.ToUpper();
+                            tb1.SelectionStart = tb1.Text.Length;
                         }
                     }
                     sender = tb1;
@@ -3511,7 +3566,8 @@ namespace WizMes_ANT
                         }
                         else
                         {
-                            WinInsAutoSub.InspectText10 = tb1.Text;
+                            WinInsAutoSub.InspectText10 = tb1.Text.ToUpper();
+                            tb1.SelectionStart = tb1.Text.Length;
                         }
                     }
                     sender = tb1;
@@ -3522,8 +3578,6 @@ namespace WizMes_ANT
         private void NumValue_PreviewTextInput(object sender, TextCompositionEventArgs e)
         {
             lib.CheckIsNumeric((TextBox)sender, e);
-
-
         }
 
         private void InspectValue1_TextChanged(object sender, TextChangedEventArgs e)
@@ -3798,37 +3852,43 @@ namespace WizMes_ANT
         private void txtLotNO_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.Key == Key.Enter)
-            {
-                GetLotID(txtLotNO.Text, strPoint);
+                MainWindow.pf.ReturnCode(txtLotNO, 100, txtLotNO.Text);
 
-                //if (txtArticleName.Tag != null)
-                //{
-                //    SetEcoNoCombo(txtArticleName.Tag.ToString(), strPoint);
-                //}
-
-            }
+            if (!string.IsNullOrEmpty(txtLotNO.Text))
+                GetLotID(txtLotNO.Text);
         }
 
         //
         private void btnPfLotNO_Click(object sender, RoutedEventArgs e)
         {
-            GetLotID(txtLotNO.Text, strPoint);
+            MainWindow.pf.ReturnCode(txtLotNO, 100, txtLotNO.Text);
 
-            //if (txtArticleName.Tag != null)
-            //{
-            //    SetEcoNoCombo(txtArticleName.Tag.ToString(), strPoint);
-            //}
+            if (!string.IsNullOrEmpty(txtLotNO.Text))
+                GetLotID(txtLotNO.Text);
         }
 
         //
-        private void GetLotID(string LotNo, string Point)
+        private void GetLotID(string LotNo)
         {
             try
             {
+                txtArticleName.Tag = null;
+                txtArticleName.Text = "";
+                txtArticleName.Text = "";
+                txtInOutCustom.Tag = null;
+                txtInOutCustom.Text = "";
+                dtpInOutDate.SelectedDate = DateTime.Today;
+
+                string processID = strPoint == "3" || strPoint ==  "9" ? 
+                    (cboProcess.SelectedValue != null ? cboProcess.SelectedValue.ToString() : "") : "";
+
+                LotNo = LotNo.Replace(" ", "");
+
                 Dictionary<string, object> sqlParameter = new Dictionary<string, object>();
-                sqlParameter.Add("LotNo", LotNo.Replace(" ", ""));
-                sqlParameter.Add("InspectPoint", Point);
+                sqlParameter.Add("LotNo", LotNo);
+                sqlParameter.Add("InspectPoint", strPoint);
                 sqlParameter.Add("ArticleID", txtArticleName.Tag != null ? txtArticleName.Tag.ToString() : "");
+                sqlParameter.Add("ProcessID", processID);
 
                 DataSet ds = DataStore.Instance.ProcedureToDataSet("xp_Inspect_sLotNo", sqlParameter, false);
 
@@ -3842,42 +3902,61 @@ namespace WizMes_ANT
 
                         var LotInfo = new GetLotInfo()
                         {
+                            LOTID = dr["LabelID"].ToString(),
                             ArticleID = dr["ArticleID"].ToString(),
                             Article = dr["Article"].ToString(),
                             BuyerArticleNo = dr["BuyerArticleNo"].ToString(),
                             CustomID = dr["CustomID"].ToString(),
-                            Custom = dr["Custom"].ToString(),
-                            InoutDate = dr["InoutDate"].ToString(),
-                            lotid = dr["lotid"].ToString()
+                            Custom = dr["KCustom"].ToString(),
+                            InoutDate = dr["InoutDate"].ToString()
                         };
 
-                        //품명란에 품번으로 수정요청함 2020.03.19, 장가빈
                         txtArticleName.Text = LotInfo.BuyerArticleNo;
                         txtArticleName.Tag = LotInfo.ArticleID;
+                        txtBuyerArticle.Text = LotInfo.Article;
                         txtInOutCustom.Text = LotInfo.Custom;
                         txtInOutCustom.Tag = LotInfo.CustomID;
-                        //LOTID 안땡겨와서 추가함
-                        txtLotNO.Text = LotInfo.lotid;
 
                         if (LotInfo.InoutDate.Replace(" ", "").Length > 0)
-                        {
                             dtpInOutDate.SelectedDate = lib.strConvertDate(LotInfo.InoutDate);
-                        }
 
                         if (txtArticleName.Tag != null && !txtArticleName.Tag.ToString().Equals(""))
                         {
-                            SetEcoNoCombo(txtArticleName.Tag.ToString(), Point);
-                            GetArticelData(txtArticleName.Tag.ToString());
+                            SetEcoNoCombo(txtArticleName.Tag.ToString(), strPoint);
 
                             if (cboEcoNO.ItemsSource != null)
-                            {
                                 cboEcoNO.SelectedIndex = 0;
+                        }
+
+                        // InspectID 가져오기
+                        ds.Clear();
+                        dt.Clear();
+                        string inspectID = "";
+                        
+                        string sql = "select dbo.fn_getInspectID('" + strPoint + "', '" + LotNo + "', '" + processID + "')";
+                        ds = DataStore.Instance.QueryToDataSet(sql);
+                        if (ds != null && ds.Tables.Count > 0)
+                        {
+                            dt = ds.Tables[0];
+                            if (dt.Rows.Count > 0)
+                            {
+                                DataRowCollection drc = dt.Rows;
+                                inspectID = drc[dt.Rows.Count - 1].ItemArray[0].ToString().Replace(" ", "");
+
+                                if (!string.IsNullOrEmpty(inspectID))
+                                {
+                                    strFlag = "U";
+                                    tbkMsg.Text = "자료 수정 중";
+
+                                    FillGridSub(inspectID, "1");
+                                    FillGridSub(inspectID, "2");
+                                }
                             }
                         }
                     }
                     else
                     {
-                        MessageBox.Show("검사기준등록 및 LotID를 확인하세요.");
+                        MessageBox.Show("더이상 등록할 수 없는 LabelID입니다.");
                     }
                 }
             }
@@ -3909,11 +3988,14 @@ namespace WizMes_ANT
 
                 if (WinSubAuto != null)
                 {
+                    string compareSpec = WinSubAuto.SpecMin.ToUpper();
+
                     WinSubAuto.ValueCount = 0;
                     if (WinSubAuto.InspectText1 != null && WinSubAuto.InspectText1.Replace(" ", "").Length > 0)
                     {
                         sub1Count++;
-                        if (!WinSubAuto.InspectText1.Equals("양호"))
+                        
+                        if (!WinSubAuto.InspectText1.Equals(compareSpec))
                         {
                             if (Flag)
                             {
@@ -3928,7 +4010,8 @@ namespace WizMes_ANT
                     if (WinSubAuto.InspectText2 != null && WinSubAuto.InspectText2.Replace(" ", "").Length > 0)
                     {
                         sub1Count++;
-                        if (!WinSubAuto.InspectText2.Equals("양호"))
+
+                        if (!WinSubAuto.InspectText1.Equals(compareSpec))
                         {
                             if (Flag)
                             {
@@ -3942,7 +4025,8 @@ namespace WizMes_ANT
                     if (WinSubAuto.InspectText3 != null && WinSubAuto.InspectText3.Replace(" ", "").Length > 0)
                     {
                         sub1Count++;
-                        if (!WinSubAuto.InspectText3.Equals("양호"))
+
+                        if (!WinSubAuto.InspectText1.Equals(compareSpec))
                         {
                             if (Flag)
                             {
@@ -3956,7 +4040,8 @@ namespace WizMes_ANT
                     if (WinSubAuto.InspectText4 != null && WinSubAuto.InspectText4.Replace(" ", "").Length > 0)
                     {
                         sub1Count++;
-                        if (!WinSubAuto.InspectText4.Equals("양호"))
+
+                        if (!WinSubAuto.InspectText1.Equals(compareSpec))
                         {
                             if (Flag)
                             {
@@ -3970,7 +4055,8 @@ namespace WizMes_ANT
                     if (WinSubAuto.InspectText5 != null && WinSubAuto.InspectText5.Replace(" ", "").Length > 0)
                     {
                         sub1Count++;
-                        if (!WinSubAuto.InspectText5.Equals("양호"))
+
+                        if (!WinSubAuto.InspectText1.Equals(compareSpec))
                         {
                             if (Flag)
                             {
@@ -3984,7 +4070,8 @@ namespace WizMes_ANT
                     if (WinSubAuto.InspectText6 != null && WinSubAuto.InspectText6.Replace(" ", "").Length > 0)
                     {
                         sub1Count++;
-                        if (!WinSubAuto.InspectText6.Equals("양호"))
+
+                        if (!WinSubAuto.InspectText1.Equals(compareSpec))
                         {
                             if (Flag)
                             {
@@ -3998,7 +4085,8 @@ namespace WizMes_ANT
                     if (WinSubAuto.InspectText7 != null && WinSubAuto.InspectText7.Replace(" ", "").Length > 0)
                     {
                         sub1Count++;
-                        if (!WinSubAuto.InspectText7.Equals("양호"))
+
+                        if (!WinSubAuto.InspectText1.Equals(compareSpec))
                         {
                             if (Flag)
                             {
@@ -4012,7 +4100,8 @@ namespace WizMes_ANT
                     if (WinSubAuto.InspectText8 != null && WinSubAuto.InspectText8.Replace(" ", "").Length > 0)
                     {
                         sub1Count++;
-                        if (!WinSubAuto.InspectText8.Equals("양호"))
+
+                        if (!WinSubAuto.InspectText1.Equals(compareSpec))
                         {
                             if (Flag)
                             {
@@ -4026,7 +4115,8 @@ namespace WizMes_ANT
                     if (WinSubAuto.InspectText9 != null && WinSubAuto.InspectText9.Replace(" ", "").Length > 0)
                     {
                         sub1Count++;
-                        if (!WinSubAuto.InspectText9.Equals("양호"))
+
+                        if (!WinSubAuto.InspectText1.Equals(compareSpec))
                         {
                             if (Flag)
                             {
@@ -4040,7 +4130,8 @@ namespace WizMes_ANT
                     if (WinSubAuto.InspectText10 != null && WinSubAuto.InspectText10.Replace(" ", "").Length > 0)
                     {
                         sub1Count++;
-                        if (!WinSubAuto.InspectText10.Equals("양호"))
+
+                        if (!WinSubAuto.InspectText1.Equals(compareSpec))
                         {
                             if (Flag)
                             {
@@ -4091,7 +4182,7 @@ namespace WizMes_ANT
                                 if (Flag)
                                 {
                                     strDefectYN = "N";
-                                }
+                                }                                
                             }
                             else
                             {
@@ -4099,9 +4190,10 @@ namespace WizMes_ANT
                                 {
                                     strDefectYN = "Y";
                                     Flag = false;
-                                }
+                                }                                
                                 defectCount++;
-                            }
+                            }                            
+
                             WinSubAuto.ValueCount++;
                         }
                     }
@@ -4535,24 +4627,30 @@ namespace WizMes_ANT
                 var ViewReceiver = dgdMain.SelectedItem as Win_Qul_InspectAuto_U_CodeView;
                 if (ViewReceiver != null)
                 {
+                    string imgName = "";
                     if (ClickPoint == "SKetch")
                     {
-                        FTP_DownLoadFile(ViewReceiver.SketchPath, ViewReceiver.InspectID, ViewReceiver.SketchFile);
+                        imgName = ViewReceiver.SketchFile;
+                        FTP_DownLoadFile(ViewReceiver.SketchPath, ViewReceiver.InspectID, ref imgName);
                     }
                     else if (ClickPoint == "File")
                     {
-                        FTP_DownLoadFile(ViewReceiver.AttachedPath, ViewReceiver.InspectID, ViewReceiver.AttachedFile);
+                        imgName = ViewReceiver.AttachedFile;
+                        FTP_DownLoadFile(ViewReceiver.AttachedPath, ViewReceiver.InspectID, ref imgName);
                     }
                 }
             }
         }
 
         //다운로드
-        private void FTP_DownLoadFile(string Path, string FolderName, string ImageName)
+        private void FTP_DownLoadFile(string Path, string FolderName, ref string ImageName, bool isArticleDown = false)
         {
             try
             {
-                _ftp = new FTP_EX(FTP_ADDRESS, FTP_ID, FTP_PASS);
+                if (isArticleDown)
+                    _ftp = new FTP_EX(FTP_ADDRESS_ARTICLE, FTP_ID, FTP_PASS);
+                else
+                    _ftp = new FTP_EX(FTP_ADDRESS, FTP_ID, FTP_PASS);
 
                 string[] fileListSimple;
                 string[] fileListDetail;
@@ -4568,7 +4666,18 @@ namespace WizMes_ANT
                     ExistFile = false;
                     fileListDetail = _ftp.directoryListSimple(FolderName, Encoding.UTF8);
 
-                    ExistFile = FileInfoAndFlag(fileListDetail, ImageName);
+                    if (isArticleDown)
+                    {
+                        ImageName = ImageName + ".png";
+                        ExistFile = FileInfoAndFlag(fileListDetail, ImageName);
+                        if (!ExistFile)
+                        {
+                            ImageName = ImageName + ".jpg";
+                            ExistFile = FileInfoAndFlag(fileListDetail, ImageName);
+                        }
+                    }
+                    else
+                        ExistFile = FileInfoAndFlag(fileListDetail, ImageName);
 
                     if (ExistFile)
                     {
@@ -4580,22 +4689,21 @@ namespace WizMes_ANT
 
                         DirectoryInfo DI = new DirectoryInfo(LOCAL_DOWN_PATH);
                         if (DI.Exists)
-                        {
                             DI.Create();
-                        }
 
                         FileInfo file = new FileInfo(str_localpath);
                         if (file.Exists)
-                        {
                             file.Delete();
+
+                        str_remotepath = str_remotepath.Substring(str_remotepath.Substring(0, str_remotepath.LastIndexOf("/")).LastIndexOf("/"));
+                        _ftp.download(str_remotepath, str_localpath);
+
+                        if (!isArticleDown)
+                        {
+                            ProcessStartInfo proc = new ProcessStartInfo(str_localpath);
+                            proc.UseShellExecute = true;
+                            Process.Start(proc);
                         }
-
-                        _ftp.download(str_remotepath.Substring(str_remotepath.Substring
-                            (0, str_remotepath.LastIndexOf("/")).LastIndexOf("/")), str_localpath);
-
-                        ProcessStartInfo proc = new ProcessStartInfo(str_localpath);
-                        proc.UseShellExecute = true;
-                        Process.Start(proc);
                     }
                     else
                     {
@@ -4721,6 +4829,7 @@ namespace WizMes_ANT
 
         }
 
+        // 품명
         private void chkArticle_Checked(object sender, RoutedEventArgs e)
         {
             txtArticleSrh.IsEnabled = true;
@@ -4740,7 +4849,7 @@ namespace WizMes_ANT
                 WinInsAutoSub = dgdSub2.CurrentItem as Win_Qul_InspectAuto_U_Sub_CodeView;
                 double maxValue = Convert.ToDouble(WinInsAutoSub.SpecMax);
                 double minValue = Convert.ToDouble(WinInsAutoSub.SpecMin);
-                double value1 = Convert.ToDouble(WinInsAutoSub.InspectValue1);
+                double value1 = string.IsNullOrEmpty(WinInsAutoSub.InspectValue1) ? 0 : Convert.ToDouble(WinInsAutoSub.InspectValue1);
 
                 if (!(value1 >= minValue && value1 <= maxValue))
                 {
@@ -4762,7 +4871,7 @@ namespace WizMes_ANT
                 WinInsAutoSub = dgdSub2.CurrentItem as Win_Qul_InspectAuto_U_Sub_CodeView;
                 double maxValue = Convert.ToDouble(WinInsAutoSub.SpecMax);
                 double minValue = Convert.ToDouble(WinInsAutoSub.SpecMin);
-                double value2 = Convert.ToDouble(WinInsAutoSub.InspectValue2);
+                double value2 = string.IsNullOrEmpty(WinInsAutoSub.InspectValue2) ? 0 : Convert.ToDouble(WinInsAutoSub.InspectValue2);
 
                 if (!(value2 >= minValue && value2 <= maxValue))
                 {
@@ -4784,7 +4893,7 @@ namespace WizMes_ANT
                 WinInsAutoSub = dgdSub2.CurrentItem as Win_Qul_InspectAuto_U_Sub_CodeView;
                 double maxValue = Convert.ToDouble(WinInsAutoSub.SpecMax);
                 double minValue = Convert.ToDouble(WinInsAutoSub.SpecMin);
-                double value3 = Convert.ToDouble(WinInsAutoSub.InspectValue3);
+                double value3 = string.IsNullOrEmpty(WinInsAutoSub.InspectValue3) ? 0 : Convert.ToDouble(WinInsAutoSub.InspectValue3);
 
                 if (!(value3 >= minValue && value3 <= maxValue))
                 {
@@ -4793,6 +4902,50 @@ namespace WizMes_ANT
                 else
                 {
                     WinInsAutoSub.ValueDefect3 = "";
+                }
+
+            }
+
+        }
+
+        private void Value4Text_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Enter)
+            {
+                WinInsAutoSub = dgdSub2.CurrentItem as Win_Qul_InspectAuto_U_Sub_CodeView;
+                double maxValue = Convert.ToDouble(WinInsAutoSub.SpecMax);
+                double minValue = Convert.ToDouble(WinInsAutoSub.SpecMin);
+                double value4 = Convert.ToDouble(WinInsAutoSub.InspectValue4);
+
+                if (!(value4 >= minValue && value4 <= maxValue))
+                {
+                    WinInsAutoSub.ValueDefect4 = "true";
+                }
+                else
+                {
+                    WinInsAutoSub.ValueDefect4 = "";
+                }
+
+            }
+
+        }
+
+        private void Value5Text_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Enter)
+            {
+                WinInsAutoSub = dgdSub2.CurrentItem as Win_Qul_InspectAuto_U_Sub_CodeView;
+                double maxValue = Convert.ToDouble(WinInsAutoSub.SpecMax);
+                double minValue = Convert.ToDouble(WinInsAutoSub.SpecMin);
+                double value5 = Convert.ToDouble(WinInsAutoSub.InspectValue5);
+
+                if (!(value5 >= minValue && value5 <= maxValue))
+                {
+                    WinInsAutoSub.ValueDefect5 = "true";
+                }
+                else
+                {
+                    WinInsAutoSub.ValueDefect5 = "";
                 }
 
             }
@@ -4847,10 +5000,34 @@ namespace WizMes_ANT
                 MainWindow.pf.ReturnCode(txtArticleNo, 76, txtArticleNo.Text);
             }
         }
+
+        private void chkInspect_Click(object sender, RoutedEventArgs e)
+        {
+            CheckBox chkSender = sender as CheckBox;
+            var view = chkSender.DataContext as Win_Qul_InspectAuto_U_CodeView;
+            if (view != null)
+            {
+                if (chkSender.IsChecked == true)
+                {
+                    view.Chk = true;
+
+                    if (listLotLabelPrint.Contains(view) == false)
+                        listLotLabelPrint.Add(view);
+                }
+                else
+                {
+                    view.Chk = false;
+
+                    if (listLotLabelPrint.Contains(view) == false)
+                        listLotLabelPrint.Remove(view);
+                }
+            }
+        }
     }
 
     class Win_Qul_InspectAuto_U_CodeView : BaseView
     {
+        public bool Chk { get; set; }
         public int Num { get; set; }
         public string InspectID { get; set; }
         public string ArticleID { get; set; }
@@ -4967,6 +5144,8 @@ namespace WizMes_ANT
         public string ValueDefect1 { get; set; }
         public string ValueDefect2 { get; set; }
         public string ValueDefect3 { get; set; }
+        public string ValueDefect4 { get; set; }
+        public string ValueDefect5 { get; set; }
     }
 
     class EcoNoAndBasisID : BaseView
@@ -4988,7 +5167,6 @@ namespace WizMes_ANT
         public string InspectBasisID { get; set; }
         public string Seq { get; set; }
         public string EcoNo { get; set; }
-        public string lotid { get; set; }
 
         public string BuyerArticleNo { get; set; }
         public string MoldNo { get; set; }

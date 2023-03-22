@@ -8,6 +8,7 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using WizMes_ANT.PopUP;
 using WizMes_ANT.PopUp;
+using Excel = Microsoft.Office.Interop.Excel;
 
 namespace WizMes_ANT
 {
@@ -977,35 +978,126 @@ namespace WizMes_ANT
         }
 
         // 주문일괄 업로드
+        string upload_fileName = "";
+
         private void btnUpload_Click(object sender, RoutedEventArgs e)
         {
-            MessageBox.Show("개발중인 기능입니다\n빠른시일내로 업데이트 될 예정입니다.");
-            return;
+            Microsoft.Win32.OpenFileDialog file = new Microsoft.Win32.OpenFileDialog();
+            file.Filter = "Excel files (*.xls,*xlsx)|*.xls;*xlsx|All files (*.*)|*.*";
+            file.InitialDirectory = "C:\\";
+
+            if (file.ShowDialog() == true)
+            {
+                upload_fileName = file.FileName;
+
+                btnUpload.IsEnabled = false;
+
+                using (Loading ld = new Loading("excel", beUpload))
+                {
+                    ld.ShowDialog();
+                }
+
+                re_Search(0);
+
+                btnUpload.IsEnabled = true;
+            }
+        }
+
+        private void beUpload()
+        {
+            Lib lib2 = new Lib();
+
+            Excel.Application excelapp = null;
+            Excel.Workbook workbook = null;
+            Excel.Worksheet worksheet = null;
+            Excel.Range workrange = null;
+
+            List<OrderExcel> listExcel = new List<OrderExcel>();
 
             try
             {
-                Microsoft.Office.Interop.Excel.Application excelapp;
-                Microsoft.Office.Interop.Excel.Workbook workbook;
-                Microsoft.Office.Interop.Excel.Worksheet worksheet;
-                Microsoft.Office.Interop.Excel.Range workrange;
+                excelapp = new Excel.Application();
+                workbook = excelapp.Workbooks.Add(upload_fileName);
+                worksheet = workbook.Sheets["Sheet"];
+                workrange = worksheet.UsedRange;
 
-                Microsoft.Win32.OpenFileDialog file = new Microsoft.Win32.OpenFileDialog();
-                file.Filter = "Excel files (*.xls,*xlsx)|*.xls;*xlsx|All files (*.*)|*.*";
-
-                file.InitialDirectory = "C:\\";
-
-                if (file.ShowDialog() == true)
+                for (int row = 3; row <= workrange.Rows.Count; row++)
                 {
-                    excelapp = new Microsoft.Office.Interop.Excel.Application();
-                    workbook = excelapp.Workbooks.Add(file.FileName);
-                    worksheet = workbook.Sheets["Sheet"];
+                    OrderExcel excel = new OrderExcel();
+                    excel.CustomID = workrange.get_Range("A" + row.ToString()).Value2;
+                    excel.Model = workrange.get_Range("B" + row.ToString()).Value2;
+                    excel.BuyerArticleNo = workrange.get_Range("C" + row.ToString()).Value2;
+                    excel.Article = workrange.get_Range("D" + row.ToString()).Value2;
+                    excel.UnitClss = workrange.get_Range("E" + row.ToString()).Value2;
 
-                    
+                    object objOrderQty = workrange.get_Range("H" + row.ToString()).Value2;
+                    if (objOrderQty != null)
+                        excel.OrderQty = objOrderQty.ToString();
+
+                    if (!string.IsNullOrEmpty(excel.CustomID)
+                        && !string.IsNullOrEmpty(excel.BuyerArticleNo) && !string.IsNullOrEmpty(excel.Article)
+                        && !string.IsNullOrEmpty(excel.UnitClss) && !string.IsNullOrEmpty(excel.OrderQty))
+                    {
+                        listExcel.Add(excel);
+                    }
+
+                    if (string.IsNullOrEmpty(excel.CustomID) && string.IsNullOrEmpty(excel.Model)
+                        && string.IsNullOrEmpty(excel.BuyerArticleNo) && string.IsNullOrEmpty(excel.Article)
+                        && string.IsNullOrEmpty(excel.UnitClss) && string.IsNullOrEmpty(excel.OrderQty))
+                    {
+                        break;
+                    }
                 }
-            } 
+
+                if (listExcel.Count > 0)
+                {
+                    List<Procedure> Prolist = new List<Procedure>();
+                    List<Dictionary<string, object>> ListParameter = new List<Dictionary<string, object>>();
+                    for (int i = 0; i < listExcel.Count; i++)
+                    {
+                        Dictionary<string, object> sqlParameter = new Dictionary<string, object>();
+                        sqlParameter.Add("CustomID", string.IsNullOrEmpty(listExcel[i].CustomID) ? "" : listExcel[i].CustomID);
+                        sqlParameter.Add("Model", string.IsNullOrEmpty(listExcel[i].Model) ? "" : listExcel[i].Model);
+                        sqlParameter.Add("BuyerArticleNo", string.IsNullOrEmpty(listExcel[i].BuyerArticleNo) ? "" : listExcel[i].BuyerArticleNo);
+                        sqlParameter.Add("Article", string.IsNullOrEmpty(listExcel[i].Article) ? "" : listExcel[i].Article);
+                        sqlParameter.Add("UnitClss", string.IsNullOrEmpty(listExcel[i].UnitClss) ? "" : listExcel[i].UnitClss);
+                        sqlParameter.Add("OrderQty", string.IsNullOrEmpty(listExcel[i].OrderQty) ? "" : listExcel[i].OrderQty);
+
+                        Procedure pro2 = new Procedure();
+                        pro2.Name = "xp_Order_iOrderExcel";
+                        pro2.OutputUseYN = "N";
+                        pro2.OutputName = "";
+                        pro2.OutputLength = "10";
+
+                        Prolist.Add(pro2);
+                        ListParameter.Add(sqlParameter);
+                    }
+
+                    string[] Confirm = new string[2];
+                    Confirm = DataStore.Instance.ExecuteAllProcedureOutputNew_NewLog(Prolist, ListParameter, "C");
+                    if (Confirm[0] != "success")
+                        MessageBox.Show("[저장실패]\r\n" + Confirm[1].ToString());
+                    else
+                        MessageBox.Show("업로드가 완료되었습니다.");
+                }
+            }
             catch (Exception ex)
             {
                 MessageBox.Show(ex.Message.ToString());
+            }
+            finally
+            {
+                excelapp.Visible = true;
+                workbook.Close(true);
+                excelapp.Quit();
+
+                lib2.ReleaseExcelObject(workbook);
+                lib2.ReleaseExcelObject(worksheet);
+                lib2.ReleaseExcelObject(excelapp);
+                lib2 = null;
+
+                upload_fileName = "";
+                listExcel.Clear();
             }
         }
 
@@ -1344,7 +1436,6 @@ namespace WizMes_ANT
 
                     sqlParameter.Add("UnitClss", cboUnitClss.SelectedValue != null ? cboUnitClss.SelectedValue.ToString() : "");
                     sqlParameter.Add("InCustomID", txtInCustom.Tag != null ? txtInCustom.Tag.ToString() : "");
-                    //sqlParameter.Add("ArticleGrpID", "");
                     sqlParameter.Add("ArticleGrpID", cboArticleGroup.SelectedValue != null ? cboArticleGroup.SelectedValue.ToString() : "");
                     sqlParameter.Add("AcptDate", dtpAcptDate.SelectedDate.Value.ToString("yyyyMMdd"));
 
@@ -2557,20 +2648,12 @@ namespace WizMes_ANT
 
     public class OrderExcel : BaseView
     {
-        public string AcptDate { get; set; }
-        public string CloseClss { get; set; }
-        public string DvlyDate { get; set; }
-        public string ExpectDate { get; set; }
-        public string OrderFlag { get; set; }
-        public string Custom { get; set; }
-        public string Custom2 { get; set; }
-        public string OrderNo { get; set; }
-        public string OrderForm { get; set; }
-        public string DvlyPlace { get; set; }
-        public string CSManager { get; set; }
-        public string PlanManager { get; set; }
+        public string CustomID { get; set; }
+        public string Model { get; set; }
+        public string BuyerArticleNo { get; set; }
+        public string Article { get; set; }
+        public string UnitClss { get; set; }
         public string OrderQty { get; set; }
-        public string OrderClss { get; set; }
     }
 }
 

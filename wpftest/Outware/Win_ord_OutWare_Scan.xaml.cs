@@ -8,6 +8,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using WizMes_ANT.PopUP;
+using WizMes_ANT.PopUp;
 
 namespace WizMes_ANT
 {
@@ -29,7 +30,7 @@ namespace WizMes_ANT
         private Microsoft.Office.Interop.Excel.Range workrange;
         private Microsoft.Office.Interop.Excel.Worksheet copysheet;
         private Microsoft.Office.Interop.Excel.Worksheet pastesheet;
-        WizMes_ANT.PopUp.NoticeMessage msg = new WizMes_ANT.PopUp.NoticeMessage();
+        NoticeMessage msg = new NoticeMessage();
 
         List<Win_ord_OutWare_Scan_CodeView> lstOutwarePrint = new List<Win_ord_OutWare_Scan_CodeView>();
 
@@ -692,8 +693,6 @@ namespace WizMes_ANT
                 msg.Topmost = true;
                 msg.Refresh();
 
-                lib.Delay(1000);
-
                 PrintWork(true);
                 msg.Visibility = Visibility.Hidden;
             }
@@ -723,8 +722,6 @@ namespace WizMes_ANT
                 msg.Show();
                 msg.Topmost = true;
                 msg.Refresh();
-
-                lib.Delay(1000);
 
                 PrintWork(false);
                 msg.Visibility = Visibility.Hidden;

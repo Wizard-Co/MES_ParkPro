@@ -48,6 +48,8 @@ namespace WizMes_ANT
         public static List<Image> ScreenCapture = new List<Image>();
         // 넘겨줄 임시 데이터 변수(설비가동률 -> 설비가동률상세조회)
         public static List<string> MCtemp = new List<string>();
+        // 넘겨줄 임시 데이터 변수(XbarChart -> 상세분석)
+        public static List<string> ChartDeatil = new List<string>();
 
         // [생산] - 생산계획작성 - 저장과 동시 작업지시 안내를 위한 변수
         public static bool plInputFlag_SavePrint = false;

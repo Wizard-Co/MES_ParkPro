@@ -41,7 +41,7 @@
                                       Unchecked="ChkInspectBasisSrh_Unchecked"/>
                         </Viewbox>
                         <Viewbox Style="{DynamicResource ViewBoxSetMaxMinHeight_Q}">
-                            <TextBlock Text="기준번호" Style="{DynamicResource TextBlockInViewBoxSearch_Q}"/>
+                            <TextBlock Text=" 기준번호" Style="{DynamicResource TextBlockInViewBoxSearch_Q}"/>
                         </Viewbox>
                     </StackPanel>
                 </Label>
@@ -85,7 +85,7 @@
                             <CheckBox x:Name="chkArticleSrh" Checked="ChkArticleSrh_Checked" Unchecked="ChkArticleSrh_Unchecked" VerticalAlignment="Center"/>
                         </Viewbox>
                         <Viewbox Style="{DynamicResource ViewBoxSetMaxMinHeight_Q}">
-                            <TextBlock Text="품     번" Style="{DynamicResource TextBlockInViewBoxSearch_Q}"/>
+                            <TextBlock Text=" 품   번" Style="{DynamicResource TextBlockInViewBoxSearch_Q}"/>
                         </Viewbox>
                     </StackPanel>
                 </Label>
@@ -213,7 +213,7 @@
                     <ColumnDefinition Width="*" />
                 </Grid.ColumnDefinitions>
                 <Border Grid.Column="0" Grid.Row="1" BorderThickness="1 1 1 1" BorderBrush="#424242" CornerRadius="0 0 0 0" Background="White">
-                    <ToggleButton x:Name="tbnJaju" Grid.Column="1" Click="TbnJaju_Click" FontWeight="Normal" IsChecked="True" >
+                    <ToggleButton x:Name="tbnJaju" Grid.Column="1" Click="TbnJaju_Click" FontWeight="Normal">
                         <StackPanel Orientation="Horizontal">
                             <Viewbox Margin="0.5">
                                 <TextBlock Text="자주검사" />
@@ -245,7 +245,7 @@
                 </Border>
                 <Border Grid.Column="1" Grid.Row="1" BorderThickness="1 1 1 1" BorderBrush="#424242" CornerRadius="0 0 0 0"
                             Background="White">
-                    <ToggleButton x:Name="tbnOutCome" Grid.Column="0" Click="TbnOutCome_Click" FontWeight="Normal">
+                    <ToggleButton x:Name="tbnOutCome" Grid.Column="0" Click="TbnOutCome_Click" FontWeight="Normal" IsChecked="True">
                         <StackPanel Orientation="Horizontal">
                             <Viewbox Margin="0.5">
                                 <TextBlock Text="출하검사" />
@@ -276,26 +276,7 @@
                     </ToggleButton>
                 </Border>
             </Grid>
-            <Grid Grid.Column="4" Grid.Row="1">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="75*"/>
-                    <ColumnDefinition Width="90*"/>
-                    <ColumnDefinition Width="15*"/>
-                </Grid.ColumnDefinitions>
-                <Label x:Name="lblECONOSrh" Grid.Column="0" VerticalContentAlignment="Center" Style="{DynamicResource LabelSearch_Q}"
-                       MouseLeftButtonUp="LblECONOSrh_MouseLeftButtonUp">
-                    <StackPanel Style="{DynamicResource StackPanelInLabel_Q}">
-                        <Viewbox Style="{DynamicResource ViewBoxSetMaxMinHeight_Q}">
-                            <CheckBox x:Name="chkECONOSrh" Checked="ChkECONOSrh_Checked"
-                                      Unchecked="ChkECONOSrh_Unchecked"/>
-                        </Viewbox>
-                        <Viewbox Style="{DynamicResource ViewBoxSetMaxMinHeight_Q}">
-                            <TextBlock Text="EO NO" Style="{DynamicResource TextBlockInViewBoxSearch_Q}" />
-                        </Viewbox>
-                    </StackPanel>
-                </Label>
-                <TextBox x:Name="txtECONOSrh" Grid.Column="1" IsEnabled="False" Style="{DynamicResource TextBoxSearch}"/>
-            </Grid>
+
             <Grid Grid.Column="4" Grid.Row="0">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="75*"/>
@@ -310,12 +291,32 @@
                                       Unchecked="ChkMoldNoSrh_Unchecked"/>
                         </Viewbox>
                         <Viewbox Style="{DynamicResource ViewBoxSetMaxMinHeight_Q}">
-                            <TextBlock Text="기준일자" Style="{DynamicResource TextBlockInViewBoxSearch_Q}" />
+                            <TextBlock Text=" 기준일자" Style="{DynamicResource TextBlockInViewBoxSearch_Q}" />
                         </Viewbox>
                     </StackPanel>
                 </Label>
                 <!--<TextBox x:Name="txtMoldNoSrh" Grid.Column="1" IsEnabled="False" Style="{DynamicResource TextBoxSearch}"/>-->
-                <DatePicker x:Name="txtMoldNoSrh" Grid.Column="1"  Padding="0" Style="{DynamicResource DatePickerInputNecessary_Q}" IsEnabled="False"/>
+                <DatePicker x:Name="txtMoldNoSrh" Grid.Column="1"  Padding="0" Style="{DynamicResource DatePickerInputNecessary_Q}" IsEnabled="True"/>
+            </Grid>
+            <Grid Grid.Column="4" Grid.Row="1">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="75*"/>
+                    <ColumnDefinition Width="90*"/>
+                    <ColumnDefinition Width="15*"/>
+                </Grid.ColumnDefinitions>
+                <Label x:Name="lblECONOSrh" Grid.Column="0" VerticalContentAlignment="Center" Style="{DynamicResource LabelSearch_Q}"
+                       MouseLeftButtonUp="LblECONOSrh_MouseLeftButtonUp">
+                    <StackPanel Style="{DynamicResource StackPanelInLabel_Q}">
+                        <Viewbox Style="{DynamicResource ViewBoxSetMaxMinHeight_Q}">
+                            <CheckBox x:Name="chkECONOSrh" Checked="ChkECONOSrh_Checked"
+                                      Unchecked="ChkECONOSrh_Unchecked"/>
+                        </Viewbox>
+                        <Viewbox Style="{DynamicResource ViewBoxSetMaxMinHeight_Q}">
+                            <TextBlock Text=" EO NO" Style="{DynamicResource TextBlockInViewBoxSearch_Q}" />
+                        </Viewbox>
+                    </StackPanel>
+                </Label>
+                <TextBox x:Name="txtECONOSrh" Grid.Column="1" IsEnabled="False" Style="{DynamicResource TextBoxSearch}"/>
             </Grid>
 
             <Grid Grid.Column="5" Grid.Row="0" Grid.RowSpan="4" >
@@ -398,7 +399,7 @@
                     </Grid.ColumnDefinitions>
                 <Button x:Name="btnEOAdd" Grid.Column="3" Click="btnEOAdd_Click" Margin="1">
                     <StackPanel Orientation="Horizontal" >
-                        <TextBlock Text="EO추가" VerticalAlignment="Center" />
+                        <TextBlock Text="EO추가" VerticalAlignment="Center" FontSize="5"/>
                     </StackPanel>
                 </Button>
                 </Grid>
@@ -509,6 +510,7 @@
                                 Click="BtnPfArticle_Click">
                             <Image Source="{DynamicResource btiPlusFind}" />
                         </Button>
+                        
                         <Label Grid.Row="3" Grid.Column="4" Style="{DynamicResource LabelInputArea_GB_Q}">
                             <Viewbox Style="{DynamicResource ViewBoxSetMaxMinHeight_Q}" >
                                 <TextBlock Text="기준일자"  Style="{DynamicResource TextBlockInViewBoxInput_Four_Q}" />
@@ -518,18 +520,19 @@
                                  Text="{Binding MoldNo}" Keyboard.KeyDown="txtMoldNo_KeyDown"/>-->
                         <DatePicker  Grid.Row="3" Grid.Column="5"  x:Name="dtpMoldNo" Padding="0" Style="{DynamicResource DatePickerInputNecessary_Q}"
                                         SelectedDate="{Binding MoldNo}" />
+                        
                         <Label Grid.Row="3" Grid.Column="0" Style="{DynamicResource LabelInputArea_GB_Q}" x:Name="lblProcess">
                             <Viewbox Style="{DynamicResource ViewBoxSetMaxMinHeight_Q}" >
                                 <TextBlock Text="공    정"  Style="{DynamicResource TextBlockInViewBoxInput_Q}" />
                             </Viewbox>
                         </Label>
                         <TextBox x:Name="txtProcess" Grid.Row="3" Grid.Column="1" IsReadOnly="True" 
-                                 Text="{Binding Process}" Tag="{Binding ProcessID}" Style="{DynamicResource TextBoxInputNecessary_Q}"
-                                 Keyboard.KeyDown="txtProcess_KeyDown" Height="23" Margin="1,0" VerticalAlignment="Bottom"/>
+                                 Text="{Binding Process}" Tag="{Binding ProcessID}" Style="{DynamicResource TextBoxInputNecessary_Q}" Keyboard.KeyDown="txtProcess_KeyDown" />
                         <Button x:Name="btnPfProcess" Grid.Row="3" Grid.Column="2" Visibility="Hidden"
                                 Click="btnPfProcess_Click">
                             <Image Source="{DynamicResource btiPlusFind}" />
                         </Button>
+                        
                         <Label Grid.Row="4" Grid.Column="4" Style="{DynamicResource LabelInputArea_GB_Q}">
                             <Viewbox Style="{DynamicResource ViewBoxSetMaxMinHeight_Q}" >
                                 <TextBlock Text="비    고"  Style="{DynamicResource TextBlockInViewBoxInput_Q}" />
@@ -677,7 +680,7 @@
                         <DataGridTemplateColumn Header="">
                             <DataGridTemplateColumn.CellTemplate>
                                 <DataTemplate>
-                                    <TextBlock Margin="2" Text="{Binding Num}"/>
+                                    <TextBlock Margin="2" Text="{Binding Num}" HorizontalAlignment="Right"/>
                                 </DataTemplate>
                             </DataGridTemplateColumn.CellTemplate>
                         </DataGridTemplateColumn>
@@ -774,8 +777,7 @@
                                 </DataTemplate>
                             </DataGridTemplateColumn.CellEditingTemplate>
                         </DataGridTemplateColumn>
-                        <DataGridTextColumn Header="주기" Binding="{Binding InspectCycle
-                            ,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}"/>
+                        <DataGridTextColumn Header="주기" Binding="{Binding InspectCycle,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}" ElementStyle="{DynamicResource DataGridCellRight}"/>
                         <DataGridTemplateColumn Header="이미지" >
                             <DataGridTemplateColumn.CellTemplate>
                                 <DataTemplate>

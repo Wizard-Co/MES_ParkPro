@@ -15,6 +15,7 @@ using System.Windows.Controls.Primitives;
 using System.Windows.Input;
 using System.Windows.Media.Imaging;
 using WizMes_ANT.PopUP;
+using WizMes_ANT.PopUp;
 
 
 namespace WizMes_ANT
@@ -136,7 +137,7 @@ namespace WizMes_ANT
             DataStore.Instance.InsertLogByFormS(this.GetType().Name, stDate, stTime, "S");
 
             Lib.Instance.UiLoading(this);
-            TbnJaju_Click(tbnJaju, null);
+            TbnOutCome_Click(tbnOutCome, null);
             SetComboBox();
             //dtpMoldNo.SelectedDate = DateTime.Today;
         }
@@ -167,8 +168,8 @@ namespace WizMes_ANT
                     !dt.Rows[0]["Article"].ToString().Trim().Equals(string.Empty))
                 {
                     txtBuyerArticle.Text = dt.Rows[0]["Article"].ToString();
-                    txtProcess.Tag = dt.Rows[0]["ProcessID"].ToString();
-                    txtProcess.Text = dt.Rows[0]["Process"].ToString();
+                    //txtProcess.Tag = dt.Rows[0]["ProcessID"].ToString();
+                    //txtProcess.Text = dt.Rows[0]["Process"].ToString();
                 }
             }
         }
@@ -546,12 +547,9 @@ namespace WizMes_ANT
                 {
                     if (MessageBox.Show("선택하신 항목을 삭제하시겠습니까?", "삭제 전 확인", MessageBoxButton.YesNo) == MessageBoxResult.Yes)
                     {
-                        DataStore.Instance.InsertLogByForm(this.GetType().Name, "D");
-                        if (Procedure.Instance.DeleteData(InsAutoBasis.InspectBasisID, InsAutoBasis.Seq
-                            , "InspectBasisID", "Seq", "xp_Code_dInspectAutoBasis"))
+                        using (Loading ld = new Loading(beDelete))
                         {
-                            rowNum = dgdMain.SelectedIndex - 1;
-                            re_Search(rowNum);
+                            ld.ShowDialog();
                         }
                     }
                 }
@@ -566,6 +564,27 @@ namespace WizMes_ANT
             }
         }
 
+        private void beDelete()
+        {
+            //삭제버튼 비활성화
+            btnDelete.IsEnabled = false;
+
+            Dispatcher.BeginInvoke(new Action(() =>
+            {
+                var InsAutoBasis = dgdMain.SelectedItem as Win_Qul_InspectAutoBasis_U_CodeView;
+
+                DataStore.Instance.InsertLogByForm(this.GetType().Name, "D");
+                if (Procedure.Instance.DeleteData(InsAutoBasis.InspectBasisID, InsAutoBasis.Seq
+                    , "InspectBasisID", "Seq", "xp_Code_dInspectAutoBasis"))
+                {
+                    rowNum = dgdMain.SelectedIndex - 1;
+                    re_Search(rowNum);
+                }
+            }), System.Windows.Threading.DispatcherPriority.Background);
+
+            btnDelete.IsEnabled = true;
+        }
+
         //닫기
         private void btnClose_Click(object sender, RoutedEventArgs e)
         {
@@ -576,65 +595,77 @@ namespace WizMes_ANT
         // 검색 클릭
         private void btnSearch_Click(object sender, RoutedEventArgs e)
         {
+            using (Loading ld = new Loading(beSearch))
+            {
+                ld.ShowDialog();
+            }
+        }
+
+        private void beSearch()
+        {
             //검색버튼 비활성화
             btnSearch.IsEnabled = false;
 
             Dispatcher.BeginInvoke(new Action(() =>
-
             {
-                Thread.Sleep(2000);
-
                 //로직
                 rowNum = 0;
                 re_Search(rowNum);
 
             }), System.Windows.Threading.DispatcherPriority.Background);
 
-
-
-            Dispatcher.BeginInvoke(new Action(() =>
-
-            {
-                btnSearch.IsEnabled = true;
-
-            }), System.Windows.Threading.DispatcherPriority.Background);
-
+            btnSearch.IsEnabled = true;
         }
 
         // 저장 클릭
         private void btnSave_Click(object sender, RoutedEventArgs e)
         {
-
-            if (SaveData(txtInspectBasisID.Text, 1))
+            using (Loading ld = new Loading(beSave))
             {
-                ControlVisibleAndEnable_SC();
+                ld.ShowDialog();
+            }
+        }
 
-                //저장,취소하면 삭제를 위해 담아둔 뷰를 모두 삭제
-                ovcInspectAutoBasisSub_Delete.Clear();
+        private void beSave()
+        {
+            //저장버튼 비활성화
+            btnSave.IsEnabled = false;
 
-                rowNum = dgdMain.Items.Count + 1;
-                re_Search(rowNum);
-                //FillGrid();
-                dgdMain.ItemsSource = null;
-                dgdMain.ItemsSource = ovcInspectAutoBasis;
-                dgdMain.Items.Refresh();
-
-                if (strFlag == "I")     //1. 추가 > 저장했다면,
+            Dispatcher.BeginInvoke(new Action(() =>
+            {
+                if (SaveData(txtInspectBasisID.Text, 1))
                 {
-                    if (dgdMain.Items.Count > 0)
+                    ControlVisibleAndEnable_SC();
+
+                    //저장,취소하면 삭제를 위해 담아둔 뷰를 모두 삭제
+                    ovcInspectAutoBasisSub_Delete.Clear();
+
+                    rowNum = dgdMain.Items.Count + 1;
+                    re_Search(rowNum);
+                    //FillGrid();
+                    dgdMain.ItemsSource = null;
+                    dgdMain.ItemsSource = ovcInspectAutoBasis;
+                    dgdMain.Items.Refresh();
+
+                    if (strFlag == "I")     //1. 추가 > 저장했다면,
                     {
-                        dgdMain.SelectedIndex = dgdMain.Items.Count - 1;
+                        if (dgdMain.Items.Count > 0)
+                        {
+                            dgdMain.SelectedIndex = dgdMain.Items.Count - 1;
+                            dgdMain.Focus();
+                        }
+                    }
+                    else        //2. 수정 > 저장했다면,
+                    {
+                        dgdMain.SelectedIndex = Wh_Ar_SelectedLastIndex;
                         dgdMain.Focus();
                     }
+                    strFlag = string.Empty; // 추가했는지, 수정했는지 알려면 맨 마지막에 flag 값을 비어야 한다.
+                    ButtonEOClickCheck = string.Empty;
                 }
-                else        //2. 수정 > 저장했다면,
-                {
-                    dgdMain.SelectedIndex = Wh_Ar_SelectedLastIndex;
-                    dgdMain.Focus();
-                }
-                strFlag = string.Empty; // 추가했는지, 수정했는지 알려면 맨 마지막에 flag 값을 비어야 한다.
-                ButtonEOClickCheck = string.Empty;
-            }
+            }), System.Windows.Threading.DispatcherPriority.Background);
+
+            btnSave.IsEnabled = true;
         }
 
         // 취소 클릭
@@ -945,11 +976,11 @@ namespace WizMes_ANT
                 }
 
 
-                //if (txtArticle.Tag != null)
-                //{
-                //    SetBuyerArticleNo(txtArticle.Tag.ToString());
-                //    //txtProcess.Focus();
-                //}
+                if (txtArticle.Tag != null)
+                {
+                    SetBuyerArticleNo(txtArticle.Tag.ToString());
+                    //txtProcess.Focus();
+                }
 
 
                 //MainWindow.pf.ReturnCode(txtArticle, (int)Defind_CodeFind.DCF_Article, "");
@@ -974,11 +1005,11 @@ namespace WizMes_ANT
                 MainWindow.pf.ReturnCode(txtArticle, 76, txtArticleSrh.Text);
             }
 
-            //if (txtArticle.Tag != null)
-            //{
-            //    SetBuyerArticleNo(txtArticle.Tag.ToString());
-            //    //txtProcess.Focus();
-            //}
+            if (txtArticle.Tag != null)
+            {
+                SetBuyerArticleNo(txtArticle.Tag.ToString());
+                //txtProcess.Focus();
+            }
         }
 
         // 공정 플러스파인더

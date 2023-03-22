@@ -362,7 +362,7 @@ namespace WizMes_ANT
         {
             if (e.Key == Key.Enter)
             {
-                MainWindow.pf.ReturnCode(txtMoldID, 97, "");
+                MainWindow.pf.ReturnCode(txtMoldID, 101, "");
                 if (txtMoldID.Tag != null)
                 {
                     SetArticle(txtMoldID.Tag.ToString());
@@ -372,7 +372,7 @@ namespace WizMes_ANT
         // 철형번호 플러스파인더
         private void btnPfMoldID_Click(object sender, RoutedEventArgs e)
         {
-            MainWindow.pf.ReturnCode(txtMoldID, 97, "");
+            MainWindow.pf.ReturnCode(txtMoldID, 101, "");
             if (txtMoldID.Tag != null)
             {
                 SetArticle(txtMoldID.Tag.ToString());
