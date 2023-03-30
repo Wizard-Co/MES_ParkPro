@@ -220,7 +220,7 @@
                             <CheckBox x:Name="chkMoldNoSrh" Checked="chkMoldNoSrh_Checked" 
                                       Unchecked="chkMoldNoSrh_Unchecked"/>
                         </Viewbox>
-                        <TextBlock Text="금형번호" Margin="-5, 0, 0, 0"/>
+                        <TextBlock Text="금형LotNo" Margin="-5, 0, 0, 0"/>
                     </StackPanel>
                 </Label>
                 <TextBox x:Name="txtMoldNoSrh" Grid.Column="1" Padding="0" IsEnabled="False"

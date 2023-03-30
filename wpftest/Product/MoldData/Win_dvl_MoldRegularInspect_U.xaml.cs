@@ -115,39 +115,6 @@ namespace WizMes_ANT
         {
             pf.ReturnCode(txtMoldSrh, 51, "");
         }
-
-        private void lblArticleSabunSrh_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
-        {
-            if (chkArticleSabunSrh.IsChecked == true) { chkArticleSabunSrh.IsChecked = false; }
-            else { chkArticleSabunSrh.IsChecked = true; }
-        }
-
-        private void chkArticleSabunSrh_Checked(object sender, RoutedEventArgs e)
-        {
-            txtArticleSabunSrh.IsEnabled = true;
-            btnPfArticleSabunSrh.IsEnabled = true;
-            txtArticleSabunSrh.Focus();
-        }
-
-        private void chkArticleSabunSrh_Unchecked(object sender, RoutedEventArgs e)
-        {
-            txtArticleSabunSrh.IsEnabled = false;
-            btnPfArticleSabunSrh.IsEnabled = false;
-        }
-
-        private void txtArticleSabunSrh_KeyDown(object sender, KeyEventArgs e)
-        {
-            if (e.Key == Key.Enter)
-            {
-                pf.ReturnCode(txtArticleSabunSrh, 79, "");
-            }
-        }
-
-        private void btnPfArticleSabunSrh_Click(object sender, RoutedEventArgs e)
-        {
-            pf.ReturnCode(txtArticleSabunSrh, 79, "");
-        }
-
         #endregion
 
         #region 상단 우측 버튼 이벤트
@@ -244,19 +211,10 @@ namespace WizMes_ANT
         //닫기
         private void btnClose_Click(object sender, RoutedEventArgs e)
         {
-            int i = 0;
-            foreach (object obj in MainWindow.objList)
-            {
-                if (obj.ToString().Contains("MDI"))
-                {
-                    if (this.ToString().Equals((obj as MdiChild).Content.ToString()))
-                    {
-                        (MainWindow.objList[i] as MdiChild).Close();
-                        break;
-                    }
-                }
-                i++;
-            }
+            string stDate = DateTime.Now.ToString("yyyyMMdd");
+            string stTime = DateTime.Now.ToString("HHmm");
+            DataStore.Instance.InsertLogByFormS(this.GetType().Name, stDate, stTime, "E");
+            Lib.Instance.ChildMenuClose(this.ToString());
         }
 
         //조회
@@ -426,11 +384,9 @@ namespace WizMes_ANT
                 sqlParameter.Add("EDate", chkInspectDaySrh.IsChecked == true ? dtpEDate.SelectedDate.Value.ToString("yyyyMMdd") : "");
                 sqlParameter.Add("nChkMold", chkMoldSrh.IsChecked == true ? (txtMoldSrh.Tag != null ? 1 : 2) : 0);
                 sqlParameter.Add("MoldID", chkMoldSrh.IsChecked == true ? (txtMoldSrh.Tag != null ? txtMoldSrh.Tag.ToString() : txtMoldSrh.Text) : "");
-                sqlParameter.Add("nChkArticle", chkArticleSabunSrh.IsChecked == true ? 1 : 0);
-                sqlParameter.Add("ArticleSabun", chkArticleSabunSrh.IsChecked == true ? txtArticleSabunSrh.Text : "");
              
                 sqlParameter.Add("ntotSearch", ChkntotSearch.IsChecked == true ? 1 : 0);
-                sqlParameter.Add("ntotSearchGbn", ChkntotSearch.IsChecked == true ? (ntotSearchGbn.SelectedIndex + 1 == null ? 0 : ntotSearchGbn.SelectedIndex + 1) : 0);
+                sqlParameter.Add("ntotSearchGbn", ChkntotSearch.IsChecked == true ? (ntotSearchGbn.SelectedValue == null ? 0 : ntotSearchGbn.SelectedIndex + 1) : 0);
                 sqlParameter.Add("stotSearch", txttotSearch.Text.ToString());
                 DataSet ds = DataStore.Instance.ProcedureToDataSet("xp_dvlMoldIns_sRegularInspect_FAC", sqlParameter, false);
 
@@ -457,7 +413,6 @@ namespace WizMes_ANT
                                 Comments = dr["Comments"].ToString(),
                                 Person = dr["Person"].ToString(),
                                 MoldNo = dr["MoldNo"].ToString(),
-                                Article_Sabun = dr["Article_Sabun"].ToString()
                             };
                             if (WinMoldInspect.MoldRInspectDate != null && !WinMoldInspect.MoldRInspectDate.Equals(""))
                             {

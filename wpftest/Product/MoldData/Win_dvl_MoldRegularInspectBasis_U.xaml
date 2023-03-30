@@ -263,13 +263,12 @@
                         <Label Grid.Row="2" Grid.Column="0" VerticalContentAlignment="Center" HorizontalContentAlignment="Left"
                                Margin="1" MouseLeftButtonUp="lblMoldInspectBasisDate_MouseLeftButtonUp">
                             <StackPanel Orientation="Horizontal">
-                                <CheckBox x:Name="chkMoldInspectBasisDate" VerticalAlignment="Center"
-                                          Checked="chkMoldInspectBasisDate_Checked" Unchecked="chkMoldInspectBasisDate_UnChecked"/>
+                                <CheckBox x:Name="chkMoldInspectBasisDate" VerticalAlignment="Center" IsChecked="True"/>
                                 <TextBlock Text="개정일자" VerticalAlignment="Center"/>
                             </StackPanel>
                         </Label>
                         <DatePicker Grid.Row="2" Grid.Column="1" x:Name="dtpMoldInspectBasisDate" VerticalContentAlignment="Center" Padding="0" Margin="1"
-                                    SelectedDate="{Binding MoldInspectBasisDate_CV}" IsEnabled="False"/>
+                                    SelectedDate="{Binding MoldInspectBasisDate_CV}"/>
 
                         <!-- 3 Row -->
                         <Label Grid.Row="3" Grid.Column="0" Content=" 품    번" VerticalContentAlignment="Center" HorizontalContentAlignment="Left"

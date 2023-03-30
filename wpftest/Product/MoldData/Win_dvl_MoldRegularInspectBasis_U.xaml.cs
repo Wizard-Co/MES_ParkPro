@@ -133,7 +133,6 @@ namespace WizMes_ANT
 
             // 입력사항
             grdInput.IsHitTestVisible = false;
-            chkMoldInspectBasisDate.IsChecked = false;
 
             // 서브그리드
             btnAddSub.IsEnabled = false;
@@ -296,7 +295,7 @@ namespace WizMes_ANT
 
         // 취소 버튼
         private void btnCancel_Click(object sender, RoutedEventArgs e)
-        {
+        {   
             CompleteCancelMode();
             strFlag = "";
             re_Search(rowNum);
@@ -1249,6 +1248,12 @@ namespace WizMes_ANT
                                 Comments = dr["Comments"].ToString(),
                             };
 
+                            if (Mold.MoldInspectBasisDate.Trim().Length > 0)
+                            {
+
+                            }
+
+
                             dgdMain.Items.Add(Mold);
 
                         }
@@ -1364,16 +1369,15 @@ namespace WizMes_ANT
             List<Procedure> Prolist = new List<Procedure>();
             List<Dictionary<string, object>> ListParameter = new List<Dictionary<string, object>>();
 
-            string GetKey = "";
-
             if (CheckData())
             {
                 try
                 {
+                    string sGetID = txtMoldInspectBasisID.Text.Trim().ToString();
                     Dictionary<string, object> sqlParameter = new Dictionary<string, object>();
                     sqlParameter.Clear();
 
-                    sqlParameter.Add("MoldInspectBasisID", txtMoldInspectBasisID.Text);
+                    sqlParameter.Add("MoldInspectBasisID", sGetID);
                     sqlParameter.Add("MoldID", txtMoldID.Tag != null ? txtMoldID.Tag.ToString() : "");
                     sqlParameter.Add("MoldInspectBasisDate", dtpMoldInspectBasisDate.SelectedDate != null ? dtpMoldInspectBasisDate.SelectedDate.Value.ToString("yyyyMMdd") : "");
                     sqlParameter.Add("MoldInspectContent", txtMoldInspectContent.Text);
@@ -1424,7 +1428,7 @@ namespace WizMes_ANT
 
                         List<KeyValue> list_Result = new List<KeyValue>();
                         list_Result = DataStore.Instance.ExecuteAllProcedureOutputGetCS(Prolist, ListParameter);
-                        string sGetID = string.Empty;
+                        
 
                         if (list_Result[0].key.ToLower() == "success")
                         {
@@ -1548,156 +1552,36 @@ namespace WizMes_ANT
 
                     #endregion
 
+                    // 파일을 올리자 : GetKey != "" 라면 파일을 올려보자
+                    if (!sGetID.Trim().Equals(""))
+                    {
+                        //삭제할 사진이 있을 경우
+                        if (deleteListFtpFile.Count > 0)
+                        {
+                            foreach (string[] str in deleteListFtpFile)
+                            {
+                                FTP_RemoveFile(sGetID + "/" + str[0]);
+                            }
+                        }
 
+                        //추가한 사진이 있을 때
+                        if (listFtpFile.Count > 0)
+                        {
+                            FTP_Save_File(listFtpFile, sGetID);
+                            //AttachFileUpdate(GetKey);
+                        }
 
+                        //복사추가 했을 떄 
+                        if (lstFtpFilePath.Count > 0)
+                        {
+                            FTP_Save_FileByFtpServerFilePath(lstFtpFilePath, sGetID);
+                        }
+                    }
 
-
-                    //Procedure pro1 = new Procedure();
-                    //pro1.list_OutputName = new List<string>();
-                    //pro1.list_OutputLength = new List<string>();
-
-                    //pro1.Name = "xp_dvlMold_iuMoldRegularInspectBasis";
-                    //if (strFlag.Trim().Equals("U"))
-                    //{
-                    //    pro1.OutputUseYN = "N";
-                    //}
-                    //else
-                    //{
-                    //    pro1.OutputUseYN = "Y";
-                    //}
-                    //pro1.list_OutputName.Add("MoldInspectBasisID");
-                    //pro1.list_OutputLength.Add("10");
-
-                    //Prolist.Add(pro1);
-                    //ListParameter.Add(sqlParameter);
-
-                    //if (strFlag.Trim().Equals("I"))
-                    //{
-                    //    List<KeyValue> list_Result = new List<KeyValue>();
-                    //    list_Result = DataStore.Instance.ExecuteAllProcedureOutputListGetCS(Prolist, ListParameter);
-
-                    //    if (list_Result[0].key.ToLower() == "success")
-                    //    {
-                    //        foreach (KeyValue MoldKey in list_Result)
-                    //        {
-                    //            if (MoldKey.key.ToString().Trim().Equals("MoldInspectBasisID"))
-                    //            {
-                    //                GetKey = MoldKey.value.ToString().Trim();
-                    //            }
-                    //        }
-
-                    //        Prolist.Clear();
-                    //        ListParameter.Clear();
-                    //    }
-                    //    else
-                    //    {
-                    //        MessageBox.Show("[저장실패]\r\n" + list_Result[0].value.ToString());
-                    //        flag = false;
-                    //    }
-                    //}
-
-                    //// 수정이면 서브그리드 전체 삭제
-                    //else if (strFlag.Trim().Equals("U"))
-                    //{
-                    //    sqlParameter = new Dictionary<string, object>();
-                    //    sqlParameter.Clear();
-                    //    sqlParameter.Add("MoldInspectBasisID", txtMoldInspectBasisID.Text);
-
-                    //    Procedure pro2 = new Procedure();
-
-                    //    pro2.Name = "xp_DvlMold_dMolRegularInspectBasisSub_All";
-                    //    pro2.OutputUseYN = "N";
-                    //    pro2.OutputName = "REQ_ID";
-                    //    pro2.OutputLength = "10";
-
-                    //    Prolist.Add(pro2);
-                    //    ListParameter.Add(sqlParameter);                     
-                    //}
-
-                    //for (int i = 0; i < dgdSub.Items.Count; i++)
-                    //{
-                    //    var MoldSub = dgdSub.Items[i] as Win_dvl_MoldRegularInspectBasis_U_CodeViewSub;
-
-                    //    if (MoldSub != null)
-                    //    {
-                    //        sqlParameter = new Dictionary<string, object>();
-                    //        sqlParameter.Clear();
-
-                    //        sqlParameter.Add("MoldInspectBasisID", strFlag.Trim().Equals("U") ? txtMoldInspectBasisID.Text : GetKey);
-                    //        sqlParameter.Add("MoldSeq", i + 1);
-                    //        sqlParameter.Add("MoldInspectItemName", MoldSub.MoldInspectItemName);
-                    //        sqlParameter.Add("MoldInspectContent", MoldSub.MoldInspectContent);
-                    //        sqlParameter.Add("MoldInspectCheckGbn", MoldSub.MoldInspectCheckGbn);
-
-                    //        sqlParameter.Add("MoldInspectCycleGbn", MoldSub.MoldInspectCycleGbn);
-                    //        sqlParameter.Add("MoldInspectCycleDate", ConvertInt(MoldSub.MoldInspectCycleDate));
-                    //        sqlParameter.Add("MoldInspectRecordGbn", MoldSub.MoldInspectRecordGbn);
-                    //        sqlParameter.Add("MoldImageFile", MoldSub.MoldInspectImageFile);
-                    //        //sqlParameter.Add("MoldInspectComments", MoldSub.MoldInspectComments);
-
-                    //        sqlParameter.Add("UserID", MainWindow.CurrentUser);
-
-                    //        // xp_DvlMold_iMoldRegularInspectBasisSub_New
-                    //        Procedure pro3 = new Procedure();
-
-                    //        pro3.Name = "xp_DvlMold_iMoldRegularInspectBasisSub_New";
-                    //        pro3.OutputUseYN = "N";
-                    //        pro3.OutputName = "REQ_ID";
-                    //        pro3.OutputLength = "10";
-
-                    //        Prolist.Add(pro3);
-                    //        ListParameter.Add(sqlParameter);
-                    //    }
-                    //}
-
-                    //if (Prolist.Count > 0)
-                    //{
-                    //    List<KeyValue> list_Result2 = new List<KeyValue>();
-                    //    list_Result2 = DataStore.Instance.ExecuteAllProcedureOutputListGetCS(Prolist, ListParameter);
-
-                    //    if (list_Result2[0].key.ToLower() == "success")
-                    //    {
-                    //        if (strFlag.Trim().Equals("U")) { GetKey = txtMoldInspectBasisID.Text; }
-
-                    //        flag = true;
-                    //    }
-                    //    else
-                    //    {
-                    //        MessageBox.Show("[저장실패]\r\n" + list_Result2[0].value.ToString());
-                    //        flag = false;
-                    //    }
-                    //}
-
-                    //// 파일을 올리자 : GetKey != "" 라면 파일을 올려보자
-                    //if (!GetKey.Trim().Equals(""))
-                    //{
-                    //    //삭제할 사진이 있을 경우
-                    //    if (deleteListFtpFile.Count > 0)
-                    //    {
-                    //        foreach (string[] str in deleteListFtpFile)
-                    //        {
-                    //            FTP_RemoveFile(GetKey + "/" + str[0]);
-                    //        }
-                    //    }
-
-                    //    //추가한 사진이 있을 때
-                    //    if (listFtpFile.Count > 0)
-                    //    {
-                    //        FTP_Save_File(listFtpFile, GetKey);
-                    //        //AttachFileUpdate(GetKey);
-                    //    }
-
-                    //    //복사추가 했을 떄 
-                    //    if (lstFtpFilePath.Count > 0)
-                    //    {
-                    //        FTP_Save_FileByFtpServerFilePath(lstFtpFilePath, GetKey);
-                    //    }
-                    //}
-
-                    //// 파일 List 비워주기
-                    //listFtpFile.Clear();
-                    //deleteListFtpFile.Clear();
-                    //lstFtpFilePath.Clear();
+                    // 파일 List 비워주기
+                    listFtpFile.Clear();
+                    deleteListFtpFile.Clear();
+                    lstFtpFilePath.Clear();
                 }
                 catch (Exception ex)
                 {

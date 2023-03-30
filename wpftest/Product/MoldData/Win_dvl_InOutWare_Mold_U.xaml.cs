@@ -9,6 +9,8 @@ using System.Windows.Input;
 using WPF.MDI;
 using Tesseract;
 using System.Drawing;
+using static System.Windows.Forms.AxHost;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.TaskbarClock;
 
 namespace WizMes_ANT
 {
@@ -344,19 +346,10 @@ namespace WizMes_ANT
         //닫기
         private void btnClose_Click(object sender, RoutedEventArgs e)
         {
-            int i = 0;
-            foreach (object obj in MainWindow.objList)
-            {
-                if (obj.ToString().Contains("MDI"))
-                {
-                    if (this.ToString().Equals((obj as MdiChild).Content.ToString()))
-                    {
-                        (MainWindow.objList[i] as MdiChild).Close();
-                        break;
-                    }
-                }
-                i++;
-            }
+            string stDate = DateTime.Now.ToString("yyyyMMdd");
+            string stTime = DateTime.Now.ToString("HHmm");
+            DataStore.Instance.InsertLogByFormS(this.GetType().Name, stDate, stTime, "E");
+            Lib.Instance.ChildMenuClose(this.ToString());
         }
 
         //추가,수정 시 동작 모음
@@ -562,8 +555,6 @@ namespace WizMes_ANT
                     sqlParameter.Add("ArticleID", chkArticleSrh.IsChecked == true ? (txtArticleSrh.Tag != null ? txtArticleSrh.Tag.ToString() : txtArticleSrh.Text) : "");
                     sqlParameter.Add("nInOutGbn", chkGubunSrh.IsChecked == true ? 1 : 0);
                     sqlParameter.Add("InOutGbn", (chkGubunSrh.IsChecked == true ? cboGubunSrh.SelectedValue.ToString() : ""));
-                    sqlParameter.Add("nArticleSabun", "");
-                    sqlParameter.Add("ArticleSabun", "");
 
                     DataSet ds = DataStore.Instance.ProcedureToDataSet("xp_dvlMold_sMoldInOut", sqlParameter, false);
 
@@ -595,7 +586,6 @@ namespace WizMes_ANT
                                     MoldName = dr["MoldName"].ToString(),
                                     Place = dr["Place"].ToString(),
                                     InOutName = dr["InOutName"].ToString(),
-                                    ArticleSabun = dr["Sabun"].ToString(),
                                     ArticleID = dr["ArticleID"].ToString()
                                 };
 

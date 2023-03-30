@@ -82,9 +82,12 @@ namespace WizMes_ANT
         }
 
         //string FTP_ADDRESS = "ftp://wizis.iptime.org/ImageData/Mold";
-        //string FTP_ADDRESS = "ftp://wizis.iptime.org/ImageData/Mold";
+#if DEBUG
+        string FTP_ADDRESS = "ftp://wizis.iptime.org/ImageData/Mold";
+#else
         string FTP_ADDRESS = "ftp://" + LoadINI.FileSvr + ":"
             + LoadINI.FTPPort + LoadINI.FtpImagePath + "/Mold";
+#endif
         //string FTP_ADDRESS = "ftp://222.104.222.145:25000/ImageData/Mold";
         //string FTP_ADDRESS = "ftp://192.168.0.95/ImageData/Mold";
         private const string FTP_ID = "wizuser";
@@ -166,7 +169,7 @@ namespace WizMes_ANT
             lstMD.Add(strMD_D);
         }
 
-        #region 라벨 클릭 및 체크박스 이벤트
+#region 라벨 클릭 및 체크박스 이벤트
 
         //금형발주일
         private void lblDate_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
@@ -351,7 +354,7 @@ namespace WizMes_ANT
             // cboDevYNSrh.IsEnabled = false;
         }
 
-        #endregion
+#endregion
 
         /// <summary>
         /// 수정,추가 저장 후
@@ -1134,7 +1137,7 @@ namespace WizMes_ANT
                     sqlParameter.Add("sMoldTypeID", "");
                     sqlParameter.Add("sEvalGrade", txtEvalGrade.Text.ToString());
 
-                    #region 추가
+#region 추가
 
                     if (strFlag.Equals("I"))
                     {
@@ -1217,9 +1220,9 @@ namespace WizMes_ANT
                         }
                     }
 
-                    #endregion
+#endregion
 
-                    #region 수정
+#region 수정
 
                     else if (strFlag.Equals("U"))
                     {
@@ -1273,17 +1276,17 @@ namespace WizMes_ANT
                         if (flag)
                         {
                             bool AttachYesNo = false;
-                            if (txtAttFile1.Text != string.Empty && ftpDelete1)       //첨부파일 1
+                            if (txtAttFile1.Text != string.Empty)       //첨부파일 1
                             {
                                 AttachYesNo = true;
                                 FTP_Save_File(strMoldID, txtAttFile1.Text, FullPath1);
                             }
-                            if (txtAttFile2.Text != string.Empty && ftpDelete2)       //첨부파일 2
+                            if (txtAttFile2.Text != string.Empty)       //첨부파일 2
                             {
                                 AttachYesNo = true;
                                 FTP_Save_File(strMoldID, txtAttFile2.Text, FullPath2);
                             }
-                            if (txtAttFile3.Text != string.Empty && ftpDelete3)       //첨부파일 3
+                            if (txtAttFile3.Text != string.Empty)       //첨부파일 3
                             {
                                 AttachYesNo = true;
                                 FTP_Save_File(strMoldID, txtAttFile3.Text, FullPath3);
@@ -1292,7 +1295,7 @@ namespace WizMes_ANT
                         }
                     }
 
-                    #endregion
+#endregion
                 }
             }
             catch (Exception ex)
@@ -1733,8 +1736,9 @@ namespace WizMes_ANT
 
             Microsoft.Win32.OpenFileDialog OFdlg = new Microsoft.Win32.OpenFileDialog();
 
-            OFdlg.DefaultExt = ".jpg";
-            OFdlg.Filter = "Image files (*.jpg, *.jpeg, *.jpe, *.jfif, *.png) | *.jpg; *.jpeg; *.jpe; *.jfif; *.png | All Files|*.*";
+            OFdlg.DefaultExt = "*.jpg, *.jpeg, *.jpe, *.jfif, *.png";
+            //OFdlg.Filter = "Image files (*.jpg, *.jpeg, *.jpe, *.jfif, *.png) | *.jpg; *.jpeg; *.jpe; *.jfif; *.png | All Files|*.*";
+            OFdlg.Filter = "All Files|*.*";
 
             Nullable<bool> result = OFdlg.ShowDialog();
             if (result == true)

@@ -349,19 +349,10 @@ namespace WizMes_ANT
         //닫기
         private void btnClose_Click(object sender, RoutedEventArgs e)
         {
-            int i = 0;
-            foreach (object obj in MainWindow.objList)
-            {
-                if (obj.ToString().Contains("MDI"))
-                {
-                    if (this.ToString().Equals((obj as MdiChild).Content.ToString()))
-                    {
-                        (MainWindow.objList[i] as MdiChild).Close();
-                        break;
-                    }
-                }
-                i++;
-            }
+            string stDate = DateTime.Now.ToString("yyyyMMdd");
+            string stTime = DateTime.Now.ToString("HHmm");
+            DataStore.Instance.InsertLogByFormS(this.GetType().Name, stDate, stTime, "E");
+            Lib.Instance.ChildMenuClose(this.ToString());
         }
 
         //조회

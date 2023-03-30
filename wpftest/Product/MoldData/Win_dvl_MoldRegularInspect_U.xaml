@@ -80,29 +80,6 @@
                     <Image Source="{DynamicResource btiPlusFind}" />
                 </Button>
             </Grid>
-            <Grid Grid.Column="2" Grid.Row="1" >
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="95*" />
-                    <ColumnDefinition Width="95*" />
-                    <ColumnDefinition Width="20*" />
-                </Grid.ColumnDefinitions>
-                <Label x:Name="lblArticleSabunSrh" Grid.Column="0" Margin="1" VerticalContentAlignment="Center" 
-                       MouseLeftButtonUp="lblArticleSabunSrh_MouseLeftButtonUp">
-                    <StackPanel Orientation="Horizontal">
-                        <Viewbox>
-                            <CheckBox x:Name="chkArticleSabunSrh" Checked="chkArticleSabunSrh_Checked" 
-                                      Unchecked="chkArticleSabunSrh_Unchecked" VerticalAlignment="Center"/>
-                        </Viewbox>
-                        <TextBlock Text=" 사  번" VerticalAlignment="Center"/>
-                    </StackPanel>
-                </Label>
-                <TextBox x:Name="txtArticleSabunSrh" Grid.Column="1" Margin="1" VerticalContentAlignment="Center"
-                         IsEnabled="False" KeyDown="txtArticleSabunSrh_KeyDown"/>
-                <Button x:Name="btnPfArticleSabunSrh" Grid.Column="2" Margin="1" IsEnabled="False" 
-                        Click="btnPfArticleSabunSrh_Click">
-                    <Image Source="{DynamicResource btiPlusFind}" />
-                </Button>
-            </Grid>
             <Grid Grid.Row="2" Grid.Column="2">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="60*" />
@@ -121,7 +98,6 @@
                 </Label>
                 <ComboBox x:Name="ntotSearchGbn"  Grid.Column="1" IsEnabled="False" Padding="0"
                                   VerticalContentAlignment="Center" HorizontalContentAlignment="Center" >
-                    <ComboBoxItem Content="사번"  Width="100"/>
                     <ComboBoxItem Content="품명"  Width="100"/>
                     <ComboBoxItem Content="품번"  Width="100"/>
                     <ComboBoxItem Content="도면재질"  Width="100"/>
@@ -217,11 +193,10 @@
                 <ColumnDefinition Width="auto" />
                 <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
-            <DataGrid x:Name="dgdMoldInspect" Grid.Column="0" Margin="1" SelectionChanged="dgdMoldInspect_SelectionChanged" IsReadOnly="True" dgx:DataGridFilter.IsAutoFilterEnabled="True">
+            <DataGrid x:Name="dgdMoldInspect" Grid.Column="0" Margin="1" SelectionChanged="dgdMoldInspect_SelectionChanged" IsReadOnly="True">
                 <DataGrid.Columns>
                     <DataGridTextColumn Header="순번" Binding="{Binding Num}" />
                     <DataGridTextColumn Header="금형점검번호" Binding="{Binding MoldRInspectID}" />
-                    <DataGridTextColumn Header="사번" Binding="{Binding Article_Sabun}" />
                     <DataGridTextColumn Header="금형번호" Binding="{Binding MoldID}" />
                     <DataGridTextColumn Header="금형BasisID" Binding="{Binding MoldInspectBasisID}" Visibility="Hidden"/>
                     <DataGridTextColumn Header="작성자" Binding="{Binding Person}" />
@@ -295,7 +270,7 @@
                         </Grid>
                     </GroupBox>
                     <GroupBox Grid.Row="1" Margin="1" Header="항목별 검사(범례)">
-                        <DataGrid x:Name="dgdMold_InspectSub1" IsReadOnly="True" SelectionUnit="Cell" dgx:DataGridFilter.IsAutoFilterEnabled="True">
+                        <DataGrid x:Name="dgdMold_InspectSub1" IsReadOnly="True" SelectionUnit="Cell">
                             <DataGrid.Columns>
                                 <DataGridTextColumn Header="순번" Binding="{Binding InspectSubSeq}"/>
                                 <DataGridTextColumn Header="금형점검번호"  Binding="{Binding MoldRInspectID}" Visibility="Hidden"/>
@@ -353,7 +328,7 @@
                         </DataGrid>
                     </GroupBox>
                     <GroupBox Grid.Row="2" Margin="1" Header="항목별 검사(수치)">
-                        <DataGrid x:Name="dgdMold_InspectSub2" IsReadOnly="True" SelectionUnit="Cell" dgx:DataGridFilter.IsAutoFilterEnabled="True">
+                        <DataGrid x:Name="dgdMold_InspectSub2" IsReadOnly="True" SelectionUnit="Cell" >
                             <DataGrid.Columns>
                                 <DataGridTextColumn Header="순번" Binding="{Binding InspectSubSeq}"/>
                                 <DataGridTextColumn Header="금형점검번호"  Binding="{Binding MoldRInspectID}"/>

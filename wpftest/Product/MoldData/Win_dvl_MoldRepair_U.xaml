@@ -91,7 +91,7 @@
                     <ColumnDefinition Width="95*" />
                     <ColumnDefinition Width="20*" />
                 </Grid.ColumnDefinitions>
-                <Label x:Name="lblArticleSabunSrh" Grid.Column="0" Margin="1" VerticalContentAlignment="Center" 
+                <Label x:Name="lblArticleSabunSrh" Grid.Column="0" Margin="1" VerticalContentAlignment="Center" Visibility="Hidden"
                        MouseLeftButtonUp="lblArticleSabunSrh_MouseLeftButtonUp">
                     <StackPanel Orientation="Horizontal">
                         <Viewbox>
@@ -101,8 +101,7 @@
                         <TextBlock Text=" 사       번" VerticalAlignment="Center"/>
                     </StackPanel>
                 </Label>
-                <TextBox x:Name="txtArticleSabunSrh" Grid.Column="1" Margin="1" 
-                         VerticalContentAlignment="Center" IsEnabled="False" 
+                <TextBox x:Name="txtArticleSabunSrh" Grid.Column="1" Margin="1" Visibility="Hidden"                         VerticalContentAlignment="Center" IsEnabled="False" 
                          KeyDown="txtArticleSabunSrh_KeyDown"/>
                 <Button x:Name="btnPfArticleSabunSrh" Grid.Column="2" Margin="1" IsEnabled="False" 
                         Click="btnPfArticleSabunSrh_Click">

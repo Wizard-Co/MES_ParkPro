@@ -203,17 +203,15 @@
                 <ColumnDefinition Width="auto" />
                 <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
-            <DataGrid x:Name="dgdMoldInOut" Grid.Column="0" Margin="1" SelectionChanged="dgdMoldInOut_SelectionChanged" IsReadOnly="True" dgx:DataGridFilter.IsAutoFilterEnabled="True">
+            <DataGrid x:Name="dgdMoldInOut" Grid.Column="0" Margin="1" SelectionChanged="dgdMoldInOut_SelectionChanged" IsReadOnly="True">
                 <DataGrid.Columns>
                     <DataGridTextColumn Header="" HeaderStyle="{DynamicResource dgBack}" Binding="{Binding Num}"></DataGridTextColumn>
                     <DataGridTextColumn Header="관리번호" Binding="{Binding InOutID}"/>
                     <DataGridTextColumn Header="구분" Binding="{Binding InOutGbn}" Visibility="Hidden"/>
                     <DataGridTextColumn Header="구분" Binding="{Binding InOutName}"/>
                     <DataGridTextColumn Header="일자" Binding="{Binding InOutDate}"/>
-                    <DataGridTextColumn Header="사번" Binding="{Binding ArticleSabun}"/>
-                    <DataGridTextColumn Header="금형ID" Binding="{Binding MoldID}"/>
+                    <DataGridTextColumn Header="금형ID" Binding="{Binding MoldID}" />
                     <DataGridTextColumn Header="LotNo" Binding="{Binding MoldNo}"/>
-                    <DataGridTextColumn Header="금형명" Binding="{Binding MoldName}"/>
                     <DataGridTextColumn Header="보관장소" Binding="{Binding Place}"/>
                     <DataGridTextColumn Header="수량" Binding="{Binding InOutQty}"/>
                     <DataGridTextColumn Header="담당자ID" Binding="{Binding InOutPerson}" Visibility="Hidden"/>
@@ -287,7 +285,7 @@
                                 SelectedDate="{Binding InOutDate}" Background="#fff2d2" PreviewKeyDown="dtpDay_PreviewKeyDown" CalendarClosed="dtpDay_CalendarClosed"/>
                         
                         <Label Grid.Column="0" Grid.Row="4" Content="금형번호" Margin="1" VerticalContentAlignment="Center" HorizontalContentAlignment="Center"/>
-                        <TextBox x:Name="txtMoldID" Grid.Column="1" Grid.Row="4" Margin="1" VerticalContentAlignment="Center" Text="{Binding MoldID}"/>
+                        <TextBox x:Name="txtMoldID" Grid.Column="1" Grid.Row="4" Margin="1" VerticalContentAlignment="Center" Text="{Binding MoldID}" IsReadOnly="True" Background="LightGray"/>
                         
                         <Label Grid.Column="0" Grid.Row="6" Content="금형LotNo" Margin="1" VerticalContentAlignment="Center" HorizontalContentAlignment="Center"/>
                         <TextBox x:Name="txtMoldNo" Grid.Column="1" Grid.Row="6" Margin="1" VerticalContentAlignment="Center" Text="{Binding MoldNo}" Tag="{Binding MoldID}" 
