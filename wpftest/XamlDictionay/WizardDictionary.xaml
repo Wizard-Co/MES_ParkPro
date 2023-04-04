@@ -134,7 +134,7 @@
     <BitmapImage x:Key="btiPrint" UriSource="/images/Print.bmp" />
     <TextBlock x:Key="tblPrint" Text="인쇄(P)" />
     <BitmapImage x:Key="btiUpload" UriSource="/images/Upload.bmp" />
-    <TextBlock x:Key="tblUpload" Text="주문일괄 Upload(I)" />
+    <TextBlock x:Key="tblUpload" Text="업로드(I)" />
     <BitmapImage x:Key="btiHTML" UriSource="/images/HTML.ico" />
     <TextBlock x:Key="tblHTML" Text="HTML" />
     <BitmapImage x:Key="btiBarCode" UriSource="/images/BarCode.ico" />

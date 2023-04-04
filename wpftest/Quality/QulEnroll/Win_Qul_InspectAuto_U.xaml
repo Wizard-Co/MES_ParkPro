@@ -325,15 +325,13 @@
                     <ColumnDefinition Width="90*" />
                     <ColumnDefinition Width="15*" />
                 </Grid.ColumnDefinitions>
-                <Label x:Name="lblResultSrh" Grid.Column="0" VerticalContentAlignment="Center"
-                       MouseLeftButtonUp="lblResultSrh_MouseLeftButtonUp">
+                <Label x:Name="lblResultSrh" Grid.Column="0" VerticalContentAlignment="Center" MouseLeftButtonUp="lblResultSrh_MouseLeftButtonUp" Style="{DynamicResource LabelSearch}">
                     <StackPanel Style="{DynamicResource StackPanelInLabel}">
                         <Viewbox Style="{DynamicResource ViewBoxSetMaxMinHeight}">
-                            <CheckBox x:Name="chkResultSrh" Checked="chkResultSrh_Checked" 
-                                      Unchecked="chkResultSrh_Unchecked"/>
+                            <CheckBox x:Name="chkResultSrh" Checked="chkResultSrh_Checked" Unchecked="chkResultSrh_Unchecked" VerticalAlignment="Center"/>
                         </Viewbox>
                         <Viewbox Style="{DynamicResource ViewBoxSetMaxMinHeight}">
-                            <TextBlock Text="판정결과" Style="{DynamicResource TextBlockInViewBoxSearch}"/>
+                            <TextBlock Text=" 판정결과" Style="{DynamicResource TextBlockInViewBoxSearch}"/>
                         </Viewbox>
                     </StackPanel>
                 </Label>
@@ -343,14 +341,15 @@
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="1*"/>
                     <ColumnDefinition Width="1*"/>
+                    <ColumnDefinition Width="1*"/>
                 </Grid.ColumnDefinitions>
-                <Label x:Name="lblRemainAddSrh" Grid.Column="0" Style="{DynamicResource LabelSearch}" >
+                <Label x:Name="lblRemainAddSrh" Grid.Column="0" Grid.ColumnSpan="2" Style="{DynamicResource LabelSearch}" >
                 <StackPanel Style="{DynamicResource StackPanelInLabel}">
                     <Viewbox  Style="{DynamicResource ViewBoxSetMaxMinHeight}" >
                         <CheckBox x:Name="chkRemainAddSrh"/>
                     </Viewbox>
                     <Viewbox  Style="{DynamicResource ViewBoxSetMaxMinHeight}" >
-                        <TextBlock Text="LOTNO 유지추가"  Style="{DynamicResource TextBlockInViewBoxSearch}"/>
+                        <TextBlock Text=" LOTNO 유지추가"  Style="{DynamicResource TextBlockInViewBoxSearch}"/>
                     </Viewbox>
                 </StackPanel>
             </Label>
@@ -401,7 +400,7 @@
                         <ColumnDefinition Width="50*" />
                         <ColumnDefinition Width="50*" />
                     </Grid.ColumnDefinitions>
-                    <Button x:Name="btnPrint" Grid.Column="0"  Click="btnPrint_Click" Margin="1">
+                    <Button x:Name="btnPrint" Grid.Column="0"  Click="btnPrint_Click" Margin="1" Visibility="Hidden">
                         <StackPanel Orientation="Horizontal" >
                             <Image Source="{DynamicResource btiPrint}" Style="{DynamicResource imgSize}" VerticalAlignment="Center"/>
                             <StackPanel Orientation="Vertical">
@@ -1244,7 +1243,7 @@
                                 <DataGridTemplateColumn.CellEditingTemplate>
                                     <DataTemplate>
                                         <TextBox Text="{Binding InspectText1,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}" 
-                                                 TextChanged="InspectText1_TextChanged"
+                                                 Tag="1" TextChanged="InspectText_TextChanged"
                                                  LostFocus="ValueText_LostFocus"/>
                                     </DataTemplate>
                                 </DataGridTemplateColumn.CellEditingTemplate>
@@ -1258,7 +1257,7 @@
                                 <DataGridTemplateColumn.CellEditingTemplate>
                                     <DataTemplate>
                                         <TextBox Text="{Binding InspectText2,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}"
-                                                 TextChanged="InspectText2_TextChanged"
+                                                 Tag="2" TextChanged="InspectText_TextChanged"
                                                  LostFocus="ValueText_LostFocus"/>
                                     </DataTemplate>
                                 </DataGridTemplateColumn.CellEditingTemplate>
@@ -1272,7 +1271,7 @@
                                 <DataGridTemplateColumn.CellEditingTemplate>
                                     <DataTemplate>
                                         <TextBox Text="{Binding InspectText3,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}"
-                                                 TextChanged="InspectText3_TextChanged"
+                                                 Tag="3" TextChanged="InspectText_TextChanged"
                                                  LostFocus="ValueText_LostFocus"/>
                                     </DataTemplate>
                                 </DataGridTemplateColumn.CellEditingTemplate>
@@ -1287,7 +1286,7 @@
                                 <DataGridTemplateColumn.CellEditingTemplate>
                                     <DataTemplate>
                                         <TextBox Text="{Binding InspectText4,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}"
-                                                 TextChanged="InspectText4_TextChanged"
+                                                 Tag="4" TextChanged="InspectText_TextChanged"
                                                  LostFocus="ValueText_LostFocus"/>
                                     </DataTemplate>
                                 </DataGridTemplateColumn.CellEditingTemplate>
@@ -1301,7 +1300,7 @@
                                 <DataGridTemplateColumn.CellEditingTemplate>
                                     <DataTemplate>
                                         <TextBox Text="{Binding InspectText5,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}"
-                                                 TextChanged="InspectText5_TextChanged"
+                                                 Tag="5" TextChanged="InspectText_TextChanged"
                                                  LostFocus="ValueText_LostFocus"/>
                                     </DataTemplate>
                                 </DataGridTemplateColumn.CellEditingTemplate>
@@ -1315,7 +1314,7 @@
                                 <DataGridTemplateColumn.CellEditingTemplate>
                                     <DataTemplate>
                                         <TextBox Text="{Binding InspectText6,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}"
-                                                 TextChanged="InspectText6_TextChanged"
+                                                 Tag="6" TextChanged="InspectText_TextChanged"
                                                  LostFocus="ValueText_LostFocus"/>
                                     </DataTemplate>
                                 </DataGridTemplateColumn.CellEditingTemplate>
@@ -1329,7 +1328,7 @@
                                 <DataGridTemplateColumn.CellEditingTemplate>
                                     <DataTemplate>
                                         <TextBox Text="{Binding InspectText7,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}"
-                                                 TextChanged="InspectText7_TextChanged"
+                                                 Tag="7" TextChanged="InspectText_TextChanged"
                                                  LostFocus="ValueText_LostFocus"/>
                                     </DataTemplate>
                                 </DataGridTemplateColumn.CellEditingTemplate>
@@ -1343,7 +1342,7 @@
                                 <DataGridTemplateColumn.CellEditingTemplate>
                                     <DataTemplate>
                                         <TextBox Text="{Binding InspectText8,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}"
-                                                 TextChanged="InspectText8_TextChanged"
+                                                 Tag="8" TextChanged="InspectText_TextChanged"
                                                  LostFocus="ValueText_LostFocus"/>
                                     </DataTemplate>
                                 </DataGridTemplateColumn.CellEditingTemplate>
@@ -1358,7 +1357,7 @@
                                 <DataGridTemplateColumn.CellEditingTemplate>
                                     <DataTemplate>
                                         <TextBox Text="{Binding InspectText9,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}"
-                                                 TextChanged="InspectText9_TextChanged"
+                                                 Tag="9" TextChanged="InspectText_TextChanged"
                                                  LostFocus="ValueText_LostFocus"/>
                                     </DataTemplate>
                                 </DataGridTemplateColumn.CellEditingTemplate>
@@ -1372,7 +1371,7 @@
                                 <DataGridTemplateColumn.CellEditingTemplate>
                                     <DataTemplate>
                                         <TextBox Text="{Binding InspectText10,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}"
-                                                 TextChanged="InspectText10_TextChanged"
+                                                 Tag="10" TextChanged="InspectText_TextChanged"
                                                  LostFocus="ValueText_LostFocus"/>
                                     </DataTemplate>
                                 </DataGridTemplateColumn.CellEditingTemplate>
@@ -1490,11 +1489,11 @@
                                 </DataGridTemplateColumn.CellTemplate>
                                 <DataGridTemplateColumn.CellEditingTemplate>
                                     <DataTemplate>
-                                        <TextBox Tag="Value" Text="{Binding InspectValue1,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}"
-                                                 TextChanged="InspectValue1_TextChanged"
+                                        <TextBox Text="{Binding InspectValue1,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}"
+                                                 Tag="1" TextChanged="InspectValue_TextChanged"
                                                  PreviewTextInput="NumValue_PreviewTextInput"
                                                  LostFocus="ValueText_LostFocus"
-                                                 KeyDown="Value1Text_KeyDown" />
+                                                 KeyDown="ValueText_KeyDown" />
                                     </DataTemplate>
                                 </DataGridTemplateColumn.CellEditingTemplate>
                                  
@@ -1519,16 +1518,15 @@
                                 </DataGridTemplateColumn.CellTemplate>
                                 <DataGridTemplateColumn.CellEditingTemplate>
                                     <DataTemplate>
-                                        <TextBox Tag="Value" Text="{Binding InspectValue2,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}"
-                                                 TextChanged="InspectValue2_TextChanged"
+                                        <TextBox Text="{Binding InspectValue2,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}"
+                                                 Tag="2" TextChanged="InspectValue_TextChanged"
                                                  PreviewTextInput="NumValue_PreviewTextInput"
                                                  LostFocus="ValueText_LostFocus"
-                                                 KeyDown="Value2Text_KeyDown" />
+                                                 KeyDown="ValueText_KeyDown" />
                                     </DataTemplate>
                                 </DataGridTemplateColumn.CellEditingTemplate>
                             </DataGridTemplateColumn>
                             <DataGridTemplateColumn x:Name="dgdtpeValue3" Header="3" Width="*">
-                                
                             
                                 <DataGridTemplateColumn.CellTemplate>
                                     <DataTemplate>
@@ -1548,11 +1546,11 @@
                                 </DataGridTemplateColumn.CellTemplate>
                                 <DataGridTemplateColumn.CellEditingTemplate>
                                     <DataTemplate>
-                                        <TextBox Tag="Value" Text="{Binding InspectValue3,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}"
-                                                 TextChanged="InspectValue3_TextChanged"
+                                        <TextBox Text="{Binding InspectValue3,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}"
+                                                 Tag="3" TextChanged="InspectValue_TextChanged"
                                                  PreviewTextInput="NumValue_PreviewTextInput"
                                                  LostFocus="ValueText_LostFocus"
-                                                 KeyDown="Value3Text_KeyDown" />
+                                                 KeyDown="ValueText_KeyDown" />
                                     </DataTemplate>
                                 </DataGridTemplateColumn.CellEditingTemplate>
                             </DataGridTemplateColumn>
@@ -1560,77 +1558,135 @@
                             <DataGridTemplateColumn x:Name="dgdtpeValue4" Header="4" Width="*">
                                 <DataGridTemplateColumn.CellTemplate>
                                     <DataTemplate>
-                                        <TextBlock Margin="2" Text="{Binding InspectValue4,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}" Style="{DynamicResource NumericTextBlock}"/>
+                                        <TextBlock Margin="2" Text="{Binding InspectValue4,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}" >
+                                            <TextBlock.Style>
+                                                <Style TargetType="{x:Type TextBlock}">
+                                                    <Style.Triggers>
+                                                        <DataTrigger Binding="{Binding Path=ValueDefect4}" Value="true">
+                                                            <Setter Property="Foreground" Value="Red" />
+                                                        </DataTrigger>
+                                                    </Style.Triggers>
+                                                    <Setter Property="TextAlignment" Value="Right"/>
+                                                </Style>
+                                            </TextBlock.Style>
+                                        </TextBlock>
                                     </DataTemplate>
                                 </DataGridTemplateColumn.CellTemplate>
                                 <DataGridTemplateColumn.CellEditingTemplate>
                                     <DataTemplate>
-                                        <TextBox Tag="Value" Text="{Binding InspectValue4,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}"
-                                                 TextChanged="InspectValue4_TextChanged"
+                                        <TextBox Text="{Binding InspectValue4,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}"
+                                                 Tag="4" TextChanged="InspectValue_TextChanged"
                                                  PreviewTextInput="NumValue_PreviewTextInput"
                                                  LostFocus="ValueText_LostFocus"
-                                                 KeyDown="Value4Text_KeyDown"/>
+                                                 KeyDown="ValueText_KeyDown"/>
                                     </DataTemplate>
                                 </DataGridTemplateColumn.CellEditingTemplate>
                             </DataGridTemplateColumn>
                             <DataGridTemplateColumn x:Name="dgdtpeValue5" Header="5" Width="*">
                                 <DataGridTemplateColumn.CellTemplate>
                                     <DataTemplate>
-                                        <TextBlock Margin="2" Text="{Binding InspectValue5,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}" Style="{DynamicResource NumericTextBlock}"/>
+                                        <TextBlock Margin="2" Text="{Binding InspectValue5,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}" >
+                                            <TextBlock.Style>
+                                                <Style TargetType="{x:Type TextBlock}">
+                                                    <Style.Triggers>
+                                                        <DataTrigger Binding="{Binding Path=ValueDefect5}" Value="true">
+                                                            <Setter Property="Foreground" Value="Red" />
+                                                        </DataTrigger>
+                                                    </Style.Triggers>
+                                                    <Setter Property="TextAlignment" Value="Right"/>
+                                                </Style>
+                                            </TextBlock.Style>
+                                        </TextBlock>
                                     </DataTemplate>
                                 </DataGridTemplateColumn.CellTemplate>
                                 <DataGridTemplateColumn.CellEditingTemplate>
                                     <DataTemplate>
-                                        <TextBox Tag="Value" Text="{Binding InspectValue5,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}"
-                                                 TextChanged="InspectValue5_TextChanged"
+                                        <TextBox Text="{Binding InspectValue5,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}"
+                                                 Tag="5" TextChanged="InspectValue_TextChanged"
                                                  PreviewTextInput="NumValue_PreviewTextInput"
                                                  LostFocus="ValueText_LostFocus"
-                                                 KeyDown="Value5Text_KeyDown"/>
+                                                 KeyDown="ValueText_KeyDown"/>
                                     </DataTemplate>
                                 </DataGridTemplateColumn.CellEditingTemplate>
                             </DataGridTemplateColumn>
                             <DataGridTemplateColumn x:Name="dgdtpeValue6" Header="6" Width="*">
                                 <DataGridTemplateColumn.CellTemplate>
                                     <DataTemplate>
-                                        <TextBlock Margin="2" Text="{Binding InspectValue6,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}" Style="{DynamicResource NumericTextBlock}"/>
+                                        <TextBlock Margin="2" Text="{Binding InspectValue6,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}" >
+                                            <TextBlock.Style>
+                                                <Style TargetType="{x:Type TextBlock}">
+                                                    <Style.Triggers>
+                                                        <DataTrigger Binding="{Binding Path=ValueDefect6}" Value="true">
+                                                            <Setter Property="Foreground" Value="Red" />
+                                                        </DataTrigger>
+                                                    </Style.Triggers>
+                                                    <Setter Property="TextAlignment" Value="Right"/>
+                                                </Style>
+                                            </TextBlock.Style>
+                                        </TextBlock>
                                     </DataTemplate>
                                 </DataGridTemplateColumn.CellTemplate>
                                 <DataGridTemplateColumn.CellEditingTemplate>
                                     <DataTemplate>
-                                        <TextBox Tag="Value" Text="{Binding InspectValue6,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}"
-                                                 TextChanged="InspectValue6_TextChanged"
+                                        <TextBox Text="{Binding InspectValue6,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}"
+                                                 Tag="6" TextChanged="InspectValue_TextChanged"
                                                  PreviewTextInput="NumValue_PreviewTextInput"
-                                                 LostFocus="ValueText_LostFocus"/>
+                                                 LostFocus="ValueText_LostFocus"
+                                                 KeyDown="ValueText_KeyDown"/>
                                     </DataTemplate>
                                 </DataGridTemplateColumn.CellEditingTemplate>
                             </DataGridTemplateColumn>
                             <DataGridTemplateColumn x:Name="dgdtpeValue7" Header="7" Width="*">
                                 <DataGridTemplateColumn.CellTemplate>
                                     <DataTemplate>
-                                        <TextBlock Margin="2" Text="{Binding InspectValue7,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}" Style="{DynamicResource NumericTextBlock}"/>
+                                        <TextBlock Margin="2" Text="{Binding InspectValue7,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}" >
+                                            <TextBlock.Style>
+                                                <Style TargetType="{x:Type TextBlock}">
+                                                    <Style.Triggers>
+                                                        <DataTrigger Binding="{Binding Path=ValueDefect7}" Value="true">
+                                                            <Setter Property="Foreground" Value="Red" />
+                                                        </DataTrigger>
+                                                    </Style.Triggers>
+                                                    <Setter Property="TextAlignment" Value="Right"/>
+                                                </Style>
+                                            </TextBlock.Style>
+                                        </TextBlock>
                                     </DataTemplate>
                                 </DataGridTemplateColumn.CellTemplate>
                                 <DataGridTemplateColumn.CellEditingTemplate>
                                     <DataTemplate>
-                                        <TextBox Tag="Value" Text="{Binding InspectValue7,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}"
-                                                 TextChanged="InspectValue7_TextChanged"
+                                        <TextBox Text="{Binding InspectValue7,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}"
+                                                 Tag="7" TextChanged="InspectValue_TextChanged"
                                                  PreviewTextInput="NumValue_PreviewTextInput"
-                                                 LostFocus="ValueText_LostFocus"/>
+                                                 LostFocus="ValueText_LostFocus"
+                                                 KeyDown="ValueText_KeyDown"/>
                                     </DataTemplate>
                                 </DataGridTemplateColumn.CellEditingTemplate>
                             </DataGridTemplateColumn>
                             <DataGridTemplateColumn x:Name="dgdtpeValue8" Header="8" Width="*">
                                 <DataGridTemplateColumn.CellTemplate>
                                     <DataTemplate>
-                                        <TextBlock Margin="2" Text="{Binding InspectValue8,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}" Style="{DynamicResource NumericTextBlock}"/>
+                                        <TextBlock Margin="2" Text="{Binding InspectValue8,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}" >
+                                            <TextBlock.Style>
+                                                <Style TargetType="{x:Type TextBlock}">
+                                                    <Style.Triggers>
+                                                        <DataTrigger Binding="{Binding Path=ValueDefect8}" Value="true">
+                                                            <Setter Property="Foreground" Value="Red" />
+                                                        </DataTrigger>
+                                                    </Style.Triggers>
+                                                    <Setter Property="TextAlignment" Value="Right"/>
+                                                </Style>
+                                            </TextBlock.Style>
+                                        </TextBlock>
                                     </DataTemplate>
                                 </DataGridTemplateColumn.CellTemplate>
                                 <DataGridTemplateColumn.CellEditingTemplate>
                                     <DataTemplate>
-                                        <TextBox Tag="Value" Text="{Binding InspectValue8,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}"
-                                                 TextChanged="InspectValue8_TextChanged"
+                                        <TextBox Text="{Binding InspectValue8,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}"
+                                                 Tag="8" TextChanged="InspectValue_TextChanged"
                                                  PreviewTextInput="NumValue_PreviewTextInput"
-                                                 LostFocus="ValueText_LostFocus"/>
+                                                 LostFocus="ValueText_LostFocus"
+                                                 KeyDown="ValueText_KeyDown"/>
                                     </DataTemplate>
                                 </DataGridTemplateColumn.CellEditingTemplate>
                             </DataGridTemplateColumn>
@@ -1638,30 +1694,54 @@
                             <DataGridTemplateColumn x:Name="dgdtpeValue9" Header="9" Width="*">
                                 <DataGridTemplateColumn.CellTemplate>
                                     <DataTemplate>
-                                        <TextBlock Margin="2" Text="{Binding InspectValue9,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}" Style="{DynamicResource NumericTextBlock}"/>
+                                        <TextBlock Margin="2" Text="{Binding InspectValue9,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}" >
+                                            <TextBlock.Style>
+                                                <Style TargetType="{x:Type TextBlock}">
+                                                    <Style.Triggers>
+                                                        <DataTrigger Binding="{Binding Path=ValueDefect9}" Value="true">
+                                                            <Setter Property="Foreground" Value="Red" />
+                                                        </DataTrigger>
+                                                    </Style.Triggers>
+                                                    <Setter Property="TextAlignment" Value="Right"/>
+                                                </Style>
+                                            </TextBlock.Style>
+                                        </TextBlock>
                                     </DataTemplate>
                                 </DataGridTemplateColumn.CellTemplate>
                                 <DataGridTemplateColumn.CellEditingTemplate>
                                     <DataTemplate>
-                                        <TextBox Tag="Value" Text="{Binding InspectValue9,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}"
-                                                 TextChanged="InspectValue9_TextChanged"
+                                        <TextBox Text="{Binding InspectValue9,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}"
+                                                 Tag="9" TextChanged="InspectValue_TextChanged"
                                                  PreviewTextInput="NumValue_PreviewTextInput"
-                                                 LostFocus="ValueText_LostFocus"/>
+                                                 LostFocus="ValueText_LostFocus"
+                                                 KeyDown="ValueText_KeyDown"/>
                                     </DataTemplate>
                                 </DataGridTemplateColumn.CellEditingTemplate>
                             </DataGridTemplateColumn>
                             <DataGridTemplateColumn x:Name="dgdtpeValue10" Header="10" Width="*">
                                 <DataGridTemplateColumn.CellTemplate>
                                     <DataTemplate>
-                                        <TextBlock Margin="2" Text="{Binding InspectValue10,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}" Style="{DynamicResource NumericTextBlock}"/>
+                                        <TextBlock Margin="2" Text="{Binding InspectValue10,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}" >
+                                            <TextBlock.Style>
+                                                <Style TargetType="{x:Type TextBlock}">
+                                                    <Style.Triggers>
+                                                        <DataTrigger Binding="{Binding Path=ValueDefect10}" Value="true">
+                                                            <Setter Property="Foreground" Value="Red" />
+                                                        </DataTrigger>
+                                                    </Style.Triggers>
+                                                    <Setter Property="TextAlignment" Value="Right"/>
+                                                </Style>
+                                            </TextBlock.Style>
+                                        </TextBlock>
                                     </DataTemplate>
                                 </DataGridTemplateColumn.CellTemplate>
                                 <DataGridTemplateColumn.CellEditingTemplate>
                                     <DataTemplate>
-                                        <TextBox Tag="Value" Text="{Binding InspectValue10,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}"
-                                                 TextChanged="InspectValue10_TextChanged"
+                                        <TextBox Text="{Binding InspectValue10,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}"
+                                                 Tag="10" TextChanged="InspectValue_TextChanged"
                                                  PreviewTextInput="NumValue_PreviewTextInput"
-                                                 LostFocus="ValueText_LostFocus"/>
+                                                 LostFocus="ValueText_LostFocus"
+                                                 KeyDown="ValueText_KeyDown"/>
                                     </DataTemplate>
                                 </DataGridTemplateColumn.CellEditingTemplate>
                             </DataGridTemplateColumn>

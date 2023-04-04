@@ -542,10 +542,10 @@
                                 <ColumnDefinition Width="20*" />
                             </Grid.ColumnDefinitions>
 
-                            <TextBox x:Name="txtArticleID_InGroupBox" Grid.Column="0" 
-                                     Text="{Binding Path=ArticleID}" IsEnabled="False"/>
+                            <TextBox x:Name="txtBuyerArticleNo_InGroupBox" Grid.Column="0" 
+                                     Text="{Binding Path=BuyerArticleNo}" IsEnabled="False"/>
                             <TextBox x:Name="txtArticle_InGroupBox" Grid.Column="1" 
-                                 Text="{Binding Path=BuyerArticleNo}" Tag="{Binding Path=ArticleID}" 
+                                 Text="{Binding Path=Article}" Tag="{Binding Path=ArticleID}" 
                                  TabIndex="12" KeyDown="txtArticle_InGroupBox_KeyDown" Style="{DynamicResource TextBoxMultiLineNecessary_Q}"/>
                             <Button x:Name="btnArticle_inGroupBox"  Grid.Column="2"  Click="btnArticle_InGroupBox_Click" >
                                 <Image Source="{DynamicResource btiPlusFind}" Style="{DynamicResource imgPlusFind}"/>
@@ -673,7 +673,7 @@
                                 </Viewbox>
                             </StackPanel>
                         </Label>
-                        <TextBox x:Name="txtReDefectQty" Grid.Column="3" Grid.ColumnSpan="2" Grid.Row="3" 
+                        <TextBox x:Name="txtReDefectQty" Grid.Column="3" Grid.ColumnSpan="2" Grid.Row="3" Style="{DynamicResource TextBoxInput_Number_Left_Q}"
                                  Text="{Binding Path=ReDefectQty}" TabIndex="23" KeyDown="EnterMove_KeyDown" />
                         <Label Grid.Column="0" Grid.Row="4" Style="{DynamicResource LabelInputArea_Q}" >
                             <StackPanel Style="{DynamicResource StackPanelInLabel_Q}">

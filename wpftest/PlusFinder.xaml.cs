@@ -8,6 +8,17 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Threading;
 
+/**************************************************************************************************
+'** 프로그램명 : PlusFinder
+'** 설명       : 공통팝업
+'** 작성일자   : 
+'** 작성자     : 장시영
+'**------------------------------------------------------------------------------------------------
+'**************************************************************************************************
+' 변경일자  , 변경자, 요청자    , 요구사항ID      , 요청 및 작업내용
+'**************************************************************************************************
+' 2023.03.30, 장시영, 삼익SDT에서 가져옴
+'**************************************************************************************************/
 
 namespace WizMes_ANT
 {
@@ -22,6 +33,10 @@ namespace WizMes_ANT
         TextBox txtLot; //2021-11-09 Lotid를 위해 추가
         TextBox txtBoxName;
         Lib Lib = new Lib();
+
+        // string 값을 받을 수 있는 이벤트
+        public delegate void RefEventHandler(string msg);
+        public event RefEventHandler refEvent;
 
         public PlusFinder()
         {
@@ -261,16 +276,16 @@ namespace WizMes_ANT
                 if (ds != null && ds.Tables.Count > 0)
                 {
                     rs_dt = ds.Tables[0];
-                }
 
-                //그리드의 1번컬럼의 컬럼명을 lblName에 넣고, 컬럼명의 문자열 중간중간에 스페이스바를 삽입해줌
-                if (rs_dt.Columns[1].Caption.ToString() == "코드")
-                {
-                    lblName.Content = Lib.SetStringSpace(rs_dt.Columns[2].Caption);
-                }
-                else
-                {
-                    lblName.Content = Lib.SetStringSpace(rs_dt.Columns[1].Caption);
+                    if (rs_dt != null)
+                    {
+                        //그리드의 1번컬럼의 컬럼명을 lblName에 넣고, 컬럼명의 문자열 중간중간에 스페이스바를 삽입해줌
+                        if (rs_dt.Columns[1].Caption.ToString() == "코드")
+                            lblName.Content = Lib.SetStringSpace(rs_dt.Columns[2].Caption);
+                        else
+                            lblName.Content = Lib.SetStringSpace(rs_dt.Columns[1].Caption);
+                    }
+                    
                 }
 
                 mDataGrid.Columns.Clear();
@@ -336,7 +351,7 @@ namespace WizMes_ANT
             txtName.Text = string.Empty;
         }
 
-        private void DataTableByWhere(TextBox _txtBox)
+        private void DataTableByWhere(TextBox _txtBox, int large)
         {
             try
             {
@@ -389,12 +404,17 @@ namespace WizMes_ANT
                             string str1 = dr[ColName].ToString();
                             string str2 = dr[ColID].ToString();
 
-                            if (dr[ColName].ToString().ToUpper().Replace(" ", "").Contains(Data.ToUpper().Replace(" ", "")))
+                            bool compare1 = str1.ToString().ToUpper().Replace(" ", "").Contains(Data.ToUpper().Replace(" ", ""));
+                            bool compare2 = str2.ToString().ToUpper().Replace(" ", "").Contains(Data.ToUpper().Replace(" ", ""));
+                            if (large == 77)
+                                compare1 = compare1 || compare2;
+
+                            if (compare1)
                             {
                                 dtCodeTemp.Rows.Add(dr.ItemArray);
                                 continue;
                             }
-                            else if (dr[ColName].ToString().ToUpper().Replace(" ", "").Contains(Data.ToUpper().Replace(" ", "")))
+                            else if (compare1)
                             {
                                 dtCodeTemp.Rows.Add(dr.ItemArray);
                             }
@@ -522,7 +542,7 @@ namespace WizMes_ANT
             ProcQuery(large, smiddle);
             if (rs_dt.Rows.Count > 0)
             {
-                DataTableByWhere(txtBox);
+                DataTableByWhere(txtBox, large);
                 mDataGrid.SelectedIndex = 0;
                 mDataGrid.SelectedIndex = -1;
             }
@@ -544,13 +564,12 @@ namespace WizMes_ANT
         {
             DataClear();
             txtBox = _txtBox;
-            txtBox = _txtBox;
             txtLot = _txtProcess;
             txtBoxName = _txtBoxName;
             ProcQuery(large, smiddle);
             if (rs_dt.Rows.Count > 0)
             {
-                DataTableByWhere(txtBox);
+                DataTableByWhere(txtBox, large);
             }
             else
             {
@@ -566,7 +585,7 @@ namespace WizMes_ANT
             ProcQuery(large, smiddle);
             if (rs_dt.Rows.Count > 0)
             {
-                DataTableByWhere(txtBox);
+                DataTableByWhere(txtBox, large);
             }
             else
             {
@@ -583,7 +602,7 @@ namespace WizMes_ANT
             ProcQuery(large, smiddle, CustomID);
             if (rs_dt.Rows.Count > 0)
             {
-                DataTableByWhere(txtBox);
+                DataTableByWhere(txtBox, large);
             }
             else
             {
@@ -602,7 +621,7 @@ namespace WizMes_ANT
             ProcQuery(large, smiddle);
             if (rs_dt.Rows.Count > 0)
             {
-                DataTableByWhere(txtBox);
+                DataTableByWhere(txtBox, large);
             }
             else
             {
@@ -652,9 +671,17 @@ namespace WizMes_ANT
                         colID = dataRow.Row.ItemArray[1].ToString();
                         colName = dataRow.Row.ItemArray[2].ToString();
                     }
-
+                    else if (refEvent != null)
+                    {
+                        // Large가 98번인 경우 품명(Article) callback
+                        if (mDataGrid.Columns[1].Header.ToString() == "출고지시번호")
+                            refEvent?.Invoke(dataRow.Row.ItemArray[4].ToString());
+                        else
+                            refEvent?.Invoke(dataRow.Row.ItemArray[2].ToString());
+                    }
+                        
                     txtBox.Text = colName;
-                    txtBox.Tag = colID;
+                    txtBox.Tag = colID;                    
 
                     this.DialogResult = DialogResult.HasValue;
                     this.Close();

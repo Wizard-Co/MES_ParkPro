@@ -632,28 +632,26 @@ namespace WizMes_ANT
         //조회
         private void btnSearch_Click(object sender, RoutedEventArgs e)
         {
+            using(Loading ld = new Loading(beSearch))
+            {
+                ld.ShowDialog();
+            }
+        }
+
+        private void beSearch()
+        {
             //검색버튼 비활성화
             btnSearch.IsEnabled = false;
-            //a
+
             Dispatcher.BeginInvoke(new Action(() =>
-
             {
-                Thread.Sleep(2000);
-
                 //로직
                 rowNum = 0;
                 re_Search(rowNum);
 
             }), System.Windows.Threading.DispatcherPriority.Background);
 
-
-
-            Dispatcher.BeginInvoke(new Action(() =>
-
-            {
-                btnSearch.IsEnabled = true;
-
-            }), System.Windows.Threading.DispatcherPriority.Background);
+            btnSearch.IsEnabled = true;
         }
 
         //저장
@@ -1439,7 +1437,7 @@ namespace WizMes_ANT
                         for (int i = 0; i < dgdProcess.Items.Count; i++)
                         {
                             var WinProcess = dgdProcess.Items[i] as Process_CodeView;
-                            if (WinProcess.CheckFlag == true)
+                            if (WinProcess != null && WinProcess.CheckFlag == true)
                             {
                                 sqlParameter = new Dictionary<string, object>();
                                 sqlParameter.Clear();
@@ -1574,13 +1572,18 @@ namespace WizMes_ANT
 
             if (strFlag.Equals("I"))
             {
+                if (txtCode.Text.Length < 5)
+                {
+                    MessageBox.Show("5자리의 코드를 입력해주세요");
+                    return false;
+                }
+
                 // 2020.02.20 일단 품명 중복검사 제외
                 // 2021.07.21 일단 품명 중복검사 제외
                 if (!GetArticleByName(strName))
                 {
                     MessageBox.Show("이미 같은 이름의 코드가 존재합니다.(사용안함 포함)"); //2021-07-21 품번이 같을 경우 MessageBox.Show("이미 같은 이름의 품명이 존재합니다.");
-                    flag = false;
-                    return flag;
+                    return false;
                 }
 
             #if ANT_2 == false
@@ -1596,8 +1599,7 @@ namespace WizMes_ANT
                 if (txtBuyerArticleNo.Text.Trim().Equals(""))
                 {
                     MessageBox.Show("품번이 입력되지 않았습니다.");
-                    flag = false;
-                    return flag;
+                    return flag = false;
                 }
             }
 

@@ -345,12 +345,6 @@ namespace WizMes_ANT
                 lw.ShowDialog();
             }
 
-            if (tlvItemList.Items.Count == 0)
-            {
-                this.DataContext = null;
-                MessageBox.Show("조회된 데이터가 없습니다.");
-                return;
-            }
             //검색버튼 비활성화
             //btnSearch.IsEnabled = false;
 
