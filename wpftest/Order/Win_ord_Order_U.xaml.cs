@@ -10,6 +10,18 @@ using WizMes_ANT.PopUP;
 using WizMes_ANT.PopUp;
 using Excel = Microsoft.Office.Interop.Excel;
 
+/**************************************************************************************************
+'** 프로그램명 : Win_Qul_DefectRepair_Q
+'** 설명       : 수주등록
+'** 작성일자   : 2023.04.03
+'** 작성자     : 장시영
+'**------------------------------------------------------------------------------------------------
+'**************************************************************************************************
+' 변경일자  , 변경자, 요청자    , 요구사항ID      , 요청 및 작업내용
+'**************************************************************************************************
+' 2023.04.03, 장시영, 저장시 xp_Order_dOrderColorAll 내용 삭제 - xp_Order_uOrder 에서 동작하도록 수정
+'**************************************************************************************************/
+
 namespace WizMes_ANT
 {
     /// <summary>
@@ -1500,7 +1512,6 @@ namespace WizMes_ANT
                     #endregion
 
                     #region 수정
-
                     else if (strFlag.Equals("U"))
                     {
                         sqlParameter.Add("LastUpdateUserID", MainWindow.CurrentUser);
@@ -1508,24 +1519,10 @@ namespace WizMes_ANT
                         Procedure pro3 = new Procedure();
                         pro3.Name = "xp_Order_uOrder";
                         pro3.OutputUseYN = "N";
-                        pro3.OutputName = "xp_Order_uOrder";
+                        pro3.OutputName = "OrderID";
                         pro3.OutputLength = "10";
 
                         Prolist.Add(pro3);
-                        ListParameter.Add(sqlParameter);
-
-                        // 모든것을 삭제한 후에, 새롭게 추가
-                        sqlParameter = new Dictionary<string, object>();
-                        sqlParameter.Clear();
-                        sqlParameter.Add("OrderID", txtOrderID.Text);
-
-                        Procedure pro4 = new Procedure();
-                        pro4.Name = "xp_Order_dOrderColorAll";
-                        pro4.OutputUseYN = "N";
-                        pro4.OutputName = "OrderID";
-                        pro4.OutputLength = "10";
-
-                        Prolist.Add(pro4);
                         ListParameter.Add(sqlParameter);
                     }
                     #endregion
@@ -2083,28 +2080,19 @@ namespace WizMes_ANT
         //수주구분 라벨
         private void LblOrderFlag_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
-            if (chkOrderFlag.IsChecked == true)
-            {
-                chkOrderFlag.IsChecked = false;
-                cboOrderFlag.IsEnabled = false;
-            }
-            else
-            {
-                chkOrderFlag.IsChecked = true;
-                cboOrderFlag.IsEnabled = true;
-            }
+            chkOrderFlag.IsChecked = chkOrderFlag.IsChecked == true ? false : true;
         }
 
         //수주구분 체크박스 체크
         private void ChkOrderFlag_Checked(object sender, RoutedEventArgs e)
         {
-            //cboOrderFlag.IsEnabled = true;
+            cboOrderFlag.IsEnabled = true;
         }
 
         //수주구분 체크박스 체크 해제
         private void ChkOrderFlag_Unchecked(object sender, RoutedEventArgs e)
         {
-            //cboOrderFlag.IsEnabled = false;
+            cboOrderFlag.IsEnabled = false;
         }
 
         //매출거래처 

@@ -38,7 +38,7 @@
                             <CheckBox x:Name="chkDrawCreateDateSrh" Checked="chkDrawCreateDateSrh_Checked" Unchecked="chkDrawCreateDateSrh_Unchecked"/>
                         </Viewbox>
                         <Viewbox Style="{DynamicResource ViewBoxSetMaxMinHeight_Q}">
-                            <TextBlock Text="도면생성일" Style="{DynamicResource TextBlockInViewBoxSearch_Q}"/>
+                            <TextBlock Text="조회일" Style="{DynamicResource TextBlockInViewBoxSearch_Q}"/>
                         </Viewbox>
                     </StackPanel>
                 </Label>
@@ -71,9 +71,9 @@
                         <ColumnDefinition Width="*" />
                     </Grid.ColumnDefinitions>
                     <RadioButton x:Name="rbnCreateDate" Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center" HorizontalContentAlignment="Center"
-                                 VerticalContentAlignment="Center" Content="생성일" IsChecked="True"/>
+                                 VerticalContentAlignment="Center" Content="생성일" />
                     <RadioButton x:Name="rbnAcptDate" Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center" HorizontalContentAlignment="Center"
-                                 VerticalContentAlignment="Center" Content="접수일" />
+                                 VerticalContentAlignment="Center" Content="접수일" IsChecked="True"/>
                 </Grid>
             </Border>
 
@@ -385,14 +385,14 @@
                         <Label x:Name="lblDrawAcptDate" Grid.Row="11" Grid.Column="0" MouseLeftButtonUp="lblDrawAcptDate_MouseLeftButtonUp" Style="{DynamicResource LabelInputArea_Q}">
                             <StackPanel Style="{DynamicResource StackPanelInLabel_Q}">
                                 <Viewbox Style="{DynamicResource ViewBoxSetMaxMinHeight_Q}" >
-                                    <CheckBox x:Name="chkDrawAcptDate" Checked="chkDrawAcptDate_Checked" Unchecked="chkDrawAcptDate_Unchecked" KeyDown="chkDrawAcptDate_KeyDown"/>
+                                    <CheckBox x:Name="chkDrawAcptDate" Checked="chkDrawAcptDate_Checked" Unchecked="chkDrawAcptDate_Unchecked" KeyDown="chkDrawAcptDate_KeyDown" IsChecked="True" />
                                 </Viewbox>
                                 <Viewbox  Style="{DynamicResource ViewBoxSetMaxMinHeight_Q}" >
                                     <TextBlock Text="접 수 일 " Style="{DynamicResource TextBlockInViewBoxInput_WithCheck_Q}"/>
                                 </Viewbox>
                             </StackPanel>
                         </Label>
-                        <DatePicker x:Name="dtpDrawAcptDate" Grid.Row="11" Grid.Column="1" Padding="0" IsEnabled="False" SelectedDate="{Binding DrawAcptDate_CV}"
+                        <DatePicker x:Name="dtpDrawAcptDate" Grid.Row="11" Grid.Column="1" Padding="0" SelectedDate="{Binding DrawAcptDate_CV}"
                                     PreviewKeyDown="dtpDrawAcptDate_PreviewKeyDown" CalendarClosed="dtpDrawAcptDate_CalendarClosed"/>
 
                         <Label Grid.Row="12" Grid.Column="0" Style="{DynamicResource LabelInputArea_Q}" >

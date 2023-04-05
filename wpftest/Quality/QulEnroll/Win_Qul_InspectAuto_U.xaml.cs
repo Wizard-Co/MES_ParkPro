@@ -14,6 +14,21 @@ using WizMes_ANT.PopUP;
 using WizMes_ANT.PopUp;
 using WPF.MDI;
 
+/**************************************************************************************************
+'** 프로그램명 : Win_Qul_DefectRepair_Q
+'** 설명       : 검사실적 등록
+'** 작성일자   : 2023.04.03
+'** 작성자     : 장시영
+'**------------------------------------------------------------------------------------------------
+'**************************************************************************************************
+' 변경일자  , 변경자, 요청자    , 요구사항ID      , 요청 및 작업내용
+'**************************************************************************************************
+' 2023.04.03, 장시영, 저장시 메인 저장 후 서브 저장되도록 수정,
+                    , LotNo 플러스 파인더 조회후 기존에 InspectAuto에 저장되어 있다면 
+                      가져오는 부분 삭제 (fn_getInspectID)
+                    , 측정값 저장 로직 변경
+'**************************************************************************************************/
+
 namespace WizMes_ANT
 {
     /// <summary>
@@ -632,7 +647,7 @@ namespace WizMes_ANT
             msg.Topmost = true;
             msg.Refresh();
 
-            PrintWork(true);
+            //PrintWork(true);
         }
 
         //인쇄 바로
@@ -666,7 +681,7 @@ namespace WizMes_ANT
             msg.Topmost = true;
             msg.Refresh();
 
-            PrintWork(false);
+            //PrintWork(false);
         }
 
         //인쇄 닫기
@@ -678,7 +693,7 @@ namespace WizMes_ANT
         }
 
         //인쇄 실질 동작
-        private void PrintWork(bool preview_click)
+        /*private void PrintWork(bool preview_click)
         {
             excelapp = new Microsoft.Office.Interop.Excel.Application();
 
@@ -756,11 +771,6 @@ namespace WizMes_ANT
             //리스트에 있는 외관 값이 양호가 아닌 경우(검사실적서에 5개 값까지 밖에 없으니까...거기까지만 비교)
             for (int i = 0; i < defectCheck1.Count; i++)
             {
-                System.Diagnostics.Debug.WriteLine("==============19 " + defectCheck1[i][19].ToString());
-                System.Diagnostics.Debug.WriteLine("==============20 " + defectCheck1[i][20].ToString());
-                System.Diagnostics.Debug.WriteLine("==============21 " + defectCheck1[i][21].ToString());
-                System.Diagnostics.Debug.WriteLine("==============22 " + defectCheck1[i][22].ToString());
-
                 if (!defectCheck1[i][19].ToString().Equals("양호") && !defectCheck1[i][19].ToString().Equals(""))
                 {
                     if (!DFCount1.Equals(1))
@@ -846,27 +856,27 @@ namespace WizMes_ANT
 
                 //외관1
                 workrange = worksheet.get_Range("P" + Convert.ToInt32(insertline + i), "Q" + Convert.ToInt32(insertline + i));    //외관1
-                workrange.Value2 = WinInsAutoSub.InspectText1;
+                workrange.Value2 = WinInsAutoSub.arrInspectText[0];
                 workrange.HorizontalAlignment = Microsoft.Office.Interop.Excel.XlHAlign.xlHAlignCenter;
 
                 //외관2
                 workrange = worksheet.get_Range("R" + Convert.ToInt32(insertline + i), "S" + Convert.ToInt32(insertline + i));    //외관2
-                workrange.Value2 = WinInsAutoSub.InspectText2;
+                workrange.Value2 = WinInsAutoSub.arrInspectText[1];
                 workrange.HorizontalAlignment = Microsoft.Office.Interop.Excel.XlHAlign.xlHAlignCenter;
 
                 //외관3
                 workrange = worksheet.get_Range("T" + Convert.ToInt32(insertline + i), "U" + Convert.ToInt32(insertline + i));    //외관3
-                workrange.Value2 = WinInsAutoSub.InspectText3;
+                workrange.Value2 = WinInsAutoSub.arrInspectText[2];
                 workrange.HorizontalAlignment = Microsoft.Office.Interop.Excel.XlHAlign.xlHAlignCenter;
 
                 //외관4
                 workrange = worksheet.get_Range("V" + Convert.ToInt32(insertline + i), "W" + Convert.ToInt32(insertline + i));    //외관4
-                workrange.Value2 = WinInsAutoSub.InspectText4;
+                workrange.Value2 = WinInsAutoSub.arrInspectText[3];
                 workrange.HorizontalAlignment = Microsoft.Office.Interop.Excel.XlHAlign.xlHAlignCenter;
 
                 //외관5
                 workrange = worksheet.get_Range("X" + Convert.ToInt32(insertline + i), "Y" + Convert.ToInt32(insertline + i));    //외관5
-                workrange.Value2 = WinInsAutoSub.InspectText5;
+                workrange.Value2 = WinInsAutoSub.arrInspectText[4];
                 workrange.HorizontalAlignment = Microsoft.Office.Interop.Excel.XlHAlign.xlHAlignCenter;
 
                 //판정
@@ -875,31 +885,19 @@ namespace WizMes_ANT
                 for (int j = 0; j < defectCheck1.Count; j++)
                 {
                     if (!defectCheck1[i][19].ToString().Equals("양호") && !defectCheck1[i][19].ToString().Equals(""))
-                    {
                         workrange.Value2 = "불";
-                    }
                     else if (!defectCheck1[i][20].ToString().Equals("양호") && !defectCheck1[i][20].ToString().Equals(""))
-                    {
                         workrange.Value2 = "불";
-                    }
                     else if (!defectCheck1[i][21].ToString().Equals("양호") && !defectCheck1[i][21].ToString().Equals(""))
-                    {
                         workrange.Value2 = "불";
-                    }
                     else if (!defectCheck1[i][22].ToString().Equals("양호") && !defectCheck1[i][22].ToString().Equals(""))
-                    {
                         workrange.Value2 = "불";
-                    }
                     else if (!defectCheck1[i][23].ToString().Equals("양호") && !defectCheck1[i][23].ToString().Equals(""))
-                    {
                         workrange.Value2 = "불";
-                    }
                     else
-                    {
                         workrange.Value2 = "합";
-                    }
-                    workrange.HorizontalAlignment = Microsoft.Office.Interop.Excel.XlHAlign.xlHAlignCenter;
 
+                    workrange.HorizontalAlignment = Microsoft.Office.Interop.Excel.XlHAlign.xlHAlignCenter;
                 }
             }
             for (int j = 0; j < dgdSub2.Items.Count; j++)
@@ -926,39 +924,36 @@ namespace WizMes_ANT
 
                 //정량적검사1
                 workrange = worksheet.get_Range("P" + Convert.ToInt32(insertline + j), "Q" + Convert.ToInt32(insertline + j));
-                workrange.Value2 = WinInsAutoSub2.InspectValue1;
+                workrange.Value2 = WinInsAutoSub2.arrInspectValue[0];
                 workrange.HorizontalAlignment = Microsoft.Office.Interop.Excel.XlHAlign.xlHAlignCenter;
 
                 //정량적검사1
                 workrange = worksheet.get_Range("R" + Convert.ToInt32(insertline + j), "S" + Convert.ToInt32(insertline + j));
-                workrange.Value2 = WinInsAutoSub2.InspectValue2;
+                workrange.Value2 = WinInsAutoSub2.arrInspectValue[1];
                 workrange.HorizontalAlignment = Microsoft.Office.Interop.Excel.XlHAlign.xlHAlignCenter;
 
                 //정량적검사3
                 workrange = worksheet.get_Range("T" + Convert.ToInt32(insertline + j), "U" + Convert.ToInt32(insertline + j));
-                workrange.Value2 = WinInsAutoSub2.InspectValue3;
+                workrange.Value2 = WinInsAutoSub2.arrInspectValue[2];
                 workrange.HorizontalAlignment = Microsoft.Office.Interop.Excel.XlHAlign.xlHAlignCenter;
 
                 //정량적검사4
                 workrange = worksheet.get_Range("V" + Convert.ToInt32(insertline + j), "W" + Convert.ToInt32(insertline + j));
-                workrange.Value2 = WinInsAutoSub2.InspectValue4;
+                workrange.Value2 = WinInsAutoSub2.arrInspectValue[3];
                 workrange.HorizontalAlignment = Microsoft.Office.Interop.Excel.XlHAlign.xlHAlignCenter;
 
                 //정량적검사5
                 workrange = worksheet.get_Range("X" + Convert.ToInt32(insertline + j), "Y" + Convert.ToInt32(insertline + j));
-                workrange.Value2 = WinInsAutoSub2.InspectValue5;
+                workrange.Value2 = WinInsAutoSub2.arrInspectValue[4];
                 workrange.HorizontalAlignment = Microsoft.Office.Interop.Excel.XlHAlign.xlHAlignCenter;
 
                 workrange = worksheet.get_Range("Z" + Convert.ToInt32(insertline + j), "AC" + Convert.ToInt32(insertline + j));    //판정
 
                 if (returnYN(WinInsAutoSub2))
-                {
                     workrange.Value2 = "합";
-                }
                 else
-                {
                     workrange.Value2 = "불";
-                }
+
                 workrange.HorizontalAlignment = Microsoft.Office.Interop.Excel.XlHAlign.xlHAlignCenter;
             }
 
@@ -985,14 +980,12 @@ namespace WizMes_ANT
             }
 
 
-        }
+        }*/
 
         //
-        private bool returnYN(Win_Qul_InspectAuto_U_Sub_CodeView WinInsAutoSubCodeView)
+        /*private bool returnYN(Win_Qul_InspectAuto_U_Sub_CodeView WinInsAutoSubCodeView)
         {
             bool flag = false;
-
-            //System.Diagnostics.Debug.WriteLine("--------------------" + WinInsAutoSubCodeView.InspectValue1);
 
             if (!WinInsAutoSubCodeView.InspectValue1.Equals(string.Empty))
             {
@@ -1076,7 +1069,7 @@ namespace WizMes_ANT
             }
 
             return flag;
-        }
+        }*/
 
         #endregion
 
@@ -1123,7 +1116,7 @@ namespace WizMes_ANT
             Dispatcher.BeginInvoke(new Action(() =>
             {
                 //로직
-                if (SaveData(strFlag, txtinspectID.Text))
+                if (SaveData(strFlag))
                 {
                     CanBtnControl();
                     lblMsg.Visibility = Visibility.Hidden;
@@ -1301,8 +1294,10 @@ namespace WizMes_ANT
                 sqlParameter.Add("ArticleID", txtArticleSrh.Tag != null ? txtArticleSrh.Tag.ToString() : "");
                 sqlParameter.Add("nchkDefectYN", chkResultSrh.IsChecked == true ? 1 : 0);
                 sqlParameter.Add("sDefectYN", chkResultSrh.IsChecked == true ? cboResultSrh.SelectedValue.ToString() : "");
-                sqlParameter.Add("BuyerArticleNo", chkArticleNo.IsChecked == true ? txtArticleNo.Text : "");
-                sqlParameter.Add("BuyerArticleNme", chkArticleSrh.IsChecked == true && !txtArticleSrh.Text.Trim().Equals("") ? txtArticleSrh.Text : "");
+                //sqlParameter.Add("BuyerArticleNo", chkArticleNo.IsChecked == true ? txtArticleNo.Text : "");
+
+                sqlParameter.Add("ChkBuyerArticle", chkArticleSrh.IsChecked == true ? 1 : 0);
+                sqlParameter.Add("BuyerArticle", chkArticleSrh.IsChecked == true && !txtArticleSrh.Text.Trim().Equals("") ? txtArticleSrh.Text : "");
                 ds = DataStore.Instance.ProcedureToDataSet_LogWrite("xp_Inspect_sAutoInspect", sqlParameter, true, "R");
 
                 if (ds != null && ds.Tables.Count > 0)
@@ -1458,9 +1453,7 @@ namespace WizMes_ANT
                         cboEcoNO.SelectedValue = tmpBasisID;
 
                         if (cboEcoNO.SelectedValue != null)
-                        {
                             strBasisID = cboEcoNO.SelectedValue.ToString();
-                        }
                     }
 
                     cboProcess_SelectionChanged(null, null);
@@ -1470,19 +1463,12 @@ namespace WizMes_ANT
                         cboMachine.SelectedValue = tmpMachineID;
                     }
 
-                    if (dgdSub1.Items.Count > 0)
-                    {
-                        dgdSub1.Items.Clear();
-                    }
-
-                    if (dgdSub2.Items.Count > 0)
-                    {
-                        dgdSub2.Items.Clear();
-                    }
                     FillGridSub(WinInsAuto.InspectID, "1");
                     FillGridSub(WinInsAuto.InspectID, "2");
 
                     dgdSub1.SelectedIndex = 0;
+
+                    txtInspectQty.Text = GetValueCount().ToString();
                 }
             }
             catch (Exception ex)
@@ -1517,7 +1503,7 @@ namespace WizMes_ANT
                 if (ds != null && ds.Tables.Count > 0)
                 {
                     DataTable dt = ds.Tables[0];
-                    int i = 0;
+                    int idx = 0;
 
                     if (dt.Rows.Count == 0)
                     {
@@ -1531,7 +1517,7 @@ namespace WizMes_ANT
                         {
                             var WinQulInsAutoSub = new Win_Qul_InspectAuto_U_Sub_CodeView()
                             {
-                                Num = i + 1,
+                                Num = idx + 1,
                                 InspectBasisID = dr["InspectBasisID"].ToString(),
                                 Seq = dr["Seq"].ToString(),
                                 SubSeq = dr["SubSeq"].ToString(),
@@ -1542,116 +1528,51 @@ namespace WizMes_ANT
                                 InsTPSpecMin = dr["InsTPSpecMin"].ToString(),
                                 InsTPSpecMax = dr["InsTPSpecMax"].ToString(),
                                 InsSampleQty = dr["InsSampleQty"].ToString(),
-                                InspectValue1 = lib.returnNumStringTwo(dr["InspectValue1"].ToString()),
-                                InspectValue2 = lib.returnNumStringTwo(dr["InspectValue2"].ToString()),
-                                InspectValue3 = lib.returnNumStringTwo(dr["InspectValue3"].ToString()),
-                                InspectValue4 = lib.returnNumStringTwo(dr["InspectValue4"].ToString()),
-                                InspectValue5 = lib.returnNumStringTwo(dr["InspectValue5"].ToString()),
-                                InspectValue6 = lib.returnNumStringTwo(dr["InspectValue6"].ToString()),
-                                InspectValue7 = lib.returnNumStringTwo(dr["InspectValue7"].ToString()),
-                                InspectValue8 = lib.returnNumStringTwo(dr["InspectValue8"].ToString()),
-                                InspectValue9 = lib.returnNumStringTwo(dr["InspectValue9"].ToString()),
-                                InspectValue10 = lib.returnNumStringTwo(dr["InspectValue10"].ToString()),
-                                InspectText1 = dr["InspectText1"].ToString(),
-                                InspectText2 = dr["InspectText2"].ToString(),
-                                InspectText3 = dr["InspectText3"].ToString(),
-                                InspectText4 = dr["InspectText4"].ToString(),
-                                InspectText5 = dr["InspectText5"].ToString(),
-                                InspectText6 = dr["InspectText6"].ToString(),
-                                InspectText7 = dr["InspectText7"].ToString(),
-                                InspectText8 = dr["InspectText8"].ToString(),
-                                InspectText9 = dr["InspectText9"].ToString(),
-                                InspectText10 = dr["InspectText10"].ToString(),
                                 insSpec = dr["insSpec"].ToString(),
                                 R = dr["R"].ToString(),
                                 Sigma = "",  //dr["Sigma"].ToString(),
                                 xBar = dr["xBar"].ToString(),
-
-
-
-                                ValueDefect1 = "",
-                                ValueDefect2 = "",
-                                ValueDefect3 = "",
-                                ValueDefect4 = "",
-                                ValueDefect5 = ""
                             };
+
+                            for (int i = 0; i < 10; i++)
+                            {
+                                int num = i + 1;
+                                WinQulInsAutoSub.arrInspectValue[i] = lib.returnNumStringTwo(dr["InspectValue" + num.ToString()].ToString());
+                                WinQulInsAutoSub.arrInspectText[i] = dr["InspectText" + num.ToString()].ToString();
+                            }
 
                             if (strType.Equals("1"))
                             {
                                 dgdSub1.Items.Add(WinQulInsAutoSub);
 
                                 defectCheck1.Clear(); //이전에 들어있던 데이터는 지우고 추가해보자
-
                                 defectCheck1.Add(dr);
                             }
                             else if (strType.Equals("2"))
                             {
-                                double maxValue = 0.0;
-                                double minValue = 0.0;
-                                double value1 = 0.0;
-                                double value2 = 0.0;
-                                double value3 = 0.0;
-                                double value4 = 0.0;
-                                double value5 = 0.0;
+                                double maxValue = WinQulInsAutoSub.SpecMax.Equals("") ? 0.0 : Convert.ToDouble(WinQulInsAutoSub.SpecMax);
+                                double minValue = WinQulInsAutoSub.SpecMin.Equals("") ? 0.0 : Convert.ToDouble(WinQulInsAutoSub.SpecMin);
 
-                                if (!WinQulInsAutoSub.SpecMax.ToString().Equals(""))
+                                for (int i = 0; i < WinQulInsAutoSub.arrInspectValue.Length; i++)
                                 {
-                                    maxValue = Convert.ToDouble(WinQulInsAutoSub.SpecMax.ToString());
-                                }
-                                if (!WinQulInsAutoSub.SpecMin.ToString().Equals(""))
-                                {
-                                    minValue = Convert.ToDouble(WinQulInsAutoSub.SpecMin.ToString());
-                                }
-                                if (!WinQulInsAutoSub.InspectValue1.ToString().Equals(""))
-                                {
-                                    value1 = Convert.ToDouble(WinQulInsAutoSub.InspectValue1.ToString());
-                                }
-                                if (!WinQulInsAutoSub.InspectValue2.ToString().Equals(""))
-                                {
-                                    value2 = Convert.ToDouble(WinQulInsAutoSub.InspectValue2.ToString());
-                                }
-                                if (!WinQulInsAutoSub.InspectValue3.ToString().Equals(""))
-                                {
-                                    value3 = Convert.ToDouble(WinQulInsAutoSub.InspectValue3.ToString());
-                                }
-                                if (!WinQulInsAutoSub.InspectValue3.ToString().Equals(""))
-                                {
-                                    value4 = Convert.ToDouble(WinQulInsAutoSub.InspectValue4.ToString());
-                                }
-                                if (!WinQulInsAutoSub.InspectValue3.ToString().Equals(""))
-                                {
-                                    value5 = Convert.ToDouble(WinQulInsAutoSub.InspectValue5.ToString());
-                                }
+                                    string inspectValue = WinQulInsAutoSub.arrInspectValue[0];
+                                    double value = inspectValue.Equals("") ? 0.0 : Convert.ToDouble(inspectValue);
 
-                                if (!(value1 >= minValue && value1 <= maxValue))
-                                {
-                                    WinQulInsAutoSub.ValueDefect1 = "true";
-                                }
-                                if (!(value2 >= minValue && value2 <= maxValue))
-                                {
-                                    WinQulInsAutoSub.ValueDefect2 = "true";
-                                }
-                                if (!(value3 >= minValue && value3 <= maxValue))
-                                {
-                                    WinQulInsAutoSub.ValueDefect3 = "true";
-                                }
-                                if (!(value4 >= minValue && value4 <= maxValue))
-                                {
-                                    WinQulInsAutoSub.ValueDefect4 = "true";
-                                }
-                                if (!(value5 >= minValue && value5 <= maxValue))
-                                {
-                                    WinQulInsAutoSub.ValueDefect5 = "true";
+                                    if (!(value >= minValue && value <= maxValue))
+                                        WinQulInsAutoSub.arrValueDefect[0] = "true";
                                 }
 
                                 dgdSub2.Items.Add(WinQulInsAutoSub);
 
                                 defectCheck2.Clear(); //이전에 들어있던 데이터는 지우고 추가해보자
-
                                 defectCheck2.Add(dr);
                             }
 
-                            i++;
+                            WinQulInsAutoSub.RefreshTextBlock(0, WinQulInsAutoSub.arrInspectValue);
+                            WinQulInsAutoSub.RefreshTextBlock(1, WinQulInsAutoSub.arrInspectText);
+                            WinQulInsAutoSub.RefreshTextBlock(2, WinQulInsAutoSub.arrValueDefect);
+
+                            idx++;
                         }
                     }
                 }
@@ -1705,9 +1626,8 @@ namespace WizMes_ANT
         /// 저장
         /// </summary>
         /// <param name="strFlag"></param>
-        /// <param name="strID"></param>
         /// <returns></returns>
-        private bool SaveData(string strFlag, string strID)
+        private bool SaveData(string strFlag)
         {
             bool flag = false;
             List<Procedure> Prolist = new List<Procedure>();
@@ -1715,6 +1635,8 @@ namespace WizMes_ANT
 
             try
             {
+                string strID = strFlag.Equals("I") ? "" : (string.IsNullOrEmpty(txtinspectID.Text) ? "" : txtinspectID.Text);
+
                 if (CheckData())
                 {
                     DataStore.Instance.InsertLogByForm(this.GetType().Name, "C");
@@ -1768,9 +1690,8 @@ namespace WizMes_ANT
 
                     sqlParameter.Add("SumInspectQty", lib.CheckNullZero(txtSumInspectQty.Text.Replace(",", "")));
                     sqlParameter.Add("SumDefectQty", lib.CheckNullZero(txtSumDefectQty.Text.Replace(",", "")));
-
+                    
                     #region 추가
-
                     if (strFlag.Equals("I"))
                     {
                         sqlParameter.Add("CreateUserID", MainWindow.CurrentUser);
@@ -1779,11 +1700,57 @@ namespace WizMes_ANT
                         pro1.Name = "xp_Inspect_iAutoInspect";
                         pro1.OutputUseYN = "Y";
                         pro1.OutputName = "InspectID";
-                        pro1.OutputLength = "10";
+                        pro1.OutputLength = "12";
 
                         Prolist.Add(pro1);
                         ListParameter.Add(sqlParameter);
 
+                        List<KeyValue> list_Result = new List<KeyValue>();
+                        list_Result = DataStore.Instance.ExecuteAllProcedureOutputGetCS_NewLog(Prolist, ListParameter, "C");                        
+
+                        if (list_Result[0].key.ToLower() == "success")
+                        {
+                            list_Result.RemoveAt(0);
+                            for (int i = 0; i < list_Result.Count; i++)
+                            {
+                                KeyValue kv = list_Result[i];
+                                if (kv.key == "InspectID")
+                                {
+                                    strID = kv.value;
+                                    flag = true;
+                                }
+                            }
+                        }
+                        else
+                        {
+                            MessageBox.Show("[저장실패]\r\n" + list_Result[0].value.ToString());
+                            return false;
+                        }
+
+                        Prolist.Clear();
+                        ListParameter.Clear();
+                    }
+                    #endregion
+
+                    #region 수정
+                    else if (strFlag.Equals("U"))
+                    {
+                        sqlParameter.Add("UpdateUserID", MainWindow.CurrentUser);
+
+                        Procedure pro2 = new Procedure();
+                        pro2.Name = "xp_Inspect_uAutoInspect";
+                        pro2.OutputUseYN = "N";
+                        pro2.OutputName = "InspectID";
+                        pro2.OutputLength = "12";
+
+                        Prolist.Add(pro2);
+                        ListParameter.Add(sqlParameter);
+                    }
+                    #endregion
+
+                    // Sub 그리드 추가
+                    if (!string.IsNullOrEmpty(strID))
+                    {
                         for (int i = 0; i < dgdSub1.Items.Count; i++)
                         {
                             WinInsAutoSub = dgdSub1.Items[i] as Win_Qul_InspectAuto_U_Sub_CodeView;
@@ -1797,48 +1764,8 @@ namespace WizMes_ANT
                                 sqlParameter.Add("InspectBasisSeq", WinInsAutoSub.Seq);
                                 sqlParameter.Add("InspectBasisSubSeq", WinInsAutoSub.SubSeq);
                                 sqlParameter.Add("InspectValue", 0);
+                                sqlParameter.Add("InspectText", lib.CheckNull(WinInsAutoSub.arrInspectText[j]));
                                 sqlParameter.Add("CreateUserID", MainWindow.CurrentUser);
-
-                                if (j == 0)
-                                {
-                                    sqlParameter.Add("InspectText", lib.CheckNull(WinInsAutoSub.InspectText1));
-                                }
-                                else if (j == 1)
-                                {
-                                    sqlParameter.Add("InspectText", lib.CheckNull(WinInsAutoSub.InspectText2));
-                                }
-                                else if (j == 2)
-                                {
-                                    sqlParameter.Add("InspectText", lib.CheckNull(WinInsAutoSub.InspectText3));
-                                }
-                                else if (j == 3)
-                                {
-                                    sqlParameter.Add("InspectText", lib.CheckNull(WinInsAutoSub.InspectText4));
-                                }
-                                else if (j == 4)
-                                {
-                                    sqlParameter.Add("InspectText", lib.CheckNull(WinInsAutoSub.InspectText5));
-                                }
-                                else if (j == 5)
-                                {
-                                    sqlParameter.Add("InspectText", lib.CheckNull(WinInsAutoSub.InspectText6));
-                                }
-                                else if (j == 6)
-                                {
-                                    sqlParameter.Add("InspectText", lib.CheckNull(WinInsAutoSub.InspectText7));
-                                }
-                                else if (j == 7)
-                                {
-                                    sqlParameter.Add("InspectText", lib.CheckNull(WinInsAutoSub.InspectText8));
-                                }
-                                else if (j == 8)
-                                {
-                                    sqlParameter.Add("InspectText", lib.CheckNull(WinInsAutoSub.InspectText9));
-                                }
-                                else if (j == 9)
-                                {
-                                    sqlParameter.Add("InspectText", lib.CheckNull(WinInsAutoSub.InspectText10));
-                                }
 
                                 Procedure pro2 = new Procedure();
                                 pro2.Name = "xp_Inspect_iAutoInspectSub";
@@ -1864,48 +1791,10 @@ namespace WizMes_ANT
                                 sqlParameter.Add("InspectBasisSeq", WinInsAutoSub.Seq);
                                 sqlParameter.Add("InspectBasisSubSeq", WinInsAutoSub.SubSeq);
                                 sqlParameter.Add("InspectText", "");
-                                sqlParameter.Add("CreateUserID", MainWindow.CurrentUser);
 
-                                if (j == 0)
-                                {
-                                    sqlParameter.Add("InspectValue", WinInsAutoSub.InspectValue1 != "" ? lib.CheckNullZero(WinInsAutoSub.InspectValue1) : "0");
-                                }
-                                else if (j == 1)
-                                {
-                                    sqlParameter.Add("InspectValue", WinInsAutoSub.InspectValue2 != "" ? lib.CheckNullZero(WinInsAutoSub.InspectValue2) : "0");
-                                }
-                                else if (j == 2)
-                                {
-                                    sqlParameter.Add("InspectValue", WinInsAutoSub.InspectValue3 != "" ? lib.CheckNullZero(WinInsAutoSub.InspectValue3) : "0");
-                                }
-                                else if (j == 3)
-                                {
-                                    sqlParameter.Add("InspectValue", WinInsAutoSub.InspectValue4 != "" ? lib.CheckNullZero(WinInsAutoSub.InspectValue4) : "0");
-                                }
-                                else if (j == 4)
-                                {
-                                    sqlParameter.Add("InspectValue", WinInsAutoSub.InspectValue5 != "" ? lib.CheckNullZero(WinInsAutoSub.InspectValue5) : "0");
-                                }
-                                else if (j == 5)
-                                {
-                                    sqlParameter.Add("InspectValue", WinInsAutoSub.InspectValue6 != "" ? lib.CheckNullZero(WinInsAutoSub.InspectValue6) : "0");
-                                }
-                                else if (j == 6)
-                                {
-                                    sqlParameter.Add("InspectValue", WinInsAutoSub.InspectValue7 != "" ? lib.CheckNullZero(WinInsAutoSub.InspectValue7) : "0");
-                                }
-                                else if (j == 7)
-                                {
-                                    sqlParameter.Add("InspectValue", WinInsAutoSub.InspectValue8 != "" ? lib.CheckNullZero(WinInsAutoSub.InspectValue8) : "0");
-                                }
-                                else if (j == 8)
-                                {
-                                    sqlParameter.Add("InspectValue", WinInsAutoSub.InspectValue9 != "" ? lib.CheckNullZero(WinInsAutoSub.InspectValue9) : "0");
-                                }
-                                else if (j == 9)
-                                {
-                                    sqlParameter.Add("InspectValue", WinInsAutoSub.InspectValue9 != "" ? lib.CheckNullZero(WinInsAutoSub.InspectValue10) : "0");
-                                }
+                                string inspectValue = WinInsAutoSub.arrInspectValue[j] != "" ? lib.CheckNullZero(WinInsAutoSub.arrInspectValue[j]) : "0";
+                                sqlParameter.Add("InspectValue", inspectValue);
+                                sqlParameter.Add("CreateUserID", MainWindow.CurrentUser);
 
                                 Procedure pro3 = new Procedure();
                                 pro3.Name = "xp_Inspect_iAutoInspectSub";
@@ -1918,240 +1807,37 @@ namespace WizMes_ANT
                             }
                         }
 
-                        List<KeyValue> list_Result = new List<KeyValue>();
-                        list_Result = DataStore.Instance.ExecuteAllProcedureOutputGetCS(Prolist, ListParameter);
-                        string sGetID = string.Empty;
-
-                        if (list_Result[0].key.ToLower() == "success")
+                        // 첨부파일 등록
+                        if (txtSKetch.Text != string.Empty || txtFile.Text != string.Empty)
                         {
-                            list_Result.RemoveAt(0);
-                            for (int i = 0; i < list_Result.Count; i++)
+                            bool AttachYesNo = false;
+                            if (FTP_Save_File(listFtpFile, strID))
                             {
-                                KeyValue kv = list_Result[i];
-                                if (kv.key == "InspectID")
-                                {
-                                    sGetID = kv.value;
-                                    flag = true;
-                                }
-                            }
+                                if (!txtSKetch.Text.Equals(string.Empty)) { txtSKetch.Tag = "/ImageData/AutoInspect/" + strID; }
+                                if (!txtFile.Text.Equals(string.Empty)) { txtFile.Tag = "/ImageData/AutoInspect/" + strID; }
 
-                            if (flag)
-                            {
-                                bool AttachYesNo = false;
-
-                                if (txtSKetch.Text != string.Empty || txtFile.Text != string.Empty)       //첨부파일 1
-                                {
-                                    if (FTP_Save_File(listFtpFile, sGetID))
-                                    {
-                                        if (!txtSKetch.Text.Equals(string.Empty)) { txtSKetch.Tag = "/ImageData/AutoInspect/" + sGetID; }
-                                        if (!txtFile.Text.Equals(string.Empty)) { txtFile.Tag = "/ImageData/AutoInspect/" + sGetID; }
-
-                                        AttachYesNo = true;
-                                    }
-                                    else
-                                    { MessageBox.Show("데이터 저장이 완료되었지만, 첨부문서 등록에 실패하였습니다."); }
-
-                                    if (AttachYesNo == true) { AttachFileUpdate(sGetID); }      //첨부문서 정보 DB 업데이트.
-                                }
-                            }
-                        }
-                        else
-                        {
-                            MessageBox.Show("[저장실패]\r\n" + list_Result[0].value.ToString());
-                            flag = false;
-                            //return false;
-                        }
-                    }
-
-                    #endregion
-
-                    #region 수정
-
-                    else if (strFlag.Equals("U"))
-                    {
-                        sqlParameter.Add("UpdateUserID", MainWindow.CurrentUser);
-
-                        string[] result = DataStore.Instance.ExecuteProcedure("xp_Inspect_uAutoInspect", sqlParameter, false);
-                        if (!result[0].Equals("success"))
-                        {
-                            flag = false;
-                            MessageBox.Show("실패 , 사유 : " + result[1]);
-                        }
-                        else
-                        {
-                            flag = true;
-                        }
-
-                        if (flag)
-                        {
-                            for (int i = 0; i < dgdSub1.Items.Count; i++)
-                            {
-                                WinInsAutoSub = dgdSub1.Items[i] as Win_Qul_InspectAuto_U_Sub_CodeView;
-
-                                for (int j = 0; j < WinInsAutoSub.ValueCount; j++)
-                                {
-                                    sqlParameter = new Dictionary<string, object>();
-                                    sqlParameter.Clear();
-                                    sqlParameter.Add("InspectID", strID);
-                                    sqlParameter.Add("InspectBasisID", WinInsAutoSub.InspectBasisID);
-                                    sqlParameter.Add("InspectBasisSeq", WinInsAutoSub.Seq);
-                                    sqlParameter.Add("InspectBasisSubSeq", WinInsAutoSub.SubSeq);
-                                    sqlParameter.Add("InspectValue", 0);
-                                    sqlParameter.Add("CreateUserID", MainWindow.CurrentUser);
-
-                                    if (j == 0)
-                                    {
-                                        sqlParameter.Add("InspectText", lib.CheckNull(WinInsAutoSub.InspectText1));
-                                    }
-                                    else if (j == 1)
-                                    {
-                                        sqlParameter.Add("InspectText", lib.CheckNull(WinInsAutoSub.InspectText2));
-                                    }
-                                    else if (j == 2)
-                                    {
-                                        sqlParameter.Add("InspectText", lib.CheckNull(WinInsAutoSub.InspectText3));
-                                    }
-                                    else if (j == 3)
-                                    {
-                                        sqlParameter.Add("InspectText", lib.CheckNull(WinInsAutoSub.InspectText4));
-                                    }
-                                    else if (j == 4)
-                                    {
-                                        sqlParameter.Add("InspectText", lib.CheckNull(WinInsAutoSub.InspectText5));
-                                    }
-                                    else if (j == 5)
-                                    {
-                                        sqlParameter.Add("InspectText", lib.CheckNull(WinInsAutoSub.InspectText6));
-                                    }
-                                    else if (j == 6)
-                                    {
-                                        sqlParameter.Add("InspectText", lib.CheckNull(WinInsAutoSub.InspectText7));
-                                    }
-                                    else if (j == 7)
-                                    {
-                                        sqlParameter.Add("InspectText", lib.CheckNull(WinInsAutoSub.InspectText8));
-                                    }
-                                    else if (j == 8)
-                                    {
-                                        sqlParameter.Add("InspectText", lib.CheckNull(WinInsAutoSub.InspectText9));
-                                    }
-                                    else if (j == 9)
-                                    {
-                                        sqlParameter.Add("InspectText", lib.CheckNull(WinInsAutoSub.InspectText10));
-                                    }
-
-                                    Procedure pro2 = new Procedure();
-                                    pro2.Name = "xp_Inspect_iAutoInspectSub";
-                                    pro2.OutputUseYN = "N";
-                                    pro2.OutputName = "InspectID";
-                                    pro2.OutputLength = "10";
-
-                                    Prolist.Add(pro2);
-                                    ListParameter.Add(sqlParameter);
-                                }
-                            }
-
-                            for (int i = 0; i < dgdSub2.Items.Count; i++)
-                            {
-                                WinInsAutoSub = dgdSub2.Items[i] as Win_Qul_InspectAuto_U_Sub_CodeView;
-
-                                for (int j = 0; j < WinInsAutoSub.ValueCount; j++)
-                                {
-                                    sqlParameter = new Dictionary<string, object>();
-                                    sqlParameter.Clear();
-                                    sqlParameter.Add("InspectID", strID);
-                                    sqlParameter.Add("InspectBasisID", WinInsAutoSub.InspectBasisID);
-                                    sqlParameter.Add("InspectBasisSeq", WinInsAutoSub.Seq);
-                                    sqlParameter.Add("InspectBasisSubSeq", WinInsAutoSub.SubSeq);
-                                    sqlParameter.Add("InspectText", "");
-                                    sqlParameter.Add("CreateUserID", MainWindow.CurrentUser);
-
-                                    if (j == 0)
-                                    {
-                                        sqlParameter.Add("InspectValue", lib.CheckNullZero(WinInsAutoSub.InspectValue1.Replace(",", "")));
-                                    }
-                                    else if (j == 1)
-                                    {
-                                        sqlParameter.Add("InspectValue", lib.CheckNullZero(WinInsAutoSub.InspectValue2.Replace(",", "")));
-                                    }
-                                    else if (j == 2)
-                                    {
-                                        sqlParameter.Add("InspectValue", lib.CheckNullZero(WinInsAutoSub.InspectValue3.Replace(",", "")));
-                                    }
-                                    else if (j == 3)
-                                    {
-                                        sqlParameter.Add("InspectValue", lib.CheckNullZero(WinInsAutoSub.InspectValue4.Replace(",", "")));
-                                    }
-                                    else if (j == 4)
-                                    {
-                                        sqlParameter.Add("InspectValue", lib.CheckNullZero(WinInsAutoSub.InspectValue5.Replace(",", "")));
-                                    }
-                                    else if (j == 5)
-                                    {
-                                        sqlParameter.Add("InspectValue", lib.CheckNullZero(WinInsAutoSub.InspectValue6.Replace(",", "")));
-                                    }
-                                    else if (j == 6)
-                                    {
-                                        sqlParameter.Add("InspectValue", lib.CheckNullZero(WinInsAutoSub.InspectValue7.Replace(",", "")));
-                                    }
-                                    else if (j == 7)
-                                    {
-                                        sqlParameter.Add("InspectValue", lib.CheckNullZero(WinInsAutoSub.InspectValue8.Replace(",", "")));
-                                    }
-                                    else if (j == 8)
-                                    {
-                                        sqlParameter.Add("InspectValue", lib.CheckNullZero(WinInsAutoSub.InspectValue9.Replace(",", "")));
-                                    }
-                                    else if (j == 9)
-                                    {
-                                        sqlParameter.Add("InspectValue", lib.CheckNullZero(WinInsAutoSub.InspectValue10.Replace(",", "")));
-                                    }
-
-                                    Procedure pro3 = new Procedure();
-                                    pro3.Name = "xp_Inspect_iAutoInspectSub";
-                                    pro3.OutputUseYN = "N";
-                                    pro3.OutputName = "InspectID";
-                                    pro3.OutputLength = "10";
-
-                                    Prolist.Add(pro3);
-                                    ListParameter.Add(sqlParameter);
-                                }
-                            }
-
-                            string[] Confirm = new string[2];
-                            Confirm = DataStore.Instance.ExecuteAllProcedureOutputNew(Prolist, ListParameter);
-                            if (Confirm[0] != "success")
-                            {
-                                MessageBox.Show("[저장실패]\r\n" + Confirm[1].ToString());
-                                flag = false;
-                                //return false;
+                                AttachYesNo = true;
                             }
                             else
                             {
-                                flag = true;
+                                string strWord = strFlag.Equals("I") ? "저장" : "수정";
+                                MessageBox.Show(string.Format("데이터 {0}이 완료되었지만, 첨부문서 등록에 실패하였습니다.", strWord));
                             }
-                            if (flag)
-                            {
-                                bool AttachYesNo = false;
 
-                                if (txtSKetch.Text != string.Empty || txtFile.Text != string.Empty)       //첨부파일 1
-                                {
-                                    if (FTP_Save_File(listFtpFile, txtinspectID.Text))
-                                    {
-                                        if (!txtSKetch.Text.Equals(string.Empty)) { txtSKetch.Tag = "/ImageData/AutoInspect/" + txtinspectID.Text; }
-                                        if (!txtFile.Text.Equals(string.Empty)) { txtFile.Tag = "/ImageData/AutoInspect/" + txtinspectID.Text; }
-
-                                        AttachYesNo = true;
-                                    }
-                                    else
-                                    { MessageBox.Show("데이터 수정이 완료되었지만, 첨부문서 등록에 실패하였습니다."); }
-
-                                    if (AttachYesNo == true) { AttachFileUpdate(txtinspectID.Text); }      //첨부문서 정보 DB 업데이트.
-                                }
-                            }
+                            if (AttachYesNo == true)
+                                AttachFileUpdate(strID);      //첨부문서 정보 DB 업데이트.
                         }
+
+                        string[] Confirm = new string[2];
+                        Confirm = DataStore.Instance.ExecuteAllProcedureOutputNew_NewLog(Prolist, ListParameter, "U");
+                        if (Confirm[0] != "success")
+                        {
+                            MessageBox.Show("[저장실패]\r\n" + Confirm[1].ToString());
+                            flag = false;
+                        }
+                        else
+                            flag = true;
                     }
-                    #endregion
                 }
             }
             catch (Exception ex)
@@ -2636,38 +2322,16 @@ namespace WizMes_ANT
                                     var subdg = One[j];
                                     if (dgr1.SubSeq == subdg.SubSeq)
                                     {
-                                        dgr1.InspectText1 = subdg.InspectText1;
-                                        dgr1.InspectText2 = subdg.InspectText2;
-                                        dgr1.InspectText3 = subdg.InspectText3;
-                                        dgr1.InspectText4 = subdg.InspectText4;
-                                        dgr1.InspectText5 = subdg.InspectText5;
-                                        dgr1.InspectText6 = subdg.InspectText6;
-                                        dgr1.InspectText7 = subdg.InspectText7;
-                                        dgr1.InspectText8 = subdg.InspectText8;
-                                        dgr1.InspectText9 = subdg.InspectText9;
-                                        dgr1.InspectText10 = subdg.InspectText10;
+                                        for (int textIdx = 0; textIdx < subdg.arrInspectText.Length; textIdx++)
+                                        {
+                                            string inspectText = subdg.arrInspectText[textIdx];
+                                            dgr1.arrInspectText[textIdx] = inspectText;
 
-                                        if (!subdg.InspectText1.Equals(string.Empty))
-                                            k++;
-                                        if (!subdg.InspectText2.Equals(string.Empty))
-                                            k++;
-                                        if (!subdg.InspectText3.Equals(string.Empty))
-                                            k++;
-                                        if (!subdg.InspectText4.Equals(string.Empty))
-                                            k++;
-                                        if (!subdg.InspectText5.Equals(string.Empty))
-                                            k++;
-                                        if (!subdg.InspectText6.Equals(string.Empty))
-                                            k++;
-                                        if (!subdg.InspectText7.Equals(string.Empty))
-                                            k++;
-                                        if (!subdg.InspectText8.Equals(string.Empty))
-                                            k++;
-                                        if (!subdg.InspectText9.Equals(string.Empty))
-                                            k++;
-                                        if (!subdg.InspectText10.Equals(string.Empty))
-                                            k++;
+                                            if (!inspectText.Equals(""))
+                                                k++;
+                                        }
 
+                                        dgr1.RefreshTextBlock(1, dgr1.arrInspectText);
                                         dgr1.ValueCount = k;
                                     }
                                 }
@@ -2686,38 +2350,16 @@ namespace WizMes_ANT
                                     var subdg = Two[j];
                                     if (dgr2.SubSeq == subdg.SubSeq)
                                     {
-                                        dgr2.InspectValue1 = subdg.InspectValue1;
-                                        dgr2.InspectValue2 = subdg.InspectValue2;
-                                        dgr2.InspectValue3 = subdg.InspectValue3;
-                                        dgr2.InspectValue4 = subdg.InspectValue4;
-                                        dgr2.InspectValue5 = subdg.InspectValue5;
-                                        dgr2.InspectValue6 = subdg.InspectValue6;
-                                        dgr2.InspectValue7 = subdg.InspectValue7;
-                                        dgr2.InspectValue8 = subdg.InspectValue8;
-                                        dgr2.InspectValue9 = subdg.InspectValue9;
-                                        dgr2.InspectValue10 = subdg.InspectValue10;
+                                        for (int textIdx = 0; textIdx < subdg.arrInspectValue.Length; textIdx++)
+                                        {
+                                            string inspectValue = subdg.arrInspectValue[textIdx];
+                                            dgr2.arrInspectValue[textIdx] = inspectValue;
 
-                                        if (lib.IsNumOrAnother(subdg.InspectValue1))
-                                            k++;
-                                        if (lib.IsNumOrAnother(subdg.InspectValue2))
-                                            k++;
-                                        if (lib.IsNumOrAnother(subdg.InspectValue3))
-                                            k++;
-                                        if (lib.IsNumOrAnother(subdg.InspectValue4))
-                                            k++;
-                                        if (lib.IsNumOrAnother(subdg.InspectValue5))
-                                            k++;
-                                        if (lib.IsNumOrAnother(subdg.InspectValue6))
-                                            k++;
-                                        if (lib.IsNumOrAnother(subdg.InspectValue7))
-                                            k++;
-                                        if (lib.IsNumOrAnother(subdg.InspectValue8))
-                                            k++;
-                                        if (lib.IsNumOrAnother(subdg.InspectValue9))
-                                            k++;
-                                        if (lib.IsNumOrAnother(subdg.InspectValue10))
-                                            k++;
+                                            if (lib.IsNumOrAnother(inspectValue))
+                                                k++;
+                                        }
 
+                                        dgr2.RefreshTextBlock(1, dgr2.arrInspectValue);
                                         dgr2.ValueCount = k;
                                     }
                                 }
@@ -2754,7 +2396,7 @@ namespace WizMes_ANT
                 if (ds != null && ds.Tables.Count > 0)
                 {
                     DataTable dt = ds.Tables[0];
-                    int i = 0;
+                    int idx = 0;
 
                     if (dt.Rows.Count == 0)
                     {
@@ -2768,7 +2410,7 @@ namespace WizMes_ANT
                         {
                             var WinQulInsAutoSub = new Win_Qul_InspectAuto_U_Sub_CodeView()
                             {
-                                Num = i + 1,
+                                Num = idx + 1,
                                 InspectBasisID = dr["InspectBasisID"].ToString(),
                                 Seq = dr["Seq"].ToString(),
                                 SubSeq = dr["SubSeq"].ToString(),
@@ -2779,34 +2421,24 @@ namespace WizMes_ANT
                                 InsTPSpecMin = dr["InsTPSpecMin"].ToString(),
                                 InsTPSpecMax = dr["InsTPSpecMax"].ToString(),
                                 InsSampleQty = dr["InsSampleQty"].ToString(),
-                                InspectValue1 = lib.returnNumStringTwo(dr["InspectValue1"].ToString()),
-                                InspectValue2 = lib.returnNumStringTwo(dr["InspectValue2"].ToString()),
-                                InspectValue3 = lib.returnNumStringTwo(dr["InspectValue3"].ToString()),
-                                InspectValue4 = lib.returnNumStringTwo(dr["InspectValue4"].ToString()),
-                                InspectValue5 = lib.returnNumStringTwo(dr["InspectValue5"].ToString()),
-                                InspectValue6 = lib.returnNumStringTwo(dr["InspectValue6"].ToString()),
-                                InspectValue7 = lib.returnNumStringTwo(dr["InspectValue7"].ToString()),
-                                InspectValue8 = lib.returnNumStringTwo(dr["InspectValue8"].ToString()),
-                                InspectValue9 = lib.returnNumStringTwo(dr["InspectValue9"].ToString()),
-                                InspectValue10 = lib.returnNumStringTwo(dr["InspectValue10"].ToString()),
-                                InspectText1 = dr["InspectText1"].ToString(),
-                                InspectText2 = dr["InspectText2"].ToString(),
-                                InspectText3 = dr["InspectText3"].ToString(),
-                                InspectText4 = dr["InspectText4"].ToString(),
-                                InspectText5 = dr["InspectText5"].ToString(),
-                                InspectText6 = dr["InspectText6"].ToString(),
-                                InspectText7 = dr["InspectText7"].ToString(),
-                                InspectText8 = dr["InspectText8"].ToString(),
-                                InspectText9 = dr["InspectText9"].ToString(),
-                                InspectText10 = dr["InspectText10"].ToString(),
                                 insSpec = dr["insSpec"].ToString(),
                                 R = dr["R"].ToString(),
                                 Sigma = dr["Sigma"].ToString(),
                                 xBar = dr["xBar"].ToString()
                             };
 
+                            for (int i = 1; i <= 10; i++)
+                            {
+                                int num = i;
+                                WinQulInsAutoSub.arrInspectValue[i] = lib.returnNumStringTwo(dr["InspectValue" + num.ToString()].ToString());
+                                WinQulInsAutoSub.arrInspectText[i] = dr["InspectText" + num.ToString()].ToString();
+                            }
+
+                            WinQulInsAutoSub.RefreshTextBlock(0, WinQulInsAutoSub.arrInspectValue);
+                            WinQulInsAutoSub.RefreshTextBlock(1, WinQulInsAutoSub.arrInspectText);
+
                             returnData.Add(WinQulInsAutoSub);
-                            i++;
+                            idx++;
                         }
                     }
                 }
@@ -3299,279 +2931,32 @@ namespace WizMes_ANT
             }
         }
 
-        //
-        private void InspectText1_TextChanged(object sender, TextChangedEventArgs e)
+        private void InspectText_TextChanged(object sender, TextChangedEventArgs e)
         {
-            if (lblMsg.Visibility == Visibility.Visible)
+            if (lblMsg.Visibility != Visibility.Visible)
+                return;
+
+            WinInsAutoSub = dgdSub1.CurrentItem as Win_Qul_InspectAuto_U_Sub_CodeView;
+            if (WinInsAutoSub != null)
             {
-                WinInsAutoSub = dgdSub1.CurrentItem as Win_Qul_InspectAuto_U_Sub_CodeView;
-
-                if (WinInsAutoSub != null)
+                TextBox tb1 = sender as TextBox;
+                if (tb1 != null)
                 {
-                    TextBox tb1 = sender as TextBox;
-
-                    if (tb1 != null)
+                    int idx = int.Parse(tb1.Tag == null ? "0" : tb1.Tag.ToString());
+                    if (idx > 1 && Convert.ToInt32(WinInsAutoSub.InsSampleQty.Trim()) < idx)
                     {
-                        WinInsAutoSub.InspectText1 = tb1.Text.ToUpper();
+                        tb1.Text = "";
+                        WinInsAutoSub.arrInspectText[idx - 1] = "";
+                    }
+                    else
+                    {
+                        WinInsAutoSub.arrInspectText[idx - 1] = tb1.Text.ToUpper();
+                        WinInsAutoSub.RefreshTextBlock(1, WinInsAutoSub.arrInspectText, idx);
                         tb1.SelectionStart = tb1.Text.Length;
                     }
-
-                    sender = tb1;
                 }
-            }
-        }
 
-        //
-        private void InspectText2_TextChanged(object sender, TextChangedEventArgs e)
-        {
-            if (lblMsg.Visibility == Visibility.Visible)
-            {
-                WinInsAutoSub = dgdSub1.CurrentItem as Win_Qul_InspectAuto_U_Sub_CodeView;
-
-                if (WinInsAutoSub != null)
-                {
-                    TextBox tb1 = sender as TextBox;
-
-                    if (tb1 != null)
-                    {
-                        if (Convert.ToInt32(WinInsAutoSub.InsSampleQty.Trim()) < 2)
-                        {
-                            tb1.Text = string.Empty;
-                            WinInsAutoSub.InspectText2 = string.Empty;
-                        }
-                        else
-                        {
-                            WinInsAutoSub.InspectText2 = tb1.Text.ToUpper();
-                            tb1.SelectionStart = tb1.Text.Length;
-                        }
-                    }
-
-                    sender = tb1;
-                }
-            }
-        }
-
-        private void InspectText3_TextChanged(object sender, TextChangedEventArgs e)
-        {
-            if (lblMsg.Visibility == Visibility.Visible)
-            {
-                WinInsAutoSub = dgdSub1.CurrentItem as Win_Qul_InspectAuto_U_Sub_CodeView;
-
-                if (WinInsAutoSub != null)
-                {
-                    TextBox tb1 = sender as TextBox;
-
-                    if (tb1 != null)
-                    {
-                        if (Convert.ToInt32(WinInsAutoSub.InsSampleQty.Trim()) < 3)
-                        {
-                            tb1.Text = string.Empty;
-                            WinInsAutoSub.InspectText3 = string.Empty;
-                        }
-                        else
-                        {
-                            WinInsAutoSub.InspectText3 = tb1.Text.ToUpper();
-                            tb1.SelectionStart = tb1.Text.Length;
-                        }
-                    }
-                    sender = tb1;
-                }
-            }
-        }
-
-        private void InspectText4_TextChanged(object sender, TextChangedEventArgs e)
-        {
-            if (lblMsg.Visibility == Visibility.Visible)
-            {
-                WinInsAutoSub = dgdSub1.CurrentItem as Win_Qul_InspectAuto_U_Sub_CodeView;
-
-                if (WinInsAutoSub != null)
-                {
-                    TextBox tb1 = sender as TextBox;
-
-                    if (tb1 != null)
-                    {
-                        if (Convert.ToInt32(WinInsAutoSub.InsSampleQty.Trim()) < 4)
-                        {
-                            tb1.Text = string.Empty;
-                            WinInsAutoSub.InspectText4 = string.Empty;
-                        }
-                        else
-                        {
-                            WinInsAutoSub.InspectText4 = tb1.Text.ToUpper();
-                            tb1.SelectionStart = tb1.Text.Length;
-                        }
-                    }
-                    sender = tb1;
-                }
-            }
-        }
-
-        private void InspectText5_TextChanged(object sender, TextChangedEventArgs e)
-        {
-            if (lblMsg.Visibility == Visibility.Visible)
-            {
-                WinInsAutoSub = dgdSub1.CurrentItem as Win_Qul_InspectAuto_U_Sub_CodeView;
-
-                if (WinInsAutoSub != null)
-                {
-                    TextBox tb1 = sender as TextBox;
-
-                    if (tb1 != null)
-                    {
-                        if (Convert.ToInt32(WinInsAutoSub.InsSampleQty.Trim()) < 5)
-                        {
-                            tb1.Text = string.Empty;
-                            WinInsAutoSub.InspectText5 = string.Empty;
-                        }
-                        else
-                        {
-                            WinInsAutoSub.InspectText5 = tb1.Text.ToUpper();
-                            tb1.SelectionStart = tb1.Text.Length;
-                        }
-                    }
-                    sender = tb1;
-                }
-            }
-        }
-
-        private void InspectText6_TextChanged(object sender, TextChangedEventArgs e)
-        {
-            if (lblMsg.Visibility == Visibility.Visible)
-            {
-                WinInsAutoSub = dgdSub1.CurrentItem as Win_Qul_InspectAuto_U_Sub_CodeView;
-
-                if (WinInsAutoSub != null)
-                {
-                    TextBox tb1 = sender as TextBox;
-
-                    if (tb1 != null)
-                    {
-                        if (Convert.ToInt32(WinInsAutoSub.InsSampleQty.Trim()) < 6)
-                        {
-                            tb1.Text = string.Empty;
-                            WinInsAutoSub.InspectText6 = string.Empty;
-                        }
-                        else
-                        {
-                            WinInsAutoSub.InspectText6 = tb1.Text.ToUpper();
-                            tb1.SelectionStart = tb1.Text.Length;
-                        }
-                    }
-                    sender = tb1;
-                }
-            }
-        }
-
-        private void InspectText7_TextChanged(object sender, TextChangedEventArgs e)
-        {
-            if (lblMsg.Visibility == Visibility.Visible)
-            {
-                WinInsAutoSub = dgdSub1.CurrentItem as Win_Qul_InspectAuto_U_Sub_CodeView;
-
-                if (WinInsAutoSub != null)
-                {
-                    TextBox tb1 = sender as TextBox;
-
-                    if (tb1 != null)
-                    {
-                        if (Convert.ToInt32(WinInsAutoSub.InsSampleQty.Trim()) < 7)
-                        {
-                            tb1.Text = string.Empty;
-                            WinInsAutoSub.InspectText7 = string.Empty;
-                        }
-                        else
-                        {
-                            WinInsAutoSub.InspectText7 = tb1.Text.ToUpper();
-                            tb1.SelectionStart = tb1.Text.Length;
-                        }
-                    }
-                    sender = tb1;
-                }
-            }
-        }
-
-        private void InspectText8_TextChanged(object sender, TextChangedEventArgs e)
-        {
-            if (lblMsg.Visibility == Visibility.Visible)
-            {
-                WinInsAutoSub = dgdSub1.CurrentItem as Win_Qul_InspectAuto_U_Sub_CodeView;
-
-                if (WinInsAutoSub != null)
-                {
-                    TextBox tb1 = sender as TextBox;
-
-                    if (tb1 != null)
-                    {
-                        if (Convert.ToInt32(WinInsAutoSub.InsSampleQty.Trim()) < 8)
-                        {
-                            tb1.Text = string.Empty;
-                            WinInsAutoSub.InspectText8 = string.Empty;
-                        }
-                        else
-                        {
-                            WinInsAutoSub.InspectText8 = tb1.Text.ToUpper();
-                            tb1.SelectionStart = tb1.Text.Length;
-                        }
-                    }
-                    sender = tb1;
-                }
-            }
-        }
-
-        private void InspectText9_TextChanged(object sender, TextChangedEventArgs e)
-        {
-            if (lblMsg.Visibility == Visibility.Visible)
-            {
-                WinInsAutoSub = dgdSub1.CurrentItem as Win_Qul_InspectAuto_U_Sub_CodeView;
-
-                if (WinInsAutoSub != null)
-                {
-                    TextBox tb1 = sender as TextBox;
-
-                    if (tb1 != null)
-                    {
-                        if (Convert.ToInt32(WinInsAutoSub.InsSampleQty.Trim()) < 9)
-                        {
-                            tb1.Text = string.Empty;
-                            WinInsAutoSub.InspectText9 = string.Empty;
-                        }
-                        else
-                        {
-                            WinInsAutoSub.InspectText9 = tb1.Text.ToUpper();
-                            tb1.SelectionStart = tb1.Text.Length;
-                        }
-                    }
-                    sender = tb1;
-                }
-            }
-        }
-
-        private void InspectText10_TextChanged(object sender, TextChangedEventArgs e)
-        {
-            if (lblMsg.Visibility == Visibility.Visible)
-            {
-                WinInsAutoSub = dgdSub1.CurrentItem as Win_Qul_InspectAuto_U_Sub_CodeView;
-
-                if (WinInsAutoSub != null)
-                {
-                    TextBox tb1 = sender as TextBox;
-
-                    if (tb1 != null)
-                    {
-                        if (Convert.ToInt32(WinInsAutoSub.InsSampleQty.Trim()) < 10)
-                        {
-                            tb1.Text = string.Empty;
-                            WinInsAutoSub.InspectText10 = string.Empty;
-                        }
-                        else
-                        {
-                            WinInsAutoSub.InspectText10 = tb1.Text.ToUpper();
-                            tb1.SelectionStart = tb1.Text.Length;
-                        }
-                    }
-                    sender = tb1;
-                }
+                sender = tb1;
             }
         }
 
@@ -3580,270 +2965,33 @@ namespace WizMes_ANT
             lib.CheckIsNumeric((TextBox)sender, e);
         }
 
-        private void InspectValue1_TextChanged(object sender, TextChangedEventArgs e)
+        private void InspectValue_TextChanged(object sender, TextChangedEventArgs e)
         {
-            if (lblMsg.Visibility == Visibility.Visible)
+            if (lblMsg.Visibility != Visibility.Visible)
+                return;
+
+            WinInsAutoSub = dgdSub2.CurrentItem as Win_Qul_InspectAuto_U_Sub_CodeView;
+            if (WinInsAutoSub != null)
             {
-                WinInsAutoSub = dgdSub2.CurrentItem as Win_Qul_InspectAuto_U_Sub_CodeView;
-
-                if (WinInsAutoSub != null)
+                TextBox tb1 = sender as TextBox;
+                if (tb1 != null)
                 {
-                    TextBox tb1 = sender as TextBox;
-
-                    if (tb1 != null)
+                    int idx = int.Parse(tb1.Tag == null ? "0" : tb1.Tag.ToString());
+                    if (idx > 1 && Convert.ToInt32(WinInsAutoSub.InsSampleQty.Trim()) < idx)
                     {
-                        WinInsAutoSub.InspectValue1 = tb1.Text;
+                        tb1.Text = "";
+                        WinInsAutoSub.arrInspectValue[idx - 1] = "";
                     }
-
-                    sender = tb1;
+                    else
+                    {
+                        WinInsAutoSub.arrInspectValue[idx - 1] = tb1.Text;
+                        WinInsAutoSub.RefreshTextBlock(0, WinInsAutoSub.arrInspectValue, idx);
+                    }
                 }
 
+                sender = tb1;
             }
         }
-
-        private void InspectValue2_TextChanged(object sender, TextChangedEventArgs e)
-        {
-            if (lblMsg.Visibility == Visibility.Visible)
-            {
-                WinInsAutoSub = dgdSub2.CurrentItem as Win_Qul_InspectAuto_U_Sub_CodeView;
-
-                if (WinInsAutoSub != null)
-                {
-                    TextBox tb1 = sender as TextBox;
-
-                    if (tb1 != null)
-                    {
-                        if (Convert.ToInt32(WinInsAutoSub.InsSampleQty.Trim()) < 2)
-                        {
-                            tb1.Text = string.Empty;
-                            WinInsAutoSub.InspectValue2 = string.Empty;
-                        }
-                        else
-                        {
-                            WinInsAutoSub.InspectValue2 = tb1.Text;
-                        }
-                    }
-                    sender = tb1;
-                }
-            }
-        }
-
-        private void InspectValue3_TextChanged(object sender, TextChangedEventArgs e)
-        {
-            if (lblMsg.Visibility == Visibility.Visible)
-            {
-                WinInsAutoSub = dgdSub2.CurrentItem as Win_Qul_InspectAuto_U_Sub_CodeView;
-
-                if (WinInsAutoSub != null)
-                {
-                    TextBox tb1 = sender as TextBox;
-
-                    if (tb1 != null)
-                    {
-                        if (Convert.ToInt32(WinInsAutoSub.InsSampleQty.Trim()) < 3)
-                        {
-                            tb1.Text = string.Empty;
-                            WinInsAutoSub.InspectValue3 = string.Empty;
-                        }
-                        else
-                        {
-                            WinInsAutoSub.InspectValue3 = tb1.Text;
-                        }
-                    }
-                    sender = tb1;
-                }
-            }
-        }
-
-        private void InspectValue4_TextChanged(object sender, TextChangedEventArgs e)
-        {
-            if (lblMsg.Visibility == Visibility.Visible)
-            {
-                WinInsAutoSub = dgdSub2.CurrentItem as Win_Qul_InspectAuto_U_Sub_CodeView;
-
-                if (WinInsAutoSub != null)
-                {
-                    TextBox tb1 = sender as TextBox;
-
-                    if (tb1 != null)
-                    {
-                        if (Convert.ToInt32(WinInsAutoSub.InsSampleQty.Trim()) < 4)
-                        {
-                            tb1.Text = string.Empty;
-                            WinInsAutoSub.InspectValue4 = string.Empty;
-                        }
-                        else
-                        {
-                            WinInsAutoSub.InspectValue4 = tb1.Text;
-                        }
-                    }
-                    sender = tb1;
-                }
-            }
-        }
-
-        private void InspectValue5_TextChanged(object sender, TextChangedEventArgs e)
-        {
-            if (lblMsg.Visibility == Visibility.Visible)
-            {
-                WinInsAutoSub = dgdSub2.CurrentItem as Win_Qul_InspectAuto_U_Sub_CodeView;
-
-                if (WinInsAutoSub != null)
-                {
-                    TextBox tb1 = sender as TextBox;
-
-                    if (tb1 != null)
-                    {
-                        if (Convert.ToInt32(WinInsAutoSub.InsSampleQty.Trim()) < 5)
-                        {
-                            tb1.Text = string.Empty;
-                            WinInsAutoSub.InspectValue5 = string.Empty;
-                        }
-                        else
-                        {
-                            WinInsAutoSub.InspectValue5 = tb1.Text;
-                        }
-                    }
-                    sender = tb1;
-                }
-            }
-        }
-
-        private void InspectValue6_TextChanged(object sender, TextChangedEventArgs e)
-        {
-            if (lblMsg.Visibility == Visibility.Visible)
-            {
-                WinInsAutoSub = dgdSub2.CurrentItem as Win_Qul_InspectAuto_U_Sub_CodeView;
-
-                if (WinInsAutoSub != null)
-                {
-                    TextBox tb1 = sender as TextBox;
-
-                    if (tb1 != null)
-                    {
-                        if (Convert.ToInt32(WinInsAutoSub.InsSampleQty.Trim()) < 6)
-                        {
-                            tb1.Text = string.Empty;
-                            WinInsAutoSub.InspectValue6 = string.Empty;
-                        }
-                        else
-                        {
-                            WinInsAutoSub.InspectValue6 = tb1.Text;
-                        }
-                    }
-                    sender = tb1;
-                }
-            }
-        }
-
-        private void InspectValue7_TextChanged(object sender, TextChangedEventArgs e)
-        {
-            if (lblMsg.Visibility == Visibility.Visible)
-            {
-                WinInsAutoSub = dgdSub2.CurrentItem as Win_Qul_InspectAuto_U_Sub_CodeView;
-
-                if (WinInsAutoSub != null)
-                {
-                    TextBox tb1 = sender as TextBox;
-
-                    if (tb1 != null)
-                    {
-                        if (Convert.ToInt32(WinInsAutoSub.InsSampleQty.Trim()) < 7)
-                        {
-                            tb1.Text = string.Empty;
-                            WinInsAutoSub.InspectValue7 = string.Empty;
-                        }
-                        else
-                        {
-                            WinInsAutoSub.InspectValue7 = tb1.Text;
-                        }
-                    }
-                    sender = tb1;
-                }
-            }
-        }
-
-        private void InspectValue8_TextChanged(object sender, TextChangedEventArgs e)
-        {
-            if (lblMsg.Visibility == Visibility.Visible)
-            {
-                WinInsAutoSub = dgdSub2.CurrentItem as Win_Qul_InspectAuto_U_Sub_CodeView;
-
-                if (WinInsAutoSub != null)
-                {
-                    TextBox tb1 = sender as TextBox;
-
-                    if (tb1 != null)
-                    {
-                        if (Convert.ToInt32(WinInsAutoSub.InsSampleQty.Trim()) < 8)
-                        {
-                            tb1.Text = string.Empty;
-                            WinInsAutoSub.InspectValue8 = string.Empty;
-                        }
-                        else
-                        {
-                            WinInsAutoSub.InspectValue8 = tb1.Text;
-                        }
-                    }
-                    sender = tb1;
-                }
-            }
-        }
-
-        private void InspectValue9_TextChanged(object sender, TextChangedEventArgs e)
-        {
-            if (lblMsg.Visibility == Visibility.Visible)
-            {
-                WinInsAutoSub = dgdSub2.CurrentItem as Win_Qul_InspectAuto_U_Sub_CodeView;
-
-                if (WinInsAutoSub != null)
-                {
-                    TextBox tb1 = sender as TextBox;
-
-                    if (tb1 != null)
-                    {
-                        if (Convert.ToInt32(WinInsAutoSub.InsSampleQty.Trim()) < 9)
-                        {
-                            tb1.Text = string.Empty;
-                            WinInsAutoSub.InspectValue9 = string.Empty;
-                        }
-                        else
-                        {
-                            WinInsAutoSub.InspectValue9 = tb1.Text;
-                        }
-                    }
-                    sender = tb1;
-                }
-            }
-        }
-
-        private void InspectValue10_TextChanged(object sender, TextChangedEventArgs e)
-        {
-            if (lblMsg.Visibility == Visibility.Visible)
-            {
-                WinInsAutoSub = dgdSub2.CurrentItem as Win_Qul_InspectAuto_U_Sub_CodeView;
-
-                if (WinInsAutoSub != null)
-                {
-                    TextBox tb1 = sender as TextBox;
-
-                    if (tb1 != null)
-                    {
-                        if (Convert.ToInt32(WinInsAutoSub.InsSampleQty.Trim()) < 10)
-                        {
-                            tb1.Text = string.Empty;
-                            WinInsAutoSub.InspectValue10 = string.Empty;
-                        }
-                        else
-                        {
-                            WinInsAutoSub.InspectValue10 = tb1.Text;
-                        }
-                    }
-                    sender = tb1;
-                }
-            }
-        }
-
         #endregion
 
         #endregion
@@ -3874,7 +3022,8 @@ namespace WizMes_ANT
             {
                 txtArticleName.Tag = null;
                 txtArticleName.Text = "";
-                txtArticleName.Text = "";
+                txtBuyerArticle.Text = "";
+                txtBuyerModel.Text = "";
                 txtInOutCustom.Tag = null;
                 txtInOutCustom.Text = "";
                 dtpInOutDate.SelectedDate = DateTime.Today;
@@ -3906,6 +3055,7 @@ namespace WizMes_ANT
                             ArticleID = dr["ArticleID"].ToString(),
                             Article = dr["Article"].ToString(),
                             BuyerArticleNo = dr["BuyerArticleNo"].ToString(),
+                            Model = dr["Model"].ToString(),
                             CustomID = dr["CustomID"].ToString(),
                             Custom = dr["KCustom"].ToString(),
                             InoutDate = dr["InoutDate"].ToString()
@@ -3914,6 +3064,7 @@ namespace WizMes_ANT
                         txtArticleName.Text = LotInfo.BuyerArticleNo;
                         txtArticleName.Tag = LotInfo.ArticleID;
                         txtBuyerArticle.Text = LotInfo.Article;
+                        txtBuyerModel.Text = LotInfo.Model;
                         txtInOutCustom.Text = LotInfo.Custom;
                         txtInOutCustom.Tag = LotInfo.CustomID;
 
@@ -3926,32 +3077,6 @@ namespace WizMes_ANT
 
                             if (cboEcoNO.ItemsSource != null)
                                 cboEcoNO.SelectedIndex = 0;
-                        }
-
-                        // InspectID 가져오기
-                        ds.Clear();
-                        dt.Clear();
-                        string inspectID = "";
-                        
-                        string sql = "select dbo.fn_getInspectID('" + strPoint + "', '" + LotNo + "', '" + processID + "')";
-                        ds = DataStore.Instance.QueryToDataSet(sql);
-                        if (ds != null && ds.Tables.Count > 0)
-                        {
-                            dt = ds.Tables[0];
-                            if (dt.Rows.Count > 0)
-                            {
-                                DataRowCollection drc = dt.Rows;
-                                inspectID = drc[dt.Rows.Count - 1].ItemArray[0].ToString().Replace(" ", "");
-
-                                if (!string.IsNullOrEmpty(inspectID))
-                                {
-                                    strFlag = "U";
-                                    tbkMsg.Text = "자료 수정 중";
-
-                                    FillGridSub(inspectID, "1");
-                                    FillGridSub(inspectID, "2");
-                                }
-                            }
                         }
                     }
                     else
@@ -3988,159 +3113,29 @@ namespace WizMes_ANT
 
                 if (WinSubAuto != null)
                 {
+                    WinSubAuto.ValueCount = 0;
                     string compareSpec = WinSubAuto.SpecMin.ToUpper();
 
-                    WinSubAuto.ValueCount = 0;
-                    if (WinSubAuto.InspectText1 != null && WinSubAuto.InspectText1.Replace(" ", "").Length > 0)
+                    for (int textIdx = 0; textIdx < WinSubAuto.arrInspectText.Length; textIdx++)
                     {
-                        sub1Count++;
-                        
-                        if (!WinSubAuto.InspectText1.Equals(compareSpec))
+                        string inspectText = WinSubAuto.arrInspectText[textIdx];
+                        if (inspectText != null && inspectText.Replace(" ", "").Length > 0)
                         {
-                            if (Flag)
+                            sub1Count++;
+
+                            if (inspectText.Equals(compareSpec))
                             {
-                                strDefectYN = "Y";
-                                Flag = false;
+                                if (Flag)
+                                {
+                                    strDefectYN = "Y";
+                                    Flag = false;
+                                }
+
+                                defectCount++;
                             }
 
-                            defectCount++;
+                            WinSubAuto.ValueCount++;
                         }
-                        WinSubAuto.ValueCount++;
-                    }
-                    if (WinSubAuto.InspectText2 != null && WinSubAuto.InspectText2.Replace(" ", "").Length > 0)
-                    {
-                        sub1Count++;
-
-                        if (!WinSubAuto.InspectText1.Equals(compareSpec))
-                        {
-                            if (Flag)
-                            {
-                                strDefectYN = "Y";
-                                Flag = false;
-                            }
-                            defectCount++;
-                        }
-                        WinSubAuto.ValueCount++;
-                    }
-                    if (WinSubAuto.InspectText3 != null && WinSubAuto.InspectText3.Replace(" ", "").Length > 0)
-                    {
-                        sub1Count++;
-
-                        if (!WinSubAuto.InspectText1.Equals(compareSpec))
-                        {
-                            if (Flag)
-                            {
-                                strDefectYN = "Y";
-                                Flag = false;
-                            }
-                            defectCount++;
-                        }
-                        WinSubAuto.ValueCount++;
-                    }
-                    if (WinSubAuto.InspectText4 != null && WinSubAuto.InspectText4.Replace(" ", "").Length > 0)
-                    {
-                        sub1Count++;
-
-                        if (!WinSubAuto.InspectText1.Equals(compareSpec))
-                        {
-                            if (Flag)
-                            {
-                                strDefectYN = "Y";
-                                Flag = false;
-                            }
-                            defectCount++;
-                        }
-                        WinSubAuto.ValueCount++;
-                    }
-                    if (WinSubAuto.InspectText5 != null && WinSubAuto.InspectText5.Replace(" ", "").Length > 0)
-                    {
-                        sub1Count++;
-
-                        if (!WinSubAuto.InspectText1.Equals(compareSpec))
-                        {
-                            if (Flag)
-                            {
-                                strDefectYN = "Y";
-                                Flag = false;
-                            }
-                            defectCount++;
-                        }
-                        WinSubAuto.ValueCount++;
-                    }
-                    if (WinSubAuto.InspectText6 != null && WinSubAuto.InspectText6.Replace(" ", "").Length > 0)
-                    {
-                        sub1Count++;
-
-                        if (!WinSubAuto.InspectText1.Equals(compareSpec))
-                        {
-                            if (Flag)
-                            {
-                                strDefectYN = "Y";
-                                Flag = false;
-                            }
-                            defectCount++;
-                        }
-                        WinSubAuto.ValueCount++;
-                    }
-                    if (WinSubAuto.InspectText7 != null && WinSubAuto.InspectText7.Replace(" ", "").Length > 0)
-                    {
-                        sub1Count++;
-
-                        if (!WinSubAuto.InspectText1.Equals(compareSpec))
-                        {
-                            if (Flag)
-                            {
-                                strDefectYN = "Y";
-                                Flag = false;
-                            }
-                            defectCount++;
-                        }
-                        WinSubAuto.ValueCount++;
-                    }
-                    if (WinSubAuto.InspectText8 != null && WinSubAuto.InspectText8.Replace(" ", "").Length > 0)
-                    {
-                        sub1Count++;
-
-                        if (!WinSubAuto.InspectText1.Equals(compareSpec))
-                        {
-                            if (Flag)
-                            {
-                                strDefectYN = "Y";
-                                Flag = false;
-                            }
-                            defectCount++;
-                        }
-                        WinSubAuto.ValueCount++;
-                    }
-                    if (WinSubAuto.InspectText9 != null && WinSubAuto.InspectText9.Replace(" ", "").Length > 0)
-                    {
-                        sub1Count++;
-
-                        if (!WinSubAuto.InspectText1.Equals(compareSpec))
-                        {
-                            if (Flag)
-                            {
-                                strDefectYN = "Y";
-                                Flag = false;
-                            }
-                            defectCount++;
-                        }
-                        WinSubAuto.ValueCount++;
-                    }
-                    if (WinSubAuto.InspectText10 != null && WinSubAuto.InspectText10.Replace(" ", "").Length > 0)
-                    {
-                        sub1Count++;
-
-                        if (!WinSubAuto.InspectText1.Equals(compareSpec))
-                        {
-                            if (Flag)
-                            {
-                                strDefectYN = "Y";
-                                Flag = false;
-                            }
-                            defectCount++;
-                        }
-                        WinSubAuto.ValueCount++;
                     }
                 }
             }
@@ -4152,15 +3147,8 @@ namespace WizMes_ANT
             {
                 var WinSubAuto = dgdSub2.Items[i] as Win_Qul_InspectAuto_U_Sub_CodeView;
 
-                if (lib.IsNumOrAnother(WinSubAuto.SpecMin) &&
-                            lib.IsNumOrAnother(WinSubAuto.SpecMax))
-                {
-                    SpecFlag = true;
-                }
-                else
-                {
-                    SpecFlag = false;
-                }
+                SpecFlag = lib.IsNumOrAnother(WinSubAuto.SpecMin) && lib.IsNumOrAnother(WinSubAuto.SpecMax)
+                            ? true : false;
 
                 if (SpecFlag)
                 {
@@ -4171,255 +3159,34 @@ namespace WizMes_ANT
                 if (WinSubAuto != null)
                 {
                     WinSubAuto.ValueCount = 0;
-                    if (WinSubAuto.InspectValue1 != null && WinSubAuto.InspectValue1.Replace(" ", "").Length > 0)
-                    {
-                        sub2Count++;
-                        if (SpecFlag && lib.IsNumOrAnother(WinSubAuto.InspectValue1))
-                        {
-                            if ((doubleSpecMin <= double.Parse(WinSubAuto.InspectValue1)) &&
-                                (doubleSpecMax >= double.Parse(WinSubAuto.InspectValue1)))
-                            {
-                                if (Flag)
-                                {
-                                    strDefectYN = "N";
-                                }                                
-                            }
-                            else
-                            {
-                                if (Flag)
-                                {
-                                    strDefectYN = "Y";
-                                    Flag = false;
-                                }                                
-                                defectCount++;
-                            }                            
 
-                            WinSubAuto.ValueCount++;
-                        }
-                    }
-                    if (WinSubAuto.InspectValue2 != null && WinSubAuto.InspectValue2.Replace(" ", "").Length > 0)
+                    for (int valueIdx = 0; valueIdx < WinSubAuto.arrInspectValue.Length; valueIdx++)
                     {
-                        sub2Count++;
-                        if (SpecFlag && lib.IsNumOrAnother(WinSubAuto.InspectValue2))
+                        string inspectValue = WinSubAuto.arrInspectValue[valueIdx];
+                        if (inspectValue != null && inspectValue.Replace(" ", "").Length > 0)
                         {
-                            if ((doubleSpecMin <= double.Parse(WinSubAuto.InspectValue2)) &&
-                                (doubleSpecMax >= double.Parse(WinSubAuto.InspectValue2)))
+                            sub2Count++;
+
+                            if (SpecFlag && lib.IsNumOrAnother(inspectValue))
                             {
-                                if (Flag)
+                                if (doubleSpecMin <= double.Parse(inspectValue) && doubleSpecMax >= double.Parse(inspectValue))
                                 {
-                                    strDefectYN = "N";
+                                    if (Flag)
+                                        strDefectYN = "N";
                                 }
-                            }
-                            else
-                            {
-                                if (Flag)
+                                else
                                 {
-                                    strDefectYN = "Y";
-                                    Flag = false;
+                                    if (Flag)
+                                    {
+                                        strDefectYN = "Y";
+                                        Flag = false;
+                                    }
+
+                                    defectCount++;
                                 }
-                                defectCount++;
+
+                                WinSubAuto.ValueCount++;
                             }
-                            WinSubAuto.ValueCount++;
-                        }
-                    }
-                    if (WinSubAuto.InspectValue3 != null && WinSubAuto.InspectValue3.Replace(" ", "").Length > 0)
-                    {
-                        sub2Count++;
-                        if (SpecFlag && lib.IsNumOrAnother(WinSubAuto.InspectValue3))
-                        {
-                            if ((doubleSpecMin <= double.Parse(WinSubAuto.InspectValue3)) &&
-                                (doubleSpecMax >= double.Parse(WinSubAuto.InspectValue3)))
-                            {
-                                if (Flag)
-                                {
-                                    strDefectYN = "N";
-                                }
-                            }
-                            else
-                            {
-                                if (Flag)
-                                {
-                                    strDefectYN = "Y";
-                                    Flag = false;
-                                }
-                                defectCount++;
-                            }
-                            WinSubAuto.ValueCount++;
-                        }
-                    }
-                    if (WinSubAuto.InspectValue4 != null && WinSubAuto.InspectValue4.Replace(" ", "").Length > 0)
-                    {
-                        sub2Count++;
-                        if (SpecFlag && lib.IsNumOrAnother(WinSubAuto.InspectValue4))
-                        {
-                            if ((doubleSpecMin <= double.Parse(WinSubAuto.InspectValue4)) &&
-                                (doubleSpecMax >= double.Parse(WinSubAuto.InspectValue4)))
-                            {
-                                if (Flag)
-                                {
-                                    strDefectYN = "N";
-                                }
-                            }
-                            else
-                            {
-                                if (Flag)
-                                {
-                                    strDefectYN = "Y";
-                                    Flag = false;
-                                }
-                                defectCount++;
-                            }
-                            WinSubAuto.ValueCount++;
-                        }
-                    }
-                    if (WinSubAuto.InspectValue5 != null && WinSubAuto.InspectValue5.Replace(" ", "").Length > 0)
-                    {
-                        sub2Count++;
-                        if (SpecFlag && lib.IsNumOrAnother(WinSubAuto.InspectValue5))
-                        {
-                            if ((doubleSpecMin <= double.Parse(WinSubAuto.InspectValue5)) &&
-                                (doubleSpecMax >= double.Parse(WinSubAuto.InspectValue5)))
-                            {
-                                if (Flag)
-                                {
-                                    strDefectYN = "N";
-                                }
-                            }
-                            else
-                            {
-                                if (Flag)
-                                {
-                                    strDefectYN = "Y";
-                                    Flag = false;
-                                }
-                                defectCount++;
-                            }
-                            WinSubAuto.ValueCount++;
-                        }
-                    }
-                    if (WinSubAuto.InspectValue6 != null && WinSubAuto.InspectValue6.Replace(" ", "").Length > 0)
-                    {
-                        sub2Count++;
-                        if (SpecFlag && lib.IsNumOrAnother(WinSubAuto.InspectValue6))
-                        {
-                            if ((doubleSpecMin <= double.Parse(WinSubAuto.InspectValue6)) &&
-                                (doubleSpecMax >= double.Parse(WinSubAuto.InspectValue6)))
-                            {
-                                if (Flag)
-                                {
-                                    strDefectYN = "N";
-                                }
-                            }
-                            else
-                            {
-                                if (Flag)
-                                {
-                                    strDefectYN = "Y";
-                                    Flag = false;
-                                }
-                                defectCount++;
-                            }
-                            WinSubAuto.ValueCount++;
-                        }
-                    }
-                    if (WinSubAuto.InspectValue7 != null && WinSubAuto.InspectValue7.Replace(" ", "").Length > 0)
-                    {
-                        sub2Count++;
-                        if (SpecFlag && lib.IsNumOrAnother(WinSubAuto.InspectValue7))
-                        {
-                            if ((doubleSpecMin <= double.Parse(WinSubAuto.InspectValue7)) &&
-                                (doubleSpecMax >= double.Parse(WinSubAuto.InspectValue7)))
-                            {
-                                if (Flag)
-                                {
-                                    strDefectYN = "N";
-                                }
-                            }
-                            else
-                            {
-                                if (Flag)
-                                {
-                                    strDefectYN = "Y";
-                                    Flag = false;
-                                }
-                                defectCount++;
-                            }
-                            WinSubAuto.ValueCount++;
-                        }
-                    }
-                    if (WinSubAuto.InspectValue8 != null && WinSubAuto.InspectValue8.Replace(" ", "").Length > 0)
-                    {
-                        sub2Count++;
-                        if (SpecFlag && lib.IsNumOrAnother(WinSubAuto.InspectValue8))
-                        {
-                            if ((doubleSpecMin <= double.Parse(WinSubAuto.InspectValue8)) &&
-                                (doubleSpecMax >= double.Parse(WinSubAuto.InspectValue8)))
-                            {
-                                if (Flag)
-                                {
-                                    strDefectYN = "N";
-                                }
-                            }
-                            else
-                            {
-                                if (Flag)
-                                {
-                                    strDefectYN = "Y";
-                                    Flag = false;
-                                }
-                                defectCount++;
-                            }
-                            WinSubAuto.ValueCount++;
-                        }
-                    }
-                    if (WinSubAuto.InspectValue9 != null && WinSubAuto.InspectValue9.Replace(" ", "").Length > 0)
-                    {
-                        sub2Count++;
-                        if (SpecFlag && lib.IsNumOrAnother(WinSubAuto.InspectValue9))
-                        {
-                            if ((doubleSpecMin <= double.Parse(WinSubAuto.InspectValue9)) &&
-                                (doubleSpecMax >= double.Parse(WinSubAuto.InspectValue9)))
-                            {
-                                if (Flag)
-                                {
-                                    strDefectYN = "N";
-                                }
-                            }
-                            else
-                            {
-                                if (Flag)
-                                {
-                                    strDefectYN = "Y";
-                                    Flag = false;
-                                }
-                                defectCount++;
-                            }
-                            WinSubAuto.ValueCount++;
-                        }
-                    }
-                    if (WinSubAuto.InspectValue10 != null && WinSubAuto.InspectValue10.Replace(" ", "").Length > 0)
-                    {
-                        sub2Count++;
-                        if (SpecFlag && lib.IsNumOrAnother(WinSubAuto.InspectValue10))
-                        {
-                            if ((doubleSpecMin <= double.Parse(WinSubAuto.InspectValue10)) &&
-                                (doubleSpecMax >= double.Parse(WinSubAuto.InspectValue10)))
-                            {
-                                if (Flag)
-                                {
-                                    strDefectYN = "N";
-                                }
-                            }
-                            else
-                            {
-                                if (Flag)
-                                {
-                                    strDefectYN = "Y";
-                                    Flag = false;
-                                }
-                                defectCount++;
-                            }
-                            WinSubAuto.ValueCount++;
                         }
                     }
                 }
@@ -4842,114 +3609,27 @@ namespace WizMes_ANT
             btnPFArticleSrh.IsEnabled = false;
         }
 
-        private void Value1Text_KeyDown(object sender, KeyEventArgs e)
+        private void ValueText_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.Key == Key.Enter)
             {
                 WinInsAutoSub = dgdSub2.CurrentItem as Win_Qul_InspectAuto_U_Sub_CodeView;
-                double maxValue = Convert.ToDouble(WinInsAutoSub.SpecMax);
-                double minValue = Convert.ToDouble(WinInsAutoSub.SpecMin);
-                double value1 = string.IsNullOrEmpty(WinInsAutoSub.InspectValue1) ? 0 : Convert.ToDouble(WinInsAutoSub.InspectValue1);
-
-                if (!(value1 >= minValue && value1 <= maxValue))
+                if (WinInsAutoSub != null)
                 {
-                    WinInsAutoSub.ValueDefect1 = "true";
-                }
-                else
-                {
-                    WinInsAutoSub.ValueDefect1 = "";
-                }
+                    TextBox tb1 = sender as TextBox;
+                    if (tb1 != null)
+                    {
+                        double maxValue = Convert.ToDouble(WinInsAutoSub.SpecMax);
+                        double minValue = Convert.ToDouble(WinInsAutoSub.SpecMin);
 
+                        int idx = int.Parse(tb1.Tag == null ? "0" : tb1.Tag.ToString());
+                        string inspectValue = WinInsAutoSub.arrInspectValue[idx - 1];
+                        double value = string.IsNullOrEmpty(inspectValue) ? 0 : Convert.ToDouble(inspectValue);
+                        WinInsAutoSub.arrValueDefect[idx - 1] = !(value >= minValue && value <= maxValue) ? "true" : "";
+                        WinInsAutoSub.RefreshTextBlock(2, WinInsAutoSub.arrValueDefect, idx);
+                    }
+                }
             }
-
-        }
-
-        private void Value2Text_KeyDown(object sender, KeyEventArgs e)
-        {
-            if (e.Key == Key.Enter)
-            {
-                WinInsAutoSub = dgdSub2.CurrentItem as Win_Qul_InspectAuto_U_Sub_CodeView;
-                double maxValue = Convert.ToDouble(WinInsAutoSub.SpecMax);
-                double minValue = Convert.ToDouble(WinInsAutoSub.SpecMin);
-                double value2 = string.IsNullOrEmpty(WinInsAutoSub.InspectValue2) ? 0 : Convert.ToDouble(WinInsAutoSub.InspectValue2);
-
-                if (!(value2 >= minValue && value2 <= maxValue))
-                {
-                    WinInsAutoSub.ValueDefect2 = "true";
-                }
-                else
-                {
-                    WinInsAutoSub.ValueDefect2 = "";
-                }
-
-            }
-
-        }
-
-        private void Value3Text_KeyDown(object sender, KeyEventArgs e)
-        {
-            if (e.Key == Key.Enter)
-            {
-                WinInsAutoSub = dgdSub2.CurrentItem as Win_Qul_InspectAuto_U_Sub_CodeView;
-                double maxValue = Convert.ToDouble(WinInsAutoSub.SpecMax);
-                double minValue = Convert.ToDouble(WinInsAutoSub.SpecMin);
-                double value3 = string.IsNullOrEmpty(WinInsAutoSub.InspectValue3) ? 0 : Convert.ToDouble(WinInsAutoSub.InspectValue3);
-
-                if (!(value3 >= minValue && value3 <= maxValue))
-                {
-                    WinInsAutoSub.ValueDefect3 = "true";
-                }
-                else
-                {
-                    WinInsAutoSub.ValueDefect3 = "";
-                }
-
-            }
-
-        }
-
-        private void Value4Text_KeyDown(object sender, KeyEventArgs e)
-        {
-            if (e.Key == Key.Enter)
-            {
-                WinInsAutoSub = dgdSub2.CurrentItem as Win_Qul_InspectAuto_U_Sub_CodeView;
-                double maxValue = Convert.ToDouble(WinInsAutoSub.SpecMax);
-                double minValue = Convert.ToDouble(WinInsAutoSub.SpecMin);
-                double value4 = Convert.ToDouble(WinInsAutoSub.InspectValue4);
-
-                if (!(value4 >= minValue && value4 <= maxValue))
-                {
-                    WinInsAutoSub.ValueDefect4 = "true";
-                }
-                else
-                {
-                    WinInsAutoSub.ValueDefect4 = "";
-                }
-
-            }
-
-        }
-
-        private void Value5Text_KeyDown(object sender, KeyEventArgs e)
-        {
-            if (e.Key == Key.Enter)
-            {
-                WinInsAutoSub = dgdSub2.CurrentItem as Win_Qul_InspectAuto_U_Sub_CodeView;
-                double maxValue = Convert.ToDouble(WinInsAutoSub.SpecMax);
-                double minValue = Convert.ToDouble(WinInsAutoSub.SpecMin);
-                double value5 = Convert.ToDouble(WinInsAutoSub.InspectValue5);
-
-                if (!(value5 >= minValue && value5 <= maxValue))
-                {
-                    WinInsAutoSub.ValueDefect5 = "true";
-                }
-                else
-                {
-                    WinInsAutoSub.ValueDefect5 = "";
-                }
-
-            }
-
         }
 
         //품명
@@ -5109,6 +3789,85 @@ namespace WizMes_ANT
         public string InsTPSpecMin { get; set; }
         public string InsSampleQty { get; set; }
 
+        public string[] arrInspectValue = new string[10];
+        public string[] arrInspectText = new string[10];
+        public string[] arrValueDefect = new string[10];
+
+        private void SetTextBlock(int idx, byte gbn, string str)
+        {
+            switch (idx)
+            {
+                case 0:
+                    if (gbn == 0)       InspectValue1 = str;
+                    else if (gbn == 1)  InspectText1 = str;
+                    else                ValueDefect1 = str;
+                    break;
+                case 1:
+                    if (gbn == 0)       InspectValue2 = str;
+                    else if (gbn == 1)  InspectText2 = str;
+                    else                ValueDefect2 = str;
+                    break;
+                case 2:
+                    if (gbn == 0)       InspectValue3 = str;
+                    else if (gbn == 1)  InspectText3 = str;
+                    else                ValueDefect3 = str;
+                    break;
+                case 3:
+                    if (gbn == 0)       InspectValue4 = str;
+                    else if (gbn == 1)  InspectText4 = str;
+                    else                ValueDefect4 = str;
+                    break;
+                case 4:
+                    if (gbn == 0)       InspectValue5 = str;
+                    else if (gbn == 1)  InspectText5 = str;
+                    else                ValueDefect5 = str;
+                    break;
+                case 5:
+                    if (gbn == 0)       InspectValue6 = str;
+                    else if (gbn == 1)  InspectText6 = str;
+                    else                ValueDefect6 = str;
+                    break;
+                case 6:
+                    if (gbn == 0)       InspectValue7 = str;
+                    else if (gbn == 1)  InspectText7 = str;
+                    else                ValueDefect7 = str;
+                    break;
+                case 7:
+                    if (gbn == 0)       InspectValue8 = str;
+                    else if (gbn == 1)  InspectText8 = str;
+                    else                ValueDefect8 = str;
+                    break;
+                case 8:
+                    if (gbn == 0)       InspectValue9 = str;
+                    else if (gbn == 1)  InspectText9 = str;
+                    else                ValueDefect9 = str;
+                    break;
+                case 9:
+                    if (gbn == 0)       InspectValue10 = str;
+                    else if (gbn == 1)  InspectText10 = str;
+                    else                ValueDefect10 = str;
+                    break;
+            }
+        }
+
+        public void RefreshTextBlock(byte gbn, string[] arrBase, int idx)
+        {
+            for (int i = 0; i < arrBase.Length; i++)
+            {
+                if (i == idx - 1)
+                {
+                    SetTextBlock(i, gbn, arrBase[i]);
+                    break;
+                }
+            }
+        }
+
+        public void RefreshTextBlock(byte gbn, string[] arrBase)
+        {
+            for (int i = 0; i < arrBase.Length; i++)
+                SetTextBlock(i, gbn, arrBase[i]);
+        }
+
         public string InspectValue1 { get; set; }
         public string InspectValue2 { get; set; }
         public string InspectValue3 { get; set; }
@@ -5133,6 +3892,18 @@ namespace WizMes_ANT
         public string InspectText9 { get; set; }
         public string InspectText10 { get; set; }
 
+        public string ValueDefect1 { get; set; }
+        public string ValueDefect2 { get; set; }
+        public string ValueDefect3 { get; set; }
+        public string ValueDefect4 { get; set; }
+        public string ValueDefect5 { get; set; }
+
+        public string ValueDefect6 { get; set; }
+        public string ValueDefect7 { get; set; }
+        public string ValueDefect8 { get; set; }
+        public string ValueDefect9 { get; set; }
+        public string ValueDefect10 { get; set; }
+
         public string xBar { get; set; }
         public string R { get; set; }
         public string Sigma { get; set; }
@@ -5140,12 +3911,6 @@ namespace WizMes_ANT
         //public string CV_Spec { get; set; }
         public int ValueCount { get; set; }
         public string Spec_CV { get; set; }
-
-        public string ValueDefect1 { get; set; }
-        public string ValueDefect2 { get; set; }
-        public string ValueDefect3 { get; set; }
-        public string ValueDefect4 { get; set; }
-        public string ValueDefect5 { get; set; }
     }
 
     class EcoNoAndBasisID : BaseView
@@ -5167,6 +3932,7 @@ namespace WizMes_ANT
         public string InspectBasisID { get; set; }
         public string Seq { get; set; }
         public string EcoNo { get; set; }
+        public string Model { get; set; }
 
         public string BuyerArticleNo { get; set; }
         public string MoldNo { get; set; }

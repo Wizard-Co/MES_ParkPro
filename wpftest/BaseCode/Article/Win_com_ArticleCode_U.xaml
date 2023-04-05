@@ -358,7 +358,7 @@
                         </Viewbox>
                     </Label>
                     <TextBox x:Name="txtCode" Grid.Column="1" Grid.Row="0" Style="{DynamicResource TextBoxInputAutoCreate}"
-                             MaxLength="4"
+                             MaxLength="5"
                              IsReadOnly="False" Text="{Binding ArticleID}"/>
 
                     <!-- 주요관심품목, 사용안함 -->

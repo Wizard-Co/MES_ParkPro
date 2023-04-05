@@ -21,9 +21,10 @@
                 <ColumnDefinition Width="100*" />
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
-                <RowDefinition Height="*" />
-                <RowDefinition Height="*" />
-                <RowDefinition Height="*" />
+                <RowDefinition Height="10*" />
+                <RowDefinition Height="10*" />
+                <RowDefinition Height="10*" />
+                <RowDefinition Height="10*" />
                 <RowDefinition Height="*" />
             </Grid.RowDefinitions>
 
@@ -121,7 +122,58 @@
                 </Button>
 
             </Grid>
+
             <Grid Grid.Row="1" Grid.Column="2">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="75*" />
+                    <ColumnDefinition Width="90*" />
+                    <ColumnDefinition Width="15*" />
+                </Grid.ColumnDefinitions>
+                <Label x:Name="lblInCustom" Grid.Column="0" MouseLeftButtonUp="lblInCustom_MouseLeftButtonUp" Style="{DynamicResource LabelSearch}">
+                    <StackPanel Style="{DynamicResource StackPanelInLabel}">
+                        <Viewbox Style="{DynamicResource ViewBoxSetMaxMinHeight}">
+                            <CheckBox x:Name="chkInCustom" Checked="chkInCustom_Checked" 
+                                      Unchecked="chkInCustom_Unchecked"/>
+                        </Viewbox>
+                        <Viewbox Style="{DynamicResource ViewBoxSetMaxMinHeight}">
+                            <TextBlock Text=" 최종고객사" Style="{DynamicResource TextBlockInViewBoxSearch}" />
+                        </Viewbox>
+
+                    </StackPanel>
+                </Label>
+                <TextBox x:Name="txtInCustom" Grid.Column="1" Style="{DynamicResource TextBoxSearch}"
+                         IsEnabled="False" Keyboard.KeyDown="txtInCustom_KeyDown"/>
+                <Button x:Name="btnPfInCustom" Grid.Column="2" IsEnabled="False" Click="btnPfInCustom_Click">
+                    <Image Source="{DynamicResource btiPlusFind}" Style="{DynamicResource imgPlusFind}" Margin="-2"/>
+                </Button>
+            </Grid>
+
+            <Grid Grid.Row="2" Grid.Column="2">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="75*" />
+                    <ColumnDefinition Width="90*" />
+                    <ColumnDefinition Width="15*" />
+                </Grid.ColumnDefinitions>
+                <Label x:Name="lblBuyerArticleNo" Grid.Column="0" MouseLeftButtonUp="lblBuyerArticleNo_MouseLeftButtonUp" Style="{DynamicResource LabelSearch}">
+                    <StackPanel Style="{DynamicResource StackPanelInLabel}">
+                        <Viewbox Style="{DynamicResource ViewBoxSetMaxMinHeight}">
+                            <CheckBox x:Name="chkBuyerArticleNo" Checked="chkBuyerArticleNo_Checked" 
+                                      Unchecked="chkBuyerArticleNo_Unchecked" />
+                        </Viewbox>
+                        <Viewbox Style="{DynamicResource ViewBoxSetMaxMinHeight}">
+                            <TextBlock Text=" 품   번" Style="{DynamicResource TextBlockInViewBoxSearch}" />
+                        </Viewbox>
+
+                    </StackPanel>
+                </Label>
+                <TextBox x:Name="txtBuyerArticleNo" Grid.Column="1" Style="{DynamicResource TextBoxSearch}"
+                         IsEnabled="False" Keyboard.KeyDown="txtBuyerArticleNo_KeyDown"/>
+                <Button x:Name="btnPfBuyerArticleNo" Grid.Column="2" IsEnabled="False" Click="btnPfBuyerArticleNo_Click">
+                    <Image Source="{DynamicResource btiPlusFind}" Style="{DynamicResource imgPlusFind}" Margin="-2"/>
+                </Button>
+            </Grid>
+
+            <Grid Grid.Row="3" Grid.Column="2">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="75*" />
                     <ColumnDefinition Width="90*" />
@@ -134,7 +186,7 @@
                                       Unchecked="chkArticle_Unchecked" />
                         </Viewbox>
                         <Viewbox Style="{DynamicResource ViewBoxSetMaxMinHeight}">
-                            <TextBlock Text=" 품   번" Style="{DynamicResource TextBlockInViewBoxSearch}" />
+                            <TextBlock Text=" 품   명" Style="{DynamicResource TextBlockInViewBoxSearch}" />
                         </Viewbox>
 
                     </StackPanel>
@@ -142,34 +194,10 @@
                 <TextBox x:Name="txtArticle" Grid.Column="1" Style="{DynamicResource TextBoxSearch}"
                          IsEnabled="False" Keyboard.KeyDown="txtArticle_KeyDown"/>
                 <Button x:Name="btnPfArticle" Grid.Column="2" IsEnabled="False" Click="btnPfArticle_Click">
-                    <Image Source="{DynamicResource btiPlusFind}" Style="{DynamicResource imgPlusFind}"/>
+                    <Image Source="{DynamicResource btiPlusFind}" Style="{DynamicResource imgPlusFind}" Margin="-2"/>
                 </Button>
             </Grid>
-            <Grid Grid.Row="2" Grid.Column="2">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="75*" />
-                    <ColumnDefinition Width="90*" />
-                    <ColumnDefinition Width="15*" />
-                </Grid.ColumnDefinitions>
-                <Label x:Name="lblModel" Grid.Column="0" MouseLeftButtonUp="lblModel_MouseLeftButtonUp" Style="{DynamicResource LabelSearch}">
-                    <StackPanel Style="{DynamicResource StackPanelInLabel}">
-                        <Viewbox Style="{DynamicResource ViewBoxSetMaxMinHeight}">
-                            <CheckBox x:Name="chkModel" Checked="chkModel_Checked" 
-                                      Unchecked="chkModel_Unchecked" />
-                        </Viewbox>
-                        <Viewbox Style="{DynamicResource ViewBoxSetMaxMinHeight}">
-                            <TextBlock Text=" 차   종" Style="{DynamicResource TextBlockInViewBoxSearch}" />
-                        </Viewbox>
-
-                    </StackPanel>
-                </Label>
-                <TextBox x:Name="txtModel" Grid.Column="1" Style="{DynamicResource TextBoxSearch}"
-                         IsEnabled="False" Keyboard.KeyDown="txtModel_KeyDown"/>
-                <Button x:Name="btnPfModel" Grid.Column="2" IsEnabled="False" Click="btnPfModel_Click">
-                    <Image Source="{DynamicResource btiPlusFind}" Style="{DynamicResource imgPlusFind}"/>
-                </Button>
-            </Grid>
-
+            
             <Grid Grid.Row="0" Grid.Column="3">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="75*" />
@@ -184,7 +212,7 @@
                                       Unchecked="chkOrder_Unchecked" />
                         </Viewbox>
                         <Viewbox Style="{DynamicResource ViewBoxSetMaxMinHeight}">
-                            <TextBlock x:Name="tbkOrder" Text=" Order No." Style="{DynamicResource TextBlockInViewBoxSearch}"/>
+                            <TextBlock x:Name="tbkOrder" Text=" Order No" Style="{DynamicResource TextBlockInViewBoxSearch}"/>
                         </Viewbox>
 
 
@@ -196,50 +224,51 @@
                     <Image Source="{DynamicResource btiPlusFind}" Style="{DynamicResource imgPlusFind}"  />
                 </Button>
             </Grid>
+            
             <Grid Grid.Row="1" Grid.Column="3">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="75*" />
                     <ColumnDefinition Width="90*" />
                     <ColumnDefinition Width="15*" />
                 </Grid.ColumnDefinitions>
-                <Label x:Name="lblWork" Grid.Column="0" Style="{DynamicResource LabelSearch}"
-                       VerticalContentAlignment="Center" MouseLeftButtonUp="lblWork_MouseLeftButtonUp" >
-                    <StackPanel Style="{DynamicResource StackPanelInLabel}">
-                        <Viewbox Style="{DynamicResource ViewBoxSetMaxMinHeight}">
-                            <CheckBox x:Name="chkWork" Checked="chkWork_Checked" 
-                                      Unchecked="chkWork_Unchecked" />
-                        </Viewbox>
-                        <Viewbox Style="{DynamicResource ViewBoxSetMaxMinHeight}">
-                            <TextBlock Text="가공구분" Style="{DynamicResource TextBlockInViewBoxSearch}" />
-                        </Viewbox>
-
-
-                    </StackPanel>
-                </Label>
-                <ComboBox x:Name="cboWork" Grid.Column="1" Style="{DynamicResource ComboBoxSearchString}" IsEnabled="False"/>
-            </Grid>
-            <Grid Grid.Row="2" Grid.Column="3">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="95*" />
-                    <ColumnDefinition Width="95*" />
-                    <ColumnDefinition Width="20*" />
-                </Grid.ColumnDefinitions>
-                <Border Grid.ColumnSpan="2" BorderBrush="Gray" BorderThickness="1" Background="#ededed" Margin="1" Visibility="Hidden">
-                    <Grid>
+                <Border Grid.ColumnSpan="2" Grid.Column="0" Grid.Row="1" Margin="1"
+                        HorizontalAlignment="Stretch" Background="#ededed" BorderBrush="Gray" BorderThickness="1">
+                    <Grid VerticalAlignment="Center" HorizontalAlignment="Stretch">
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="*" />
-                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition />
+                            <ColumnDefinition />
                         </Grid.ColumnDefinitions>
-                        <RadioButton x:Name="rbnOrderNo" Grid.Column="0" 
-                                      Click="rbnOrderNo_Click">
-                            <TextBlock Text="Order No." Margin="-2"/>
+                        <RadioButton x:Name="rbnOrderNo" Grid.Column="0" Margin="-5,0,0,0" 
+                                      Click="rbnOrderNo_Click" HorizontalAlignment="Center" VerticalAlignment="Center">
+                            <TextBlock Text="Order No" FontSize="10" Style="{DynamicResource TextBlockInViewBoxSearch}" Margin="0,1,0,0"/>
                         </RadioButton>
-                        <RadioButton x:Name="rbnOrderID" Grid.Column="1" 
-                                      Click="rbnOrderID_Click" IsChecked="True">
-                            <TextBlock Text="관리 번호" Margin="-2"/>
+                        <RadioButton x:Name="rbnOrderID" Grid.Column="1" Margin="-5,0,0,0" IsChecked="True"
+                                      Click="rbnOrderID_Click" HorizontalAlignment="Center" VerticalAlignment="Center">
+                            <TextBlock Text="관리번호" FontSize="10" Style="{DynamicResource TextBlockInViewBoxSearch}" Margin="0,1,0,0"/>
                         </RadioButton>
                     </Grid>
                 </Border>
+            </Grid>
+
+            <Grid Grid.Row="2" Grid.Column="3">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="75*" />
+                    <ColumnDefinition Width="90*" />
+                    <ColumnDefinition Width="15*" />
+                </Grid.ColumnDefinitions>
+                <Label x:Name="lblOrderFlag" Grid.Column="0" Style="{DynamicResource LabelSearch}"
+                       VerticalContentAlignment="Center" MouseLeftButtonUp="lblOrderFlag_MouseLeftButtonUp" >
+                    <StackPanel Style="{DynamicResource StackPanelInLabel}">
+                        <Viewbox Style="{DynamicResource ViewBoxSetMaxMinHeight}">
+                            <CheckBox x:Name="chkOrderFlag" Checked="ChkOrderFlag_Checked" 
+                                      Unchecked="ChkOrderFlag_Unchecked" />
+                        </Viewbox>
+                        <Viewbox Style="{DynamicResource ViewBoxSetMaxMinHeight}">
+                            <TextBlock Text=" 수주구분" Style="{DynamicResource TextBlockInViewBoxSearch}" />
+                        </Viewbox>
+                    </StackPanel>
+                </Label>
+                <ComboBox x:Name="cboOrderFlag" Grid.Column="1" Style="{DynamicResource ComboBoxSearchString}" IsEnabled="False"/>
             </Grid>
 
             <Grid Grid.Column="4" Grid.RowSpan="4" >

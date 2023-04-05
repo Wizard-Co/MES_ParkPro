@@ -731,9 +731,19 @@ namespace WizMes_ANT
                 pf.ReturnCode(txtArticle, 77, txtArticle.Text);
             }
         }
+
+
+        // 플러스 파인더 품번 이벤트
+        private void plusFinder_replyArticle(string buyerArticleNo)
+        {
+            txtBuyerArticleNo_InGroupBox.Text = buyerArticleNo;
+            pf.refEvent -= new PlusFinder.RefEventHandler(plusFinder_replyArticle);
+        }
+
         // 플러스파인더 _ 품명찾기
         private void btnArticle_InGroupBox_Click(object sender, RoutedEventArgs e)
         {
+            pf.refEvent += new PlusFinder.RefEventHandler(plusFinder_replyArticle);
             pf.ReturnCode(txtArticle_InGroupBox, 77, txtArticle_InGroupBox.Text);
             dtpOccurDate.Focus();
         }
@@ -1618,7 +1628,7 @@ namespace WizMes_ANT
             txtCustomer_InGroupBox.Tag = null;
             txtArticle_InGroupBox.Text = string.Empty;
             txtArticle_InGroupBox.Tag = null;
-            txtArticleID_InGroupBox.Text = string.Empty;
+            txtBuyerArticleNo_InGroupBox.Text = string.Empty;
 
             //2. 불량정보 박스.
             dtpOccurDate.Text = string.Empty;

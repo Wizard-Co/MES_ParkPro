@@ -11,6 +11,18 @@ using System.Windows.Input;
 using WizMes_ANT.PopUP;
 using WPF.MDI;
 
+/**************************************************************************************************
+'** 프로그램명 : Win_Qul_DefectRepair_Q
+'** 설명       : 불량발생 및 시정등록
+'** 작성일자   : 2023.03.31
+'** 작성자     : 장시영
+'**------------------------------------------------------------------------------------------------
+'**************************************************************************************************
+' 변경일자  , 변경자, 요청자    , 요구사항ID      , 요청 및 작업내용
+'**************************************************************************************************
+' 2023.03.31, 장시영, 불량발생단계 중 전체는 제외
+'**************************************************************************************************/
+
 namespace WizMes_ANT
 {
     /// <summary>
@@ -41,6 +53,9 @@ namespace WizMes_ANT
         private void SetComboBox()
         {
             ObservableCollection<CodeView> oveOrderForm = ComboBoxUtil.Instance.Gf_DB_CM_GetComCodeDataset(null, "QULSTEP", "Y", "", "");
+            if (oveOrderForm.Count > 0)
+                oveOrderForm.RemoveAt(0);
+
             cboOccurStepSrh.ItemsSource = oveOrderForm;
             cboOccurStepSrh.DisplayMemberPath = "code_name";
             cboOccurStepSrh.SelectedValuePath = "code_id";
@@ -556,8 +571,8 @@ namespace WizMes_ANT
 
                 sqlParameter.Add("nchkCustom", chkCustom.IsChecked == true ? 1 : 0);
                 sqlParameter.Add("CustomID", chkCustom.IsChecked == true ? txtCustom.Tag.ToString() : "");
-                sqlParameter.Add("nchkArticleID", 0); // chkArticle.IsChecked == true ? 1 : 0);
-                sqlParameter.Add("ArticleID", "");// chkArticle.IsChecked == true ? txtArticle.Tag.ToString() : "");
+                sqlParameter.Add("nchkArticleID", chkArticle.IsChecked == true ? 1 : 0);
+                sqlParameter.Add("ArticleID", chkArticle.IsChecked == true ? txtArticle.Tag.ToString() : "");
                 sqlParameter.Add("BuyerArticleNo", chkArticle.IsChecked == true ? txtArticle.Text : "");
                 sqlParameter.Add("sGrouping", 1);   //불량유형
                 ds1 = DataStore.Instance.ProcedureToDataSet("xp_Qul_sStsDefectRepair_Sum", sqlParameter, false);

@@ -752,6 +752,9 @@ namespace WizMes_ANT
         //접수일(중단) 체크박스
         private void chkDrawAcptDate_Checked(object sender, RoutedEventArgs e)
         {
+            if (dtpDrawAcptDate == null)
+                return;
+
             dtpDrawAcptDate.IsEnabled = true;
             dtpDrawAcptDate.Focus();
         }
@@ -759,6 +762,9 @@ namespace WizMes_ANT
         //접수일(중단) 체크박스
         private void chkDrawAcptDate_Unchecked(object sender, RoutedEventArgs e)
         {
+            if (dtpDrawAcptDate == null)
+                return;
+
             dtpDrawAcptDate.IsEnabled = false;
             txtDrawAcptMan.Focus();
         }
@@ -1260,11 +1266,7 @@ namespace WizMes_ANT
                     sqlParameter.Add("DrawNo", txtDrawNo.Text);
                     sqlParameter.Add("ArticleID", txtArticle.Tag.ToString());
                     sqlParameter.Add("BuyerModelID", txtBuyerModel.Tag.ToString());
-
-                    if (chkDrawCreateDate.IsChecked == true)
-                    {
-                        sqlParameter.Add("DrawCreateDate", (chkDrawCreateDate.IsChecked == true ? dtpDrawCreateDate.SelectedDate.Value.ToString("yyyyMMdd") : ""));
-                    }
+                    sqlParameter.Add("DrawCreateDate", (chkDrawCreateDate.IsChecked == true ? dtpDrawCreateDate.SelectedDate.Value.ToString("yyyyMMdd") : ""));
                     sqlParameter.Add("DrawCreateMan", txtDrawCreateMan.Text);
                     sqlParameter.Add("EcoNO", txtECONo.Text);
                     sqlParameter.Add("DrawDvlyPlace", txtDrawDvlyPlace.Text);
@@ -1477,13 +1479,6 @@ namespace WizMes_ANT
                 return flag;
             }
 
-            //if (cboBuyerArticle.SelectedValue == null)
-            //{
-            //    MessageBox.Show("품번이 선택되지 않았습니다. 선택해주세요");
-            //    flag = false;
-            //    return flag;
-            //}
-
             if (cboDrawAuthor.SelectedValue == null)
             {
                 MessageBox.Show("도면권한이 선택되지 않았습니다. 선택해주세요");
@@ -1498,7 +1493,7 @@ namespace WizMes_ANT
                 return flag;
             }
 
-            if (chkDrawCreateDate.IsChecked == true && dtpDrawAcptDate.SelectedDate == null)
+            if (chkDrawAcptDate.IsChecked == false || (chkDrawAcptDate.IsChecked == true && dtpDrawAcptDate.SelectedDate == null))
             {
                 MessageBox.Show("접수일 날짜가 입력되지 않았습니다. 입력해주세요");
                 flag = false;

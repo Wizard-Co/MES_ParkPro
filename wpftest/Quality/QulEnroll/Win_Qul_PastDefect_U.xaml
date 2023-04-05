@@ -446,7 +446,7 @@
                         </Button>
                         <Label Grid.Column="0" Grid.Row="4" Style="{DynamicResource LabelInputArea}">
                             <Viewbox Style="{DynamicResource ViewBoxSetMaxMinHeight_Q}">
-                                <TextBlock Style="{DynamicResource TextBlockInViewBoxInput_Two_Q}">품    번</TextBlock>
+                                <TextBlock Style="{DynamicResource TextBlockInViewBoxInput_Two_Q}">품    명</TextBlock>
                             </Viewbox>
                         </Label>
 
@@ -469,7 +469,7 @@
                         </Button>
                         <Label Grid.Column="0" Grid.Row="5" Style="{DynamicResource LabelInputArea}">
                             <Viewbox Style="{DynamicResource ViewBoxSetMaxMinHeight_Q}">
-                                <TextBlock Style="{DynamicResource TextBlockInViewBoxInput_Two_Q}">품    명</TextBlock>
+                                <TextBlock Style="{DynamicResource TextBlockInViewBoxInput_Two_Q}">품    번</TextBlock>
                             </Viewbox>
                         </Label>
                         <TextBox x:Name="txtBuyerArticleNo" Grid.Column="1" Grid.ColumnSpan="3" Grid.Row="5" 
@@ -490,7 +490,7 @@
                                 <TextBlock Style="{DynamicResource TextBlockInViewBoxInput_Three_Q}">불량유형</TextBlock>
                             </Viewbox>
                         </Label>
-                        <TextBox x:Name="txtDefectSymptom_InGroupBox" Grid.Column="1" Grid.ColumnSpan="3" Grid.Row="7" 
+                        <TextBox x:Name="txtDefectSymptom_InGroupBox" Grid.Column="1" Grid.ColumnSpan="3" Grid.Row="7" VerticalContentAlignment="Center"
                                  Text="{Binding Path=DefectSymtom}" Tag="{Binding Path=DefectSymtomCode}" Background="#fff2d2"
                                  TabIndex="17" KeyDown="txtDefectSymptom_InGroupBox_KeyDown"/>
                         <Button x:Name="btnDefectSymptom_InGroupBox"  Grid.Column="4" Grid.Row="7" 
