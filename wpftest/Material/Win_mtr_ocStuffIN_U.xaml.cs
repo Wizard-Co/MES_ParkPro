@@ -626,11 +626,7 @@ namespace WizMes_ANT
             }
 
             if (dgdMain.Items.Count == 0)
-            {
                 this.DataContext = null;
-                MessageBox.Show("조회된 데이터가 없습니다.");
-                return;
-            }
         }
         // 닫기 버튼 이벤트
         private void btnClose_Click(object sender, RoutedEventArgs e)
@@ -710,8 +706,6 @@ namespace WizMes_ANT
             msg.Topmost = true;
             msg.Refresh();
 
-            Lib.Instance.Delay(1000);
-
             PrintWork(true);
 
             msg.Visibility = Visibility.Hidden;
@@ -729,8 +723,6 @@ namespace WizMes_ANT
             msg.Show();
             msg.Topmost = true;
             msg.Refresh();
-
-            Lib.Instance.Delay(1000);
 
             PrintWork(false);
 
@@ -949,9 +941,9 @@ namespace WizMes_ANT
                 return;
             }
 
-            if (cboFreeStuffinYN.SelectedValue.Equals("N")
-                || cboFreeStuffinYN.SelectedValue.Equals("")
-                )
+            if (cboFreeStuffinYN.SelectedValue == null      || 
+                cboFreeStuffinYN.SelectedValue.Equals("N")  || 
+                cboFreeStuffinYN.SelectedValue.Equals(""))
             {
                 MessageBox.Show("검사필요 여부를 확인해주세요");
                 return;
@@ -1839,13 +1831,6 @@ namespace WizMes_ANT
             {
                 lw.ShowDialog();
             }
-
-            if (dgdMain.Items.Count == 0)
-            {
-                this.DataContext = null;
-                MessageBox.Show("조회된 데이터가 없습니다.");
-                return;
-            }
         }
 
         private void beCancel()
@@ -1885,9 +1870,9 @@ namespace WizMes_ANT
             // 6. 검수자 - 로그인한 아이디
             //txtCustomInspector.Text = MainWindow.CurrentUser;
             txtCustomInspector.Text = MainWindow.CurrentName;
-            // 7. 전창고, 후창고 - 첫번째 선택
+            // 7. 전창고, 후창고 - 두번째 선택
             //cboFromLoc.SelectedIndex = 0;
-            cboToLoc.SelectedIndex = 0;
+            cboToLoc.SelectedIndex = 1;
             cboFreeStuffinYN.SelectedIndex = 0; //검사필요여부 기본값 Y
 
             
@@ -1941,27 +1926,12 @@ namespace WizMes_ANT
 
                 // 생산 이력이 있는 입고건은 삭제가 불가능 합니다.         
                 if (MessageBox.Show("선택한 항목을 삭제하시겠습니까?", "삭제 전 확인", MessageBoxButton.YesNo) == MessageBoxResult.Yes)
-                {
-                    //using (Loading lw = new Loading(beDelete))
-                    //{
-                    //    lw.ShowDialog();
-                    //}
                     beDelete();
-                    if (dgdMain.Items.Count == 0)
-                    {
-                        this.DataContext = null;
-                        MessageBox.Show("조회된 데이터가 없습니다.");
-                        return;
-                    }
-                }
-
             }
             else
             {
                 MessageBox.Show("삭제할 데이터를 선택해주세요.");
             }
-
-
         }
 
         private void beDelete()
