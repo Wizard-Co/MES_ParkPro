@@ -866,9 +866,9 @@ namespace WizMes_ANT
 
                 Dictionary<string, object> sqlParameter = new Dictionary<string, object>();
                 sqlParameter.Add("MoldID", strMoldID);
-                sqlParameter.Add("ntotSearch", ChkntotSearch.IsChecked == true ? 1 : 0);
-                sqlParameter.Add("ntotSearchGbn", ChkntotSearch.IsChecked == true ? (ntotSearchGbn.SelectedIndex + 1 == null ? 0 : ntotSearchGbn.SelectedIndex + 1) : 0);
-                sqlParameter.Add("stotSearch", txttotSearch.Text.ToString());
+                //sqlParameter.Add("ntotSearch", ChkntotSearch.IsChecked == true ? 1 : 0);
+                //sqlParameter.Add("ntotSearchGbn", ChkntotSearch.IsChecked == true ? (ntotSearchGbn.SelectedValue == null ? 0 : ntotSearchGbn.SelectedIndex + 1) : 0);
+                //sqlParameter.Add("stotSearch", txttotSearch.Text.ToString());
                 DataSet ds = DataStore.Instance.ProcedureToDataSet("xp_dvlMoldIns_sRegularInspectSubByMoldID", sqlParameter, false);
 
                 if (ds != null && ds.Tables.Count > 0)

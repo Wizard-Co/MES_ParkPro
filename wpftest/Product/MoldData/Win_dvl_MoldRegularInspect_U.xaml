@@ -331,7 +331,7 @@
                         <DataGrid x:Name="dgdMold_InspectSub2" IsReadOnly="True" SelectionUnit="Cell" >
                             <DataGrid.Columns>
                                 <DataGridTextColumn Header="순번" Binding="{Binding InspectSubSeq}"/>
-                                <DataGridTextColumn Header="금형점검번호"  Binding="{Binding MoldRInspectID}"/>
+                                <DataGridTextColumn Header="금형점검번호"  Binding="{Binding MoldRInspectID}" Visibility="Hidden"/>
                                 <DataGridTextColumn Header="금형BasisID" Binding="{Binding MoldInspectBasisID}" Visibility="Hidden"/>
                                 <DataGridTextColumn Header="점검점" Binding="{Binding MoldInspectItemName}"/>
                                 <DataGridTextColumn Header="점검내용" Binding="{Binding MoldInspectContent}"/>
