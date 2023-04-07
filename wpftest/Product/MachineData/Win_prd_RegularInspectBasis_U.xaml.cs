@@ -1216,20 +1216,10 @@ namespace WizMes_ANT
                     if (!GetKey.Trim().Equals(""))
                     {
 
-                        //삭제할 사진이 있을 경우
-                        //if (deleteListFtpFile.Count > 0)
-                        //{
-                        //    foreach (string[] str in deleteListFtpFile)
-                        //    {
-                        //        FTP_RemoveFile(GetKey + "/" + str[0]);
-                        //    }
-                        //}
-
                         //추가한 사진이 있을 때
                         if (listFtpFile.Count > 0)
                         {
                             FTP_Save_File(listFtpFile, GetKey);
-                            //AttachFileUpdate(GetKey);
                         }
 
                         //복사추가 했을 떄 
@@ -2084,20 +2074,6 @@ namespace WizMes_ANT
             bool MakeFolder = false;
             MakeFolder = FolderInfoAndFlag(fileListSimple, MakeFolderName);
 
-            if (MakeFolder == false)        // 같은 아이를 찾지 못한경우,
-            {
-                //MIL 폴더에 InspectionID로 저장
-                if (_ftp.createDirectory(MakeFolderName) == false)
-                {
-                    MessageBox.Show("업로드를 위한 폴더를 생성할 수 없습니다.");
-                    return;
-                }
-            }
-            else
-            {
-                fileListDetail = _ftp.directoryListSimple(MakeFolderName, Encoding.Default);
-            }
-
             for (int i = 0; i < listStrArrayFileInfo.Count; i++)
             {
                 bool flag = true;
@@ -2119,6 +2095,20 @@ namespace WizMes_ANT
                     listStrArrayFileInfo[i][0] = MakeFolderName + "/" + listStrArrayFileInfo[i][0];
                     UpdateFilesInfo.Add(listStrArrayFileInfo[i]);
                 }
+            }
+
+            if (MakeFolder == false)        // 같은 아이를 찾지 못한경우,
+            {
+                //MIL 폴더에 InspectionID로 저장
+                if (_ftp.createDirectory(MakeFolderName) == false)
+                {
+                    MessageBox.Show("업로드를 위한 폴더를 생성할 수 없습니다.");
+                    return;
+                }
+            }
+            else
+            {
+                fileListDetail = _ftp.directoryListSimple(MakeFolderName, Encoding.Default);
             }
 
             if (!_ftp.UploadTempFilesToFTP(UpdateFilesInfo))
