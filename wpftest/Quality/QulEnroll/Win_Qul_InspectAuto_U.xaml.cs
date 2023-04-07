@@ -1291,7 +1291,6 @@ namespace WizMes_ANT
                 sqlParameter.Add("InspectPoint", strPoint);
                 sqlParameter.Add("FromDate", chkDate.IsChecked == true ? dtpSDate.SelectedDate.Value.ToString("yyyyMMdd") : "");
                 sqlParameter.Add("ToDate", chkDate.IsChecked == true ? dtpEDate.SelectedDate.Value.ToString("yyyyMMdd") : "");
-                sqlParameter.Add("ArticleID", txtArticleSrh.Tag != null ? txtArticleSrh.Tag.ToString() : "");
                 sqlParameter.Add("nchkDefectYN", chkResultSrh.IsChecked == true ? 1 : 0);
                 sqlParameter.Add("sDefectYN", chkResultSrh.IsChecked == true ? cboResultSrh.SelectedValue.ToString() : "");
                 //sqlParameter.Add("BuyerArticleNo", chkArticleNo.IsChecked == true ? txtArticleNo.Text : "");
@@ -1792,7 +1791,7 @@ namespace WizMes_ANT
                                 sqlParameter.Add("InspectBasisSubSeq", WinInsAutoSub.SubSeq);
                                 sqlParameter.Add("InspectText", "");
 
-                                string inspectValue = WinInsAutoSub.arrInspectValue[j] != "" ? lib.CheckNullZero(WinInsAutoSub.arrInspectValue[j]) : "0";
+                                string inspectValue = WinInsAutoSub.arrInspectValue[j] != "" ? lib.CheckNullZero(WinInsAutoSub.arrInspectValue[j].Replace(",", "")) : "0";
                                 sqlParameter.Add("InspectValue", inspectValue);
                                 sqlParameter.Add("CreateUserID", MainWindow.CurrentUser);
 
@@ -2427,9 +2426,9 @@ namespace WizMes_ANT
                                 xBar = dr["xBar"].ToString()
                             };
 
-                            for (int i = 1; i <= 10; i++)
+                            for (int i = 0; i < 10; i++)
                             {
-                                int num = i;
+                                int num = i + 1;
                                 WinQulInsAutoSub.arrInspectValue[i] = lib.returnNumStringTwo(dr["InspectValue" + num.ToString()].ToString());
                                 WinQulInsAutoSub.arrInspectText[i] = dr["InspectText" + num.ToString()].ToString();
                             }
