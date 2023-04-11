@@ -1050,16 +1050,17 @@ namespace WizMes_ANT
                         sqlParameter.Add("MtrExceptYN", chkMtrExceptYN.IsChecked == true ? "Y" : "N");
                         sqlParameter.Add("OutwareExceptYN", chkOutwareExceptYN.IsChecked == true ? "Y" : "N");     //단위 선택
                         sqlParameter.Add("CreateUserID", MainWindow.CurrentUser);
+                        sqlParameter.Add("DevideYN", "N");
 
-                        if(MessageBox.Show("기간동안 지시량을 일로 분할 저장하시겠습니까?", "삭제 전 확인", MessageBoxButton.YesNo) == MessageBoxResult.Yes)
-                        {
-                            devideYN = "Y";
-                            sqlParameter.Add("DevideYN", "Y");
-                        } else
-                        {
-                            devideYN = "N";
-                            sqlParameter.Add("DevideYN", "N");
-                        }
+                        //if(MessageBox.Show("기간동안 지시량을 일로 분할 저장하시겠습니까?", "삭제 전 확인", MessageBoxButton.YesNo) == MessageBoxResult.Yes)
+                        //{
+                        //    devideYN = "Y";
+                        //    sqlParameter.Add("DevideYN", "Y");
+                        //} else
+                        //{
+                        //    devideYN = "N";
+                        //    sqlParameter.Add("DevideYN", "N");
+                        //}
 
                         Procedure pro1 = new Procedure();
                         pro1.Name = "xp_PlanInput_iPlanInput";
@@ -1090,14 +1091,16 @@ namespace WizMes_ANT
                             sqlParameter.Add("MtrExceptYN", WinPlanArticleOne.MtrExceptYN == null ? "" : WinPlanArticleOne.MtrExceptYN);
                             sqlParameter.Add("FirstInFirstOutYN", WinPlanArticleOne.FirstInFirstOutYN == null ? "" : WinPlanArticleOne.FirstInFirstOutYN);
                             sqlParameter.Add("CreateUserID", MainWindow.CurrentUser);
-                            if (devideYN.Equals("Y"))
-                            {
-                                sqlParameter.Add("DevideYN", "Y");
-                            }
-                            else
-                            {
-                                sqlParameter.Add("DevideYN", "N");
-                            }
+                            sqlParameter.Add("DevideYN", "N");
+
+                            //if (devideYN.Equals("Y"))
+                            //{
+                            //    sqlParameter.Add("DevideYN", "Y");
+                            //}
+                            //else
+                            //{
+                            //    sqlParameter.Add("DevideYN", "N");
+                            //}
                             Procedure pro2 = new Procedure();
                             pro2.Name = "xp_PlanInput_iPlanInputSub";
                             pro2.OutputUseYN = "N";
