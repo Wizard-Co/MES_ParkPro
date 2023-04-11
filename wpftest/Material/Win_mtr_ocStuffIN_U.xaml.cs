@@ -9,6 +9,19 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using WizMes_ANT.PopUp;
 using WizMes_ANT.PopUP;
+//*******************************************************************************
+//프로그램명    Win_mtr_ocStuffIN_U.cs
+//메뉴ID        Win_mtr_ocStuffIN_U
+//설명          데이터 처리 클래스
+//작성일        2023.04.11
+//개발자        J
+//*******************************************************************************
+// 변경일자     변경자      요청자      요구사항ID          요청 및 작업내용
+//*******************************************************************************
+//2023.04.11    HD                      Win_mtr_ocStuffIN_U     검사필요 Y일 때 검사, N 이면 자동검사
+//
+//*******************************************************************************
+
 
 namespace WizMes_ANT
 {
@@ -1595,6 +1608,8 @@ namespace WizMes_ANT
                         cboFreeStuffinYN.SelectedValue = getArticleInfo.FreeStuffinYN; // 품명에서 무검사입고품여부 정보들고옴
                         //cboProductGrp.SelectedValue = getArticleInfo.PartGBNID;
                         txtUnitPrice.Text = getArticleInfo.UnitPrice;
+                        cboFreeStuffinYN.SelectedIndex = 0; //검사필요여부 Y면 검사, N이면 자동검사
+
                     }
                 }
             }
@@ -1961,7 +1976,7 @@ namespace WizMes_ANT
 
                 string[] result = new string[2];
                 //2021-06-21 Wk_result -> OutwareSub로 수정(출고내역이 있을 경우 입고내역 삭제를 막기 위해)
-                string sql = "SELECT Count(*) as num FROM OutwareSub"
+                string sql = "SELECT Count(*) as num FROM wk_Result"
                      + " WHERE LabelID = '" + LotID + "'";
                 result = DataStore.Instance.ExecuteQuery(sql, true);
 
@@ -2779,7 +2794,9 @@ namespace WizMes_ANT
                         sqlParameter.Add("sLOTID", txtLotID.Text != null && !txtLotID.Text.Trim().Equals("") ? txtLotID.Text : "");
                         sqlParameter.Add("mtrCustomLotno", txtmtrCustomLotno.Text != null && !txtmtrCustomLotno.Text.Trim().Equals("") ? txtmtrCustomLotno.Text : "");
 
-                        sqlParameter.Add("InspectYN", "Y"); // 2020.02.14 삼주 요청사항 : 입고할때 입고검수도 알아서 되게 해달라!!! 
+                        sqlParameter.Add("InspectYN", cboFreeStuffinYN.SelectedValue == null || cboFreeStuffinYN.SelectedValue.Equals("N") ? "Y" : "N"); // 2023.04.11 검사필요 Y = 검사 O, N이면 자동검사
+
+                        //sqlParameter.Add("InspectYN", "Y"); // 2020.02.14 삼주 요청사항 : 입고할때 입고검수도 알아서 되게 해달라!!! 
                         sqlParameter.Add("sUserID", MainWindow.CurrentUser);
 
 
