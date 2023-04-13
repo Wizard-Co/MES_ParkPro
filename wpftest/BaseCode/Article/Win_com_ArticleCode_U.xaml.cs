@@ -1069,8 +1069,8 @@ namespace WizMes_ANT
 
 
                                 LabelPrintYN = dr["LabelPrintYN"].ToString(),
-                                UnitPrice = stringFormatN1(dr["UnitPrice"]),
-                                OutUnitPrice = stringFormatN1(dr["OutUnitPrice"]),
+                                UnitPrice = stringFormatN2(dr["UnitPrice"]),
+                                OutUnitPrice = stringFormatN2(dr["OutUnitPrice"]),
                                 FTAMgrYN = dr["FTAMgrYN"].ToString(),
                                 HSCODE = dr["HSCODE"].ToString(),
 

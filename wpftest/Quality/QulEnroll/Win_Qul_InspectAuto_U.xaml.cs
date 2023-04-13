@@ -2999,16 +2999,19 @@ namespace WizMes_ANT
         private void txtLotNO_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.Key == Key.Enter)
-                MainWindow.pf.ReturnCode(txtLotNO, 100, txtLotNO.Text);
-
-            if (!string.IsNullOrEmpty(txtLotNO.Text))
-                GetLotID(txtLotNO.Text);
+                LotNo_Click();
         }
 
         //
         private void btnPfLotNO_Click(object sender, RoutedEventArgs e)
         {
-            MainWindow.pf.ReturnCode(txtLotNO, 100, txtLotNO.Text);
+            LotNo_Click();
+        }
+
+        private void LotNo_Click()
+        {
+            int largeNum = strPoint.Equals("1") ? 101 : 100;
+            MainWindow.pf.ReturnCode(txtLotNO, largeNum, txtLotNO.Text);
 
             if (!string.IsNullOrEmpty(txtLotNO.Text))
                 GetLotID(txtLotNO.Text);
@@ -3081,6 +3084,9 @@ namespace WizMes_ANT
                     else
                     {
                         MessageBox.Show("더이상 등록할 수 없는 LabelID입니다.");
+
+                        dgdSub1.Items.Clear();
+                        dgdSub2.Items.Clear();
                     }
                 }
             }

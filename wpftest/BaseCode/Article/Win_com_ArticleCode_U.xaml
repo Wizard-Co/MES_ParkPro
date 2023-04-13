@@ -520,7 +520,7 @@
                             <ColumnDefinition Width="2.8*" />
                             <ColumnDefinition Width="*" />
                         </Grid.ColumnDefinitions>
-                        <TextBox x:Name="txtOutUnitPrice" Grid.Column="0" Style="{DynamicResource TextBoxInput_NumberCommaZero_Right}" Text="{Binding OutUnitPrice}" 
+                        <TextBox x:Name="txtOutUnitPrice" Grid.Column="0" Style="{DynamicResource TextBoxInput_Number_Right}" Text="{Binding OutUnitPrice}" 
                                  TextAlignment="Right" KeyDown="txtOutUnitPrice_KeyDown" PreviewTextInput="TxtOutUnitPrice_PreviewKeyDown"
                                  />
                         <ComboBox x:Name="cboPriceClss" Grid.Column="1" Style="{DynamicResource ComboBoxInputString}" Background="White"
@@ -540,7 +540,7 @@
                             <ColumnDefinition Width="2.8*" />
                             <ColumnDefinition Width="*" />
                         </Grid.ColumnDefinitions>
-                        <TextBox x:Name="txtUnitPrice" Grid.Column="0" Style="{DynamicResource TextBoxInput_NumberCommaZero_Right}"
+                        <TextBox x:Name="txtUnitPrice" Grid.Column="0" Style="{DynamicResource TextBoxInput_Number_Right}"
                              Text="{Binding UnitPrice}" KeyDown="txtUnitPrice_KeyDown" PreviewTextInput="TxtUnitPrice_PreviewTextInput_1"/>
                         <ComboBox x:Name="cboPriceClss2" Grid.Column="1" Style="{DynamicResource ComboBoxInputString}" Background="White"
                               SelectedValue="{Binding UnitPriceClss}" DropDownClosed="cboPriceClss2_DropDownClosed"/>
