@@ -44,6 +44,7 @@ namespace WizMes_ANT
 
         Win_dvl_Molding_U_CodeView WinMold = new Win_dvl_Molding_U_CodeView();
         Win_dvl_Molding_U_Parts_CodeView WinMoldParts = new Win_dvl_Molding_U_Parts_CodeView();
+        MoldArticle_CodeView MoldArticleList = new MoldArticle_CodeView();
 
         // FTP 활용모음.
         bool ftpDelete1 = false;
@@ -380,6 +381,10 @@ namespace WizMes_ANT
             grxInput.IsEnabled = true;
             //dgdMain.IsEnabled = false;
             dgdMain.IsHitTestVisible = false;
+            dgdMoldArticle.IsHitTestVisible=true;
+            btnMoldArticleAdd.IsEnabled = true;
+            btnMoldArticleDelete.IsEnabled = true;
+
         }
 
         //추가
@@ -1011,6 +1016,7 @@ namespace WizMes_ANT
             {
                 this.DataContext = WinMold;
                 FillGridPasts(WinMold.MoldID);
+                FillGridArticles(WinMold.MoldID);
             }
         }
 
@@ -1069,6 +1075,55 @@ namespace WizMes_ANT
                 DataStore.Instance.CloseConnection();
             }
         }
+        private void FillGridArticles(string strMoldID)
+        {
+            if (dgdMoldArticle.Items.Count > 0)
+            {
+                dgdMoldArticle.Items.Clear();
+            }
+
+            try
+            {
+                DataSet ds = null;
+                Dictionary<string, object> sqlParameter = new Dictionary<string, object>();
+                sqlParameter.Clear();
+                sqlParameter.Add("MoldID", strMoldID);
+                ds = DataStore.Instance.ProcedureToDataSet("xp_dvlMold_sMoldArticle", sqlParameter, false);
+
+                if (ds != null && ds.Tables.Count > 0)
+                {
+                    DataTable dt = ds.Tables[0];
+                    int i = 0;
+
+                    if (dt.Rows.Count != 0)
+                    {
+                        DataRowCollection drc = dt.Rows;
+
+                        foreach (DataRow dr in drc)
+                        {
+                            i++;
+                            var WinMoldArticle = new MoldArticle_CodeView()
+                            {
+                                Num = i,
+                                ArticleID = dr["ArticleID"].ToString(),
+                                Article = dr["Article"].ToString(),
+                                BuyerArticleNo = dr["BuyerArticleNo"].ToString(),
+                            };
+
+                            dgdMoldArticle.Items.Add(WinMoldArticle);
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("오류 발생, 오류 내용 : " + ex.ToString());
+            }
+            finally
+            {
+                DataStore.Instance.CloseConnection();
+            }
+        }
 
         /// <summary>
         /// 저장
@@ -1090,10 +1145,10 @@ namespace WizMes_ANT
                     sqlParameter.Add("MoldID", strMoldID);
                     sqlParameter.Add("sCompanyID", "0001");
                     sqlParameter.Add("MoldNo", txtMoldNo.Text); 
-                    sqlParameter.Add("sProductionArticleID", txtArticle.Tag == null ? "" : txtArticle.Tag.ToString());
+                    //sqlParameter.Add("sProductionArticleID", txtArticle.Tag == null ? "" : txtArticle.Tag.ToString());
 
                     sqlParameter.Add("BuyerModelID", txtBuyerModel.Text);
-                    sqlParameter.Add("BuyerArticleNo", txtBuyerArticleNo.Text);
+                    //sqlParameter.Add("BuyerArticleNo", txtBuyerArticleNo.Text);
                     sqlParameter.Add("MoldSizeX", TextBoxMoldSizeX.Text);
                     sqlParameter.Add("MoldSizeY", TextBoxMoldSizeY.Text);
                     sqlParameter.Add("MoldSizeH", TextBoxMoldSizeH.Text);
@@ -1175,6 +1230,25 @@ namespace WizMes_ANT
                             ListParameter.Add(sqlParameter);
                         }
 
+                        for (int i = 0; i < dgdMoldArticle.Items.Count; i++)
+                        {
+                            MoldArticleList = dgdMoldArticle.Items[i] as MoldArticle_CodeView;
+                            sqlParameter = new Dictionary<string, object>();
+                            sqlParameter.Clear();
+                            sqlParameter.Add("MoldID", strMoldID);
+                            sqlParameter.Add("ArticleID", MoldArticleList.ArticleID);
+                            sqlParameter.Add("CreateUserID", MainWindow.CurrentUser);
+
+                            Procedure pro3 = new Procedure();
+                            pro3.Name = "xp_Mold_iMoldArticleData";
+                            pro3.OutputUseYN = "N";
+                            pro3.OutputName = "MoldID";
+                            pro3.OutputLength = "5";
+
+                            Prolist.Add(pro3);
+                            ListParameter.Add(sqlParameter);
+                        }
+                        
                         List<KeyValue> list_Result = new List<KeyValue>();
                         list_Result = DataStore.Instance.ExecuteAllProcedureOutputGetCS(Prolist, ListParameter);
                         string sGetID = string.Empty;
@@ -1257,6 +1331,25 @@ namespace WizMes_ANT
                             pro2.OutputLength = "5";
 
                             Prolist.Add(pro2);
+                            ListParameter.Add(sqlParameter);
+                        }
+
+                        for (int i = 0; i < dgdMoldArticle.Items.Count; i++)
+                        {
+                            MoldArticleList = dgdMoldArticle.Items[i] as MoldArticle_CodeView;
+                            sqlParameter = new Dictionary<string, object>();
+                            sqlParameter.Clear();
+                            sqlParameter.Add("MoldID", strMoldID);
+                            sqlParameter.Add("ArticleID", MoldArticleList.ArticleID);
+                            sqlParameter.Add("CreateUserID", MainWindow.CurrentUser);
+
+                            Procedure pro3 = new Procedure();
+                            pro3.Name = "xp_Mold_iMoldArticleData";
+                            pro3.OutputUseYN = "N";
+                            pro3.OutputName = "MoldID";
+                            pro3.OutputLength = "5";
+
+                            Prolist.Add(pro3);
                             ListParameter.Add(sqlParameter);
                         }
 
@@ -1374,19 +1467,11 @@ namespace WizMes_ANT
                 return flag;
             }
 
-            //품번 txtBuyerArticleNo
-            if (txtBuyerArticleNo.Text == null && txtBuyerArticleNo.Text.ToString().Trim().Equals(""))
+            if (dgdMoldArticle.Items.Count == 0)
             {
                 flag = false;
-                MessageBox.Show("품번을 입력해주세요.", "필수입력 오류");
-                return flag;
-            }
-
-            //품명 txtBuyerArticleNo
-            if (txtBuyerArticleNo.Text == null && txtBuyerArticleNo.Text.ToString().Trim().Equals(""))
-            {
-                flag = false;
-                MessageBox.Show("품명을 입력해주세요.", "필수입력 오류");
+                MessageBox.Show("품번/품명을 등록해주세요.");
+                btnMoldArticleAdd_Click(null, null);
                 return flag;
             }
 
@@ -2097,15 +2182,15 @@ namespace WizMes_ANT
         {
             if (e.Key == Key.Enter)
             {
-                MainWindow.pf.ReturnCode(txtArticle, 1, "");
-                SetBuyerArticleNo(txtArticle.Tag);
+                //MainWindow.pf.ReturnCode(txtArticle, 1, "");
+                //SetBuyerArticleNo(txtArticle.Tag);
             }
         }
 
         private void btnPfArticle_Click(object sender, RoutedEventArgs e)
         {
-            MainWindow.pf.ReturnCode(txtArticle, 1, "");
-            SetBuyerArticleNo(txtArticle.Tag);
+            //MainWindow.pf.ReturnCode(txtArticle, 1, "");
+            //SetBuyerArticleNo(txtArticle.Tag);
         }
 
         //buyerArticleNo 세팅..
@@ -2126,9 +2211,11 @@ namespace WizMes_ANT
                         DataTable dt = ds.Tables[0];
                         if (dt.Rows.Count > 0)
                         {
-                            txtBuyerArticleNo.Text = dt.Rows[0].ItemArray[0].ToString();
-                            txtArticle.Text = dt.Rows[0].ItemArray[1].ToString();
-                            txtArticle.Tag = dt.Rows[0].ItemArray[2].ToString();
+                            //txtBuyerArticleNo.Text = dt.Rows[0].ItemArray[0].ToString();
+                            //txtArticle.Text = dt.Rows[0].ItemArray[1].ToString();
+                            //txtArticle.Tag = dt.Rows[0].ItemArray[2].ToString();
+
+
                         }
                     }
                 }
@@ -2376,21 +2463,281 @@ namespace WizMes_ANT
         {
             if (e.Key == Key.Enter)
             {
-                MainWindow.pf.ReturnCode(txtBuyerArticleNo, 76, "");
-                SetBuyerArticleNo(txtBuyerArticleNo.Tag);
+                //MainWindow.pf.ReturnCode(txtBuyerArticleNo, 76, "");
+                //SetBuyerArticleNo(txtBuyerArticleNo.Tag);
+
+                var MoldArticle = dgdMoldArticle.CurrentItem as MoldArticle_CodeView;
+
+                if (MoldArticle != null)
+                {
+                    TextBox tb = new TextBox();
+
+                    MainWindow.pf.ReturnCode(tb, 76, MoldArticle.BuyerArticleNo == null ? "" : MoldArticle.BuyerArticleNo);
+
+                    e.Handled = true;
+
+                    if (!tb.Text.Equals("") && tb.Tag != null && !tb.Tag.ToString().Equals(""))
+                    {
+                        ArticleInfo ai = getArticleInfo(tb.Tag.ToString());
+
+                        if (ai != null)
+                        {
+                            MoldArticle.BuyerArticleNo = ai.BuyerArticleNo;
+                            MoldArticle.ArticleID = ai.ArticleID;
+                            MoldArticle.Article = ai.Article;
+                        }
+                    }
+                }
+
+                for (int i = 0; i < 3; i++)
+                {
+                    int currRow = dgdMoldArticle.Items.IndexOf(dgdMoldArticle.CurrentItem);
+
+                    dgdMoldArticle.SelectedIndex = currRow;
+                    dgdMoldArticle.CurrentCell = new DataGridCellInfo(dgdMoldArticle.Items[currRow], dgdMoldArticle.Columns[i]);
+                }
+            }
+        }
+
+        private ArticleInfo getArticleInfo(string ArticleID)
+        {
+            var getArticleInfo = new ArticleInfo();
+
+            try
+            {
+                Dictionary<string, object> sqlParameter = new Dictionary<string, object>();
+                sqlParameter.Add("ArticleID", ArticleID);
+
+                DataSet ds = DataStore.Instance.ProcedureToDataSet("xp_Mold_sArticleData", sqlParameter, false);
+                if (ds != null && ds.Tables.Count > 0)
+                {
+                    DataTable dt = ds.Tables[0];
+                    if (dt.Rows.Count > 0)
+                    {
+                        DataRow dr = dt.Rows[0];
+
+                        getArticleInfo = new ArticleInfo
+                        {
+                            Article = dr["Article"].ToString(),
+                            ArticleID = dr["ArticleID"].ToString(),
+                            BuyerArticleNo = dr["BuyerArticleNo"].ToString(),
+                        };
+                    }
+                }
+
+                return getArticleInfo;
+            }
+            catch(Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+                return null;
+            }
+            finally
+            {
+                DataStore.Instance.CloseConnection();
             }
         }
 
         private void btnPfBuyerArticleNo_Click(object sender, RoutedEventArgs e)
         {
-            MainWindow.pf.ReturnCode(txtBuyerArticleNo, 76, "");
-            SetBuyerArticleNo(txtBuyerArticleNo.Tag);
+            //MainWindow.pf.ReturnCode(txtBuyerArticleNo, 76, "");
+            //SetBuyerArticleNo(txtBuyerArticleNo.Tag);
         }
 
         private void btnPfKCustom_Click(object sender, RoutedEventArgs e)
         {
             MainWindow.pf.ReturnCode(txtKCustom, 0, "");
-            SetBuyerArticleNo(txtBuyerArticleNo.Tag);
+            SetBuyerArticleNo(txtKCustom.Tag);
+        }
+
+        private void btnMoldArticleAdd_Click(object sender, RoutedEventArgs e)
+        {
+            int i = 1;
+
+            if (dgdMoldArticle.Items.Count > 0) { i = dgdMoldArticle.Items.Count + 1; }
+
+            var MoldArticle = new MoldArticle_CodeView()
+            {
+                Num = i,
+                ArticleID = "",
+                BuyerArticleNo = "",
+                Article = "",
+            };
+
+            dgdMoldArticle.Items.Add(MoldArticle);
+        }
+
+        private void btnMoldArticleDelete_Click(object sender, RoutedEventArgs e)
+        {
+            var MoldArticle = dgdMoldArticle.SelectedItem as MoldArticle_CodeView;
+
+            if (MoldArticle != null)
+            {
+                dgdMoldArticle.Items.Remove(MoldArticle);
+            }
+            else
+            {
+                if (dgdMoldArticle.Items.Count > 0)
+                {
+                    dgdMoldArticle.Items.Remove(dgdMoldArticle.Items[dgdMoldArticle.Items.Count - 1]);
+                }
+            }
+        }
+
+        private void DataGird_PreviewKeyDown(object sender, KeyEventArgs e)
+        {
+            try
+            {
+                if (e.Key == Key.Down || e.Key == Key.Up || e.Key == Key.Left || e.Key == Key.Right)
+                {
+                    DataGird_KeyDown(sender, e);
+                }
+            }
+            catch (Exception ex)
+            {
+
+            }
+        }
+
+        private void DataGird_KeyDown(object sender, KeyEventArgs e)
+        {
+            int currRow = dgdMoldArticle.Items.IndexOf(dgdMoldArticle.CurrentItem);
+            int currCol = dgdMoldArticle.Columns.IndexOf(dgdMoldArticle.CurrentCell.Column);
+            int startCol = 1;
+            int endCol = 2;
+
+            if (e.Key == Key.Enter)
+            {
+                e.Handled = true;
+                (sender as DataGridCell).IsEditing = false;
+
+                // 마지막 열, 마지막 행 아님
+                if (endCol == currCol && dgdMoldArticle.Items.Count - 1 > currRow)
+                {
+                    dgdMoldArticle.SelectedIndex = currRow + 1; // 이건 한줄 파란색으로 활성화 된 걸 조정하는 것입니다.
+                    dgdMoldArticle.CurrentCell = new DataGridCellInfo(dgdMoldArticle.Items[currRow + 1], dgdMoldArticle.Columns[startCol]);
+
+                } // 마지막 열 아님
+                else if (endCol > currCol && dgdMoldArticle.Items.Count - 1 >= currRow)
+                {
+                    dgdMoldArticle.CurrentCell = new DataGridCellInfo(dgdMoldArticle.Items[currRow], dgdMoldArticle.Columns[currCol + 1]);
+                } // 마지막 열, 마지막 행
+                else if (endCol == currCol && dgdMoldArticle.Items.Count - 1 == currRow)
+                {
+                    //btnSave.Focus();
+                }
+                else
+                {
+                    MessageBox.Show("나머지가 있나..");
+                }
+            }
+            else if (e.Key == Key.Down)
+            {
+                e.Handled = true;
+                (sender as DataGridCell).IsEditing = false;
+
+                // 마지막 행 아님
+                if (dgdMoldArticle.Items.Count - 1 > currRow)
+                {
+                    dgdMoldArticle.SelectedIndex = currRow + 1;
+                    dgdMoldArticle.CurrentCell = new DataGridCellInfo(dgdMoldArticle.Items[currRow + 1], dgdMoldArticle.Columns[currCol]);
+                } // 마지막 행일때
+                else if (dgdMoldArticle.Items.Count - 1 == currRow)
+                {
+                    if (endCol > currCol) // 마지막 열이 아닌 경우, 열을 오른쪽으로 이동
+                    {
+                        //dgdMoldArticle.SelectedIndex = 0;
+                        dgdMoldArticle.CurrentCell = new DataGridCellInfo(dgdMoldArticle.Items[currRow], dgdMoldArticle.Columns[currCol + 1]);
+                    }
+                    else
+                    {
+                        //btnSave.Focus();
+                    }
+                }
+            }
+            else if (e.Key == Key.Up)
+            {
+                e.Handled = true;
+                (sender as DataGridCell).IsEditing = false;
+
+                // 첫행 아님
+                if (currRow > 0)
+                {
+                    dgdMoldArticle.SelectedIndex = currRow - 1;
+                    dgdMoldArticle.CurrentCell = new DataGridCellInfo(dgdMoldArticle.Items[currRow - 1], dgdMoldArticle.Columns[currCol]);
+                } // 첫 행
+                else if (dgdMoldArticle.Items.Count - 1 == currRow)
+                {
+                    if (0 < currCol) // 첫 열이 아닌 경우, 열을 왼쪽으로 이동
+                    {
+                        //dgdMoldArticle.SelectedIndex = 0;
+                        dgdMoldArticle.CurrentCell = new DataGridCellInfo(dgdMoldArticle.Items[currRow], dgdMoldArticle.Columns[currCol - 1]);
+                    }
+                    else
+                    {
+                        //btnSave.Focus();
+                    }
+                }
+            }
+            else if (e.Key == Key.Left)
+            {
+                e.Handled = true;
+                (sender as DataGridCell).IsEditing = false;
+
+                if (startCol < currCol)
+                {
+                    dgdMoldArticle.CurrentCell = new DataGridCellInfo(dgdMoldArticle.Items[currRow], dgdMoldArticle.Columns[currCol - 1]);
+                }
+                else if (startCol == currCol)
+                {
+                    if (0 < currRow)
+                    {
+                        dgdMoldArticle.SelectedIndex = currRow - 1;
+                        dgdMoldArticle.CurrentCell = new DataGridCellInfo(dgdMoldArticle.Items[currRow - 1], dgdMoldArticle.Columns[endCol]);
+                    }
+                    else
+                    {
+                        //btnSave.Focus();
+                    }
+                }
+            }
+            else if (e.Key == Key.Right)
+            {
+                e.Handled = true;
+                (sender as DataGridCell).IsEditing = false;
+
+                if (endCol > currCol)
+                {
+
+                    dgdMoldArticle.CurrentCell = new DataGridCellInfo(dgdMoldArticle.Items[currRow], dgdMoldArticle.Columns[currCol + 1]);
+                }
+                else if (endCol == currCol)
+                {
+                    if (dgdMoldArticle.Items.Count - 1 > currRow)
+                    {
+                        dgdMoldArticle.SelectedIndex = currRow + 1;
+                        dgdMoldArticle.CurrentCell = new DataGridCellInfo(dgdMoldArticle.Items[currRow + 1], dgdMoldArticle.Columns[startCol]);
+                    }
+                    else
+                    {
+                        //btnSave.Focus();
+                    }
+                }
+            }
+        }
+
+        private void DatagridIn_TextFocus(object sender, KeyEventArgs e)
+        {
+            // 엔터 → 포커스 = true → cell != null → 해당 텍스트박스가 null이 아니라면 
+            // → 해당 텍스트박스가 포커스가 안되있음 SelectAll() or 포커스
+            Lib.Instance.DataGridINTextBoxFocus(sender, e);
+        }
+
+        private void DataGridCell_MouseUp(object sender, MouseButtonEventArgs e)
+        {
+            DataGridCell cell = sender as DataGridCell;
+
+            Lib.Instance.DataGridINTextBoxFocusByMouseUP(sender, e);
         }
     }
 
@@ -2511,5 +2858,15 @@ namespace WizMes_ANT
 
         public string StartSetProdQty { get; set; }
         public string StartSetDate { get; set; }
+    }
+
+    class MoldArticle_CodeView
+    {
+        public int Num { get; set; }
+        public string ArticleID { get; set; }
+        public string BuyerArticleNo { get; set; }
+        public string BuyerArticleNo2 { get; set; }
+        public string Article { get; set; }
+        public string Article2 { get; set; }
     }
 }

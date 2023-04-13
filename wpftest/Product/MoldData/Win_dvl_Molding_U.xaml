@@ -284,42 +284,7 @@
                     <ColumnDefinition Width="105*"/>
                     <ColumnDefinition Width="20*"/>
                 </Grid.ColumnDefinitions>
-                <!--<Label x:Name="lblDevYNSrh" Grid.Column="0" Margin="1" VerticalContentAlignment="Center"
-                       MouseLeftButtonUp="lblDevYNSrh_MouseLeftButtonUp">
-                    <StackPanel Orientation="Horizontal">
-                        <Viewbox>
-                            <CheckBox x:Name="chkDevYNSrh" Checked="chkDevYNSrh_Checked"
-                                      Unchecked="chkDevYNSrh_Unchecked"/>
-                        </Viewbox>
-                        <TextBlock Text="개발/양산"/>
-                    </StackPanel>
-                </Label>
-                <ComboBox x:Name="cboDevYNSrh" Grid.Column="1" Margin="1" Background="White" IsEnabled="False"/>-->
             </Grid>
-
-            <!--상세 요약 버튼-->
-            <!--<Grid Grid.Column="3" Grid.Row="3"  x:Name="stpButton">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*" />
-                    <ColumnDefinition Width="*" />
-                </Grid.ColumnDefinitions>
-                -->
-            <!--Click="Detail_MouseClick" Click="Detail_MouseClick"-->
-            <!--
-                <Button x:Name="DetailButton" HorizontalContentAlignment="Center" Background="Aqua" 
-                                VerticalContentAlignment="Center" Padding="0" Content="상세"
-                                Grid.Column="0" Margin="1"/>
-                <Button x:Name="SumButton" HorizontalContentAlignment="Center" 
-                                VerticalContentAlignment="Center" Padding="0" Content="요약"
-                                Grid.Column="1" Margin="1"/>
-            </Grid>-->
-            <!--<Grid Grid.Column="3" Grid.Row="1" Margin="1" >
-                <Button x:Name="btnMultiArticle" Content="품명다중선택" Click="BtnMultiArticle_Click"/>
-            </Grid>-->
-            <!--<Grid Grid.Column="3" Grid.Row="2" Margin="1" >
-                <Button x:Name="btnMultiArticleClear" Content="다중선택품명초기화" Click="BtnMultiArticleClear_Click"/>
-            </Grid>-->
-
             <Grid Grid.Column="3" Grid.Row="3">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="85*" />
@@ -433,13 +398,6 @@
                             <Image Source="{DynamicResource btiPrint}" Style="{DynamicResource imgSize}" VerticalAlignment="Center"/>
                             <TextBlock Text="인쇄" VerticalAlignment="Center"></TextBlock>
                         </StackPanel>
-                        <!--<Button.ContextMenu>
-                            <ContextMenu x:Name="menu" >
-                                <MenuItem Header="미리보기" Click="menuSeeAhead_Click" ></MenuItem>
-                                <MenuItem Header="바로인쇄" Click="menuRightPrint_Click" ></MenuItem>
-                                <MenuItem Header="닫   기" Click="menuClose_Click" ></MenuItem>
-                            </ContextMenu>
-                        </Button.ContextMenu>-->
                     </Button>
 
 
@@ -504,8 +462,6 @@
                     <DataGridTextColumn Header="첨부화일경로2" Binding="{Binding AttFilePath2}"/>
                     <DataGridTextColumn Header="첨부화일명3" Binding="{Binding AttFile3}"/>
                     <DataGridTextColumn Header="첨부화일경로3" Binding="{Binding AttFilePath3}"/>
-                    <!--<DataGridTextColumn Header="중량" Binding="{Binding Weight}" CellStyle="{DynamicResource NumericDataGridCell}"/>-->
-
                 </DataGrid.Columns>
             </DataGrid>
 
@@ -581,9 +537,6 @@
                                  Text="{Binding OwnerOneTimePayYn}" Visibility="Hidden"/>
                         <ComboBox x:Name="cboBoxOwnerOneTimePayYn" Grid.Row="2" Grid.Column="6" Margin="1"
                                   Style="{DynamicResource essentialComboBox}" SelectedValue="{Binding OwnerOneTimePayYn}" />
-                        <!--<ComboBox x:Name="cboStorgeLocation" Grid.Row="11" Grid.Column="1" Margin="1" 
-                                  Style="{DynamicResource essentialComboBox}" SelectedValue="{Binding StorgeLocation}"/>-->
-
                         <!--입고일 만들기-->
                         <Label x:Name="lblboxSetDate" Grid.Row="3" Grid.Column="5" Margin="1" HorizontalContentAlignment="Center"
                                VerticalContentAlignment="Center" MouseLeftButtonUp="lblboxSetDate_MouseLeftButtonUp">
@@ -762,7 +715,7 @@
                         </Label>
                         <DatePicker x:Name="dtpSetInitHitCountDate" Grid.Row="12" Grid.Column="6" Margin="1" 
                                         SelectedDate="{Binding SetHitCountDate_CV}" IsEnabled="False"/>
-                        
+
                         <!--금형번호-->
                         <Label Grid.Row="0" Grid.Column="0" Margin="1" HorizontalContentAlignment="Center"
                                VerticalContentAlignment="Center" Content="금형번호" />
@@ -786,87 +739,155 @@
                             <Image Source="{DynamicResource btiPlusFind}" />
                         </Button>
 
+                        <Button x:Name="btnMoldArticleAdd" Grid.Row="4" Grid.Column="2" Margin="1" Click="btnMoldArticleAdd_Click" IsEnabled="False">
+                            <TextBlock Text="추가" />
+                        </Button>
+                        <Button x:Name="btnMoldArticleDelete" Grid.Row="4" Grid.Column="3" Margin="1" Click="btnMoldArticleDelete_Click" IsEnabled="False">
+                            <TextBlock Text="삭제" />
+                        </Button>
+                        <Grid Grid.Row="5" Grid.RowSpan="4" Grid.Column="0" Grid.ColumnSpan="4">
+                            <DataGrid x:Name="dgdMoldArticle" Style="{DynamicResource DataGridSet1}" HeadersVisibility="Column">
+                                <DataGrid.RowStyle>
+                                    <Style TargetType="DataGridRow">
+                                        <Style.Resources>
+                                            <SolidColorBrush x:Key="{x:Static SystemColors.HighlightBrushKey}" Color="#3399FF"/>
+                                            <SolidColorBrush x:Key="{x:Static SystemColors.HighlightTextBrushKey}" Color="White"/>
+                                            <SolidColorBrush x:Key="{x:Static SystemColors.ControlBrushKey}" Color="#3399FF" />
+                                            <SolidColorBrush x:Key="{x:Static SystemColors.ControlTextBrushKey}" Color="White"/>
+                                        </Style.Resources>
+                                    </Style>
+                                </DataGrid.RowStyle>
+                                <DataGrid.CellStyle>
+                                    <Style TargetType="DataGridCell">
+                                        <EventSetter Event="PreviewKeyDown" Handler="DataGird_PreviewKeyDown"/>
+                                        <EventSetter Event="KeyDown" Handler="DataGird_KeyDown"/>
+                                        <EventSetter Event="KeyUp" Handler="DatagridIn_TextFocus"/>
+                                        <EventSetter Event="GotFocus" Handler="DataGridCell_GotFocus" />
+                                        <EventSetter Event="MouseUp" Handler="DataGridCell_MouseUp" />
+                                    </Style>
+                                </DataGrid.CellStyle>
+                                <DataGrid.Columns>
+                                    <DataGridTemplateColumn Header="순번">
+                                        <DataGridTemplateColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <TextBlock Margin="2" Text="{Binding Num}" HorizontalAlignment="Right" />
+                                            </DataTemplate>
+                                        </DataGridTemplateColumn.CellTemplate>
+                                    </DataGridTemplateColumn>
+                                    <DataGridTemplateColumn Header="품번" Width="auto" MinWidth="100">
+                                        <DataGridTemplateColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <TextBlock Text="{Binding BuyerArticleNo, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" TextAlignment="Left" Padding="5 0 0 0"
+                                                        Tag="{Binding ArticleID, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Background="#A9BCF5"/>
+                                            </DataTemplate>
+                                        </DataGridTemplateColumn.CellTemplate>
+                                        <DataGridTemplateColumn.CellEditingTemplate>
+                                            <DataTemplate>
+                                                <TextBox Text="{Binding BuyerArticleNo, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" TextAlignment="Left" Padding="5 0 0 0" Foreground="Black"
+                                                         Tag="{Binding ArticleID, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Keyboard.KeyDown="txtBuyerArticleNo_KeyDown" />
+                                            </DataTemplate>
+                                        </DataGridTemplateColumn.CellEditingTemplate>
+                                    </DataGridTemplateColumn>
+                                    <DataGridTemplateColumn Header="품명" Width="auto" MinWidth="100">
+                                        <DataGridTemplateColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <TextBlock Text="{Binding Article, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" TextAlignment="Left" Padding="5 0 0 0"
+                                                       Tag="{Binding ArticleID, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Background="#A9BCF5" />
+                                            </DataTemplate>
+                                        </DataGridTemplateColumn.CellTemplate>
+                                        <DataGridTemplateColumn.CellEditingTemplate>
+                                            <DataTemplate>
+                                                <TextBox Text="{Binding Article, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" TextAlignment="Left" Padding="5 0 0 0" Foreground="Black"
+                                                        Tag="{Binding ArticleID, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Keyboard.KeyDown="txtArticle_KeyDown" />
+                                            </DataTemplate>
+                                        </DataGridTemplateColumn.CellEditingTemplate>
+                                    </DataGridTemplateColumn>
+                                </DataGrid.Columns>
+                            </DataGrid>
+                        </Grid>
+
                         <!--품번-->
-                        <Label Grid.Row="3" Grid.Column="0" Margin="1" HorizontalContentAlignment="Center" 
-                               Content="품     번" VerticalContentAlignment="Center"/>
-                        <TextBox x:Name="txtBuyerArticleNo" Grid.Row="3" Grid.Column="1" Margin="1" Grid.ColumnSpan="3"  
+                        <!--<Label Grid.Row="4" Grid.Column="0" Margin="1" HorizontalContentAlignment="Center" 
+                               Content="품     번" VerticalContentAlignment="Center" Visibility="Hidden"/>
+                        <TextBox x:Name="txtBuyerArticleNo" Grid.Row="4" Grid.Column="1" Margin="1" Grid.ColumnSpan="3"  
                                  Style="{DynamicResource essentialTextBox}" KeyDown="txtBuyerArticleNo_KeyDown"
-                                 Text="{Binding BuyerArticleNo}" Tag="{Binding ProductionArticleID}"/>
-                        <Button x:Name="btnPfBuyerArticleNo" Grid.Row="3" Grid.Column="4" Margin="1" Visibility="Visible"
+                                 Text="{Binding BuyerArticleNo}" Tag="{Binding ProductionArticleID}"  Visibility="Hidden"/>
+                        <Button x:Name="btnPfBuyerArticleNo" Grid.Row="4" Grid.Column="4" Margin="1" Visibility="Hidden"
                                 Click="btnPfBuyerArticleNo_Click">
                             <Image Source="{DynamicResource btiPlusFind}" />
                         </Button>
-
-
+                        
+                        -->
                         <!--품명-->
-                        <Label Grid.Row="4" Grid.Column="0" Margin="1" HorizontalContentAlignment="Center"
-                               VerticalContentAlignment="Center" Content="품     명" />
-                        <TextBox x:Name="txtArticle" Grid.Row="4" Grid.Column="1" Margin="1" Grid.ColumnSpan="3"
-                                 Text="{Binding Article}" Keyboard.KeyDown="txtArticle_KeyDown"
+                        <!--
+                        <Label Grid.Row="5" Grid.Column="0" Margin="1" HorizontalContentAlignment="Center"
+                               VerticalContentAlignment="Center" Content="품     명"  Visibility="Hidden"/>
+                        <TextBox x:Name="txtArticle" Grid.Row="5" Grid.Column="1" Margin="1" Grid.ColumnSpan="3"
+                                 Text="{Binding Article}" Keyboard.KeyDown="txtArticle_KeyDown" Visibility="Hidden"
                                  Tag="{Binding ProductionArticleID}" Style="{DynamicResource essentialTextBox}"/>
-                        <Button x:Name="btnPfArticle" Grid.Row="4" Grid.Column="4" Margin="1" Visibility="Visible"
+                        <Button x:Name="btnPfArticle" Grid.Row="5" Grid.Column="4" Margin="1" Visibility="Hidden"
                                 Click="btnPfArticle_Click">
                             <Image Source="{DynamicResource btiPlusFind}" />
-                        </Button>
+                        </Button>-->
 
                         <!--고객사명-->
-                        <Label Grid.Row="5" Grid.Column="0" Margin="1" HorizontalContentAlignment="Center"
+                        <Label Grid.Row="3" Grid.Column="0" Margin="1" HorizontalContentAlignment="Center"
                                VerticalContentAlignment="Center" Content="고객사명" />
-                        <TextBox x:Name="txtKCustom" Grid.Row="5" Grid.Column="1" Margin="1" Grid.ColumnSpan="3"
+                        <TextBox x:Name="txtKCustom" Grid.Row="3" Grid.Column="1" Margin="1" Grid.ColumnSpan="3"
                                  Text="{Binding KCustom}" Keyboard.KeyDown="txtKCustom_KeyDown"
                                  Tag="{Binding CustomID}" Style="{DynamicResource essentialTextBox}"/>
-                        <Button x:Name="btnPfKCustom" Grid.Row="5" Grid.Column="4" Margin="1" Visibility="Visible"
+                        <Button x:Name="btnPfKCustom" Grid.Row="3" Grid.Column="4" Margin="1" Visibility="Visible"
                                 Click="btnPfKCustom_Click">
                             <Image Source="{DynamicResource btiPlusFind}" />
                         </Button>
 
                         <!--가로세로 높이 만들기-->
-                        <Label Grid.Row="6" Grid.Column="0" Margin="1" HorizontalContentAlignment="Center"
-                               VerticalContentAlignment="Center" Content="규격(mm)가로*세로*높이" />
-                        <TextBox x:Name="TextBoxMoldSizeX" Grid.Row="6" Grid.Column="1" Margin="1" Text="{Binding MoldSizeX}"/>
-                        <TextBox x:Name="TextBoxMoldSizeY" Grid.Row="6" Grid.Column="2" Margin="1" Text="{Binding MoldSizeY}"/>
-                        <TextBox x:Name="TextBoxMoldSizeH" Grid.Row="6" Grid.Column="3" Margin="1" Text="{Binding MoldSizeH}"/>
-
-                        <Label Grid.Row="7" Grid.Column="0" Margin="1" HorizontalContentAlignment="Center"
-                               VerticalContentAlignment="Center" Content="중     량" />
-                        <TextBox x:Name="txtWeight" Grid.Row="7" Grid.Column="1" Margin="1" 
-                                 Text="{Binding Weight}"/>
-
-                        <Label Grid.Row="8" Grid.Column="0" Margin="1" HorizontalContentAlignment="Center"
-                               VerticalContentAlignment="Center" Content="재     질"/>
-                        <TextBox x:Name="txtMoldQuality" Grid.Row="8" Grid.Column="1" Margin="1" 
-                                 Background="White" Text="{Binding MoldQuality}" />
-
-                        <!--<Label Grid.Row="9" Grid.Column="2" Margin="1" HorizontalContentAlignment="Center"
-                               VerticalContentAlignment="Center" Content="금 형 ID" Visibility="Collapsed"/>
-                        <TextBox x:Name="txtMoldID" Grid.Row="9" Grid.Column="3" Margin="1" Grid.ColumnSpan="2"
-                                 Style="{StaticResource readOnlyTextBox}" Text="{Binding MoldID}" Visibility="Hidden"/>-->
-
-                        <!--사용여부-->
                         <Label Grid.Row="9" Grid.Column="0" Margin="1" HorizontalContentAlignment="Center"
+                               VerticalContentAlignment="Center" Content="규격(mm)가로*세로*높이" />
+                        <TextBox x:Name="TextBoxMoldSizeX" Grid.Row="9" Grid.Column="1" Margin="1" Text="{Binding MoldSizeX}"/>
+                        <TextBox x:Name="TextBoxMoldSizeY" Grid.Row="9" Grid.Column="2" Margin="1" Text="{Binding MoldSizeY}"/>
+                        <TextBox x:Name="TextBoxMoldSizeH" Grid.Row="9" Grid.Column="3" Margin="1" Text="{Binding MoldSizeH}"/>
+
+                        <Grid Grid.Row="10" Grid.Column="0" Grid.ColumnSpan="4">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+                            <Label Grid.Row="7" Grid.Column="0" Margin="1" HorizontalContentAlignment="Center"
+                               VerticalContentAlignment="Center" Content="중 량 / 재 질"/>
+                            <TextBox x:Name="txtWeight" Grid.Row="7" Grid.Column="1" Margin="1" 
+                                 Text="{Binding Weight}"/>
+                            <TextBox x:Name="txtMoldQuality" Grid.Row="7" Grid.Column="2" Margin="1" 
+                                 Background="White" Text="{Binding MoldQuality}"/>
+                            <!--사용여부-->
+                            <Label Grid.Row="9" Grid.Column="3" Margin="1" HorizontalContentAlignment="Center"
                                VerticalContentAlignment="Center" Content="사용여부" />
-                        <ComboBox x:Name="cboDisCard" Grid.Row="9" Grid.Column="1" Margin="1" 
+                            <ComboBox x:Name="cboDisCard" Grid.Row="9" Grid.Column="4" Margin="1" 
                                   Style="{DynamicResource essentialComboBox}" SelectedValue="{Binding DisCardYN}"/>
+                        </Grid>
 
                         <!--캐비티 만들기-->
-                        <Label Grid.Row="10" Grid.Column="0" Margin="1" HorizontalContentAlignment="Center"
+                        <Label Grid.Row="11" Grid.Column="0" Margin="1" HorizontalContentAlignment="Center"
                                VerticalContentAlignment="Center" Content="Cavity" />
-                        <TextBox x:Name="txtCavity" Grid.Row="10" Grid.Column="1" Grid.ColumnSpan="1" Margin="1" 
+                        <TextBox x:Name="txtCavity" Grid.Row="11" Grid.Column="1" Grid.ColumnSpan="1" Margin="1" 
                                  Text="{Binding Cavity}"/>
-                        <Label Grid.Row="10" Grid.Column="2" Margin="1" HorizontalContentAlignment="Center"
+                        <Label Grid.Row="11" Grid.Column="2" Margin="1" HorizontalContentAlignment="Center"
                                VerticalContentAlignment="Center" Content="실Cavity" />
-                        <TextBox x:Name="txtRealCavity" Grid.Row="10" Grid.Column="3" Grid.ColumnSpan="1" 
+                        <TextBox x:Name="txtRealCavity" Grid.Row="11" Grid.Column="3" Grid.ColumnSpan="1" 
                                  Margin="1" Text="{Binding RealCavity}"/>
 
                         <!--보관위치-->
-                        <Label Grid.Row="11" Grid.Column="0" Margin="1" HorizontalContentAlignment="Center"
+                        <Label Grid.Row="12" Grid.Column="0" Margin="1" HorizontalContentAlignment="Center"
                                VerticalContentAlignment="Center" Content="보관위치" />
-                        <ComboBox x:Name="cboStorgeLocation" Grid.Row="11" Grid.Column="1" Margin="1" 
+                        <ComboBox x:Name="cboStorgeLocation" Grid.Row="12" Grid.Column="1" Margin="1" 
                                   Style="{DynamicResource essentialComboBox}" SelectedValue="{Binding StorgeLocation}"/>
 
-                        <Label Grid.Row="12" Grid.Column="0" Margin="1" HorizontalContentAlignment="Center"
+                        <Label Grid.Row="12" Grid.Column="2" Margin="1" HorizontalContentAlignment="Center"
                                VerticalContentAlignment="Center" Content="주급형여부" />
-                        <ComboBox x:Name="cboDevYN" Grid.Row="12" Grid.Column="1" Margin="1" 
+                        <ComboBox x:Name="cboDevYN" Grid.Row="12" Grid.Column="3" Margin="1" 
                                   Style="{DynamicResource essentialComboBox}" SelectedValue="{Binding MainUseYN}"/>
 
                         <Label Grid.Row="13" Grid.Column="0" Margin="1" HorizontalContentAlignment="Center"
