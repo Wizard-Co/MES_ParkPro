@@ -415,8 +415,27 @@ namespace WizMes_ANT
             this.cboCallReason.DisplayMemberPath = "code_name";
             this.cboCallReason.SelectedValuePath = "code_id";
 
+          
 
         }
+
+        //공정 선택시 호기 바뀌게 
+        private void cboProcess_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            string ProcessID = string.Empty;
+
+            if (cboProcess.SelectedValue != null)
+            {
+                ProcessID = cboProcess.SelectedValue.ToString();
+
+                ObservableCollection<CodeView> ovcMachine = ComboBoxUtil.Instance.GetMachine(ProcessID);
+                this.cboMachine.ItemsSource = ovcMachine;
+                this.cboMachine.DisplayMemberPath = "code_name";
+                this.cboMachine.SelectedValuePath = "code_id";
+            }
+
+        }
+
 
         #endregion
 
@@ -491,8 +510,10 @@ namespace WizMes_ANT
                                 CallTime = Lib.Instance.SixLengthTime(dr["CallTime"].ToString()),
                                 CallReasonCode = dr["CallReasonCode"].ToString(),
                                 CallReason = dr["CallReason"].ToString(),
-                                RepondPersonID = dr["RepondPersonID"].ToString(),
-                                RepondPersonName = dr["RepondPersonName"].ToString(),
+                                RespondPersonID = dr["RespondPersonID"].ToString(),
+                                RespondPersonName = dr["RespondPersonName"].ToString(),
+                                RespondDate = dr["RespondDate"].ToString(),
+                                RespondTime = dr["RespondTime"].ToString(),
                                 
 
                             };
@@ -788,9 +809,11 @@ namespace WizMes_ANT
         public string CallTime { get; set; }
         public string CallReasonCode { get; set; }
         public string CallReason { get; set; }
-        public string RepondPersonID { get; set; }
-        public string RepondPersonName { get; set; }
+        public string RespondPersonID { get; set; }
+        public string RespondPersonName { get; set; }
         public string RespondAbleYN { get; set; }
+        public string RespondDate { get; set; }
+        public string RespondTime { get; set; }
 
       
     }

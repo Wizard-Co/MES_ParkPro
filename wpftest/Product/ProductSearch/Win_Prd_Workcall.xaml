@@ -91,7 +91,7 @@
                     </StackPanel>
                 </Label>
 
-                <ComboBox x:Name="cboProcess" Grid.Column="1" SelectedValue="{Binding cboProcess}" />
+                <ComboBox x:Name="cboProcess" Grid.Column="1" SelectedValue="{Binding cboProcess}" SelectionChanged="cboProcess_SelectionChanged" />
 
             </Grid>
 
@@ -273,7 +273,7 @@
                         <DataGridTextColumn x:Name="WorkDate" Header="작업자" Binding="{Binding CallPersonName}"/>
                         <DataGridTextColumn x:Name="CallTime" Header="호출시간" Binding="{Binding CallTime}"/>
                         <DataGridTextColumn x:Name="CallReason" Header="호출사유" Binding="{Binding CallReason}"/>
-                        <DataGridTextColumn x:Name="RespondPerson" Header="응대관리자" Binding="{Binding RepondPersonName}"/>
+                        <DataGridTextColumn x:Name="RespondPerson" Header="응대관리자" Binding="{Binding RespondPersonName}"/>
                         <DataGridTextColumn x:Name="RespondAbleYN" Header="응대결과" Binding="{Binding RespondAbleYN}"/>
                     </DataGrid.Columns>
                 </DataGrid>
