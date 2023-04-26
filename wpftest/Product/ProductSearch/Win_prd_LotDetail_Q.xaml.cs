@@ -131,6 +131,8 @@ namespace WizMes_ANT
             dtpEDate.SelectedDate = DateTime.Today;
         }
 
+
+
         #endregion
 
         #region 상단 레이아웃 활성화 & 비활성화
@@ -219,6 +221,87 @@ namespace WizMes_ANT
                 strLabelFlag = "3";
                 tbkLabel.Text = " 고객 라벨";
             }
+        }
+
+        //품번
+        private void LabelBuyerArticleNoSearch_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+        {
+            if (CheckBoxBuyerArticleNoSearch.IsChecked == true)
+            {
+                CheckBoxBuyerArticleNoSearch.IsChecked = false;
+            }
+            else
+            {
+                CheckBoxBuyerArticleNoSearch.IsChecked = true;
+            }
+        }
+
+
+        //품번
+        private void CheckBoxBuyerArticleNoSearch_Checked(object sender, RoutedEventArgs e)
+        {
+            TextBoxBuyerArticleNoSearch.IsEnabled = true;
+            ButtonBuyerArticleNoSearch.IsEnabled = true;
+            TextBoxBuyerArticleNoSearch.Focus();
+        }
+
+        //품번
+        private void CheckBoxBuyerArticleNoSearch_Unchecked(object sender, RoutedEventArgs e)
+        {
+            TextBoxBuyerArticleNoSearch.IsEnabled = false;
+            ButtonBuyerArticleNoSearch.IsEnabled = false;
+        }
+
+        //품번
+        private void TextBoxBuyerArticleNoSearch_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Enter)
+            {
+                MainWindow.pf.ReturnCode(TextBoxBuyerArticleNoSearch, 76, TextBoxBuyerArticleNoSearch.Text);
+            }
+        }
+
+        //품번
+        private void ButtonBuyerArticleNoSearch_Click(object sender, RoutedEventArgs e)
+        {
+            MainWindow.pf.ReturnCode(TextBoxBuyerArticleNoSearch, 76, TextBoxBuyerArticleNoSearch.Text);
+        }
+
+        //품명
+        private void lblArticle_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+        {
+            if (chkArticle.IsChecked == true) { chkArticle.IsChecked = false; }
+            else { chkArticle.IsChecked = true; }
+        }
+
+        //품명
+        private void chkArticle_Checked(object sender, RoutedEventArgs e)
+        {
+            txtArticle.IsEnabled = true;
+            btnPfArticle.IsEnabled = true;
+            txtArticle.Focus();
+        }
+
+        //품명
+        private void chkArticle_Unchecked(object sender, RoutedEventArgs e)
+        {
+            txtArticle.IsEnabled = false;
+            btnPfArticle.IsEnabled = false;
+        }
+
+        //품명
+        private void txtArticle_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Enter)
+            {
+                MainWindow.pf.ReturnCode(txtArticle, 77, "");
+            }
+        }
+
+        //품명
+        private void btnPfArticle_Click(object sender, RoutedEventArgs e)
+        {
+            MainWindow.pf.ReturnCode(txtArticle, 77, "");
         }
 
         #endregion
@@ -384,6 +467,10 @@ namespace WizMes_ANT
                 sqlParameter.Add("sTOLabelID", chkLabel.IsChecked == true ? txtELabel.Text : "");
                 sqlParameter.Add("chk4MID", chk4Mnumber.IsChecked == true ? 1 : 0);
                 sqlParameter.Add("s4MNo", chk4Mnumber.IsChecked == true ? txt4Mnumber.Text : "");
+                sqlParameter.Add("chkArticleID", chkArticle.IsChecked == true ? 1 : 0);
+                sqlParameter.Add("ArticleID", chkArticle.IsChecked == true ? txtArticle.Tag.ToString() : "");
+                sqlParameter.Add("chkBuyerArticleNo", CheckBoxBuyerArticleNoSearch.IsChecked == true ? 1 : 0);
+                sqlParameter.Add("BuyerArticleNo", CheckBoxBuyerArticleNoSearch.IsChecked == true ? TextBoxBuyerArticleNoSearch.Tag.ToString() : "");
 
                 DataSet ds = DataStore.Instance.ProcedureToDataSet_LogWrite("xp_prd_sLabelIDList", sqlParameter, true, "R");
 

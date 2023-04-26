@@ -117,9 +117,67 @@
                 <TextBox x:Name="txtELabel" Grid.Column="2" 
                          Style="{DynamicResource TextBoxSearch}"/>
             </Grid>
-            
+
+            <Grid Grid.Row="2" Grid.Column="2" >
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="75*" />
+                    <ColumnDefinition Width="90*" />
+                    <ColumnDefinition Width="15*" />
+                </Grid.ColumnDefinitions>
+                <Label x:Name="lblArticle" Grid.Column="0" 
+                       Style="{DynamicResource LabelSearch}"
+                       MouseLeftButtonUp="lblArticle_MouseLeftButtonUp">
+                    <StackPanel Style="{DynamicResource StackPanelInLabel}">
+                        <Viewbox Style="{DynamicResource ViewBoxSetMaxMinHeight}">
+                            <CheckBox x:Name="chkArticle" Checked="chkArticle_Checked" 
+                                      Unchecked="chkArticle_Unchecked" VerticalAlignment="Center"/>
+                        </Viewbox>
+                        <Viewbox Style="{DynamicResource ViewBoxSetMaxMinHeight}" >
+                            <TextBlock Text="품     명" 
+                                       Style="{DynamicResource TextBlockInViewBoxSearch}"/>
+                        </Viewbox>
+                    </StackPanel>
+                </Label>
+                <TextBox x:Name="txtArticle" Grid.Column="1" 
+                         Style="{DynamicResource TextBoxSearch}"
+                         KeyDown="txtArticle_KeyDown"/>
+                <Button x:Name="btnPfArticle" Grid.Column="2" Margin="1" IsEnabled="False" 
+                        Click="btnPfArticle_Click">
+                    <Image Source="{DynamicResource btiPlusFind}" />
+                </Button>
+            </Grid>
+
+            <Grid Grid.Column="2" Grid.Row="3" >
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="75*" />
+                    <ColumnDefinition Width="90*" />
+                    <ColumnDefinition Width="15*" />
+                </Grid.ColumnDefinitions>
+                <Label x:Name="LabelBuyerArticleNoSearch" Grid.Column="0" 
+                       Style="{DynamicResource LabelSearch}"
+                       MouseLeftButtonUp="LabelBuyerArticleNoSearch_MouseLeftButtonUp">
+                    <StackPanel Style="{DynamicResource StackPanelInLabel}">
+                        <Viewbox Style="{DynamicResource ViewBoxSetMaxMinHeight}">
+                            <CheckBox x:Name="CheckBoxBuyerArticleNoSearch" 
+                                      Checked="CheckBoxBuyerArticleNoSearch_Checked" 
+                                      Unchecked="CheckBoxBuyerArticleNoSearch_Unchecked" VerticalAlignment="Center"/>
+                        </Viewbox>
+                        <Viewbox Style="{DynamicResource ViewBoxSetMaxMinHeight}" >
+                            <TextBlock Text="품     번" 
+                                       Style="{DynamicResource TextBlockInViewBoxSearch}"/>
+                        </Viewbox>
+                    </StackPanel>
+                </Label>
+                <TextBox x:Name="TextBoxBuyerArticleNoSearch" Grid.Column="1" 
+                         Style="{DynamicResource TextBoxSearch}"
+                         KeyDown="TextBoxBuyerArticleNoSearch_KeyDown"/>
+                <Button x:Name="ButtonBuyerArticleNoSearch" Grid.Column="2" Margin="1" IsEnabled="False" 
+                        Click="ButtonBuyerArticleNoSearch_Click">
+                    <Image Source="{DynamicResource btiPlusFind}" />
+                </Button>
+            </Grid>
             <!--4M 번호-->
-            <Grid Grid.Column="2" Grid.Row="2" >
+            <Grid Grid.Column="2" Grid.Row="2" Visibility="Hidden">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="75*" />
                     <ColumnDefinition Width="90*" />
@@ -225,6 +283,7 @@
                     <DataGridTextColumn Header="라벨" Binding="{Binding LabelID}" />
                     <DataGridTextColumn Header="BoxID" Binding="{Binding RelLabelID}" Visibility="Hidden"/>
                     <DataGridTextColumn Header="품번" Binding="{Binding BuyerArticleNo}" />
+                    <DataGridTextColumn Header="품명" Binding="{Binding Article}" />
                 </DataGrid.Columns>
             </DataGrid>
 
