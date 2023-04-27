@@ -39,17 +39,9 @@ namespace WizMes_ANT
         int rowNum = 0;
 
         Win_ord_Order_U_CodeView OrderView = new Win_ord_Order_U_CodeView();
-        Win_ord_Order_U_CodeView WinOrder = new Win_ord_Order_U_CodeView();
 
-        Win_ord_Order_U_Sub_CodeView ComboboxSub = new Win_ord_Order_U_Sub_CodeView();
-        List<Win_ord_Order_U_Sub_CodeView> winordorderusubcodeview = new List<Win_ord_Order_U_Sub_CodeView>();
-
-        OrderArticle OrderArticle = new OrderArticle();
         ArticleData articleData = new ArticleData();
-        CustomData customData = new CustomData();
         string PrimaryKey = string.Empty;
-
-        int rowSubNum = 0;   //서브데이터그리드 rowNum
 
         //FTP 활용모음
         string strImagePath = string.Empty;
@@ -1267,12 +1259,8 @@ namespace WizMes_ANT
                                 ArticleID = dr["ArticleID"].ToString(),
                                 Article = dr["Article"].ToString(),
                                 BuyerArticleNo = dr["BuyerArticleNo"].ToString(),
+
                                 UnitPrice = stringFormatN0(dr["UnitPrice"]),
-
-                                //NewArticleQty = dr["NewArticleQty"].ToString(),
-                                //RePolishingQty = dr["RePolishingQty"].ToString(),
-
-
                             };
 
                             if (Lib.Instance.IsNumOrAnother(OrderCodeView.Amount))
@@ -1457,11 +1445,11 @@ namespace WizMes_ANT
                     sqlParameter.Add("Remark", string.IsNullOrEmpty(txtComments.Text) ? "" : txtComments.Text);
 
                     sqlParameter.Add("PoNo", string.IsNullOrEmpty(txtPONO.Text) ? "" : txtPONO.Text);
+                    sqlParameter.Add("BuyerModelID", txtModel.Tag != null ? txtModel.Tag.ToString() : "");
                     sqlParameter.Add("ExchRate", 0.00);
                     sqlParameter.Add("UnitPriceClss", "0");
                     sqlParameter.Add("OrderSpec", "");
 
-                    sqlParameter.Add("BuyerModelID", txtModel.Tag != null ? txtModel.Tag.ToString() : "");
                     sqlParameter.Add("Vat_IND_YN", "Y");
                     sqlParameter.Add("ProductAutoInspectYN", "N");
 
@@ -1808,46 +1796,6 @@ namespace WizMes_ANT
             }
 
         }
-
-        private void CallCustomData(string strCustomID)
-        {
-            try
-            {
-                Dictionary<string, object> sqlParameter = new Dictionary<string, object>();
-                sqlParameter.Add("CustomID", strCustomID);
-
-                DataSet ds = DataStore.Instance.ProcedureToDataSet("xp_Order_sCustomData", sqlParameter, false);
-
-                if (ds != null && ds.Tables.Count > 0)
-                {
-                    DataTable dt = ds.Tables[0];
-
-                    if (dt.Rows.Count > 0)
-                    {
-                        DataRow dr = dt.Rows[0];
-
-                        customData = new CustomData
-                        {
-                            CalClss = dr["CalClss"].ToString(),
-                            LossClss = dr["LossClss"].ToString(),
-                            PointClss = dr["PointClss"].ToString(),
-                            SpendingClss = dr["SpendingClss"].ToString(),
-                            WorkingClss = dr["WorkingClss"].ToString()
-                        };
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show("오류 발생, 오류 내용 : " + ex.ToString());
-            }
-            finally
-            {
-                DataStore.Instance.CloseConnection();
-            }
-        }
-
-
         #endregion
 
         private void chkDvlyDate_Checked(object sender, RoutedEventArgs e)
@@ -1954,9 +1902,7 @@ namespace WizMes_ANT
             if (str.Length == 8)
             {
                 if (!str.Trim().Equals(""))
-                {
                     result = str.Substring(0, 4) + "-" + str.Substring(4, 2) + "-" + str.Substring(6, 2);
-                }
             }
 
             return result;
@@ -1972,10 +1918,8 @@ namespace WizMes_ANT
             {
                 str = str.Replace(",", "");
 
-                if (Int32.TryParse(str, out chkInt) == true)
-                {
-                    result = Int32.Parse(str);
-                }
+                if (int.TryParse(str, out chkInt) == true)
+                    result = int.Parse(str);
             }
 
             return result;
@@ -1989,10 +1933,8 @@ namespace WizMes_ANT
 
             if (!str.Trim().Equals(""))
             {
-                if (Double.TryParse(str, out chkDouble) == true)
-                {
+                if (double.TryParse(str, out chkDouble) == true)
                     flag = true;
-                }
             }
 
             return flag;
@@ -2008,10 +1950,8 @@ namespace WizMes_ANT
             {
                 str = str.Trim().Replace(",", "");
 
-                if (Int32.TryParse(str, out chkInt) == true)
-                {
+                if (int.TryParse(str, out chkInt) == true)
                     flag = true;
-                }
             }
 
             return flag;
@@ -2027,10 +1967,8 @@ namespace WizMes_ANT
             {
                 str = str.Replace(",", "");
 
-                if (Double.TryParse(str, out chkDouble) == true)
-                {
-                    result = Double.Parse(str);
-                }
+                if (double.TryParse(str, out chkDouble) == true)
+                    result = double.Parse(str);
             }
 
             return result;
@@ -2136,70 +2074,13 @@ namespace WizMes_ANT
                 var OrderInfo = dgdMain.SelectedItem as Win_ord_Order_U_CodeView;
 
                 if (OrderInfo != null)
-                {
                     DataContext = OrderInfo;
-
-                    string OrderID = OrderInfo.OrderID;
-                    FillGridSub(OrderID);
-                }
             }
             catch (Exception ee)
             {
                 MessageBox.Show("오류지점 - DataGridMain_SelectionChanged : " + ee.ToString());
             }
         }
-
-
-        #region 조회Sub
-        private void FillGridSub(string strOrderID)
-        {
-            try
-            {
-                Dictionary<string, object> sqlParameter = new Dictionary<string, object>();
-                sqlParameter.Clear();
-                sqlParameter.Add("OrderID", strOrderID);
-                DataSet ds = DataStore.Instance.ProcedureToDataSet("xp_ord_sOrderSub", sqlParameter, false);
-
-                if (ds != null && ds.Tables.Count > 0)
-                {
-                    DataTable dt = ds.Tables[0];
-                    if (dt.Rows.Count > 0)
-                    {
-                        int i = 0;
-                        DataRowCollection drc = dt.Rows;
-
-                        foreach (DataRow dr in drc)
-                        {
-                            i++;
-                            var WOOUSC = new Win_ord_Order_U_Sub_CodeView
-                            {
-                                Num = i,
-
-                                OrderID = dr["OrderID"].ToString(),
-                                OrderSeq = dr["OrderSeq"].ToString(),
-                                BuyerArticleNo = dr["BuyerArticleNo"].ToString(),
-                                ArticleID = dr["ArticleID"].ToString(),
-                                Article = dr["Article"].ToString(),
-                                ArticleGrpID = dr["ArticleGrpID"].ToString(),
-                                UnitPrice = stringFormatN0(dr["UnitPrice"]),
-                                ColorQty = dr["ColorQty"].ToString(),
-                                NewProductYN = dr["NewProductYN"].ToString(),
-                                UnitPriceClss = dr["UnitPriceClss"].ToString(),
-                                Remark = dr["Remark"].ToString(),
-                                Spec = dr["Spec"].ToString(),
-                            };
-
-                            WOOUSC.ColorQty = Lib.Instance.returnNumStringZero(WOOUSC.ColorQty);
-                        }
-                    }
-                }
-            }
-            catch (Exception ee)
-            {
-                MessageBox.Show("오류지점 - FillGridSub : " + ee.ToString());
-            }
-        }
-        #endregion
 
         private void txtBuyerArticle_KeyDown(object sender, KeyEventArgs e)
         {
@@ -2436,127 +2317,6 @@ namespace WizMes_ANT
 
         public string NewArticleQty { get; set; }
         public string RePolishingQty { get; set; }
-
-
-    }
-
-    public class OrderArticle : BaseView
-    {
-        public string OrderID { get; set; }
-        public string CustomID { get; set; }
-        public string OrderNo { get; set; }
-        public string KCustom { get; set; }
-        public string PONO { get; set; }
-
-        public string OrderForm { get; set; }
-        public string OrderClss { get; set; }
-        public string InCustomID { get; set; }
-        public string AcptDate { get; set; }
-        public string DvlyDate { get; set; }
-
-        public string ArticleID { get; set; }
-        public string Article { get; set; }
-        public string DvlyPlace { get; set; }
-        public string WorkID { get; set; }
-        public string PriceClss { get; set; }
-
-        public string ExchRate { get; set; }
-        public string Vat_IND_YN { get; set; }
-        public string OrderQty { get; set; }
-        public string UnitClss { get; set; }
-        public string ColorCnt { get; set; }
-
-        public string StuffWidth { get; set; }
-        public string StuffWeight { get; set; }
-        public string CutQty { get; set; }
-        public string WorkWidth { get; set; }
-        public string WorkWeight { get; set; }
-
-        public string WorkDensity { get; set; }
-        public string ChunkRate { get; set; }
-        public string LossRate { get; set; }
-        public string ReduceRate { get; set; }
-        public string TagClss { get; set; }
-
-        public string LabelID { get; set; }
-        public string BandID { get; set; }
-        public string EndClss { get; set; }
-        public string MadeClss { get; set; }
-        public string SurfaceClss { get; set; }
-
-        public string ShipClss { get; set; }
-        public string AdvnClss { get; set; }
-        public string LotClss { get; set; }
-        public string EndMark { get; set; }
-        public string TagArticle { get; set; }
-
-        public string TagArticle2 { get; set; }
-        public string TagOrderNo { get; set; }
-        public string TagRemark { get; set; }
-        public string Tag { get; set; }
-        public string BasisID { get; set; }
-
-        public string BasisUnit { get; set; }
-        public string SpendingClss { get; set; }
-        public string DyeingID { get; set; }
-        public string WorkingClss { get; set; }
-        public string PatternID { get; set; }
-
-        public string BTID { get; set; }
-        public string BTIDSeq { get; set; }
-        public string ChemClss { get; set; }
-        public string AccountClss { get; set; }
-        public string ModifyClss { get; set; }
-
-        public string ModifyRemark { get; set; }
-        public string CancelRemark { get; set; }
-        public string Remark { get; set; }
-        public string ActiveClss { get; set; }
-        public string CloseClss { get; set; }
-
-        public string ModifyDate { get; set; }
-        public string OrderFlag { get; set; }
-        public string TagRemark2 { get; set; }
-        public string TagRemark3 { get; set; }
-        public string TagRemark4 { get; set; }
-
-        public string UnitPriceClss { get; set; }
-        public string WeightPerYard { get; set; }
-        public string WorkUnitClss { get; set; }
-        public string ArticleGrpID { get; set; }
-        public string OrderSpec { get; set; }
-
-        public string BuyerModelID { get; set; }
-        public string BuyerModel { get; set; }
-        public string BuyerArticleNo { get; set; }
-        public string UnitPrice { get; set; }
-        public string CompleteArticleFile { get; set; }
-
-        public string CompleteArticlePath { get; set; }
-        public string FirstArticleFile { get; set; }
-        public string FirstArticlePath { get; set; }
-        public string MediumArticleFIle { get; set; }
-        public string MediumArticlePath { get; set; }
-
-        public string sketch1Path { get; set; }
-        public string sketch1file { get; set; }
-        public string sketch2Path { get; set; }
-        public string sketch2file { get; set; }
-        public string sketch3Path { get; set; }
-
-        public string sketch3file { get; set; }
-        public string sketch4Path { get; set; }
-        public string sketch4file { get; set; }
-        public string sketch5Path { get; set; }
-        public string sketch5file { get; set; }
-
-        public string sketch6Path { get; set; }
-        public string sketch6file { get; set; }
-        public string ProductAutoInspectYN { get; set; }
-
-        public string InCustom { get; set; }
-        public string BuyerID { get; set; }
-        public string kBuyer { get; set; }
     }
 
     public class ArticleData : BaseView
@@ -2580,15 +2340,6 @@ namespace WizMes_ANT
         public string Code_Name { get; set; }
     }
 
-    public class CustomData : BaseView
-    {
-        public string LossClss { get; set; }
-        public string SpendingClss { get; set; }
-        public string WorkingClss { get; set; }
-        public string CalClss { get; set; }
-        public string PointClss { get; set; }
-    }
-
     public class ArticleNeedStockQty : BaseView
     {
         public string BuyerArticleNo { get; set; }
@@ -2596,42 +2347,6 @@ namespace WizMes_ANT
         public string NeedQty { get; set; }
         public string UnitClss { get; set; }
         public string UnitClssName { get; set; }
-    }
-
-    class Win_ord_Order_U_Sub_CodeView : BaseView
-    {
-        public override string ToString()
-        {
-            return (this.ReportAllProperties());
-        }
-
-        public int Num { get; set; }
-        public string OrderID { get; set; }
-        public string OrderSeq { get; set; }
-        public string ArticleID { get; set; }
-        public string Article { get; set; }
-        public string ArticleGrpID { get; set; }
-        public string ArticleGrp { get; set; }
-        public string BuyerArticleNo { get; set; }
-        public string Color { get; set; }
-        public string DesignNo { get; set; }
-        public string ColorQty { get; set; }
-        public string UnitPrice { get; set; }
-        public string UnitPriceClss { get; set; }
-        public string OrderEnd { get; set; }
-        public string PatternID { get; set; }
-        public string Remark { get; set; }
-        public string ProdQty { get; set; }
-        public string ProdDate { get; set; }
-        public string ReProdQty { get; set; }
-        public string ReProdDate { get; set; }
-        public string RGB { get; set; }
-        public string Spec { get; set; }
-        public string Weight { get; set; }
-
-        public string NewProductYN { get; set; }
-        public string NewRecord { get; set; }
-        public bool NewYNChecked { get; set; }
     }
 
     public class OrderExcel : BaseView

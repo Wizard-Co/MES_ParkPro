@@ -56,8 +56,9 @@ namespace WizMes_ANT
 
         string orderSeq = "";
 
-        List<string> LabelGroupList = new List<string>();         // packing ID 스캔에 따른 LabelID를 모아 담을 리스트 그릇입니다.
-        bool EventStatus = false;        // 추가 / 수정 상태확인을 위한 이벤트 bool
+        List<string> LabelGroupList = new List<string>();   // packing ID 스캔에 따른 LabelID를 모아 담을 리스트 그릇입니다.
+        bool EventStatus = false;                           // 추가 / 수정 상태확인을 위한 이벤트 bool
+        bool preview_click = false;                         // 인쇄 미리보기 인지 아닌지
 
         public Win_ord_OutWare_Scan()
         {
@@ -886,13 +887,18 @@ namespace WizMes_ANT
                     return;
                 }
 
+                preview_click = Ahead;
+
                 DataStore.Instance.InsertLogByForm(this.GetType().Name, "P");
-                msg.Show();
+                /*msg.Show();
                 msg.Topmost = true;
                 msg.Refresh();
+                msg.Visibility = Visibility.Hidden;*/
 
-                PrintWork(Ahead);
-                msg.Visibility = Visibility.Hidden;
+                using (Loading ld = new Loading("excel", PrintWork))
+                {
+                    ld.ShowDialog();
+                }
             }
             catch (Exception ee)
             {
@@ -916,7 +922,7 @@ namespace WizMes_ANT
         }
 
         // 실제 엑셀작업 스타트.
-        private void PrintWork(bool previewYN)
+        private void PrintWork()
         {
             Lib lib2 = new Lib();
             try
@@ -988,11 +994,12 @@ namespace WizMes_ANT
                 int pageCnt = 1;
                 int totPageCnt = (lstOutwarePrint.Count / inputPossibleRowCnt) + 1;
 
-                double totalSumAmount = 0;
-                double totalSumVatAmount = 0;
+                double totalSumAmount = 0, totalSumVatAmount = 0;
 
-                // key : OutWareID, value: List Sub Grid
-                Dictionary<string, List<Win_ord_OutWare_Scan_Sub_CodeView>> dicSub = new Dictionary<string, List<Win_ord_OutWare_Scan_Sub_CodeView>>();
+                // key : 출고일, value : 출고 항목
+                Dictionary<string, List<Win_ord_OutWare_Scan_Sub_CodeView>> dic = new Dictionary<string, List<Win_ord_OutWare_Scan_Sub_CodeView>>();
+
+                lstOutwarePrint.Sort((x, y) => x.OutDate.CompareTo(y.OutDate));
 
                 // 합계 먼저 계산
                 foreach (Win_ord_OutWare_Scan_CodeView outware in lstOutwarePrint)
@@ -1007,41 +1014,62 @@ namespace WizMes_ANT
                         DataTable dt = ds.Tables[0];
                         if (dt.Rows.Count > 0)
                         {
-                            List<Win_ord_OutWare_Scan_Sub_CodeView> listSub = new List<Win_ord_OutWare_Scan_Sub_CodeView>();
+                            double sumOutQty = 0, sumUnitPrice = 0;
 
                             DataRowCollection drc = dt.Rows;
                             foreach (DataRow item in drc)
                             {
-                                Win_ord_OutWare_Scan_Sub_CodeView subView = new Win_ord_OutWare_Scan_Sub_CodeView();
-                                subView.OutQty = item["OutQty"].ToString();
-                                subView.UnitPrice = item["UnitPrice"].ToString();
-
-                                double calcAmount = ConvertDouble(subView.OutQty) * ConvertDouble(subView.UnitPrice);
+                                double outQty = ConvertDouble(item["OutQty"].ToString());
+                                double unitPrice = ConvertDouble(item["UnitPrice"].ToString());
+                                double calcAmount = outQty * unitPrice;
                                 double calcVatAmount = calcAmount * .1;
+
+                                sumOutQty += outQty;
+                                sumUnitPrice += unitPrice;
 
                                 totalSumAmount += calcAmount;
                                 totalSumVatAmount += calcVatAmount;
-
-                                listSub.Add(subView);
-                                endCnt++;
                             }
 
-                            dicSub.Add(outwareID, listSub);
+                            Win_ord_OutWare_Scan_Sub_CodeView sub = new Win_ord_OutWare_Scan_Sub_CodeView();
+                            sub.ArticleID = outware.ArticleID;
+                            sub.Article = outware.Article;
+                            sub.dOutQty = sumOutQty;
+                            sub.dUnitPrice = sumUnitPrice;
+
+                            string outDate = outware.OutDate.Replace("-", "");
+                            if (dic.ContainsKey(outDate))
+                            {
+                                int findIdx = dic[outDate].FindIndex(x => x.ArticleID == outware.ArticleID);
+                                if (findIdx > -1)
+                                {
+                                    dic[outDate][findIdx].dOutQty += sumOutQty;
+                                    dic[outDate][findIdx].dUnitPrice += sumUnitPrice;
+                                }
+                                else
+                                {
+                                    dic[outDate].Add(sub);
+                                    endCnt++;
+                                }
+                            }
+                            else
+                            {
+                                List<Win_ord_OutWare_Scan_Sub_CodeView> listSub = new List<Win_ord_OutWare_Scan_Sub_CodeView>() { sub };
+                                dic.Add(outDate, listSub);
+                                endCnt++;
+                            }
                         }
                     }
                 }
 
-                foreach (Win_ord_OutWare_Scan_CodeView outware in lstOutwarePrint)
+                foreach (KeyValuePair<string, List<Win_ord_OutWare_Scan_Sub_CodeView>> pair in dic)
                 {
-                    string month = outware.OutDate.Substring(5, 2);
-                    string day = outware.OutDate.Substring(8, 2);
-                    string article = outware.Article;
+                    string outDate = pair.Key;
+                    List<Win_ord_OutWare_Scan_Sub_CodeView> listSub = pair.Value;
 
-                    string outwareID = outware.OutwareID;
-                    if (dicSub.ContainsKey(outwareID) == false)
-                        continue;
+                    string month = outDate.Substring(4, 2);
+                    string day = outDate.Substring(6, 2);
 
-                    List<Win_ord_OutWare_Scan_Sub_CodeView> listSub = dicSub[outwareID];
                     for (int i = 0; i < listSub.Count; i++)
                     {
                         int rowNum = startRowNum + (cnt % (inputPossibleRowCnt + 1));
@@ -1056,10 +1084,10 @@ namespace WizMes_ANT
 
                         // 품명
                         workrange = worksheet.get_Range("E" + rowNum.ToString(), "O" + rowNum.ToString());
-                        workrange.Value2 = article;
+                        workrange.Value2 = listSub[i].Article;
 
-                        string strOutQty = listSub[i].OutQty;
-                        string strUnitPrice = listSub[i].UnitPrice;
+                        string strOutQty = listSub[i].dOutQty.ToString();
+                        string strUnitPrice = listSub[i].dUnitPrice.ToString();
                         double calcAmount = ConvertDouble(strOutQty) * ConvertDouble(strUnitPrice);
                         double calcValAmount = calcAmount * .1;
 
@@ -1123,9 +1151,8 @@ namespace WizMes_ANT
                 }
 
                 excelapp.Visible = true;
-                msg.Hide();
 
-                if (previewYN == true)
+                if (preview_click)
                     pastesheet.PrintPreview();
                 else
                     pastesheet.PrintOutEx();
@@ -3616,7 +3643,8 @@ namespace WizMes_ANT
 
 
         public bool UDFlag { get; set; }
-
+        public double dOutQty { get; set; }
+        public double dUnitPrice { get; set; }
     }
 
 }
