@@ -21,6 +21,7 @@ using WizMes_ANT.PopUp;
 ' 변경일자  , 변경자, 요청자    , 요구사항ID      , 요청 및 작업내용
 '**************************************************************************************************
 ' 2023.03.30, 장시영, 삼익SDT에서 가져옴
+' 2023.04.28, 장시영, 라벨 스캔 시 선출고 체크
 '**************************************************************************************************/
 
 namespace WizMes_ANT
@@ -55,6 +56,7 @@ namespace WizMes_ANT
         string GetKey = "";
 
         string orderSeq = "";
+        double outwareReqQty = 0;
 
         List<string> LabelGroupList = new List<string>();   // packing ID 스캔에 따른 LabelID를 모아 담을 리스트 그릇입니다.
         bool EventStatus = false;                           // 추가 / 수정 상태확인을 위한 이벤트 bool
@@ -1629,29 +1631,43 @@ namespace WizMes_ANT
                              MessageBox.Show(ScanData + " : 이미 출고된 바코드 번호입니다.");
                              return;
                          }*/
-                        if (DR["qtyperbox"].ToString() == string.Empty)
+                        
+                        string foLotID = DR["FOLotID"].ToString();
+                        string foLotDate = DR["FOStuffDate"].ToString();
+                        string scanDate = DR["ScanDate"].ToString();
+
+                        DateTime dFo = DateTime.Parse(DatePickerFormat(foLotDate));
+                        DateTime dScan = DateTime.Parse(DatePickerFormat(scanDate));
+
+                        if (string.IsNullOrEmpty(foLotID) == false && dFo.CompareTo(dScan) < 0)
+                        {
+                            string foLotQty = stringFormatN0(ConvertDouble(DR["FORemainQty"].ToString()));
+                            string desc = "-------------------------------------\n" +
+                                          "선출고시켜야할 출고건이 존재합니다.\n" +
+                                          "-------------------------------------\n\n" +
+                                          "[선출고 라벨 ID] : {0}\n" +
+                                          "[선출고 라벨 수량] : {1} 개\n" +
+                                          "[선출고 라벨 생성일] : {2}\n";
+
+                            MessageBox.Show(string.Format(desc, foLotID, foLotQty, DatePickerFormat(foLotDate)));
+                            return;
+                        }
+                        else if (DR["qtyperbox"].ToString() == string.Empty)
                         {
                             MessageBox.Show("출고가능한 수량이 없습니다.");
                             return;
                         }
-                        if (DR["ScanDate"].ToString() == string.Empty) //ScanDate 컬럼에 값이 비어있으면 / ScanDate는 PackDate와 같다
+                        else if (scanDate == string.Empty) //ScanDate 컬럼에 값이 비어있으면 / ScanDate는 PackDate와 같다
                         {
                             MessageBox.Show("생산이력이 없는 바코드 번호입니다.");
                             return;
                         }
-                        if (DR["inspectDate"].ToString() == string.Empty)   //wk_PackingCardList 테이블의 InspectDate / 검사일자가 비어있다면
+                        else if (DR["inspectDate"].ToString() == string.Empty)   //wk_PackingCardList 테이블의 InspectDate / 검사일자가 비어있다면
                         {
                             MessageBox.Show("검사이력이 없는 바코드 번호입니다.");
                             return;
                         }
-                        //if ((lib.IsNumOrAnother(DR["GradeID"].ToString()) == true) && (lib.IsNumOrAnother(DR["DefectClss"].ToString()) == true)) //등급과 결함 구분에 값이 있으면
-                        //{
-                        //    if (Convert.ToDouble(DR["GradeID"].ToString()) >= Convert.ToDouble(DR["DefectClss"].ToString())) //등급 >= 결함구분 값보다 크면
-                        //    {
-                        //        MessageBox.Show("불량등급이" + DR["GradeID"].ToString() + "이므로 출고가 불가능합니다.");
-                        //        return;
-                        //    }
-                        //}
+
                         if (txtArticle_InGroupBox.Tag != null) //품명 텍스트 박스에 값이 있고,
                         {
                             if (txtArticle_InGroupBox.Tag.ToString() != DR["ArticleID"].ToString()) //품명 텍스트 박스에 기재된 품명과 받아온 품명이 다르면
@@ -2580,6 +2596,7 @@ namespace WizMes_ANT
 
                         txtBuyerArticleNo.Text = DR["BuyerArticleNo"].ToString();
                         orderSeq = DR["OrderSeq"].ToString();
+                        //outwareReqQty = ConvertDouble(DR["ReqQty"].ToString());
                     }
                 }
 
