@@ -1602,6 +1602,7 @@ namespace WizMes_ANT
         {
             try
             {
+                ScanData = ScanData.Trim().ToUpper();
                 LabelGroupList.Clear();
 
                 Dictionary<string, object> sqlParameter = new Dictionary<string, object>();
@@ -1631,28 +1632,63 @@ namespace WizMes_ANT
                              MessageBox.Show(ScanData + " : 이미 출고된 바코드 번호입니다.");
                              return;
                          }*/
-                        
-                        string foLotID = DR["FOLotID"].ToString();
-                        string foLotDate = DR["FOStuffDate"].ToString();
+
+                        // key : labelID , value : outQty
+                        Dictionary<string, double> dicCheck = new Dictionary<string, double>();
+                        for (int i = 0; i < dgdOutwareSub.Items.Count; i++)     //이미 스캔한 바코드인지 체크, 
+                        {
+                            var OutSub = dgdOutwareSub.Items[i] as Win_ord_OutWare_Scan_Sub_CodeView;
+                            string outSub_LabelID = OutSub.LabelID.Trim().ToUpper();
+                            if (outSub_LabelID == ScanData)
+                            {
+                                MessageBox.Show((i + 1) + "줄에 이미 스캔된 바코드 입니다.");
+                                return;
+                            }
+                            else
+                            {
+                                double outQty = ConvertDouble(OutSub.OutQty);
+                                if (dicCheck.ContainsKey(outSub_LabelID))
+                                    dicCheck[outSub_LabelID] += outQty;
+                                else
+                                    dicCheck.Add(outSub_LabelID, outQty);
+                            }
+                        }
+
                         string scanDate = DR["ScanDate"].ToString();
 
-                        DateTime dFo = DateTime.Parse(DatePickerFormat(foLotDate));
-                        DateTime dScan = DateTime.Parse(DatePickerFormat(scanDate));
-
-                        if (string.IsNullOrEmpty(foLotID) == false && dFo.CompareTo(dScan) < 0)
+                        // 선출고ID의 존재여부
+                        string foLotID = DR["FOLotID"].ToString();
+                        if (string.IsNullOrEmpty(foLotID) == false)
                         {
-                            string foLotQty = stringFormatN0(ConvertDouble(DR["FORemainQty"].ToString()));
-                            string desc = "-------------------------------------\n" +
-                                          "선출고시켜야할 출고건이 존재합니다.\n" +
-                                          "-------------------------------------\n\n" +
-                                          "[선출고 라벨 ID] : {0}\n" +
-                                          "[선출고 라벨 수량] : {1} 개\n" +
-                                          "[선출고 라벨 생성일] : {2}\n";
+                            string foLotDate = DR["FOStuffDate"].ToString();
 
-                            MessageBox.Show(string.Format(desc, foLotID, foLotQty, DatePickerFormat(foLotDate)));
-                            return;
+                            DateTime dFo = string.IsNullOrEmpty(foLotDate) ? DateTime.Today : DateTime.Parse(DatePickerFormat(foLotDate));
+                            DateTime dScan = string.IsNullOrEmpty(scanDate) ? DateTime.Today : DateTime.Parse(DatePickerFormat(scanDate));
+
+                            // 출고할려고 그리드에 스캔한 정보 및 수량 확인 후 선출고건 수량에서 마이너스
+                            // 그리드에 포함된 정보는 선출고건에서 제외시키기 위해
+                            double foRemainQty = ConvertDouble(DR["FORemainQty"].ToString());
+                            if (dicCheck.ContainsKey(foLotID))
+                                foRemainQty = Math.Max(0, foRemainQty - dicCheck[foLotID]);
+
+                            // 선출고ID와 스캔ID가 같지않고, 선출고일이 스캔일보다 이전이고, 선출고수량이 존재할때
+                            if (foLotID.Trim().ToUpper() != ScanData && dFo.CompareTo(dScan) < 0 && foRemainQty > 0)
+                            {
+                                string foLotQty = stringFormatN0(foRemainQty);
+                                string desc = "-------------------------------------\n" +
+                                              "선출고시켜야할 출고건이 존재합니다.\n" +
+                                              "-------------------------------------\n\n" +
+                                              "[선출고 라벨 ID] : {0}\n" +
+                                              "[선출고 라벨 수량] : {1} 개\n" +
+                                              "[선출고 라벨 생성일] : {2}\n";
+
+                                MessageBox.Show(string.Format(desc, foLotID, foLotQty, DatePickerFormat(foLotDate)));
+                                return;
+                            }
                         }
-                        else if (DR["qtyperbox"].ToString() == string.Empty)
+
+
+                        if (lib.returnNumStringZero(DR["qtyperbox"].ToString()) == "0")
                         {
                             MessageBox.Show("출고가능한 수량이 없습니다.");
                             return;
@@ -1685,20 +1721,6 @@ namespace WizMes_ANT
                                 MessageBox.Show("서로 다른 거래처를 동시에 출고처리 할 수 없습니다. \r\n" +
                                     "바코드 거래처 :" + DR["CustomName"].ToString() + ". \r\n" +
                                     "출고 거래처 :" + txtKCustom.Text + ".");
-                                return;
-                            }
-                        }
-
-                        for (int i = 0; i < dgdOutwareSub.Items.Count; i++)     //이미 스캔한 바코드인지 체크, 
-                        {
-                            var OutSub = dgdOutwareSub.Items[i] as Win_ord_OutWare_Scan_Sub_CodeView;
-
-                            //DataGridRow dgr = lib.GetRow(i, dgdOutwareSub);
-                            //var ViewReceiver = dgr.Item as Win_ord_OutWare_Scan_CodeView;
-
-                            if (OutSub.LabelID == ScanData)
-                            {
-                                MessageBox.Show((i + 1) + "줄에 이미 스캔된 바코드 입니다.");
                                 return;
                             }
                         }

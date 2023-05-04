@@ -411,13 +411,12 @@ namespace WizMes_ANT
                     }
                 }
 
-                var location = btnInspectApprovalPlus.PointToScreen(new Point(0, 0));
-
                 Stuffin_Inspect inspect = new Stuffin_Inspect(StuffinID);
                 //inspect.setStuffinID(StuffinID);
-                inspect.Left = location.X - 100;
-                inspect.Top = location.Y + 30;
-
+                //var location = btnInspectApprovalPlus.PointToScreen(new Point(0, 0));
+                //inspect.Left = location.X - 100;
+                //inspect.Top = location.Y + 30;
+                inspect.WindowStartupLocation = WindowStartupLocation.CenterScreen;
                 inspect.ShowDialog();
 
                 if (inspect.DialogResult == true)
