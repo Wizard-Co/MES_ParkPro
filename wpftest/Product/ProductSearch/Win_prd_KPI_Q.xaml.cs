@@ -209,22 +209,12 @@ namespace WizMes_ANT
                                 WorkQty = Convert.ToDouble(dr["WorkQty"].ToString()),
                                 WorkTime = lib.returnNumStringOne(dr["WorkTime"].ToString()),
                                 WorkQtyPerHour = Convert.ToDouble(dr["WorkQtyPerHour"].ToString()),
-                                WorkMan = dr["WorkMan"].ToString(),
-                                Gonsu = dr["Gonsu"].ToString(),
-                                OrderQty = dr["OrderQty"].ToString(),
-                                DiffOutDate = dr["DiffOutDate"].ToString(),
-                                DiffOutDayPerQty = dr["DiffOutDayPerQty"].ToString(),
                                 DefectQty = Convert.ToDouble(dr["DefectQty"].ToString()),
                                 DefectWorkQty = Convert.ToDouble(dr["DefectWorkQty"].ToString()),
                                 DefectRate = stringFormatN1(dr["DefectRate"]),
                                 gbn = dr["gbn"].ToString(),
                                 Sort = dr["Sort"].ToString(),
                             };
-
-                            WPKQC.Gonsu = lib.returnNumStringZero(WPKQC.Gonsu);
-                            WPKQC.OrderQty = lib.returnNumStringZero(WPKQC.OrderQty);
-                            WPKQC.DiffOutDayPerQty = lib.returnNumStringZero(WPKQC.DiffOutDayPerQty);
-                            //WPKQC.DefectRate = lib.returnNumStringOne(WPKQC.DefectRate);
 
                             if (WPKQC.gbn == "Q")
                             {
