@@ -51,7 +51,6 @@ namespace WizMes_ANT
             btnToday_Click(null, null);
             SetComboBox();
             Check_bdrOrder();
-            cboOrderStatus.SelectedIndex = 0;
         }
 
         //콤보박스 세팅
@@ -66,6 +65,7 @@ namespace WizMes_ANT
             cboOrderStatus.ItemsSource = cbOrderStatus;
             cboOrderStatus.DisplayMemberPath = "code_name";
             cboOrderStatus.SelectedValuePath = "code_id";
+            cboOrderStatus.SelectedIndex = 0;
 
             ObservableCollection<CodeView> cbOrderFlag = ComboBoxUtil.Instance.Gf_DB_CM_GetComCodeDataset(null, "ORDFLG", "Y", "", "");
             cbOrderFlag.RemoveAt(2);
@@ -172,22 +172,16 @@ namespace WizMes_ANT
             if (cboOrderStatus.SelectedIndex == 0)
             {
                 btnFinal.IsEnabled = false;
-                rowNum = 0;
-                re_Search();
             }
             else if (cboOrderStatus.SelectedIndex == 1)
             {
                 btnFinal.IsEnabled = true;
                 btnFinal.Content = "마감처리";
-                rowNum = 0;
-                re_Search();
             }
             else
             {
                 btnFinal.IsEnabled = true;
                 btnFinal.Content = "진행처리";
-                rowNum = 0;
-                re_Search();
             }
         }
 
