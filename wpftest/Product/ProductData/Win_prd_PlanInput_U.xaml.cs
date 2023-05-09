@@ -495,7 +495,6 @@ namespace WizMes_ANT
                 if(dgdMain.Items.Count == 0)
                 {
                     InsertDisable();
-                    MessageBox.Show("조회된 데이터가 없습니다.");
                     return;
                 }
                 else

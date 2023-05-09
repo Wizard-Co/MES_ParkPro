@@ -316,7 +316,7 @@
                                     <ColumnDefinition Width="*" />
                                     <ColumnDefinition Width="*" />
                                 </Grid.ColumnDefinitions>
-                                <TextBox x:Name="txtArticle" Grid.Column="0" Padding="0" KeyDown="TxtArticle_KeyDown"/>
+                                <TextBox x:Name="txtArticle" Grid.Column="0" Padding="0" KeyDown="TxtArticle_KeyDown" Visibility="Hidden"/>
                               
                                 <Grid Grid.Column="0" Visibility="Hidden">
                                     <Grid.RowDefinitions>
