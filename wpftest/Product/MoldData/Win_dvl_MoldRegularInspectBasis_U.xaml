@@ -325,7 +325,7 @@
                             </Button>
                         </Grid>
 
-                        <DataGrid x:Name="dgdSub" Grid.Row="1" Margin="1" ColumnHeaderHeight="30" Style="{DynamicResource DataGridSet1}">
+                        <DataGrid x:Name="dgdSub" Grid.Row="1" Margin="1" Style="{DynamicResource DataGridSetTwoHeaderEdit}">
                             <DataGrid.Resources>
                                 <Style TargetType="DataGridCell">
                                     <EventSetter Event="KeyDown" Handler="DataGird_KeyDown"/>
@@ -338,44 +338,38 @@
                                 <DataGridTemplateColumn Header="순번">
                                     <DataGridTemplateColumn.CellTemplate>
                                         <DataTemplate>
-                                            <TextBlock Text="{Binding Num}" TextAlignment="Center" Padding="3 0"
-                                                       VerticalAlignment="Center"/>
+                                            <TextBlock Text="{Binding Num}" HorizontalAlignment="Center"   VerticalAlignment="Center"/>
                                         </DataTemplate>
                                     </DataGridTemplateColumn.CellTemplate>
                                 </DataGridTemplateColumn>
                                 <DataGridTemplateColumn Header="점검항목" Width="*">
                                     <DataGridTemplateColumn.CellTemplate>
                                         <DataTemplate>
-                                            <TextBlock Text="{Binding MoldInspectItemName, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" 
-                                                                   VerticalAlignment="Center" Padding="3 0 0 0"/>
+                                            <TextBlock Text="{Binding MoldInspectItemName, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
                                         </DataTemplate>
                                     </DataGridTemplateColumn.CellTemplate>
                                     <DataGridTemplateColumn.CellEditingTemplate>
                                         <DataTemplate>
-                                            <TextBox Text="{Binding MoldInspectItemName, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" 
-                                                                   VerticalAlignment="Center" Loaded="txtBox_Loaded"/>
+                                            <TextBox Text="{Binding MoldInspectItemName, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"   Loaded="txtBox_Loaded" />
                                         </DataTemplate>
                                     </DataGridTemplateColumn.CellEditingTemplate>
                                 </DataGridTemplateColumn>
                                 <DataGridTemplateColumn Header="점검내용" Width="3*" x:Name="DataGridTemplateColumn_MachineName">
                                     <DataGridTemplateColumn.CellTemplate>
                                         <DataTemplate>
-                                            <TextBlock Text="{Binding MoldInspectContent, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" 
-                                                                   VerticalAlignment="Center" Padding="3 0 0 0"/>
+                                            <TextBlock Text="{Binding MoldInspectContent, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"  />
                                         </DataTemplate>
                                     </DataGridTemplateColumn.CellTemplate>
                                     <DataGridTemplateColumn.CellEditingTemplate>
                                         <DataTemplate>
-                                            <TextBox Text="{Binding MoldInspectContent, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" 
-                                                                   VerticalAlignment="Center" Loaded="txtBox_Loaded"/>
+                                            <TextBox Text="{Binding MoldInspectContent, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"  Loaded="txtBox_Loaded"/>
                                         </DataTemplate>
                                     </DataGridTemplateColumn.CellEditingTemplate>
                                 </DataGridTemplateColumn>
                                 <DataGridTemplateColumn Header="확인&#10;방법" Width="0.8*">
                                     <DataGridTemplateColumn.CellTemplate>
                                         <DataTemplate>
-                                            <TextBlock Text="{Binding MoldInspectCheckGbn_Name, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"  TextAlignment="Center"
-                                                       VerticalAlignment="Center"/>
+                                            <TextBlock Text="{Binding MoldInspectCheckGbn_Name, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"  />
                                         </DataTemplate>
                                     </DataGridTemplateColumn.CellTemplate>
                                     <DataGridTemplateColumn.CellEditingTemplate>
@@ -391,7 +385,7 @@
                                 <DataGridTemplateColumn Header="주기" Width="0.5*">
                                     <DataGridTemplateColumn.CellTemplate>
                                         <DataTemplate>
-                                            <TextBlock Text="{Binding MoldInspectCycleGbn_Name}"  TextAlignment="Center" VerticalAlignment="Center"/>
+                                            <TextBlock Text="{Binding MoldInspectCycleGbn_Name}" />
                                         </DataTemplate>
                                     </DataGridTemplateColumn.CellTemplate>
                                     <DataGridTemplateColumn.CellEditingTemplate>
@@ -407,14 +401,12 @@
                                 <DataGridTemplateColumn Header="특정&#10;월/일" Width="0.5*">
                                     <DataGridTemplateColumn.CellTemplate>
                                         <DataTemplate>
-                                            <TextBlock Text="{Binding MoldInspectCycleDate, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"  TextAlignment="Center"
-                                                       VerticalAlignment="Center"/>
+                                            <TextBlock Text="{Binding MoldInspectCycleDate, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"   />
                                         </DataTemplate>
                                     </DataGridTemplateColumn.CellTemplate>
                                     <DataGridTemplateColumn.CellEditingTemplate>
                                         <DataTemplate>
-                                            <TextBox Text="{Binding MoldInspectCycleDate, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" TextAlignment="Center"
-                                                     VerticalAlignment="Center"  Loaded="txtBox_Loaded"/>
+                                            <TextBox Text="{Binding MoldInspectCycleDate, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Loaded="txtBox_Loaded"/>
                                         </DataTemplate>
                                     </DataGridTemplateColumn.CellEditingTemplate>
                                 </DataGridTemplateColumn>
@@ -422,7 +414,7 @@
                                 <DataGridTemplateColumn Header="기록&#10;구분" Width="0.5*">
                                     <DataGridTemplateColumn.CellTemplate>
                                         <DataTemplate>
-                                            <TextBlock Text="{Binding MoldInspectRecordGbn_Name}"  TextAlignment="Center" VerticalAlignment="Center"/>
+                                            <TextBlock Text="{Binding MoldInspectRecordGbn_Name}" />
                                         </DataTemplate>
                                     </DataGridTemplateColumn.CellTemplate>
                                     <DataGridTemplateColumn.CellEditingTemplate>
