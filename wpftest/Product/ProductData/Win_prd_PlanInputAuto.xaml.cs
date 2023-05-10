@@ -54,6 +54,8 @@ namespace WizMes_ANT
             Lib.Instance.UiLoading(sender);
             dtpSDate.SelectedDate = DateTime.Today;
             dtpEDate.SelectedDate = DateTime.Today;
+
+
         }
 
 
@@ -382,6 +384,8 @@ namespace WizMes_ANT
             AutoPlan = new Win_pop_AutoPlan();
             AutoPlan.ShowDialog();
 
+            re_Search(rowNum);
+
         }
         #endregion
 
@@ -573,10 +577,7 @@ namespace WizMes_ANT
                             dgdMain.Items.Add(Auto);
                         }
                     //    tbkCount.Text = "▶ 검색결과 : " + i.ToString() + " 건";
-                    } else
-                    {
-                        MessageBox.Show("조회된 내용이 없습니다");
-                    }
+                    } 
                 }
             }
             catch (Exception ex)
