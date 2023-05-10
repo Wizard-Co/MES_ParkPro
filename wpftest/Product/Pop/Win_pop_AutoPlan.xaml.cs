@@ -416,7 +416,7 @@ namespace WizMes_ANT.PopUp
                     DataTable dt = ds.Tables[0];
                     int i = 0;
 
-                    if (dt.Rows.Count > 0)
+                    if (dt.Rows.Count > 0 && dt.Columns.Count > 1)
                     {
                         DataRowCollection drc = dt.Rows;
 
@@ -440,13 +440,22 @@ namespace WizMes_ANT.PopUp
 
                             dgdPattern.Items.Add(Pattern);
                         }
+                    } else if (dt.Columns.Count == 1)
+                    {
+                        DataRow dr = dt.Rows[0];
+                        string error = dr["error"].ToString();
+
+                        flag = false;
+
+                        MessageBox.Show(error);
                     }
+             
                 }
             }
             catch (Exception ex)
             {
                 //MessageBox.Show("오류 발생, 오류 내용 : " + ex.ToString());
-                MessageBox.Show("품목코드에 공정패턴이 없습니다" + " : " + ex.ToString());
+                MessageBox.Show(ex.ToString());
                 flag = false;
                 return flag;
             }
