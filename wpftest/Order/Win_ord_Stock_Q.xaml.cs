@@ -6,6 +6,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using WizMes_ANT.PopUP;
+using WizMes_ANT.PopUp;
 using WPF.MDI;
 
 namespace WizMes_ANT
@@ -446,12 +447,24 @@ namespace WizMes_ANT
                 return;
             }
 
-            FillGrid();
-            if (dgdStock.Items.Count == 0)
+            using (Loading ld = new Loading(beSearch))
             {
-                MessageBox.Show("조회결과가 없습니다.");
-                return;
+                ld.ShowDialog();
             }
+        }
+
+        private void beSearch()
+        {
+            //검색버튼 비활성화
+            btnSearch.IsEnabled = false;
+
+            Dispatcher.BeginInvoke(new Action(() =>
+            {
+                //로직
+                FillGrid();
+            }), System.Windows.Threading.DispatcherPriority.Background);
+
+            btnSearch.IsEnabled = true;
         }
 
         private void FillGrid()
