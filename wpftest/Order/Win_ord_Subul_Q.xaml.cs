@@ -8,6 +8,7 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 using WizMes_ANT.PopUP;
+using WizMes_ANT.PopUp;
 
 namespace WizMes_ANT
 {
@@ -533,8 +534,25 @@ namespace WizMes_ANT
         // 검색 버튼 이벤트
         private void btnSearch_Click(object sender, RoutedEventArgs e)
         {
-            rowNum = 0;
-            re_Search(rowNum);
+            using (Loading ld = new Loading(beSearch))
+            {
+                ld.ShowDialog();
+            }
+        }
+
+        private void beSearch()
+        {
+            //검색버튼 비활성화
+            btnSearch.IsEnabled = false;
+
+            Dispatcher.BeginInvoke(new Action(() =>
+            {
+                //로직
+                rowNum = 0;
+                re_Search(rowNum);
+            }), System.Windows.Threading.DispatcherPriority.Background);
+
+            btnSearch.IsEnabled = true;
         }
 
         private void btnClose_Click(object sender, RoutedEventArgs e)

@@ -9,6 +9,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Shapes;
 using WizMes_ANT.PopUP;
+using WizMes_ANT.PopUp;
 using WPF.MDI;
 
 namespace WizMes_ANT
@@ -324,21 +325,37 @@ namespace WizMes_ANT
         // 검색(조회) 버튼 클릭
         private void btnSearch_Click(object sender, RoutedEventArgs e)
         {
-            DataStore.Instance.InsertLogByForm(this.GetType().Name, "R");
-            TabItem NowTI = tabconGrid.SelectedItem as TabItem;
-
-            if (NowTI.Header.ToString() == "기간집계") { FillGrid_Period(); }
-            else if (NowTI.Header.ToString() == "일일집계") { FillGrid_Day(); }
-            else if (NowTI.Header.ToString() == "월별집계(세로)") { FillGrid_Month_V(); }
-            else if (NowTI.Header.ToString() == "월별집계(가로)") { FillGrid_Month_H(); }
-
-            for (int i = 0; i < 3; i++)
+            using (Loading ld = new Loading(beSearch))
             {
-                lib.Delay(10);
-                Header_Content_Width_Adjust(NowTI.Header.ToString());
-                lib.Delay(10);
-                Re_Header_Content_Width_Adjust(NowTI.Header.ToString());
+                ld.ShowDialog();
             }
+        }
+
+        private void beSearch()
+        {
+            //검색버튼 비활성화
+            btnSearch.IsEnabled = false;
+
+            Dispatcher.BeginInvoke(new Action(() =>
+            {
+                DataStore.Instance.InsertLogByForm(this.GetType().Name, "R");
+                TabItem NowTI = tabconGrid.SelectedItem as TabItem;
+
+                if (NowTI.Header.ToString() == "기간집계") { FillGrid_Period(); }
+                else if (NowTI.Header.ToString() == "일일집계") { FillGrid_Day(); }
+                else if (NowTI.Header.ToString() == "월별집계(세로)") { FillGrid_Month_V(); }
+                else if (NowTI.Header.ToString() == "월별집계(가로)") { FillGrid_Month_H(); }
+
+                for (int i = 0; i < 3; i++)
+                {
+                    lib.Delay(10);
+                    Header_Content_Width_Adjust(NowTI.Header.ToString());
+                    lib.Delay(10);
+                    Re_Header_Content_Width_Adjust(NowTI.Header.ToString());
+                }
+            }), System.Windows.Threading.DispatcherPriority.Background);
+
+            btnSearch.IsEnabled = true;
         }
 
         #region 기간집계 조회
