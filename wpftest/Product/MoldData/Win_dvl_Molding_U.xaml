@@ -412,10 +412,10 @@
                 <ColumnDefinition Width="auto"/>
                 <ColumnDefinition Width="425*"/>
             </Grid.ColumnDefinitions>
-            <DataGrid x:Name="dgdMain" Grid.Column="0" Margin="1" IsReadOnly="True"
+            <DataGrid x:Name="dgdMain" Grid.Column="0" Margin="1" IsReadOnly="True" Style="{DynamicResource DataGridSet1}"
                       SelectionChanged="dgdMain_SelectionChanged">
                 <DataGrid.Columns>
-                    <DataGridTextColumn Header="" Binding="{Binding Num}"/>
+                    <DataGridTextColumn Header="순번" Binding="{Binding Num}"/>
                     <DataGridTextColumn Header="금형번호" Binding="{Binding MoldID}"/>
                     <DataGridTextColumn Header="금형LotNo" Binding="{Binding MoldNo}"/>
                     <DataGridTextColumn Header="사번" Binding="{Binding ArticleID}" Visibility="Hidden"/>

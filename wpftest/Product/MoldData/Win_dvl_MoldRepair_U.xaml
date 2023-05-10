@@ -229,7 +229,7 @@
                     <ColumnDefinition Width="auto" />
                     <ColumnDefinition Width="405*" />
                 </Grid.ColumnDefinitions>
-                <DataGrid x:Name="dgdMoldRepair" Grid.Column="0" Margin="1" SelectionChanged="dgdMoldRepair_SelectionChanged" IsReadOnly="True" dgx:DataGridFilter.IsAutoFilterEnabled="True">
+                <DataGrid x:Name="dgdMoldRepair" Grid.Column="0" Margin="1" SelectionChanged="dgdMoldRepair_SelectionChanged" IsReadOnly="True" Style="{DynamicResource DataGridSet1}">
                     <DataGrid.Columns>
                         <DataGridTextColumn Header="수리일자" Binding="{Binding repairdate}" />
                         <DataGridTextColumn Header="금형LotNo" Binding="{Binding MoldNo}" />
@@ -385,7 +385,7 @@
                     <Button x:Name="btnSubAdd" Grid.Column="1" Margin="1" Content="추가" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Click="btnSubAdd_Click" IsEnabled="False"/>
                     <Button x:Name="btnSubDel" Grid.Column="2" Margin="1" Content="삭제" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Click="btnSubDel_Click" IsEnabled="False"/>
                 </Grid>
-                <DataGrid x:Name="dgdMoldRepairSub" Grid.Row="1" Margin="1" SelectionUnit="Cell" IsReadOnly="True" dgx:DataGridFilter.IsAutoFilterEnabled="True">
+                <DataGrid x:Name="dgdMoldRepairSub" Grid.Row="1" Margin="1" SelectionUnit="Cell" IsReadOnly="True" Style="{DynamicResource DataGridSet1}">
                     <DataGrid.Columns>
                         <DataGridTemplateColumn x:Name="dgdtpeMCPartName" Header="부품명" Width="*" SortMemberPath="MCPartName">
                             <DataGridTemplateColumn.CellStyle>

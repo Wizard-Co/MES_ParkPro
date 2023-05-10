@@ -578,6 +578,11 @@ namespace WizMes_ANT
                             dgdMoldRepair.Items.Add(MoldRepair_DTO);
                         }
                     }
+                    else
+                    {
+                        MessageBox.Show("조회된 결과가 없습니다.");
+                        return;
+                    }
                 }
             }
             catch (Exception ex)

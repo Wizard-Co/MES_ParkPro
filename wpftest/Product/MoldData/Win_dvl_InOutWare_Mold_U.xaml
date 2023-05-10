@@ -203,9 +203,9 @@
                 <ColumnDefinition Width="auto" />
                 <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
-            <DataGrid x:Name="dgdMoldInOut" Grid.Column="0" Margin="1" SelectionChanged="dgdMoldInOut_SelectionChanged" IsReadOnly="True">
+            <DataGrid x:Name="dgdMoldInOut" Grid.Column="0" Margin="1" SelectionChanged="dgdMoldInOut_SelectionChanged" IsReadOnly="True" Style="{DynamicResource DataGridSet1}">
                 <DataGrid.Columns>
-                    <DataGridTextColumn Header="" HeaderStyle="{DynamicResource dgBack}" Binding="{Binding Num}"></DataGridTextColumn>
+                    <DataGridTextColumn Header="순번" Binding="{Binding Num}"/>
                     <DataGridTextColumn Header="관리번호" Binding="{Binding InOutID}"/>
                     <DataGridTextColumn Header="구분" Binding="{Binding InOutGbn}" Visibility="Hidden"/>
                     <DataGridTextColumn Header="구분" Binding="{Binding InOutName}"/>

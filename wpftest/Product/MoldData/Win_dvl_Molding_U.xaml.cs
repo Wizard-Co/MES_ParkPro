@@ -659,7 +659,7 @@ namespace WizMes_ANT
 
                     if (dt.Rows.Count == 0)
                     {
-                        //MessageBox.Show("조회된 데이터가 없습니다.");
+                        MessageBox.Show("조회된 데이터가 없습니다.");
                     }
                     else
                     {

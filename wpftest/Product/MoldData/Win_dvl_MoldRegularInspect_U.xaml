@@ -193,7 +193,7 @@
                 <ColumnDefinition Width="auto" />
                 <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
-            <DataGrid x:Name="dgdMoldInspect" Grid.Column="0" Margin="1" SelectionChanged="dgdMoldInspect_SelectionChanged" IsReadOnly="True">
+            <DataGrid x:Name="dgdMoldInspect" Grid.Column="0" Margin="1" SelectionChanged="dgdMoldInspect_SelectionChanged" IsReadOnly="True" Style="{DynamicResource DataGridSet1}">
                 <DataGrid.Columns>
                     <DataGridTextColumn Header="순번" Binding="{Binding Num}" />
                     <DataGridTextColumn Header="금형점검번호" Binding="{Binding MoldRInspectID}" />

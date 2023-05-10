@@ -1258,7 +1258,13 @@ namespace WizMes_ANT
 
                         }
 
+
                         tbkIndexCount.Text = "검색건수 : " + i + " 건";
+                    }
+                    else
+                    {
+                        MessageBox.Show("조회된 결과가 없습니다.");
+                        return;
                     }
                 }
             }

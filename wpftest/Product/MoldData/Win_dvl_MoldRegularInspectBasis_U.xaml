@@ -146,7 +146,7 @@
                     <ColumnDefinition Width="*" />
                 </Grid.ColumnDefinitions>
                 <Grid Grid.Column="0">
-                    <DataGrid x:Name="dgdMain" SelectionChanged="dgdMain_SelectionChanged" ColumnHeaderHeight="30">
+                    <DataGrid x:Name="dgdMain" SelectionChanged="dgdMain_SelectionChanged" ColumnHeaderHeight="30" Style="{DynamicResource DataGridSet1}">
                         <DataGrid.Columns>
                             <!--<DataGridTemplateColumn Header="순번" Width="auto">
                                 <DataGridTemplateColumn.CellTemplate>
@@ -325,7 +325,7 @@
                             </Button>
                         </Grid>
 
-                        <DataGrid x:Name="dgdSub" Grid.Row="1" Margin="1" ColumnHeaderHeight="30" Style="{DynamicResource DataGridSetTwoHeaderEdit}">
+                        <DataGrid x:Name="dgdSub" Grid.Row="1" Margin="1" ColumnHeaderHeight="30" Style="{DynamicResource DataGridSet1}">
                             <DataGrid.Resources>
                                 <Style TargetType="DataGridCell">
                                     <EventSetter Event="KeyDown" Handler="DataGird_KeyDown"/>

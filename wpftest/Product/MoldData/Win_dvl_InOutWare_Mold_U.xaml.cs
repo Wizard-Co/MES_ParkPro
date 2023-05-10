@@ -602,6 +602,11 @@ namespace WizMes_ANT
                                 dgdMoldInOut.Items.Add(dgdInOut_DTO);
                             }
                         }
+                        else
+                        {
+                            MessageBox.Show("조회된 결과가 없습니다.");
+                            return;
+                        }
                     }
                 }
                 catch (Exception ex)
