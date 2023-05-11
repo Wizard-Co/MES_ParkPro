@@ -355,17 +355,20 @@ namespace WizMes_ANT
 
                                 SachulPressure = dr["SachulPressure"].ToString(),
                                 SachulSpeed = dr["SachulSpeed"].ToString(),
+                                SachulLocation = dr["SachulLocation"].ToString(),
+
                                 BoApPressure = dr["BoApPressure"].ToString(),
                                 BoApSpeed = dr["BoApSpeed"].ToString(),
-
-                                //SumWorkQty = dr["SumWorkQty"].ToString(),  //2021-08-12 검사수량 추가
-                                //DefectSpec = dr["BuyerArticleID"].ToString() //DefectSpec = dr["DefectSpec"].ToString()   //2021-08-12 검사Spec 추가, 추후 검사Spec으로 수정
-                                //InsGubun = dr["InsGubun"].ToString(),
-                                //InsValue = dr["InsValue"].ToString(),
-                                //InsGongCha = dr["InsGongCha"].ToString(),
-                                //DefectYN = dr["DefectYN"].ToString(),
-                                //Comments = dr["Comments"].ToString()
-
+                                BoApTime = dr["BoApTime"].ToString(),
+                                Cushun = dr["Cushun"].ToString(),
+                                SachulTime = dr["SachulTime"].ToString(),
+                                CoolingTime = dr["CoolingTime"].ToString(),
+                                MeasurSpeed = dr["MeasurSpeed"].ToString(),
+                                BaeAp = dr["BaeAp"].ToString(),
+                                SukBaekMeasureBefore = dr["SukBaekMeasureBefore"].ToString(),
+                                SukBaekMeasureAfter = dr["SukBaekMeasureAfter"].ToString(),
+                                MeasurLocation = dr["MeasurLocation"].ToString(),
+                                OilTemper = dr["OilTemper"].ToString(),
                             };
 
                             dgdMain.Items.Add(WinR);
@@ -560,8 +563,19 @@ namespace WizMes_ANT
         public string MachineNo { get; set; }
         public string SachulPressure { get; set; }
         public string SachulSpeed { get; set; }
+        public string SachulLocation { get; set; }
         public string BoApPressure { get; set; }
         public string BoApSpeed { get; set; }
+        public string BoApTime { get; set; }
+        public string Cushun { get; set; }
+        public string SachulTime { get; set; }
+        public string CoolingTime { get; set; }
+        public string MeasurSpeed { get; set; }
+        public string BaeAp { get; set; }
+        public string SukBaekMeasureBefore { get; set; }
+        public string SukBaekMeasureAfter { get; set; }
+        public string MeasurLocation { get; set; }
+        public string OilTemper { get; set; }
         public string Machine { get; set; }
         public string StationNO { get; set; }
 
