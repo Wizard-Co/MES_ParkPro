@@ -353,6 +353,11 @@ namespace WizMes_ANT
                                 Machine = dr["Machine"].ToString(),
                                 MachineNo = dr["MachineNo"].ToString(),
 
+                                SachulPressure = dr["SachulPressure"].ToString(),
+                                SachulSpeed = dr["SachulSpeed"].ToString(),
+                                BoApPressure = dr["BoApPressure"].ToString(),
+                                BoApSpeed = dr["BoApSpeed"].ToString(),
+
                                 //SumWorkQty = dr["SumWorkQty"].ToString(),  //2021-08-12 검사수량 추가
                                 //DefectSpec = dr["BuyerArticleID"].ToString() //DefectSpec = dr["DefectSpec"].ToString()   //2021-08-12 검사Spec 추가, 추후 검사Spec으로 수정
                                 //InsGubun = dr["InsGubun"].ToString(),
@@ -553,6 +558,10 @@ namespace WizMes_ANT
         public double DefectQty { get; set; }
         public string MachineID { get; set; }
         public string MachineNo { get; set; }
+        public string SachulPressure { get; set; }
+        public string SachulSpeed { get; set; }
+        public string BoApPressure { get; set; }
+        public string BoApSpeed { get; set; }
         public string Machine { get; set; }
         public string StationNO { get; set; }
 
