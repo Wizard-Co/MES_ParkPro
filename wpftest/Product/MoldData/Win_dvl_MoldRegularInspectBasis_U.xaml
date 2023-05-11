@@ -342,7 +342,7 @@
                                         </DataTemplate>
                                     </DataGridTemplateColumn.CellTemplate>
                                 </DataGridTemplateColumn>
-                                <DataGridTemplateColumn Header="점검항목" Width="*">
+                                <DataGridTemplateColumn Header="점검항목" >
                                     <DataGridTemplateColumn.CellTemplate>
                                         <DataTemplate>
                                             <TextBlock Text="{Binding MoldInspectItemName, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
@@ -354,7 +354,7 @@
                                         </DataTemplate>
                                     </DataGridTemplateColumn.CellEditingTemplate>
                                 </DataGridTemplateColumn>
-                                <DataGridTemplateColumn Header="점검내용" Width="3*" x:Name="DataGridTemplateColumn_MachineName">
+                                <DataGridTemplateColumn Header="점검내용" x:Name="DataGridTemplateColumn_MachineName">
                                     <DataGridTemplateColumn.CellTemplate>
                                         <DataTemplate>
                                             <TextBlock Text="{Binding MoldInspectContent, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"  />
@@ -366,7 +366,15 @@
                                         </DataTemplate>
                                     </DataGridTemplateColumn.CellEditingTemplate>
                                 </DataGridTemplateColumn>
-                                <DataGridTemplateColumn Header="확인&#10;방법" Width="0.8*">
+                                <DataGridTemplateColumn Header="확인방법">
+                                    <DataGridTemplateColumn.HeaderTemplate>
+                                        <DataTemplate>
+                                            <StackPanel Orientation="Vertical">
+                                                <TextBlock HorizontalAlignment="Center" Text="확인" Margin="1"/>
+                                                <TextBlock HorizontalAlignment="Center" Text="방법" Margin="1"/>
+                                            </StackPanel>
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.HeaderTemplate>
                                     <DataGridTemplateColumn.CellTemplate>
                                         <DataTemplate>
                                             <TextBlock Text="{Binding MoldInspectCheckGbn_Name, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"  />
@@ -377,12 +385,12 @@
                                             <ComboBox x:Name="cboMoldInspectCheckGbn" 
                                                       SelectedValue="{Binding MoldInspectCheckGbn}" DisplayMemberPath="{Binding code_name}" 
                                                       SelectedValuePath="{Binding code_id}" SelectionChanged="cboMoldInspectCheckGbn_SelectionChanged"
-                                                      Loaded="cboMoldInspectCheckGbn_Loaded" />  <!--DropDownClosed="cboMoldInspectCheckGbn_DropDownClosed"/>-->
+                                                      Loaded="cboMoldInspectCheckGbn_Loaded" />  
                                         </DataTemplate>
                                     </DataGridTemplateColumn.CellEditingTemplate>
                                 </DataGridTemplateColumn>
 
-                                <DataGridTemplateColumn Header="주기" Width="0.5*">
+                                <DataGridTemplateColumn Header="주기" >
                                     <DataGridTemplateColumn.CellTemplate>
                                         <DataTemplate>
                                             <TextBlock Text="{Binding MoldInspectCycleGbn_Name}" />
@@ -393,12 +401,12 @@
                                             <ComboBox x:Name="cboMoldInspectCycleGbn" 
                                                       SelectedValue="{Binding MoldInspectCycleGbn}"  DisplayMemberPath="{Binding code_name}" 
                                                       SelectedValuePath="{Binding code_id}" SelectionChanged="cboMoldInspectCycleGbn_SelectionChanged"
-                                                      Loaded="cboMoldInspectCycleGbn_Loaded" />  <!--DropDownClosed="cboMoldInspectCycleGbn_DropDownClosed"/>-->
+                                                      Loaded="cboMoldInspectCycleGbn_Loaded" />  
                                         </DataTemplate>
                                     </DataGridTemplateColumn.CellEditingTemplate>
                                 </DataGridTemplateColumn>
 
-                                <DataGridTemplateColumn Header="특정&#10;월/일" Width="0.5*">
+                                <DataGridTemplateColumn Header="특정&#10;월/일">
                                     <DataGridTemplateColumn.CellTemplate>
                                         <DataTemplate>
                                             <TextBlock Text="{Binding MoldInspectCycleDate, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"   />
@@ -411,7 +419,7 @@
                                     </DataGridTemplateColumn.CellEditingTemplate>
                                 </DataGridTemplateColumn>
 
-                                <DataGridTemplateColumn Header="기록&#10;구분" Width="0.5*">
+                                <DataGridTemplateColumn Header="기록&#10;구분" >
                                     <DataGridTemplateColumn.CellTemplate>
                                         <DataTemplate>
                                             <TextBlock Text="{Binding MoldInspectRecordGbn_Name}" />
@@ -422,25 +430,25 @@
                                             <ComboBox x:Name="cboMoldInspectRecordGbn" 
                                                       SelectedValue="{Binding MoldInspectRecordGbn}" DisplayMemberPath="{Binding code_name}" 
                                                       SelectedValuePath="{Binding code_id}" SelectionChanged="cboMoldInspectRecordGbn_SelectionChanged"
-                                                      Loaded="cboMoldInspectRecordGbn_Loaded" />  <!--DropDownClosed="cboMoldInspectRecordGbn_DropDownClosed"/>-->
+                                                      Loaded="cboMoldInspectRecordGbn_Loaded" /> 
                                         </DataTemplate>
                                     </DataGridTemplateColumn.CellEditingTemplate>
                                 </DataGridTemplateColumn>
 
-                                <DataGridTemplateColumn Header="이미지" Width="*">
+                                <DataGridTemplateColumn Header="이미지">
                                     <DataGridTemplateColumn.CellTemplate>
                                         <DataTemplate>
                                             <Image Source="{Binding ImageByte, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" 
-                                                       Tag="{Binding MoldInspectImageFile, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" MaxHeight="70"
+                                                       Tag="{Binding MoldInspectImageFile, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" 
                                                        MouseLeftButtonDown="img_MouseLeftButtonUp"/>
                                         </DataTemplate>
                                     </DataGridTemplateColumn.CellTemplate>
                                 </DataGridTemplateColumn>
                                 
-                                <DataGridTemplateColumn Header="  " Width="0.5*">
+                                <DataGridTemplateColumn Header="  ">
                                     <DataGridTemplateColumn.CellTemplate>
                                         <DataTemplate>
-                                            <Button Content="{Binding btnName, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Click="btnUploadAndDelete_Click" Height="30" VerticalAlignment="Center"/>
+                                            <Button Content="{Binding btnName, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Click="btnUploadAndDelete_Click" VerticalAlignment="Center"/>
                                         </DataTemplate>
                                     </DataGridTemplateColumn.CellTemplate>
                                 </DataGridTemplateColumn>

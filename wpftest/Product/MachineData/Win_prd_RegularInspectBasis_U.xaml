@@ -418,7 +418,6 @@
                             <DataGridTemplateColumn Header="보기">
                                 <DataGridTemplateColumn.CellTemplate>
                                     <DataTemplate>
-                                        <!--<TextBlock Margin="2" Text="{Binding McImageView}" />-->
                                         <Button Click="btnSeeImage_Click" >
                                             <Button.Style>
                                                 <Style TargetType="Button">
@@ -467,94 +466,7 @@
                                     </DataTemplate>
                                 </DataGridTemplateColumn.CellTemplate>
                             </DataGridTemplateColumn>
-                            <!--<DataGridTemplateColumn Header="이미지경로">
-                                <DataGridTemplateColumn.CellTemplate>
-                                    <DataTemplate>
-                                        <TextBlock Margin="2" Text="{Binding McImagepath}" />
-                                    </DataTemplate>
-                                </DataGridTemplateColumn.CellTemplate>
-                                <DataGridTemplateColumn.CellEditingTemplate>
-                                    <DataTemplate>
-                                        <TextBox Text="{Binding McImagepath}" 
-                                                 TextChanged="dgdtpetxtMcImagepath_TextChanged"/>
-                                    </DataTemplate>
-                                </DataGridTemplateColumn.CellEditingTemplate>
-                            </DataGridTemplateColumn>                            
-                            <DataGridTemplateColumn Header="Flag">
-                                <DataGridTemplateColumn.CellTemplate>
-                                    <DataTemplate>
-                                        <TextBlock Margin="2" Text="{Binding Flag}" />
-                                    </DataTemplate>
-                                </DataGridTemplateColumn.CellTemplate>
-                                <DataGridTemplateColumn.CellEditingTemplate>
-                                    <DataTemplate>
-                                        <TextBox Text="{Binding Flag}" 
-                                                 TextChanged="dgdtpetxtFlag_TextChanged"/>
-                                    </DataTemplate>
-                                </DataGridTemplateColumn.CellEditingTemplate>
-                            </DataGridTemplateColumn>
-                            <DataGridTemplateColumn Header="이미지2">
-                                <DataGridTemplateColumn.CellTemplate>
-                                    <DataTemplate>
-                                        <TextBlock Margin="2" Text="{Binding McImageFile_bak}" />
-                                    </DataTemplate>
-                                </DataGridTemplateColumn.CellTemplate>
-                                <DataGridTemplateColumn.CellEditingTemplate>
-                                    <DataTemplate>
-                                        <TextBox Text="{Binding McImageFile_bak}" 
-                                                 TextChanged="dgdtpetxtMcImageFile_bak_TextChanged"/>
-                                    </DataTemplate>
-                                </DataGridTemplateColumn.CellEditingTemplate>
-                            </DataGridTemplateColumn>
-                            <DataGridTemplateColumn Header="McSeq">
-                                <DataGridTemplateColumn.CellTemplate>
-                                    <DataTemplate>
-                                        <TextBlock Margin="2" Text="{Binding McSeq}" />
-                                    </DataTemplate>
-                                </DataGridTemplateColumn.CellTemplate>
-                                <DataGridTemplateColumn.CellEditingTemplate>
-                                    <DataTemplate>
-                                        <TextBox Text="{Binding McSeq}" 
-                                                 TextChanged="dgdtpetxtMcSeq_TextChanged"/>
-                                    </DataTemplate>
-                                </DataGridTemplateColumn.CellEditingTemplate>
-                            </DataGridTemplateColumn>
-                            <DataGridTemplateColumn Header="Local이미지">
-                                <DataGridTemplateColumn.CellTemplate>
-                                    <DataTemplate>
-                                        <TextBlock Margin="2" Text="{Binding LocalImagePath}" />
-                                    </DataTemplate>
-                                </DataGridTemplateColumn.CellTemplate>
-                                <DataGridTemplateColumn.CellEditingTemplate>
-                                    <DataTemplate>
-                                        <TextBox Text="{Binding LocalImagePath}" 
-                                                 TextChanged="dgdtpetxtLocalImagePath_TextChanged"/>
-                                    </DataTemplate>
-                                </DataGridTemplateColumn.CellEditingTemplate>
-                            </DataGridTemplateColumn>-->
                         </DataGrid.Columns>
-                        <!--<DataGrid.RowDetailsTemplate>
-                            <DataTemplate>
-                                <Border>
-                                    <Border.Style>
-                                        <Style TargetType="Border">
-                                            <Style.Triggers>
-                                                <DataTrigger Binding="{Binding imageFlag}" Value="true">
-                                                    <Setter Property="Visibility" Value="Visible" />
-                                                    <Setter Property="Height" Value="150" />
-                                                </DataTrigger>
-                                                <DataTrigger Binding="{Binding imageFlag}" Value="false">
-                                                    <Setter Property="Visibility" Value="Hidden" />
-                                                    <Setter Property="Height" Value="0" />
-                                                </DataTrigger>
-                                            </Style.Triggers>
-                                        </Style>
-                                    </Border.Style>
-                                    <Image Source="{Binding ImageView}" HorizontalAlignment="Left"
-                                           Margin="10"/>
-                                </Border>
-                            </DataTemplate>
-                        </DataGrid.RowDetailsTemplate>-->
                     </DataGrid>
                     <Grid Grid.Column="1" >
                         <Grid.RowDefinitions>
