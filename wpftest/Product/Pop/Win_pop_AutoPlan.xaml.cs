@@ -17,11 +17,11 @@ namespace WizMes_ANT.PopUp
         int rowNum = 0;
         string stDate = string.Empty;
         string stTime = string.Empty;
+        public static bool AutoSave = false;
 
         string InstID = ""; // 작업지시 PK
         Lib lib = new Lib();
-
-
+        
 
         public Win_pop_AutoPlan()
         {
@@ -48,7 +48,7 @@ namespace WizMes_ANT.PopUp
             DataStore.Instance.InsertLogByFormS(this.GetType().Name, stDate, stTime, "E");
             this.Close();
         }
-
+        
         private void btnSave_Click(object sender, RoutedEventArgs e)
         {
             try
@@ -56,6 +56,10 @@ namespace WizMes_ANT.PopUp
                 using (Loading lw = new Loading(SaveData))
                 {
                     lw.ShowDialog();
+                    re_Search();
+                    Win_prd_PlanInputAuto.planAuto.dgdMain.SelectedIndex = 0;
+                    Win_prd_PlanInputAuto.planAuto.FillGrid();
+                    
                 }
             }
             catch (Exception ee)
@@ -218,6 +222,8 @@ namespace WizMes_ANT.PopUp
         //
         private void SaveData()
         {
+            AutoSave = false;
+
             if (dgdPattern.Items.Count > 0)
             {
                 dgdPattern.Items.Clear();
@@ -309,6 +315,7 @@ namespace WizMes_ANT.PopUp
                                     InstID = kv.value;
                                     sGetID = kv.value;
                                     flag = true;
+                                    AutoSave = true;
                                 }
                             }
 
@@ -319,6 +326,7 @@ namespace WizMes_ANT.PopUp
 
                             MessageBox.Show("편성이 완료 되었습니다");
 
+                          
                         }
                         else
                         {
