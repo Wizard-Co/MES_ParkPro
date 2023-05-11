@@ -34,6 +34,23 @@ namespace WizMes_ANT
         Win_prd_PlanInputAuto_CodeView Auto = new Win_prd_PlanInputAuto_CodeView();
         List<Win_prd_PlanInputAuto_CodeView> lstAutoPlan = new List<Win_prd_PlanInputAuto_CodeView>();
 
+
+        private static Win_prd_PlanInputAuto _instance = null;
+
+
+        public static Win_prd_PlanInputAuto planAuto
+        {
+            get
+            {
+                if (_instance  == null)
+                    _instance = new Win_prd_PlanInputAuto();
+
+                return _instance;
+            }
+        }
+
+        
+
         Lib lib = new Lib();
         int rowNum = 0;
         string stDate = string.Empty;
@@ -54,8 +71,10 @@ namespace WizMes_ANT
             Lib.Instance.UiLoading(sender);
             dtpSDate.SelectedDate = DateTime.Today;
             dtpEDate.SelectedDate = DateTime.Today;
+    
+            _instance = this;
 
-
+            dgdMain.SelectedIndex = rowNum;
         }
 
 
@@ -375,16 +394,9 @@ namespace WizMes_ANT
         
         private void btnAutoPlan_Click(object sender, RoutedEventArgs e)
         {
-            var Auto = dgdMain.SelectedItem as Win_prd_PlanInputAuto_CodeView;
+            Win_pop_AutoPlan AutoPlan = new Win_pop_AutoPlan();
 
-            
-
-            Win_pop_AutoPlan AutoPlan = null;
-
-            AutoPlan = new Win_pop_AutoPlan();
             AutoPlan.ShowDialog();
-
-            re_Search(rowNum);
 
         }
         #endregion
@@ -393,7 +405,7 @@ namespace WizMes_ANT
 
         #region 우측 상단 버튼
         //검색
-        private void btnSearch_Click(object sender, RoutedEventArgs e)
+        public void btnSearch_Click(object sender, RoutedEventArgs e)
         {
             //검색버튼 비활성화
             btnSearch.IsEnabled = false;
@@ -512,7 +524,7 @@ namespace WizMes_ANT
         #endregion
 
         #region 조회
-        private void FillGrid()
+        public void FillGrid()
         {
             if (dgdMain.Items.Count > 0)
             {
@@ -708,6 +720,7 @@ namespace WizMes_ANT
             {
                 this.DataContext = Auto;
                 FillGridSub(Auto.InstID);
+
             }
         }
 
