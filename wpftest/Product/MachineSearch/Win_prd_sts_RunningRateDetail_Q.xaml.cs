@@ -388,6 +388,7 @@ namespace WizMes_ANT
                                 WorkPersonID = dr["WorkPersonID"].ToString(),
                                 Name = dr["Name"].ToString(),
                                 EduCount = dr["EduCount"].ToString(),
+                                License = dr["License"].ToString(),
                                 StartDate = dr["StartDate"].ToString(),
 
                             };
@@ -707,6 +708,7 @@ namespace WizMes_ANT
         public string EduCount { get; set; }
         public string MachineID { get; set; }
         public string StartDate { get; set; }
+        public string License { get; set; }
 
 
     }

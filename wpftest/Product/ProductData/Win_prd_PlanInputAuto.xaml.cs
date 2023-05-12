@@ -387,6 +387,21 @@ namespace WizMes_ANT
             }
         }
 
+        //데이터피커 편성 일자 체크
+        private void CheckDate(object sender, RoutedEventArgs e)
+        {
+            if (dtpSDate.SelectedDate != null || dtpEDate.SelectedDate != null)
+            {
+                if (dtpEDate.SelectedDate < dtpSDate.SelectedDate)
+                {
+                    MessageBox.Show("검색일자의 종료일자가 시작날짜보다 작을 수 없습니다");
+
+                    dtpEDate.SelectedDate = dtpSDate.SelectedDate.Value.AddDays(1);
+
+                }
+            }
+        }
+ 
 
         #endregion
 
@@ -724,9 +739,10 @@ namespace WizMes_ANT
             }
         }
 
+
         #endregion
 
-
+        
     }
 
     #region CodeView

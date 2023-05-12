@@ -1668,7 +1668,7 @@ namespace WizMes_ANT
             int k = 0;
             foreach (MenuViewModel mvm in MainWindow.mMenulist)
             {
-                if (mvm.Menu.Equals("설비점검 기준등록"))
+                if (mvm.Menu.Equals("설비 점검 기준 등록"))
                 {
                     break;
                 }
