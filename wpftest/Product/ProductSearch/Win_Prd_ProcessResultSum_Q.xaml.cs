@@ -750,9 +750,8 @@ namespace WizMes_ANT
                                 BuyerArticleNo = dr["BuyerArticleNo"].ToString(),
                                 ProcessID = dr["ProcessID"].ToString(),
                                 Process = dr["Process"].ToString(),
-                                BuyerModelID = dr["BuyerModelID"].ToString(),
-                                Model = dr["Model"].ToString(),
                                 WorkQty = Convert.ToDouble(dr["WorkQty"]),
+                                WorkTime = stringFormatN1(dr["WorkTime"]),
                                 ProdQtyPerBox = stringFormatN0(dr["ProdQtyPerBox"]),
                                 
                             };
@@ -1305,6 +1304,7 @@ namespace WizMes_ANT
         public string Model { get; set; }
 
         public double WorkQty { get; set; }
+        public string WorkTime { get; set; }
         public string ProdQtyPerBox { get; set; }
 
         public int Num { get; set; }
