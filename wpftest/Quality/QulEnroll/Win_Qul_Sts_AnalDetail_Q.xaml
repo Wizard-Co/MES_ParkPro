@@ -130,11 +130,11 @@
             </Grid>
         </Grid>
         <Grid Grid.Column="0" Grid.Row="1" Margin="2">
-            <Grid.RowDefinitions>
-                <RowDefinition />
-                <RowDefinition />
-            </Grid.RowDefinitions>
-            <GroupBox x:Name="grbMain" Grid.Column="0" Grid.Row="0" Header="[과거 동일 품번 품질 추이]" Margin="2">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <GroupBox x:Name="grbMain" Grid.Column="0" Header="[과거 동일 품번 품질 추이]" Margin="2">
                 <Grid x:Name="grdMain">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="25*"/>
@@ -146,13 +146,14 @@
                             <DataGridTextColumn Header="유형" Width="auto" Binding="{Binding Path=DefectSymtom}" CellStyle="{StaticResource DataGridCellAndCentering}" />
                             <DataGridTextColumn Header="일자" Width="auto" Binding="{Binding Path=InspectDate}" CellStyle="{StaticResource DataGridCellAndCentering}" />
                             <DataGridTextColumn Header="수량" Width="auto" Binding="{Binding Path=DefectQty}" CellStyle="{StaticResource DataGridCellAndCentering}" />
+                            <DataGridTextColumn Header="품번" Width="auto" Binding="{Binding Path=GroupingNo}" CellStyle="{StaticResource DataGridCellAndCentering}" />
                             <DataGridTextColumn Header="품명" Width="auto" Binding="{Binding Path=GroupingName}" CellStyle="{StaticResource DataGridCellAndCentering}" />
                             <DataGridTextColumn Header="작업자" Width="auto" Binding="{Binding Path=Name}" CellStyle="{StaticResource DataGridCellAndCentering}" />
                         </DataGrid.Columns>
                     </DataGrid>
                 </Grid>
             </GroupBox>
-            <GroupBox x:Name="grbSub" Grid.Column="0" Grid.Row="1" Header="[설비별 (반)제품 품질 추이]" Margin="2">
+            <GroupBox x:Name="grbSub" Grid.Column="1" Header="[설비별 (반)제품 품질 추이]" Margin="2">
                 <Grid x:Name="grdSub">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="25*"/>
@@ -161,6 +162,7 @@
                     <DataGrid x:Name="dgdSubs" Grid.Column="0" Grid.Row="0" Style="{DynamicResource DataGridSet1}">
                         <DataGrid.Columns>
                             <DataGridTextColumn Header="설비"     Width="auto" Binding="{Binding Path=Machine}" />
+                            <DataGridTextColumn Header="품번"     Width="auto" Binding="{Binding Path=BuyerArticleNo}" />
                             <DataGridTextColumn Header="품명"     Width="auto" Binding="{Binding Path=Article}" />
                             <DataGridTextColumn Header="일자"     Width="auto" Binding="{Binding Path=InspectDate}" />
                             <DataGridTextColumn Header="생산수량" Width="auto" Binding="{Binding Path=WorkQty}" />

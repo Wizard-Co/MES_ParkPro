@@ -17,6 +17,7 @@ using static System.Windows.Forms.AxHost;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement.TaskbarClock;
 using WPF.MDI;
 using WizMes_ANT.PopUP;
+using WizMes_ANT.PopUp;
 
 namespace WizMes_ANT
 {
@@ -193,6 +194,14 @@ namespace WizMes_ANT
 
         private void btnSearch_Click(object sender, RoutedEventArgs e)
         {
+            using (Loading ld = new Loading(beSearch))
+            {
+                ld.ShowDialog();
+            }
+        }
+
+        private void beSearch()
+        {
             DataStore.Instance.InsertLogByForm(this.GetType().Name, "R");
             FillGrid();
         }
@@ -311,7 +320,8 @@ namespace WizMes_ANT
                                 ArticleID = dr["ArticleID"].ToString(),
                                 DefectSymtom = dr["DefectSymtom"].ToString(),
                                 DefectQty = dr["DefectQty"].ToString(),
-                                GroupingName = dr["GroupingName"].ToString(),
+                                GroupingNo = dr["GroupingName"].ToString(),
+                                GroupingName = dr["Article"].ToString(),
                                 Name = dr["Name"].ToString(),
                             };
 
@@ -381,6 +391,7 @@ namespace WizMes_ANT
         public string ArticleID { get; set; }
         public string DefectSymtom { get; set; }
         public string DefectQty { get; set; }
+        public string GroupingNo { get; set; }
         public string GroupingName { get; set; }
         public string Name { get; set; }
     }
