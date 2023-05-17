@@ -207,11 +207,11 @@
                     </Style>
                 </DataGrid.RowStyle>
                 <DataGrid.Columns>
-                    <DataGridTextColumn Header="설비" Binding="{Binding Machine}" Width="*" />
-                    <DataGridTextColumn Header="설비호기" Binding="{Binding MCNAME}"  Width="*" />
-                    <DataGridTextColumn Header="설비&#10;마지막점검일" Binding="{Binding LastInspectDate}" Width="*" />
-                    <DataGridTextColumn Header="설비점검이상&#10;발생건수" Binding="{Binding InspectCount}" Width="*" />
-                    <DataGridTextColumn Header="설비점검이상&#10;발생내용" Binding="{Binding DefectContents}" Width="*" />
+                    <DataGridTextColumn Header="설비" Binding="{Binding MCNAME}" Width="*" ElementStyle="{StaticResource DataGridCellLeft}"/>
+                    <DataGridTextColumn Header="설비호기" Binding="{Binding MachineNo}"  Width="*" ElementStyle="{StaticResource DataGridCellLeft}"/>
+                    <DataGridTextColumn Header="설비&#10;마지막점검일" Binding="{Binding LastInspectDate}" Width="*" ElementStyle="{StaticResource DataGridCellCenter}"/>
+                    <DataGridTextColumn Header="설비점검이상&#10;발생건수" Binding="{Binding InspectCount}" Width="*" ElementStyle="{StaticResource DataGridCellRight}"/>
+                    <DataGridTextColumn Header="설비점검이상&#10;발생내용" Binding="{Binding DefectContents}" Width="*" ElementStyle="{StaticResource DataGridCellLeft}"/>
                 </DataGrid.Columns>
             </DataGrid>
 
@@ -228,8 +228,8 @@
                     </Style>
                 </DataGrid.RowStyle>
                 <DataGrid.Columns>
-                    <DataGridTextColumn Header="무작업/비가동&#10;발생일" Binding="{Binding WorkDate}" Width="*" />
-                    <DataGridTextColumn Header="발생사유" Binding="{Binding NoReworkReason}" Width="*"/>
+                    <DataGridTextColumn Header="무작업/비가동&#10;발생일" Binding="{Binding WorkDate}" Width="*" ElementStyle="{StaticResource DataGridCellCenter}"/>
+                    <DataGridTextColumn Header="발생사유" Binding="{Binding NoReworkReason}" Width="*" ElementStyle="{StaticResource DataGridCellLeft}"/>
                 </DataGrid.Columns>
             </DataGrid>
             
