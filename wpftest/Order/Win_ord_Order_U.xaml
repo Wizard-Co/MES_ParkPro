@@ -651,7 +651,7 @@
                                     </Viewbox>
                                     <Viewbox Style="{DynamicResource ViewBoxSetMaxMinHeight}">
 
-                                        <TextBlock Text="납기 일자" Style="{DynamicResource TextBlockInViewBoxSearch}" />
+                                        <TextBlock Text=" 납기 일자" Style="{DynamicResource TextBlockInViewBoxSearch}" />
                                     </Viewbox>
                                 </StackPanel>
                             </Label>

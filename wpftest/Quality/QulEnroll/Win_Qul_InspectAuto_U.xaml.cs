@@ -3128,7 +3128,7 @@ namespace WizMes_ANT
                         {
                             sub1Count++;
 
-                            if (inspectText.Equals(compareSpec))
+                            if (!inspectText.Equals(compareSpec))
                             {
                                 if (Flag)
                                 {

@@ -1579,6 +1579,8 @@ namespace WizMes_ANT
                 msg = "주문기준이 선택되지 않았습니다. 먼저 주문기준을 선택해주세요";
             else if (cboArticleGroup.SelectedValue == null)
                 msg = "품명종류가 선택되지 않았습니다. 먼저 품명종류를 선택해주세요";
+            else if (string.IsNullOrEmpty(txtBuyerArticleNO.Text) || txtBuyerArticleNO.Tag == null)
+                msg = "품번이 선택되지 않았습니다. 먼저 품번을 선택해주세요";
             else if (cboWork.SelectedValue == null)
                 msg = "가공구분이 선택되지 않았습니다. 먼저 가공구분을 선택해주세요";
             /*else if (cboVAT_YN.SelectedValue == null)
