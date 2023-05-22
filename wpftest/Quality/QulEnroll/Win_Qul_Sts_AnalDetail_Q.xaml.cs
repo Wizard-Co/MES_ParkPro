@@ -320,8 +320,8 @@ namespace WizMes_ANT
                                 ArticleID = dr["ArticleID"].ToString(),
                                 DefectSymtom = dr["DefectSymtom"].ToString(),
                                 DefectQty = dr["DefectQty"].ToString(),
-                                GroupingNo = dr["GroupingName"].ToString(),
-                                GroupingName = dr["Article"].ToString(),
+                                GroupingNo = dr["GroupingNo"].ToString(),
+                                GroupingName = dr["GroupingName"].ToString(),
                                 Name = dr["Name"].ToString(),
                             };
 
@@ -357,6 +357,7 @@ namespace WizMes_ANT
                             var winQulDetailMachine = new Win_Qul_Sts_AnalDetail_Q_Sub_CodeView()
                             {
                                 Machine = dr["Machine"].ToString(),
+                                BuyerArticleNo = dr["BuyerArticleNo"].ToString(),
                                 Article = dr["Article"].ToString(),
                                 InspectDate = dr["InspectDate"].ToString(),
                                 WorkQty = dr["WorkQty"].ToString(),
@@ -399,6 +400,7 @@ namespace WizMes_ANT
     public class Win_Qul_Sts_AnalDetail_Q_Sub_CodeView : BaseView
     {
         public string Machine { get; set; }
+        public string BuyerArticleNo { get; set; }
         public string Article { get; set; }
         public string InspectDate { get; set; }
         public string WorkQty { get; set; }

@@ -142,13 +142,13 @@
                     </Grid.RowDefinitions>
                     <DataGrid x:Name="dgdMain" Grid.Column="0" Grid.Row="0" Style="{DynamicResource DataGridSet1}">
                         <DataGrid.Columns>
-                            <DataGridTextColumn Header="분류" Width="auto" Binding="{Binding Path=step}" CellStyle="{StaticResource DataGridCellAndCentering}" />
-                            <DataGridTextColumn Header="유형" Width="auto" Binding="{Binding Path=DefectSymtom}" CellStyle="{StaticResource DataGridCellAndCentering}" />
-                            <DataGridTextColumn Header="일자" Width="auto" Binding="{Binding Path=InspectDate}" CellStyle="{StaticResource DataGridCellAndCentering}" />
-                            <DataGridTextColumn Header="수량" Width="auto" Binding="{Binding Path=DefectQty}" CellStyle="{StaticResource DataGridCellAndCentering}" />
-                            <DataGridTextColumn Header="품번" Width="auto" Binding="{Binding Path=GroupingNo}" CellStyle="{StaticResource DataGridCellAndCentering}" />
-                            <DataGridTextColumn Header="품명" Width="auto" Binding="{Binding Path=GroupingName}" CellStyle="{StaticResource DataGridCellAndCentering}" />
-                            <DataGridTextColumn Header="작업자" Width="auto" Binding="{Binding Path=Name}" CellStyle="{StaticResource DataGridCellAndCentering}" />
+                            <DataGridTextColumn Header="분류" MinWidth="40" Width="auto" Binding="{Binding Path=step}" />
+                            <DataGridTextColumn Header="유형" MinWidth="40" Width="auto" Binding="{Binding Path=DefectSymtom}" />
+                            <DataGridTextColumn Header="일자" MinWidth="70" Width="auto" Binding="{Binding Path=InspectDate}" CellStyle="{StaticResource DataGridCellAndCentering}" />
+                            <DataGridTextColumn Header="수량" MinWidth="40" Width="auto" Binding="{Binding Path=DefectQty}" ElementStyle="{DynamicResource DataGridCellRight}" />
+                            <DataGridTextColumn Header="품번" MinWidth="100" Width="auto" Binding="{Binding Path=GroupingNo}" />
+                            <DataGridTextColumn Header="품명" MinWidth="100" Width="auto" Binding="{Binding Path=GroupingName}" />
+                            <DataGridTextColumn Header="작업자" MinWidth="50" Width="auto" Binding="{Binding Path=Name}" />
                         </DataGrid.Columns>
                     </DataGrid>
                 </Grid>
@@ -161,13 +161,13 @@
                     </Grid.RowDefinitions>
                     <DataGrid x:Name="dgdSubs" Grid.Column="0" Grid.Row="0" Style="{DynamicResource DataGridSet1}">
                         <DataGrid.Columns>
-                            <DataGridTextColumn Header="설비"     Width="auto" Binding="{Binding Path=Machine}" />
-                            <DataGridTextColumn Header="품번"     Width="auto" Binding="{Binding Path=BuyerArticleNo}" />
-                            <DataGridTextColumn Header="품명"     Width="auto" Binding="{Binding Path=Article}" />
-                            <DataGridTextColumn Header="일자"     Width="auto" Binding="{Binding Path=InspectDate}" />
-                            <DataGridTextColumn Header="생산수량" Width="auto" Binding="{Binding Path=WorkQty}" />
-                            <DataGridTextColumn Header="불량수량" Width="auto" Binding="{Binding Path=DefectQty}" />
-                            <DataGridTextColumn Header="작업자"   Width="auto" Binding="{Binding Path=Name}" />
+                            <DataGridTextColumn Header="설비"     MinWidth="80" Width="auto" Binding="{Binding Path=Machine}" />
+                            <DataGridTextColumn Header="품번"     MinWidth="100" Width="auto" Binding="{Binding Path=BuyerArticleNo}" />
+                            <DataGridTextColumn Header="품명"     MinWidth="100" Width="auto" Binding="{Binding Path=Article}" />
+                            <DataGridTextColumn Header="일자"     MinWidth="70" Width="auto" Binding="{Binding Path=InspectDate}" CellStyle="{StaticResource DataGridCellAndCentering}" />
+                            <DataGridTextColumn Header="생산수량" MinWidth="60" Width="auto" Binding="{Binding Path=WorkQty}" ElementStyle="{DynamicResource DataGridCellRight}" />
+                            <DataGridTextColumn Header="불량수량" MinWidth="60" Width="auto" Binding="{Binding Path=DefectQty}" ElementStyle="{DynamicResource DataGridCellRight}" />
+                            <DataGridTextColumn Header="작업자"   MinWidth="50" Width="auto" Binding="{Binding Path=Name}" />
                         </DataGrid.Columns>
                     </DataGrid>
                 </Grid>
