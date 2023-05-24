@@ -19,7 +19,7 @@ namespace WizMes_ANT.PopUp
         string stTime = string.Empty;
         public static bool AutoSave = false;
 
-        string InstID = ""; // 작업지시 PK
+        string AutoID = ""; // 작업지시 PK
         Lib lib = new Lib();
         
 
@@ -244,9 +244,9 @@ namespace WizMes_ANT.PopUp
 
                         sqlParameter.Clear();
 
-                        sqlParameter.Add("InstID", "");
+                        sqlParameter.Add("AutoID", "");
                         //sqlParameter.Add("InstDate", AutoPlan.AcptDate);
-                        sqlParameter.Add("InstDate", DateTime.Now.ToString("yyyyMMdd"));
+                        sqlParameter.Add("AutoDate", DateTime.Now.ToString("yyyyMMdd"));
                         sqlParameter.Add("OrderID", AutoPlan.OrderID);
                         sqlParameter.Add("OrderSeq", AutoPlan.OrderSeq);
                         sqlParameter.Add("InstRoll", "0");
@@ -262,7 +262,7 @@ namespace WizMes_ANT.PopUp
                         Procedure pro1 = new Procedure();
                         pro1.Name = "xp_PlanInput_iAutoPlan";
                         pro1.OutputUseYN = "Y";
-                        pro1.OutputName = "InstID";
+                        pro1.OutputName = "AutoID";
                         pro1.OutputLength = "12";
 
                         Prolist.Add(pro1);
@@ -272,8 +272,8 @@ namespace WizMes_ANT.PopUp
                         {
                             var AutoPattern = dgdPattern.Items[i] as Win_prd_AutoPattern_CodeView;
                             sqlParameter = new Dictionary<string, object>();
-                            sqlParameter.Add("InstID", "");
-                            sqlParameter.Add("InstDate", DateTime.Now.ToString("yyyyMMdd"));
+                            sqlParameter.Add("AutoID", "");
+                            sqlParameter.Add("AutoDate", DateTime.Now.ToString("yyyyMMdd"));
                             sqlParameter.Add("ProcSeq", AutoPattern.PatternSeq);
                             sqlParameter.Add("ArticleID", AutoPattern.ArticleID);
                             sqlParameter.Add("ProcessID", AutoPattern.ProcessID);
@@ -293,7 +293,7 @@ namespace WizMes_ANT.PopUp
                             Procedure pro2 = new Procedure();
                             pro2.Name = "xp_PlanInput_iAutoPlanSub";
                             pro2.OutputUseYN = "N";
-                            pro2.OutputName = "InstID";
+                            pro2.OutputName = "AutoID";
                             pro2.OutputLength = "12";
 
                             Prolist.Add(pro2);
@@ -310,9 +310,9 @@ namespace WizMes_ANT.PopUp
                             for (int i = 0; i < list_Result.Count; i++)
                             {
                                 KeyValue kv = list_Result[i];
-                                if (kv.key == "InstID")
+                                if (kv.key == "AutoID")
                                 {
-                                    InstID = kv.value;
+                                    AutoID = kv.value;
                                     sGetID = kv.value;
                                     flag = true;
                                     AutoSave = true;

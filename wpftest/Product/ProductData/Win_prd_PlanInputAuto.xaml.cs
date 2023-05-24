@@ -487,7 +487,7 @@ namespace WizMes_ANT
                         rowNum = dgdMain.SelectedIndex;
                     }
 
-                    if (DeleteData(Auto.InstID))
+                    if (DeleteData(Auto.AutoID))
                     {
                         rowNum -= 1;
                         re_Search(rowNum);
@@ -584,8 +584,8 @@ namespace WizMes_ANT
                             var Auto = new Win_prd_PlanInputAuto_CodeView()
                             {
                                 Num = i,
-                                InstDate = dr["InstDate"].ToString(),
-                                InstID = dr["InstID"].ToString(),
+                                AutoDate = dr["AutoDate"].ToString(),
+                                AutoID = dr["AutoID"].ToString(),
                                 AcptDate = dr["AcptDate"].ToString(),
                                 ArticleID = dr["ArticleID"].ToString(),
                                 Article = dr["Article"].ToString(),
@@ -620,7 +620,7 @@ namespace WizMes_ANT
 
         #region 서브그리드 조회
 
-        private void FillGridSub(string strInstID)
+        private void FillGridSub(string strAutoID)
         {
             if(dgdSub.Items.Count > 0)
             {
@@ -630,7 +630,7 @@ namespace WizMes_ANT
             {
                 Dictionary<string, object> sqlParameter = new Dictionary<string, object>();
                 sqlParameter.Clear();
-                sqlParameter.Add("InstID", strInstID != null ? strInstID.ToString() : "");
+                sqlParameter.Add("AutoID", strAutoID != null ? strAutoID.ToString() : "");
                
                 DataSet ds = DataStore.Instance.ProcedureToDataSet_LogWrite("xp_AutoPlan_sAutoPlanDet", sqlParameter, true, "R");
 
@@ -680,13 +680,13 @@ namespace WizMes_ANT
 
 
         #region 삭제
-        private bool DeleteData(string InstID)
+        private bool DeleteData(string AutoID)
         {
             bool flag = false;
 
             Dictionary<string, object> sqlParameter = new Dictionary<string, object>();
             sqlParameter.Clear();
-            sqlParameter.Add("InstID", InstID);
+            sqlParameter.Add("AutoID", AutoID);
             sqlParameter.Add("OutMessage", "");
 
 
@@ -734,7 +734,7 @@ namespace WizMes_ANT
             if (Auto != null)
             {
                 this.DataContext = Auto;
-                FillGridSub(Auto.InstID);
+                FillGridSub(Auto.AutoID);
 
             }
         }
@@ -749,8 +749,8 @@ namespace WizMes_ANT
     public class Win_prd_PlanInputAuto_CodeView
     {
         public int Num { get; set; }
-        public string InstDate { get; set; }            //편성일자
-        public string InstID { get; set; }              //편성번호  
+        public string AutoDate { get; set; }            //편성일자
+        public string AutoID { get; set; }              //편성번호  
         public string AcptDate { get; set; }            //수주일자
         public string ArticleID { get; set; }           //품목ID
         public string Article { get; set; }             //품명
