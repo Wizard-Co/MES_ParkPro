@@ -1781,7 +1781,9 @@ namespace WizMes_ANT
                             Code_Name = dr["Code_Name"].ToString(),
                             //ProcessName = dr["ProcessName"].ToString(),
                             //HSCode = dr["HSCode"].ToString(),
-                            OutUnitPrice = dr["OutUnitPrice"].ToString()
+                            OutUnitPrice = dr["OutUnitPrice"].ToString(),
+                            BuyerModelID = dr["BuyerModelID"].ToString(),
+                            BuyerModel = dr["BuyerModel"].ToString(),
                         };
                     }
 
@@ -2111,6 +2113,9 @@ namespace WizMes_ANT
                         txtArticle.Text = articleData.Article;
                         //단가 대입
                         txtUnitPrice.Text = articleData.OutUnitPrice;
+                        //차종 대입
+                        txtModel.Tag = articleData.BuyerModelID;
+                        txtModel.Text = articleData.BuyerModel;
                     }
 
                     //플러스 파인더 작동 후 규격으로 커서 이동
@@ -2151,6 +2156,9 @@ namespace WizMes_ANT
                     txtArticle.Text = articleData.Article;
                     //단가 대입
                     txtUnitPrice.Text = articleData.OutUnitPrice;
+                    //차종 대입
+                    txtModel.Tag = articleData.BuyerModelID;
+                    txtModel.Text = articleData.BuyerModel;
                 }
 
                 //플러스 파인더 작동 후 규격으로 커서 이동
@@ -2340,6 +2348,8 @@ namespace WizMes_ANT
         public string HSCode { get; set; }
         public string OutUnitPrice { get; set; }
         public string Code_Name { get; set; }
+        public string BuyerModelID { get; set; }
+        public string BuyerModel { get; set; }
     }
 
     public class ArticleNeedStockQty : BaseView
