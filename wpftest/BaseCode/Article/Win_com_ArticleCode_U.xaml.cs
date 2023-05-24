@@ -1093,7 +1093,9 @@ namespace WizMes_ANT
                                 Length = stringFormatN2(dr["Length"]),
 
 
-                                ProdDiffiLevel = stringFormatN2(dr["ProdDiffiLevel"])
+                                ProdDiffiLevel = stringFormatN2(dr["ProdDiffiLevel"]),
+                                BuyerModelID = dr["BuyerModelID"].ToString(),
+                                BuyerModel = dr["BuyerModel"].ToString(),
 
                             };
 
@@ -1334,6 +1336,7 @@ namespace WizMes_ANT
                     sqlParameter.Add("sInDiameter", txtInDiameter.Text != null && !txtInDiameter.Text.Trim().Equals("") ? ConvertDouble(txtInDiameter.Text) : 0);
                     sqlParameter.Add("sWeight", txtWeight.Text != null && !txtWeight.Text.Trim().Equals("") ? ConvertDouble(txtWeight.Text) : 0);
                     sqlParameter.Add("sLength", txtLength.Text != null && !txtLength.Text.Trim().Equals("") ? ConvertDouble(txtLength.Text) : 0);
+                    sqlParameter.Add("BuyerModelID", txtModel.Tag != null ? txtModel.Tag.ToString() : "");
 
 
 
@@ -2840,6 +2843,22 @@ namespace WizMes_ANT
             Lib.Instance.CheckIsNumeric((TextBox)sender, e);
         }
 
+        //차종 키다운 
+        private void txtModel_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Enter)
+            {
+                MainWindow.pf.ReturnCode(txtModel, (int)Defind_CodeFind.DCF_BUYERMODEL, "");
+
+            }
+        }
+
+        //차종
+        private void btnPfModel_Click(object sender, RoutedEventArgs e)
+        {
+            MainWindow.pf.ReturnCode(txtModel, (int)Defind_CodeFind.DCF_BUYERMODEL, "");
+
+        }
 
 
 
@@ -2973,6 +2992,9 @@ namespace WizMes_ANT
 
         public string ProdDiffiLevel { get; set; } // 난이도 
         public string BigMiSmalGbn { get; set; } // 대중소구분 
+        public string BuyerModelID { get; set; }
+        public string BuyerModel { get; set; }
+
 
         public BitmapImage ImageView { get; set; }
 

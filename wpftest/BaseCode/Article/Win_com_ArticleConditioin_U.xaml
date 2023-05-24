@@ -315,44 +315,89 @@
                     </Grid>
                 </Grid>
 
+
+
                 <Grid Grid.Row="3"  >
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="183*"/>
-                        <ColumnDefinition Width="89*"/>
+                        <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
                     <Grid.RowDefinitions>
                         <!--<RowDefinition Height="*" />-->
+                        <RowDefinition Height="2*" />
                         <RowDefinition Height="20*" />
                     </Grid.RowDefinitions>
-                    <!--<DataGrid Grid.Row="0" IsReadOnly="True" Style="{DynamicResource DataGridSetNoHeader_TwoLine}" Grid.ColumnSpan="2" Grid.RowSpan="2">
-                        <DataGrid.Columns>
-                            <DataGridTextColumn Header="" MinWidth="30"/>
-                            <DataGridTextColumn Header="" MinWidth="100" />
-                            <DataGridTextColumn Header="" />
-                            <DataGridTextColumn Header="생산조건" />
-                            <DataGridTextColumn Header="" />
-                            <DataGridTextColumn Header="" />
-                            <DataGridTextColumn Header="" />
-                            <DataGridTextColumn Header="" />
-                            <DataGridTextColumn Header="" />
-                            <DataGridTextColumn Header="" />
 
-                        </DataGrid.Columns>
+                    <ScrollViewer  Grid.Column="0" x:Name="dgdMainHeaderSh" HorizontalScrollBarVisibility="Hidden"  
+                              ScrollViewer.CanContentScroll="False" VerticalScrollBarVisibility="Hidden">
+                        <Grid  >
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="*" />
+                                <RowDefinition Height="*" />
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="{Binding ElementName=CodeID, Path=ActualWidth}" />
+                                <ColumnDefinition Width="{Binding ElementName=CodeName, Path=ActualWidth}" />
+                                <ColumnDefinition Width="{Binding ElementName=Spec, Path=ActualWidth}" />
+                                <ColumnDefinition Width="{Binding ElementName=SpecMin, Path=ActualWidth}" />
+                                <ColumnDefinition Width="{Binding ElementName=SpecMax, Path=ActualWidth}" />
+                                <ColumnDefinition Width="{Binding ElementName=SpecTextMin, Path=ActualWidth}" />
+                                <ColumnDefinition Width="{Binding ElementName=SpecTextMax, Path=ActualWidth}" />
+                                <ColumnDefinition Width="{Binding ElementName=WarningSpecMin, Path=ActualWidth}" />
+                                <ColumnDefinition Width="{Binding ElementName=WarningSpecMax, Path=ActualWidth}" />
+                                <ColumnDefinition Width="{Binding ElementName=WarningSpecPecntYN, Path=ActualWidth}" />
+                                <ColumnDefinition Width="{Binding ElementName=Comments, Path=ActualWidth}" />
+                                <ColumnDefinition Width="{Binding ElementName=DeleteYN, Path=ActualWidth}" />
+                            </Grid.ColumnDefinitions>
+                            <DataGridColumnHeader Grid.Row="0" Grid.RowSpan="2" Grid.Column="0" Content="순"/>
+                            <DataGridColumnHeader Grid.Row="0" Grid.RowSpan="2" Grid.Column="1" Content="조건명" />
+                            <DataGridColumnHeader Grid.Row="0" Grid.RowSpan="2" Grid.Column="2" Content="Spec" />
+                            <DataGridColumnHeader Grid.Row="0" Grid.Column="3" Grid.ColumnSpan="2" Content="생산조건(숫자)" />
+                            <DataGridColumnHeader Grid.Row="1" Grid.Column="3" Content="최소"/>
+                            <DataGridColumnHeader Grid.Row="1" Grid.Column="4" Content="최대" />
+                            
+                            <DataGridColumnHeader Grid.Row="0" Grid.Column="5" Grid.ColumnSpan="2" Content="생산조건(문자)" />
+                            <DataGridColumnHeader Grid.Row="1" Grid.Column="5" Content="최소"/>
+                            <DataGridColumnHeader Grid.Row="1" Grid.Column="6" Content="최대"/>
+                            
+                            <DataGridColumnHeader Grid.Row="0" Grid.Column="7" Grid.ColumnSpan="3" Content="경고" />
+                            <DataGridColumnHeader Grid.Row="1" Grid.Column="7" Content="하한" />
+                            <DataGridColumnHeader Grid.Row="1" Grid.Column="8" Content="상한" />
+                            <DataGridColumnHeader Grid.Row="1" Grid.Column="9" Content="비율처리여부" />
+                            
+                            <DataGridColumnHeader Grid.Row="0" Grid.Column="10" Grid.ColumnSpan="3" Content="" />
+                            <DataGridColumnHeader Grid.Row="1" Grid.Column="10" Content="비고" />
+                            <DataGridColumnHeader Grid.Row="1" Grid.Column="11" Content="삭제"/>
+
+                        </Grid>
+
+                       
+                    </ScrollViewer>
+
+                    
+
+                </Grid>
 
 
+                
+                <Grid Grid.Row="3">
 
-                    </DataGrid>-->
-                    <!--서브 데이터그리드-->
-                    <DataGrid x:Name="dgdOutwareSub" Grid.Row="1" 
-                          KeyDown="dgdOutwareSub_KeyDown"
-                          SizeChanged="DataGrid_SizeChange" 
-                              
-                          Style="{DynamicResource DataGridSetTwoHeaderEdit}" Grid.ColumnSpan="2"
-                              IsReadOnly="True"
-                              >
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <!--<RowDefinition Height="*" />-->
+                        <RowDefinition Height="2*" />
+                        <RowDefinition Height="20*" />
+                    </Grid.RowDefinitions>
+
+                    <DataGrid x:Name="dgdOutwareSub" Grid.Row="1"  Visibility="Visible" HeadersVisibility="None"
+                        KeyDown="dgdOutwareSub_KeyDown"
+                        SizeChanged="DataGrid_SizeChange" 
+                        Style="{DynamicResource DataGridSetTwoHeaderEdit}" Grid.ColumnSpan="2" IsReadOnly="True"
+                            >
 
                         <DataGrid.RowStyle>
-                            <Style TargetType="DataGridRow">
+                            <Style TargetType="DataGridRow" >
                                 <Style.Resources>
                                     <SolidColorBrush x:Key="{x:Static SystemColors.HighlightBrushKey}" Color="#3399FF"/>
                                     <SolidColorBrush x:Key="{x:Static SystemColors.HighlightTextBrushKey}" Color="White"/>
@@ -375,45 +420,42 @@
 
 
                         <DataGrid.Columns >
-                            <DataGridTemplateColumn Header="순"  Width="auto" MinWidth="30">
+                            <DataGridTemplateColumn  x:Name="CodeID" MinWidth="30">
                                 <DataGridTemplateColumn.CellTemplate>
                                     <DataTemplate>
                                         <TextBlock  Width="auto"  Foreground="Black"
-                                         Text="{Binding CodeID, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" HorizontalAlignment="Center"  />
+                                        Text="{Binding CodeID, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" HorizontalAlignment="Center"  />
                                     </DataTemplate>
                                 </DataGridTemplateColumn.CellTemplate>
                                 <DataGridTemplateColumn.CellEditingTemplate>
                                     <DataTemplate>
-                                        <TextBox  x:Name="CodeID" Text="{Binding CodeID, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" TextAlignment="Center" Foreground="Black"/>
+                                        <TextBox  Text="{Binding CodeID, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" TextAlignment="Center" Foreground="Black"/>
                                     </DataTemplate>
                                 </DataGridTemplateColumn.CellEditingTemplate>
-                                
                             </DataGridTemplateColumn>
 
-                            <DataGridTemplateColumn Header="조건명"  Width="auto" >
+                            <DataGridTemplateColumn x:Name="CodeName" MinWidth="50" >
                                 <DataGridTemplateColumn.CellTemplate>
                                     <DataTemplate>
-                                        <TextBlock  Width="auto"  Foreground="Black"
-                                         Text="{Binding CodeName, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" HorizontalAlignment="Center"  />
+                                        <TextBlock  Width="auto"  Foreground="Black" 
+                                        Text="{Binding CodeName, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" HorizontalAlignment="Center"  />
                                     </DataTemplate>
                                 </DataGridTemplateColumn.CellTemplate>
                                 <DataGridTemplateColumn.CellEditingTemplate>
                                     <DataTemplate>
-                                        <TextBox Text="{Binding CodeName, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" TextAlignment="Left"  Foreground="Black"
-                                                         Tag="{Binding CodeID, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Keyboard.KeyDown="txtCodeName_KeyDown" />
-                                        <!--<TextBox x:Name="CodeName" Text="{Binding CodeName, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" TextAlignment="Center" Foreground="Black"/>-->
+                                        <TextBox  Text="{Binding CodeName, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" TextAlignment="Left"  Foreground="Black"
+                                                        Tag="{Binding CodeID, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Keyboard.KeyDown="txtCodeName_KeyDown" />
                                     </DataTemplate>
                                 </DataGridTemplateColumn.CellEditingTemplate>
-                                
                             </DataGridTemplateColumn>
-    
-                            
 
-                            <DataGridTemplateColumn Header="Spec" Width="auto" >
+
+
+                            <DataGridTemplateColumn x:Name="Spec" MinWidth="50" >
                                 <DataGridTemplateColumn.CellTemplate>
                                     <DataTemplate>
                                         <TextBlock Text="{Binding Spec, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"  Foreground="Black"
-                                                           TextAlignment="Center" VerticalAlignment="Center"/>
+                                                        TextAlignment="Center" VerticalAlignment="Center"/>
                                     </DataTemplate>
                                 </DataGridTemplateColumn.CellTemplate>
                                 <DataGridTemplateColumn.CellEditingTemplate>
@@ -423,204 +465,148 @@
                                 </DataGridTemplateColumn.CellEditingTemplate>
                             </DataGridTemplateColumn>
 
-                            
-                            <DataGridTemplateColumn Header="최소" Width="auto">
-                                <DataGridTemplateColumn.HeaderTemplate>
-                                    <DataTemplate >
-                                        <StackPanel Orientation="Vertical">
-                                            <TextBlock HorizontalAlignment="Right" Text="생산" Margin="1" />
-                                            <TextBlock HorizontalAlignment="Center" Text="최소(숫자)" Margin="1"/>
-                                        </StackPanel>
-                                    </DataTemplate>
-                                </DataGridTemplateColumn.HeaderTemplate>
+
+                            <DataGridTemplateColumn x:Name="SpecMin" MinWidth="50" >
                                 <DataGridTemplateColumn.CellTemplate>
                                     <DataTemplate>
-                                        <TextBlock x:Name="txtSpecMin" Width="auto"  Foreground="Black" MinWidth="50"
-                                         Text="{Binding SpecMin, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" 
-                                               HorizontalAlignment="Right"  TextAlignment="Right"
-                                                />
+                                        <TextBlock Width="auto"  Foreground="Black" MinWidth="50"
+                                        Text="{Binding SpecMin, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" 
+                                            HorizontalAlignment="Right"  TextAlignment="Right"
+                                            />
                                     </DataTemplate>
                                 </DataGridTemplateColumn.CellTemplate>
                                 <DataGridTemplateColumn.CellEditingTemplate>
                                     <DataTemplate>
                                         <TextBox x:Name="DataGridTextBoxColorQty" Text="{Binding SpecMin, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"  
-                                                 Foreground="Black" Width="auto"  MinWidth="50"
-                                               HorizontalAlignment="Right"
-                                                HorizontalContentAlignment="Right"
-                                               PreviewTextInput="DataGridTextBoxColorQty_PreviewTextInput" ></TextBox>
+                                                Foreground="Black" Width="auto"  MinWidth="50" MaxLength="13"
+                                            HorizontalAlignment="Right"
+                                            HorizontalContentAlignment="Right"
+                                            PreviewTextInput="DataGridTextBoxColorQty_PreviewTextInput" ></TextBox>
                                     </DataTemplate>
                                 </DataGridTemplateColumn.CellEditingTemplate>
                             </DataGridTemplateColumn>
 
-                            <DataGridTemplateColumn Header="최대" Width="auto" >
-                                <DataGridTemplateColumn.HeaderTemplate>
-                                    <DataTemplate>
-                                        <StackPanel Orientation="Vertical">
-                                            <TextBlock HorizontalAlignment="Left" Text="조건" Margin="1"/>
-                                            <TextBlock HorizontalAlignment="Center" Text="최대(숫자)" Margin="1"/>
-                                        </StackPanel>
-                                    </DataTemplate>
-                                </DataGridTemplateColumn.HeaderTemplate>
+                            <DataGridTemplateColumn x:Name="SpecMax" MinWidth="50" >
+
                                 <DataGridTemplateColumn.CellTemplate>
                                     <DataTemplate>
-                                        <TextBlock x:Name="txtSpecMax" Width="auto"  Foreground="Black" MinWidth="50"
-                                         Text="{Binding SpecMax, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" 
-                                               HorizontalAlignment="Right" 
-                                                   TextAlignment="Right"
-                                                />
+                                        <TextBlock  Width="auto"  Foreground="Black" MinWidth="50"
+                                        Text="{Binding SpecMax, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" 
+                                            HorizontalAlignment="Right" 
+                                                TextAlignment="Right"
+                                            />
                                     </DataTemplate>
                                 </DataGridTemplateColumn.CellTemplate>
                                 <DataGridTemplateColumn.CellEditingTemplate>
                                     <DataTemplate>
                                         <TextBox x:Name="DataGridTextBoxColorQty" Text="{Binding SpecMax, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"  
-                                               Foreground="Black" Width="auto"  MinWidth="50"
-                                               HorizontalAlignment="Right"
-                                                 HorizontalContentAlignment="Right"
-                                               PreviewTextInput="DataGridTextBoxColorQty_PreviewTextInput" ></TextBox>
+                                            Foreground="Black" Width="auto"  MinWidth="50" MaxLength="13"
+                                            HorizontalAlignment="Right"
+                                                HorizontalContentAlignment="Right"
+                                            PreviewTextInput="DataGridTextBoxColorQty_PreviewTextInput" ></TextBox>
                                     </DataTemplate>
                                 </DataGridTemplateColumn.CellEditingTemplate>
                             </DataGridTemplateColumn>
 
-                            <DataGridTemplateColumn  Width="auto" >
-                                <DataGridTemplateColumn.HeaderTemplate>
-                                    <DataTemplate>
-                                        <StackPanel Orientation="Vertical">
-                                            <TextBlock HorizontalAlignment="Right" Text="생산" Margin="1"/>
-                                            <TextBlock HorizontalAlignment="Center" Text="최소(문자)" Margin="1"/>
-                                        </StackPanel>
-                                    </DataTemplate>
-                                </DataGridTemplateColumn.HeaderTemplate>
-                                
+                            <DataGridTemplateColumn x:Name="SpecTextMin" MinWidth="50">
+
+
                                 <DataGridTemplateColumn.CellTemplate>
                                     <DataTemplate>
-                                        <TextBlock Text="{Binding SpecTextMin, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"  Foreground="Black"
-                                                           TextAlignment="Center" VerticalAlignment="Center"/>
+                                        <TextBlock Text="{Binding SpecTextMin, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"  Foreground="Black" MinWidth="50"
+                                                        TextAlignment="Center" VerticalAlignment="Center"/>
                                     </DataTemplate>
                                 </DataGridTemplateColumn.CellTemplate>
                                 <DataGridTemplateColumn.CellEditingTemplate>
                                     <DataTemplate>
-                                        <TextBox Text="{Binding SpecTextMin, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" TextAlignment="Center" Foreground="Black"/>
+                                        <TextBox Text="{Binding SpecTextMin, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" TextAlignment="Center" Foreground="Black" MinWidth="50"/>
                                     </DataTemplate>
                                 </DataGridTemplateColumn.CellEditingTemplate>
                             </DataGridTemplateColumn>
 
-                            <DataGridTemplateColumn Width="auto" >
-                                <DataGridTemplateColumn.HeaderTemplate>
-                                    <DataTemplate>
-                                        <StackPanel Orientation="Vertical">
-                                            <TextBlock HorizontalAlignment="Left" Text="조건" Margin="1" />
-                                            <TextBlock HorizontalAlignment="Center" Text="최대(문자)" Margin="1"/>
-                                        </StackPanel>
-                                    </DataTemplate>
-                                </DataGridTemplateColumn.HeaderTemplate>
+                            <DataGridTemplateColumn x:Name="SpecTextMax" MinWidth="50">
+
                                 <DataGridTemplateColumn.CellTemplate>
                                     <DataTemplate>
-                                        <TextBlock Text="{Binding SpecTextMax, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"  Foreground="Black"
-                                                           TextAlignment="Center" VerticalAlignment="Center"/>
+                                        <TextBlock Text="{Binding SpecTextMax, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"  Foreground="Black" MinWidth="50"
+                                                        TextAlignment="Center" VerticalAlignment="Center"/>
                                     </DataTemplate>
                                 </DataGridTemplateColumn.CellTemplate>
                                 <DataGridTemplateColumn.CellEditingTemplate>
                                     <DataTemplate>
-                                        <TextBox Text="{Binding SpecTextMax, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" TextAlignment="Center" Foreground="Black"/>
+                                        <TextBox Text="{Binding SpecTextMax, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" TextAlignment="Center" Foreground="Black" MinWidth="50"/>
                                     </DataTemplate>
                                 </DataGridTemplateColumn.CellEditingTemplate>
                             </DataGridTemplateColumn>
 
+                            <DataGridTemplateColumn  x:Name="WarningSpecMin" MinWidth="50">
 
-
-
-
-
-                            <DataGridTemplateColumn Header="하한" Width="auto" >
-                                <DataGridTemplateColumn.HeaderTemplate>
-                                    <DataTemplate>
-                                        <StackPanel Orientation="Vertical">
-                                            <TextBlock HorizontalAlignment="Center" Text="" Margin="1"/>
-                                            <TextBlock HorizontalAlignment="Center" Text="하한" Margin="1"/>
-                                        </StackPanel>
-                                    </DataTemplate>
-                                </DataGridTemplateColumn.HeaderTemplate>
                                 <DataGridTemplateColumn.CellTemplate>
                                     <DataTemplate>
                                         <TextBlock x:Name="txtWarningSpecMin" Width="auto"  Foreground="Black" MinWidth="50"
-                                         Text="{Binding WarningSpecMin, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" 
-                                               HorizontalAlignment="Right" 
-                                                   TextAlignment="Right"
-                                                />
+                                        Text="{Binding WarningSpecMin, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" 
+                                            HorizontalAlignment="Right" 
+                                                TextAlignment="Right"
+                                            />
                                     </DataTemplate>
                                 </DataGridTemplateColumn.CellTemplate>
                                 <DataGridTemplateColumn.CellEditingTemplate>
                                     <DataTemplate>
                                         <TextBox x:Name="DataGridTextBoxColorQty" Text="{Binding WarningSpecMin, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"  
-                                               Foreground="Black" Width="auto"  MinWidth="50"
-                                               HorizontalAlignment="Right"
-                                                 HorizontalContentAlignment="Right"
-                                               PreviewTextInput="DataGridTextBoxColorQty_PreviewTextInput" ></TextBox>
+                                            Foreground="Black" Width="auto"  MinWidth="50" MaxLength="13"
+                                            HorizontalAlignment="Right"
+                                            HorizontalContentAlignment="Right"
+                                            PreviewTextInput="DataGridTextBoxColorQty_PreviewTextInput" ></TextBox>
                                     </DataTemplate>
                                 </DataGridTemplateColumn.CellEditingTemplate>
                             </DataGridTemplateColumn>
 
-                            <DataGridTemplateColumn Header="상한" Width="auto" >
-                                <DataGridTemplateColumn.HeaderTemplate>
-                                    <DataTemplate>
-                                        <StackPanel Orientation="Vertical">
-                                            <TextBlock HorizontalAlignment="Center" Text="경고" Margin="1"/>
-                                            <TextBlock HorizontalAlignment="Center" Text="상한" Margin="1"/>
-                                        </StackPanel>
-                                    </DataTemplate>
-                                </DataGridTemplateColumn.HeaderTemplate>
+                            <DataGridTemplateColumn x:Name="WarningSpecMax" MinWidth="50">
+
                                 <DataGridTemplateColumn.CellTemplate>
                                     <DataTemplate>
                                         <TextBlock x:Name="txtWarningSpecMax" Width="auto"  Foreground="Black" MinWidth="50"
-                                         Text="{Binding WarningSpecMax, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" 
-                                               HorizontalAlignment="Right" 
-                                                   TextAlignment="Right"
-                                                />
+                                        Text="{Binding WarningSpecMax, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" 
+                                         HorizontalAlignment="Right" 
+                                        TextAlignment="Right"
+                                            />
                                     </DataTemplate>
                                 </DataGridTemplateColumn.CellTemplate>
                                 <DataGridTemplateColumn.CellEditingTemplate>
                                     <DataTemplate>
                                         <TextBox x:Name="DataGridTextBoxColorQty" Text="{Binding WarningSpecMax, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"  
-                                               Foreground="Black" Width="auto"  MinWidth="50"
-                                               HorizontalAlignment="Right"
-                                                 HorizontalContentAlignment="Right"
-                                               PreviewTextInput="DataGridTextBoxColorQty_PreviewTextInput" ></TextBox>
+                                            Foreground="Black" Width="auto"  MinWidth="50" MaxLength="13"
+                                            HorizontalAlignment="Right"
+                                            HorizontalContentAlignment="Right"
+                                            PreviewTextInput="DataGridTextBoxColorQty_PreviewTextInput" ></TextBox>
                                     </DataTemplate>
                                 </DataGridTemplateColumn.CellEditingTemplate>
                             </DataGridTemplateColumn>
 
-                            <DataGridTemplateColumn Header="비율처리여부" Width="auto" >
-                                <DataGridTemplateColumn.HeaderTemplate>
-                                    <DataTemplate>
-                                        <StackPanel Orientation="Vertical">
-                                            <TextBlock HorizontalAlignment="Center" Text="" Margin="1"/>
-                                            <TextBlock HorizontalAlignment="Center" Text="비율처리여부" Margin="1"/>
-                                        </StackPanel>
-                                    </DataTemplate>
-                                </DataGridTemplateColumn.HeaderTemplate>
-                                
+                            <DataGridTemplateColumn x:Name="WarningSpecPecntYN" MinWidth="70" >
+
                                 <DataGridTemplateColumn.CellTemplate>
                                     <DataTemplate>
                                         <TextBlock Text="{Binding WarningSpecPecntYN, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"  Foreground="Black"
-                                                           TextAlignment="Center" VerticalAlignment="Center"/>
+                                                        TextAlignment="Center" VerticalAlignment="Center"/>
                                     </DataTemplate>
                                 </DataGridTemplateColumn.CellTemplate>
                                 <DataGridTemplateColumn.CellEditingTemplate>
                                     <DataTemplate>
                                         <ComboBox x:Name="CboWarningSpecPecntYN" SelectedValue="{Binding CboWarningSpecPecntYN, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" 
-                                                      DisplayMemberPath="{Binding code_name}" SelectedValuePath="{Binding code_id}"
-                                                  HorizontalContentAlignment="Center"
-                                                        SelectionChanged="ComboBox_SelectionChanged"     
-                                                        Loaded="ComboBox_Loaded"  Foreground="Black"  />
+                                                    DisplayMemberPath="{Binding code_name}" SelectedValuePath="{Binding code_id}"
+                                                HorizontalContentAlignment="Center"
+                                                    SelectionChanged="ComboBox_SelectionChanged"     
+                                                    Loaded="ComboBox_Loaded"  Foreground="Black"  />
                                     </DataTemplate>
                                 </DataGridTemplateColumn.CellEditingTemplate>
                             </DataGridTemplateColumn>
 
-                            <DataGridTemplateColumn Header="비고" Width="auto" >
+                            <DataGridTemplateColumn x:Name="Comments" MinWidth="50">
                                 <DataGridTemplateColumn.CellTemplate>
                                     <DataTemplate>
                                         <TextBlock Text="{Binding Comments, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"  Foreground="Black"
-                                                           TextAlignment="Center" VerticalAlignment="Center"/>
+                                                        TextAlignment="Center" VerticalAlignment="Center"/>
                                     </DataTemplate>
                                 </DataGridTemplateColumn.CellTemplate>
                                 <DataGridTemplateColumn.CellEditingTemplate>
@@ -630,7 +616,7 @@
                                 </DataGridTemplateColumn.CellEditingTemplate>
                             </DataGridTemplateColumn>
 
-                            <DataGridTemplateColumn Header="삭제" Width="auto" MinWidth="30" Visibility="Visible">
+                            <DataGridTemplateColumn x:Name="DeleteYN" MinWidth="30">
                                 <DataGridTemplateColumn.CellTemplate>
                                     <DataTemplate>
                                         <Button x:Name="dgdOutwareSub_btnDelete" Click="dgdOutwareSub_btnDelete_Click">X</Button>
@@ -652,11 +638,15 @@
                         </DataGrid.Columns>
 
 
-
-
                     </DataGrid>
 
+
                 </Grid>
+
+                <!--서브 데이터그리드-->
+                   
+
+               
 
             </Grid>
         </Grid>

@@ -589,7 +589,8 @@ namespace WizMes_ANT
                 }
                 #endregion 매출만
                 #region 매입만
-                else if (cboInGubunSrh.SelectedValue.ToString().Equals("2")) //매입만
+                else if (cboInGubunSrh.SelectedValue.ToString().Equals("2") //매입
+                    || cboInGubunSrh.SelectedValue.ToString().Equals("3")) //매입+매출만
                 {
                     DataSet ds = DataStore.Instance.ProcedureToDataSet("xp_Article_sArticle_Custom_sales", sqlParameter, true);
 
@@ -983,7 +984,7 @@ namespace WizMes_ANT
                 }
                 else
                 {
-                    MainWindow.pf.ReturnCode(txtCustom, 7073, ""); //매입만
+                    MainWindow.pf.ReturnCode(txtCustom, 7073, ""); //매입+매입매출만
                 }
 
             }
@@ -1055,7 +1056,14 @@ namespace WizMes_ANT
                         lstSelect.Add(allItem);
                     }
                 }
+
             }
+
+            if (lstTemp.Count <= 0)
+            {
+                MessageBox.Show("품번이 선택되지 않았습니다.");
+            }
+
 
             //if (dgdSelectItem.Items.Count > 0)
             //{
@@ -1072,6 +1080,7 @@ namespace WizMes_ANT
             tbkSelectCount.Text = "선택품목 : " + dgdSelectItem.Items.Count.ToString() + "개";
 
             FillGridAllItem();
+
 
             // 에러 메시지 띄우기
             if (MsgCnt > 0)
@@ -1097,8 +1106,13 @@ namespace WizMes_ANT
                     lstSelect.Remove(selectItem);
                     lstTemp.Add(selectItem);
                 }
+
             }
 
+            if (lstTemp.Count <= 0)
+            {
+                MessageBox.Show("삭제할 품번이 선택되지 않았습니다.");
+            }
             //if (dgdSelectItem.Items.Count > 0)
             //{
             //    dgdSelectItem.Items.Clear();

@@ -950,8 +950,8 @@ namespace WizMes_ANT
                                 BuyerArticleNo = dr["BuyerArticleNo"].ToString(),
                                 UnitClss = dr["UnitClss"].ToString(),
                                 UnitClssName = dr["UnitclssName"].ToString(),
-                                StockQty = stringFormatN0(dr["StockQty"]),
-                                ControlQty = stringFormatN0(dr["ControlQty"]),
+                                StockQty = stringFormatN_Number(dr["StockQty"],4),
+                                ControlQty = stringFormatN_Number(dr["ControlQty"],4),
                                 TOLocID = dr["TOLocID"].ToString(),
                                 ToLocName = dr["ToLocName"].ToString(),
                                 Comments = dr["Comments"].ToString(),
@@ -1548,6 +1548,11 @@ namespace WizMes_ANT
         {
             return string.Format("{0:N2}", obj);
         }
+        // 자릿수 설정
+        private string stringFormatN_Number(object obj, int num)
+        {
+            return string.Format("{0:N" + num + "}", obj);
+        }
 
         // 데이터피커 포맷으로 변경
         private string DatePickerFormat(string str)
@@ -1639,6 +1644,7 @@ namespace WizMes_ANT
             return result;
         }
 
+
         //숫자 외에 다른 문자열 못들어오도록
         public bool IsNumeric(string source)
         {
@@ -1646,6 +1652,7 @@ namespace WizMes_ANT
             Regex regex = new Regex("[^0-9.-]+");
             return !regex.IsMatch(source);
         }
+
 
         //나눗셈, 분모가 0이면 0값 반환
         private double division(double a, double b)

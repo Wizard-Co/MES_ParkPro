@@ -65,7 +65,7 @@ namespace WizMes_ANT
                 stTime = DateTime.Now.ToString("HHmm");
 
                 DataStore.Instance.InsertLogByFormS(this.GetType().Name, stDate, stTime, "S");
-
+                
 
                 CantBtnControl();
                 SetComboBox();
@@ -150,7 +150,7 @@ namespace WizMes_ANT
         //추가버튼 클릭
         private void btnAdd_Click(object sender, RoutedEventArgs e)
         {
-       
+
             try
             {
                 strFlag = "I";
@@ -919,6 +919,7 @@ namespace WizMes_ANT
         }
 
         #region 데이터 체크
+       
         // 그룹박스 데이터 기입체크
         private bool CheckData()
         {
@@ -931,6 +932,7 @@ namespace WizMes_ANT
                 return flag;
             }
 
+            
             return flag;
         }
         #endregion
