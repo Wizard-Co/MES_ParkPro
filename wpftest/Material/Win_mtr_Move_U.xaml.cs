@@ -532,10 +532,10 @@ namespace WizMes_ANT
             dtpOutDate.SelectedDate = DateTime.Today;
 
             // 2. 이동구분 외주이동 선택
-            cboOutClss.SelectedIndex = 0; //이동구문
-            cboFromLoc.SelectedIndex = 0; //전창고
-            cboToLoc.SelectedIndex = 1; // 후창고
-            cboUnitClss.SelectedIndex = 0; //단위
+            cboOutClss.SelectedIndex = 0;   // 이동구분
+            cboFromLoc.SelectedIndex = 2;   // 자재창고
+            cboToLoc.SelectedIndex = 0;     // 생산창고
+            cboUnitClss.SelectedIndex = 0;  //단위
 
 
         }
@@ -3856,15 +3856,15 @@ namespace WizMes_ANT
         {
             if (cboOutClss.SelectedIndex == 0) // 외주이동출고 
             {
-                cboFromLoc.SelectedIndex = 0; //전창고 (사내창고)
-                cboToLoc.SelectedIndex = 1; // 후창고  (외주창고)
+                cboFromLoc.SelectedIndex = 2;   // 전창고 (자재창고)
+                cboToLoc.SelectedIndex = 0;     // 후창고 (생산창고)
                 dgdSubdQty.Visibility = Visibility.Hidden; //이동구분출고일 떄 히든
             }
 
-            if (cboOutClss.SelectedIndex == 1) // 외주이동입고
+            if (cboOutClss.SelectedIndex == 2) // 외주이동입고
             {
-                cboFromLoc.SelectedIndex = 1; //전창고 (외주창고)
-                cboToLoc.SelectedIndex = 0; // 후창고  (사내창고)
+                cboFromLoc.SelectedIndex = 0;   // 전창고 (생산창고)
+                cboToLoc.SelectedIndex = 2;     // 후창고 (자재창고)
                 dgdSubdQty.Visibility = Visibility.Visible; //이동구분출고일 떄 보이게
             }
         }
