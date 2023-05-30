@@ -963,6 +963,11 @@ namespace WizMes_ANT
                 DataTable DT = Fill_DS_CompanyInfo();
                 DataRow DR = DT.Rows[0];
 
+                // 공급자 등록번호 (사업자등록번호)
+                string companyNo = DR["CompanyNo"].ToString();
+                workrange = worksheet.get_Range("W5", "AH6");
+                workrange.Value2 = companyNo.Substring(0, 3) + "-" + companyNo.Substring(3, 2) + "-" + companyNo.Substring(5, 5);
+
                 // 공급자 상호
                 workrange = worksheet.get_Range("W7", "AC8");
                 workrange.Value2 = DR["KCompany"].ToString();
