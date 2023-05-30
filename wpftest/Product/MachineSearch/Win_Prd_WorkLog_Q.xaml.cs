@@ -342,7 +342,6 @@ namespace WizMes_ANT
                                 WorkDate_CV = DatePickerFormat(dr["WorkDate"].ToString()),
                                 WorkQty = Convert.ToDouble(dr["WorkQty"]),
                                 DefectQty = Convert.ToDouble(dr["DefectQty"]),
-
                                 WorkTime = dr["WorkTime"].ToString(),
                                 WorkTime_CV = ConvertTimeFormat(dr["WorkTime"].ToString()),
                                 StationNO = dr["StationNO"].ToString(),
