@@ -256,15 +256,16 @@
                 </Grid.ColumnDefinitions>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="10*" />
-                    <RowDefinition Height="80*" />
+                    <RowDefinition Height="60*" />
 
                 </Grid.RowDefinitions>
 
                 <Grid Grid.Column="0" x:Name="SubGridTop" IsHitTestVisible="False" >
                     <Grid.RowDefinitions>
+                        <RowDefinition Height="3*" />
+                        <RowDefinition Height="3*" />
                         <RowDefinition Height="*" />
-                        <RowDefinition Height="*" />
-                        <RowDefinition Height="*" />
+                        <RowDefinition Height="3*" />
                     </Grid.RowDefinitions>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="10*" />
@@ -306,11 +307,15 @@
                                  IsReadOnly="True"/>
 
 
-                    <Grid Grid.Row="2" Grid.Column="3" Visibility="Visible"  >
+                    <Viewbox Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="3" HorizontalAlignment="Left" Style="{DynamicResource ViewBoxSetMaxMinHeight}" >
+                        <TextBlock Text="※ 최소·최대값은 (숫자)최대 13자, (문자)최대 25자 입력" FontWeight="Bold" Foreground="Blue" Margin="1,0,20,1"/>
+                    </Viewbox>
+
+                    <Grid Grid.Row="3" Grid.Column="3" Visibility="Visible"  >
                         <Button x:Name="ButtonDataGridSubRowAdd" Grid.Column="3" Content="추가" Click="ButtonDataGridSubRowAdd_Click"/>
                     </Grid>
 
-                    <Grid Grid.Row="2" Grid.Column="4" Visibility="Visible"  >
+                    <Grid Grid.Row="3" Grid.Column="4" Visibility="Visible"  >
                         <Button x:Name="ButtonDataGridSubRowDel" Grid.Column="4" Content="삭제" Click="ButtonDataGridSubRowDel_Click" />
                     </Grid>
                 </Grid>
@@ -423,13 +428,13 @@
                             <DataGridTemplateColumn  x:Name="CodeID" MinWidth="30">
                                 <DataGridTemplateColumn.CellTemplate>
                                     <DataTemplate>
-                                        <TextBlock  Width="auto"  Foreground="Black"
+                                        <TextBlock  Width="auto"  Foreground="Black" VerticalAlignment="Center"
                                         Text="{Binding CodeID, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" HorizontalAlignment="Center"  />
                                     </DataTemplate>
                                 </DataGridTemplateColumn.CellTemplate>
                                 <DataGridTemplateColumn.CellEditingTemplate>
                                     <DataTemplate>
-                                        <TextBox  Text="{Binding CodeID, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" TextAlignment="Center" Foreground="Black"/>
+                                        <TextBox  Text="{Binding CodeID, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" TextAlignment="Right" VerticalContentAlignment="Center" Foreground="Black"/>
                                     </DataTemplate>
                                 </DataGridTemplateColumn.CellEditingTemplate>
                             </DataGridTemplateColumn>
@@ -438,12 +443,12 @@
                                 <DataGridTemplateColumn.CellTemplate>
                                     <DataTemplate>
                                         <TextBlock  Width="auto"  Foreground="Black" 
-                                        Text="{Binding CodeName, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" HorizontalAlignment="Center"  />
+                                        Text="{Binding CodeName, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" HorizontalAlignment="Center" VerticalAlignment="Center" />
                                     </DataTemplate>
                                 </DataGridTemplateColumn.CellTemplate>
                                 <DataGridTemplateColumn.CellEditingTemplate>
                                     <DataTemplate>
-                                        <TextBox  Text="{Binding CodeName, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" TextAlignment="Left"  Foreground="Black"
+                                        <TextBox  Text="{Binding CodeName, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" TextAlignment="Left"  Foreground="Black" VerticalContentAlignment="Center"
                                                         Tag="{Binding CodeID, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Keyboard.KeyDown="txtCodeName_KeyDown" />
                                     </DataTemplate>
                                 </DataGridTemplateColumn.CellEditingTemplate>
@@ -460,7 +465,7 @@
                                 </DataGridTemplateColumn.CellTemplate>
                                 <DataGridTemplateColumn.CellEditingTemplate>
                                     <DataTemplate>
-                                        <TextBox Text="{Binding Spec, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" TextAlignment="Center" Foreground="Black"/>
+                                        <TextBox Text="{Binding Spec, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" TextAlignment="Center" VerticalContentAlignment="Center" Foreground="Black"/>
                                     </DataTemplate>
                                 </DataGridTemplateColumn.CellEditingTemplate>
                             </DataGridTemplateColumn>
@@ -471,7 +476,7 @@
                                     <DataTemplate>
                                         <TextBlock Width="auto"  Foreground="Black" MinWidth="50"
                                         Text="{Binding SpecMin, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" 
-                                            HorizontalAlignment="Right"  TextAlignment="Right"
+                                            HorizontalAlignment="Right"  TextAlignment="Right" VerticalAlignment="Center"
                                             />
                                     </DataTemplate>
                                 </DataGridTemplateColumn.CellTemplate>
@@ -479,9 +484,10 @@
                                     <DataTemplate>
                                         <TextBox x:Name="DataGridTextBoxColorQty" Text="{Binding SpecMin, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"  
                                                 Foreground="Black" Width="auto"  MinWidth="50" MaxLength="13"
-                                            HorizontalAlignment="Right"
-                                            HorizontalContentAlignment="Right"
-                                            PreviewTextInput="DataGridTextBoxColorQty_PreviewTextInput" ></TextBox>
+                                                VerticalContentAlignment="Center"
+                                                HorizontalAlignment="Right"
+                                                HorizontalContentAlignment="Right"
+                                                PreviewTextInput="DataGridTextBoxColorQty_PreviewTextInput" ></TextBox>
                                     </DataTemplate>
                                 </DataGridTemplateColumn.CellEditingTemplate>
                             </DataGridTemplateColumn>
@@ -491,19 +497,21 @@
                                 <DataGridTemplateColumn.CellTemplate>
                                     <DataTemplate>
                                         <TextBlock  Width="auto"  Foreground="Black" MinWidth="50"
-                                        Text="{Binding SpecMax, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" 
-                                            HorizontalAlignment="Right" 
-                                                TextAlignment="Right"
+                                                    Text="{Binding SpecMax, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" 
+                                                    VerticalAlignment="Center"
+                                                    HorizontalAlignment="Right" 
+                                                    TextAlignment="Right"
                                             />
                                     </DataTemplate>
                                 </DataGridTemplateColumn.CellTemplate>
                                 <DataGridTemplateColumn.CellEditingTemplate>
                                     <DataTemplate>
                                         <TextBox x:Name="DataGridTextBoxColorQty" Text="{Binding SpecMax, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"  
-                                            Foreground="Black" Width="auto"  MinWidth="50" MaxLength="13"
-                                            HorizontalAlignment="Right"
+                                                Foreground="Black" Width="auto"  MinWidth="50" MaxLength="13"
+                                                HorizontalAlignment="Right"
                                                 HorizontalContentAlignment="Right"
-                                            PreviewTextInput="DataGridTextBoxColorQty_PreviewTextInput" ></TextBox>
+                                                VerticalContentAlignment="Center"
+                                                PreviewTextInput="DataGridTextBoxColorQty_PreviewTextInput" ></TextBox>
                                     </DataTemplate>
                                 </DataGridTemplateColumn.CellEditingTemplate>
                             </DataGridTemplateColumn>
@@ -519,7 +527,7 @@
                                 </DataGridTemplateColumn.CellTemplate>
                                 <DataGridTemplateColumn.CellEditingTemplate>
                                     <DataTemplate>
-                                        <TextBox Text="{Binding SpecTextMin, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" TextAlignment="Center" Foreground="Black" MinWidth="50"/>
+                                        <TextBox Text="{Binding SpecTextMin, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" TextAlignment="Center" VerticalContentAlignment="Center" Foreground="Black" MinWidth="50" MaxLength="25"/>
                                     </DataTemplate>
                                 </DataGridTemplateColumn.CellEditingTemplate>
                             </DataGridTemplateColumn>
@@ -534,7 +542,7 @@
                                 </DataGridTemplateColumn.CellTemplate>
                                 <DataGridTemplateColumn.CellEditingTemplate>
                                     <DataTemplate>
-                                        <TextBox Text="{Binding SpecTextMax, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" TextAlignment="Center" Foreground="Black" MinWidth="50"/>
+                                        <TextBox Text="{Binding SpecTextMax, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" TextAlignment="Center" VerticalContentAlignment="Center" Foreground="Black" MinWidth="50" MaxLength="25"/>
                                     </DataTemplate>
                                 </DataGridTemplateColumn.CellEditingTemplate>
                             </DataGridTemplateColumn>
@@ -544,19 +552,22 @@
                                 <DataGridTemplateColumn.CellTemplate>
                                     <DataTemplate>
                                         <TextBlock x:Name="txtWarningSpecMin" Width="auto"  Foreground="Black" MinWidth="50"
-                                        Text="{Binding WarningSpecMin, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" 
-                                            HorizontalAlignment="Right" 
-                                                TextAlignment="Right"
+                                                   Text="{Binding WarningSpecMin, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" 
+                                                   VerticalAlignment="Center"
+                                                   HorizontalAlignment="Right" 
+                                                   TextAlignment="Right"
                                             />
                                     </DataTemplate>
                                 </DataGridTemplateColumn.CellTemplate>
                                 <DataGridTemplateColumn.CellEditingTemplate>
                                     <DataTemplate>
                                         <TextBox x:Name="DataGridTextBoxColorQty" Text="{Binding WarningSpecMin, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"  
-                                            Foreground="Black" Width="auto"  MinWidth="50" MaxLength="13"
-                                            HorizontalAlignment="Right"
-                                            HorizontalContentAlignment="Right"
-                                            PreviewTextInput="DataGridTextBoxColorQty_PreviewTextInput" ></TextBox>
+                                                 Foreground="Black" Width="auto"  MinWidth="50" MaxLength="13"
+                                                 TextAlignment="Center"
+                                                 HorizontalAlignment="Right"
+                                                 HorizontalContentAlignment="Right"
+                                                 VerticalContentAlignment="Center"
+                                                 PreviewTextInput="DataGridTextBoxColorQty_PreviewTextInput" ></TextBox>
                                     </DataTemplate>
                                 </DataGridTemplateColumn.CellEditingTemplate>
                             </DataGridTemplateColumn>
@@ -566,19 +577,21 @@
                                 <DataGridTemplateColumn.CellTemplate>
                                     <DataTemplate>
                                         <TextBlock x:Name="txtWarningSpecMax" Width="auto"  Foreground="Black" MinWidth="50"
-                                        Text="{Binding WarningSpecMax, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" 
-                                         HorizontalAlignment="Right" 
-                                        TextAlignment="Right"
+                                                   Text="{Binding WarningSpecMax, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" 
+                                                   VerticalAlignment="Center"
+                                                   HorizontalAlignment="Right" 
+                                                   TextAlignment="Right"
                                             />
                                     </DataTemplate>
                                 </DataGridTemplateColumn.CellTemplate>
                                 <DataGridTemplateColumn.CellEditingTemplate>
                                     <DataTemplate>
                                         <TextBox x:Name="DataGridTextBoxColorQty" Text="{Binding WarningSpecMax, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"  
-                                            Foreground="Black" Width="auto"  MinWidth="50" MaxLength="13"
-                                            HorizontalAlignment="Right"
-                                            HorizontalContentAlignment="Right"
-                                            PreviewTextInput="DataGridTextBoxColorQty_PreviewTextInput" ></TextBox>
+                                                 Foreground="Black" Width="auto"  MinWidth="50" MaxLength="13"
+                                                 HorizontalAlignment="Right"
+                                                 HorizontalContentAlignment="Right"
+                                                 VerticalContentAlignment="Center"
+                                                 PreviewTextInput="DataGridTextBoxColorQty_PreviewTextInput" ></TextBox>
                                     </DataTemplate>
                                 </DataGridTemplateColumn.CellEditingTemplate>
                             </DataGridTemplateColumn>
@@ -595,7 +608,8 @@
                                     <DataTemplate>
                                         <ComboBox x:Name="CboWarningSpecPecntYN" SelectedValue="{Binding CboWarningSpecPecntYN, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" 
                                                     DisplayMemberPath="{Binding code_name}" SelectedValuePath="{Binding code_id}"
-                                                HorizontalContentAlignment="Center"
+                                                    VerticalContentAlignment="Center"
+                                                    HorizontalContentAlignment="Center"
                                                     SelectionChanged="ComboBox_SelectionChanged"     
                                                     Loaded="ComboBox_Loaded"  Foreground="Black"  />
                                     </DataTemplate>
@@ -611,7 +625,7 @@
                                 </DataGridTemplateColumn.CellTemplate>
                                 <DataGridTemplateColumn.CellEditingTemplate>
                                     <DataTemplate>
-                                        <TextBox Text="{Binding Comments, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" TextAlignment="Center" Foreground="Black"/>
+                                        <TextBox Text="{Binding Comments, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" TextAlignment="Center" VerticalContentAlignment="Center" Foreground="Black"/>
                                     </DataTemplate>
                                 </DataGridTemplateColumn.CellEditingTemplate>
                             </DataGridTemplateColumn>
