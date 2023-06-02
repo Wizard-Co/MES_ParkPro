@@ -188,7 +188,8 @@
                     <DataGridTextColumn Header="품목" Binding="{Binding Article}" Width="*" ElementStyle="{StaticResource DataGridCellLeft}" />
                     <DataGridTextColumn Header="작업자" Binding="{Binding Name}" Width="*" ElementStyle="{StaticResource DataGridCellLeft}"/>
                     <DataGridTextColumn Header="작업자&#10;교육건수" Binding="{Binding EduCount}" Width="*" ElementStyle="{StaticResource DataGridCellRight}"/>
-                    <DataGridTextColumn Header="작업자&#10;자격증" Binding="{Binding License}"  Width="*" ElementStyle="{StaticResource DataGridCellRight}"/>
+                    <DataGridTextColumn Header="작업자&#10;자격증 명" Binding="{Binding License}"  Width="*" ElementStyle="{StaticResource DataGridCellLeft}"/>
+                    <DataGridTextColumn Header="작업자&#10;자격증" Binding="{Binding LicenseCnt}"  Width="*" ElementStyle="{StaticResource DataGridCellRight}"/>
                     <DataGridTextColumn Header="작업자&#10;입사일" Binding="{Binding StartDate}"  Width="*" ElementStyle="{StaticResource DataGridCellCenter}"/>
                 </DataGrid.Columns>
             </DataGrid>
