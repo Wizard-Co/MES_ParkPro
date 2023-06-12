@@ -251,19 +251,6 @@
                     <ColumnDefinition Width="65*" />
                     <ColumnDefinition Width="15*" />
                 </Grid.ColumnDefinitions>
-                <Label x:Name="lblTheEndSrh" Grid.Row="1" Grid.Column="0"  
-                       Style="{DynamicResource LabelSearch}"
-                       MouseLeftButtonDown="lblTheEndSrh_MouseLeftButtonDown" >
-                    <StackPanel Style="{DynamicResource StackPanelInLabel}">
-                        <Viewbox Style="{DynamicResource ViewBoxSetMaxMinHeight}">
-                            <CheckBox x:Name="chkTheEndSrh" />
-                        </Viewbox>
-                        <Viewbox Style="{DynamicResource ViewBoxSetMaxMinHeight}" >
-                            <TextBlock Text="지시마감 포함" 
-                                       Style="{DynamicResource TextBlockInViewBoxSearch}"/>
-                        </Viewbox>
-                    </StackPanel>
-                </Label>
             </Grid>
             
             <Grid Grid.Row="3" Grid.Column="3" >

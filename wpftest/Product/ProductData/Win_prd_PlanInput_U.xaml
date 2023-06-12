@@ -257,15 +257,15 @@
                     <ColumnDefinition Width="65*" />
                     <ColumnDefinition Width="15*" />
                 </Grid.ColumnDefinitions>
-                <Label x:Name="lblTheEnd" Grid.Column="0" 
+                <Label x:Name="lblCloseClss" Grid.Column="0" 
                        Style="{DynamicResource LabelSearch}"
-                       MouseLeftButtonDown="lblTheEnd_MouseLeftButtonDown">
+                       MouseLeftButtonDown="lblCloseClss_MouseLeftButtonDown">
                     <StackPanel Style="{DynamicResource StackPanelInLabel}">
                         <Viewbox Style="{DynamicResource ViewBoxSetMaxMinHeight}">
-                            <CheckBox x:Name="chkTheEnd" />
+                            <CheckBox x:Name="chkCloseClss" />
                         </Viewbox>
                         <Viewbox Style="{DynamicResource ViewBoxSetMaxMinHeight}" >
-                            <TextBlock Text="지시마감 포함" 
+                            <TextBlock Text="수주마감 포함" 
                                        Style="{DynamicResource TextBlockInViewBoxSearch}"/>
                         </Viewbox>
                     </StackPanel>
@@ -378,6 +378,7 @@
                         <DataGridTextColumn Header="지시사항" Width="auto" Binding="{Binding Remark}" />
                         <DataGridTextColumn Header="품명코드" Width="auto" Binding="{Binding ArticleID}" />
                         <DataGridTextColumn Header="지시완료" Width="auto" Binding="{Binding PlanComplete}" />
+                        <DataGridTextColumn Header="수주마감" Width="auto" Binding="{Binding CloseClss}" />
                         <DataGridTextColumn Header="InstID" Width="auto" Binding="{Binding InstID}" Visibility="Hidden"/>
                         <DataGridTextColumn Header="OrderSeq" Width="auto" Binding="{Binding OrderSeq}" Visibility="Visible" />
                     </DataGrid.Columns>

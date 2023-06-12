@@ -432,10 +432,10 @@ namespace WizMes_ANT
         }
 
         //해상도가 낮아지면 체크박스 클릭이 어려워지므로 라벨 클릭으로 대체할수 있게 한다.
-        private void lblTheEnd_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        private void lblCloseClss_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
-            if (chkTheEnd.IsChecked == true) { chkTheEnd.IsChecked = false; }
-            else { chkTheEnd.IsChecked = true; }
+            if (chkCloseClss.IsChecked == true) { chkCloseClss.IsChecked = false; }
+            else { chkCloseClss.IsChecked = true; }
         }
 
         //OrderNo
@@ -577,7 +577,7 @@ namespace WizMes_ANT
                 sqlParameter.Add("ChkOrder", chkOrderID.IsChecked == true ? (rbnOrderID.IsChecked == true ? 1 : 2) : 0);
                 sqlParameter.Add("Order", chkOrderID.IsChecked == true ? txtOrderID.Text : "");
                 sqlParameter.Add("ChkIncPlComplete", chkPlanComplete.IsChecked == true ? 1 : 0);
-                sqlParameter.Add("ChkCloseClss", chkTheEnd.IsChecked == true ? 1 : 0);
+                sqlParameter.Add("ChkCloseClss", chkCloseClss.IsChecked == true ? 1 : 0);
                 sqlParameter.Add("ChkBuyerArticleNo", CheckBoxBuyerArticleNoSearch.IsChecked == true ? 1 : 0);
                 sqlParameter.Add("BuyerArticleNoID", CheckBoxBuyerArticleNoSearch.IsChecked == true ? (TextBoxBuyerArticleNoSearch.Tag != null ? TextBoxBuyerArticleNoSearch.Tag.ToString() : "") : "");
                 sqlParameter.Add("ChkInCustom", chkInCustom.IsChecked == true ? 1 : 0);

@@ -299,18 +299,7 @@ namespace WizMes_ANT
             else { chkPlanComplete.IsChecked = true; }
         }
 
-        // 지시마감 포함
-        private void lblTheEndSrh_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
-        {
-            if (chkTheEndSrh.IsChecked == true)
-            {
-                chkTheEndSrh.IsChecked = false;
-            }
-            else
-            {
-                chkTheEndSrh.IsChecked = true;
-            }
-        }
+       
 
         private void rbnOrderNo_Click(object sender, RoutedEventArgs e)
         {
@@ -583,7 +572,6 @@ namespace WizMes_ANT
                 sqlParameter.Add("Order", chkOrderID.IsChecked == true ? txtOrderID.Text : "");
                 sqlParameter.Add("ChkPlanComplete", chkPlanComplete.IsChecked == true ? 1 : 0);
 
-                sqlParameter.Add("ChkTheEnd", chkTheEndSrh.IsChecked == true ? 1 : 0);
                 sqlParameter.Add("ChkBuyerArticleNo", CheckBoxBuyerArticleNoSearch.IsChecked == true ? 1 : 0);
                 sqlParameter.Add("BuyerArticleNoID", CheckBoxBuyerArticleNoSearch.IsChecked == true ? (TextBoxBuyerArticleNoSearch.Tag != null ? TextBoxBuyerArticleNoSearch.Tag.ToString() : "") : "");
                 sqlParameter.Add("ChkInCustom", chkInCustom.IsChecked == true ? 1 : 0);
