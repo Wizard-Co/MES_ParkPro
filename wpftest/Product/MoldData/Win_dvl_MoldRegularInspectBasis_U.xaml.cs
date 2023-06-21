@@ -361,7 +361,7 @@ namespace WizMes_ANT
         {
             if (e.Key == Key.Enter)
             {
-                MainWindow.pf.ReturnCode(txtMoldID, 101, "");
+                MainWindow.pf.ReturnCode(txtMoldID, 5555, "");
                 if (txtMoldID.Tag != null)
                 {
                     SetArticle(txtMoldID.Tag.ToString());
@@ -371,7 +371,7 @@ namespace WizMes_ANT
         // 철형번호 플러스파인더
         private void btnPfMoldID_Click(object sender, RoutedEventArgs e)
         {
-            MainWindow.pf.ReturnCode(txtMoldID, 101, "");
+            MainWindow.pf.ReturnCode(txtMoldID, 5555, "");
             if (txtMoldID.Tag != null)
             {
                 SetArticle(txtMoldID.Tag.ToString());
@@ -455,7 +455,7 @@ namespace WizMes_ANT
                 Num = index,
 
                 MoldInspectBasisID = "",
-                MoldSeq = "",
+                MoldSeq = 0,
                 MoldInspectItemName = "",
                 MoldInspectContent = "",
                 MoldInspectCheckGbn = "",
@@ -1318,7 +1318,7 @@ namespace WizMes_ANT
                                 Num = i,
 
                                 MoldInspectBasisID = dr["MoldInspectBasisID"].ToString(),
-                                MoldSeq = dr["MoldSeq"].ToString(),
+                                MoldSeq = ConvertInt(dr["MoldSeq"].ToString()),
                                 MoldInspectItemName = dr["MoldInspectItemName"].ToString(),
                                 MoldInspectContent = dr["MoldInspectContent"].ToString(),
                                 MoldInspectCheckGbn = dr["MoldInspectCheckGbn"].ToString(),
@@ -1406,6 +1406,9 @@ namespace WizMes_ANT
                         {
                             sqlParameter = new Dictionary<string, object>();
                             var inspectSub = dgdSub.Items[i] as Win_dvl_MoldRegularInspectBasis_U_CodeViewSub;
+
+                            inspectSub.MoldSeq = i;
+
                             sqlParameter.Clear();
                             sqlParameter.Add("MoldInspectBasisID", inspectSub.MoldInspectBasisID);
                             sqlParameter.Add("MoldSeq", inspectSub.MoldSeq);
@@ -1497,6 +1500,9 @@ namespace WizMes_ANT
                         {
                             sqlParameter = new Dictionary<string, object>();
                             var inspectSub = dgdSub.Items[i] as Win_dvl_MoldRegularInspectBasis_U_CodeViewSub;
+
+                            inspectSub.MoldSeq = i;
+
                             sqlParameter.Clear();
                             sqlParameter.Add("MoldInspectBasisID", txtMoldInspectBasisID.Text);
                             sqlParameter.Add("MoldSeq", inspectSub.MoldSeq);
@@ -2007,7 +2013,7 @@ namespace WizMes_ANT
         public int Num { get; set; }
 
         public string MoldInspectBasisID { get; set; } // 기준번호
-        public string MoldSeq { get; set; } // 시퀀스
+        public int MoldSeq { get; set; } // 시퀀스
         public string MoldInspectItemName { get; set; } // 점검항목
         public string MoldInspectContent { get; set; } // 점검내용
 

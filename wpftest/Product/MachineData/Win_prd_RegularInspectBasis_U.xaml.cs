@@ -1043,11 +1043,7 @@ namespace WizMes_ANT
                         {
                             WinMcRegularSub = dgdSub.Items[i] as Win_prd_RegularInspectBasis_U_CodeView;
 
-                            //if (strCopy)
-                            //{
-                            //    WinMcRegularSub.McImageFile = "";
-                            //    WinMcRegularSub.McImagePath = "";
-                            //}
+                            WinMcRegularSub.McSeq = i;
 
                             sqlParameter = new Dictionary<string, object>();
                             sqlParameter.Clear();
@@ -1129,6 +1125,9 @@ namespace WizMes_ANT
                         for (int i = 0; i < dgdSub.Items.Count; i++)
                         {
                             WinMcRegularSub = dgdSub.Items[i] as Win_prd_RegularInspectBasis_U_CodeView;
+
+                            WinMcRegularSub.McSeq = i;
+
                             //Dictionary<string, object> sqlParameter = new Dictionary<string, object>();
                             sqlParameter = new Dictionary<string, object>();
                             sqlParameter.Clear();
@@ -1463,7 +1462,7 @@ namespace WizMes_ANT
             {
                 Num = index + 1,
                 McInspectBasisID = "",
-                McSeq = "",
+                McSeq = 0,
                 McComments = "",
                 McInsContent = "",
                 McInsCycleDate = "",
@@ -1678,7 +1677,7 @@ namespace WizMes_ANT
                             {
                                 Num = i + 1,
                                 McInspectBasisID = dr["McInspectBasisID"].ToString(),
-                                McSeq = dr["McSeq"].ToString(),
+                                McSeq = ConvertInt(dr["McSeq"].ToString()),
                                 McComments = dr["McComments"].ToString(),
                                 McInsContent = dr["McInsContent"].ToString(),
                                 McInsCycleDate = dr["McInsCycleDate"].ToString(),
@@ -2182,7 +2181,7 @@ namespace WizMes_ANT
             public string LastUpdateDate { get; set; }
             public string LastUpdateUserID { get; set; }
 
-            public string McSeq { get; set; }
+            public int McSeq { get; set; }
             public string McComments { get; set; }
             public string McInsCycleDate { get; set; }
             public string McInsCycleGbn { get; set; }
