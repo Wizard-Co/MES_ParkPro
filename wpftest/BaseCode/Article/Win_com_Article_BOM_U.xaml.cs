@@ -10,6 +10,9 @@ using System.Windows.Input;
 using System.Windows.Media;
 using WizMes_ANT.PopUP;
 using WizMes_ANT.PopUp;
+using System.Runtime.InteropServices;
+using Excel = Microsoft.Office.Interop.Excel;
+
 
 namespace WizMes_ANT
 {
@@ -26,7 +29,18 @@ namespace WizMes_ANT
         int rowNum = 0;
         int ArticleBomCnt = 0;
         Lib lib = new Lib();
+        // 인쇄 활용 객체
+        private Microsoft.Office.Interop.Excel.Application excelapp;
+        private Microsoft.Office.Interop.Excel.Workbook workbook;
+        private Microsoft.Office.Interop.Excel.Worksheet worksheet;
+        private Microsoft.Office.Interop.Excel.Range workrange;
+        private Microsoft.Office.Interop.Excel.Worksheet copysheet;
+        private Microsoft.Office.Interop.Excel.Worksheet pastesheet;
 
+        WizMes_ANT.PopUp.NoticeMessage msg = new WizMes_ANT.PopUp.NoticeMessage();
+        ObservableCollection<Win_com_ArticleBOM_ItemList> ovcArticleBom = new ObservableCollection<Win_com_ArticleBOM_ItemList>();
+
+        //
         Win_com_ArticleBOM_ItemList WinArticleBomList = new Win_com_ArticleBOM_ItemList();
         Win_com_ArticleBOM_Code_U WinArticleBomCode = new Win_com_ArticleBOM_Code_U();
         DataTable dataTableArticle = null;
@@ -335,6 +349,10 @@ namespace WizMes_ANT
         {
             DataStore.Instance.InsertLogByFormS(this.GetType().Name, stDate, stTime, "E");
             Lib.Instance.ChildMenuClose(this.ToString());
+
+
+            //Application.Exit();
+
         }
 
         //조회
@@ -344,7 +362,7 @@ namespace WizMes_ANT
             {
                 lw.ShowDialog();
             }
-
+            FillGridExcel();
             //검색버튼 비활성화
             //btnSearch.IsEnabled = false;
 
@@ -437,13 +455,13 @@ namespace WizMes_ANT
             DataTable dt = null;
             string Name = string.Empty;
 
-            string[] lst = new string[6];
+            string[] lst = new string[2];
             lst[0] = "품명BOM 리스트";
-            lst[1] = "품명 BOM_상위품목";
-            lst[2] = "품명 BOM_하위품목";
-            lst[3] = tlvItemList.Name;
-            lst[4] = dgdArticleP.Name;
-            lst[5] = dgdArticleC.Name;
+            //lst[1] = "품명 BOM_상위품목";
+            //lst[2] = "품명 BOM_하위품목";
+            lst[1] = dgdExcel.Name;
+            //lst[4] = dgdArticleP.Name;
+            //lst[5] = dgdArticleC.Name;
 
             ExportExcelxaml ExpExc = new ExportExcelxaml(lst);
             ExpExc.ShowDialog();
@@ -451,39 +469,43 @@ namespace WizMes_ANT
             if (ExpExc.DialogResult.HasValue)
             {
                 DataStore.Instance.InsertLogByForm(this.GetType().Name, "E");
-                if (ExpExc.choice.Equals(tlvItemList.Name))
-                {
-                    //if (ExpExc.Check.Equals("Y"))
-                    //    dt = Lib.Instance.DataGridToDTinHidden(dataTableBOM);
-                    //else
-                    //    dt = Lib.Instance.DataGirdToDataTable(tlvItemList);
-
-                    Name = tlvItemList.Name;
-                    Lib.Instance.GenerateExcel(dataTableBOM, Name);
-                    Lib.Instance.excel.Visible = true;
-                }
-                else if (ExpExc.choice.Equals(dgdArticleP.Name))
+                if (ExpExc.choice.Equals(dgdExcel.Name))
                 {
                     if (ExpExc.Check.Equals("Y"))
-                        dt = Lib.Instance.DataGridToDTinHidden(dgdArticleP);
+                        dt = Lib.Instance.DataGridToDTinHidden(dgdExcel);
                     else
-                        dt = Lib.Instance.DataGirdToDataTable(dgdArticleP);
+                        dt = Lib.Instance.DataGirdToDataTable(dgdExcel);
 
-                    Name = dgdArticleP.Name;
-                    Lib.Instance.GenerateExcel(dt, Name);
-                    Lib.Instance.excel.Visible = true;
-                }
-                else if (ExpExc.choice.Equals(dgdArticleC.Name))
-                {
-                    if (ExpExc.Check.Equals("Y"))
-                        dt = Lib.Instance.DataGridToDTinHidden(dgdArticleC);
+                    Name = dgdExcel.Name;
+
+                    //Lib.Instance.GenerateExcel(dataTableBOM, Name);
+                    if (Lib.Instance.GenerateExcel(dt, Name))
+                        Lib.Instance.excel.Visible = true;
                     else
-                        dt = Lib.Instance.DataGirdToDataTable(dgdArticleC);
-
-                    Name = dgdArticleC.Name;
-                    Lib.Instance.GenerateExcel(dt, Name);
-                    Lib.Instance.excel.Visible = true;
+                        return;
                 }
+                //else if (ExpExc.choice.Equals(dgdArticleP.Name))
+                //{
+                //    if (ExpExc.Check.Equals("Y"))
+                //        dt = Lib.Instance.DataGridToDTinHidden(dgdArticleP);
+                //    else
+                //        dt = Lib.Instance.DataGirdToDataTable(dgdArticleP);
+
+                //    Name = dgdArticleP.Name;
+                //    Lib.Instance.GenerateExcel(dt, Name);
+                //    Lib.Instance.excel.Visible = true;
+                //}
+                //else if (ExpExc.choice.Equals(dgdArticleC.Name))
+                //{
+                //    if (ExpExc.Check.Equals("Y"))
+                //        dt = Lib.Instance.DataGridToDTinHidden(dgdArticleC);
+                //    else
+                //        dt = Lib.Instance.DataGirdToDataTable(dgdArticleC);
+
+                //    Name = dgdArticleC.Name;
+                //    Lib.Instance.GenerateExcel(dt, Name);
+                //    Lib.Instance.excel.Visible = true;
+                //}
                 else
                 {
                     if (dt != null)
@@ -498,6 +520,8 @@ namespace WizMes_ANT
         private void re_Search(int selectedIndex)
         {
             FillGrid2();
+            FillGridExcel();
+
         }
 
         private void re_Search_P(int selectedIndex)
@@ -515,140 +539,6 @@ namespace WizMes_ANT
         }
 
 
-        #region 2020-02-11 이전 조회
-        //private void FillGrid()
-        //{
-        //    TreeViewItem mTreeViewItem = null;
-        //    TreeViewItem mTreeViewItem0 = null;
-        //    TreeViewItem mTreeViewItem1 = null;
-        //    TreeViewItem mTreeViewItem3 = null;
-        //    TreeViewItem mTreeViewItem4 = null;
-        //    string strOneParentArticleID = string.Empty;
-        //    string strTwoParentArticleID = string.Empty;
-        //    string strThreeParentArticleID = string.Empty;
-        //    string strFoursParentArticleID = string.Empty;
-
-        //    if (tlvItemList.Items.Count > 0)
-        //    {
-        //        tlvItemList.Items.Clear();
-        //    }
-
-        //    try
-        //    {
-        //        Dictionary<string, object> sqlParameter = new Dictionary<string, object>();
-        //        sqlParameter.Add("sArticleGrpID", chkArticleGrpSrh.IsChecked == true && cboArticleGrpSrh.SelectedValue != null? cboArticleGrpSrh.SelectedValue.ToString() : "");
-        //        sqlParameter.Add("sArticleID", chkArticleSrh.IsChecked == true && txtArticleSrh.Tag != null ? txtArticleSrh.Tag.ToString() : "" );
-        //        sqlParameter.Add("sDirection", strDirection);
-        //        sqlParameter.Add("sIncNotuse", chkNoUse.IsChecked == true ? 1 : 0);
-
-        //        DataSet ds = DataStore.Instance.ProcedureToDataSet("xp_Article_sArticleBOM", sqlParameter, false);
-
-        //        if (ds != null)
-        //        {
-        //            DataTable dt = ds.Tables[0];
-
-        //            if (dt.Rows.Count > 0)
-        //            {
-        //                ArticleBomCnt = dt.Rows.Count;
-
-        //                int i = 0;
-        //                DataRowCollection drc = dt.Rows;
-
-        //                foreach (DataRow dr in drc)
-        //                {
-        //                    i++;
-        //                    var ItemList = new Win_com_ArticleBOM_ItemList
-        //                    {
-        //                        Num = i,
-        //                        Article = dr["Article"].ToString(),
-        //                        ArticleID = dr["ArticleID"].ToString(),
-        //                        LVL = dr["LVL"].ToString(),
-        //                        ArticleGrpID = dr["ArticleGrpID"].ToString(),
-        //                        ArticleP = dr["ArticleP"].ToString(),
-        //                        ChildBuyerArticleNO = dr["ChildBuyerArticleNO"].ToString(),
-        //                        ChildCnt = dr["ChildCnt"].ToString(),
-        //                        FromDate = dr["FromDate"].ToString(),
-        //                        LossPcntClss = dr["LossPcntClss"].ToString(),
-        //                        LossQty = dr["LossQty"].ToString(),
-        //                        LvlPad = dr["LvlPad"].ToString(),
-        //                        ord = dr["ord"].ToString(),
-        //                        PARENTArticleID = dr["PARENTArticleID"].ToString(),
-        //                        ParentArticleIDS = dr["ParentArticleIDS"].ToString(),
-        //                        ParentBuyerArticleNO = dr["ParentBuyerArticleNO"].ToString(),
-        //                        PcntClss = dr["PcntClss"].ToString(),
-        //                        Qty = dr["Qty"].ToString(),
-        //                        ScraptRate = dr["ScraptRate"].ToString(),
-        //                        ToDate = dr["ToDate"].ToString(),
-        //                        UnitClss = dr["UnitClss"].ToString(),
-        //                        UnitClssName = dr["UnitClssName"].ToString(),
-        //                        Weight = dr["Weight"].ToString(),
-        //                        UseYN = dr["UseYN"].ToString()
-        //                    };
-
-        //                    //if (int.Parse(ItemList.FromDate) <= int.Parse(DateTime.Today.ToString("yyyyMMdd"))
-        //                    //        && int.Parse(ItemList.ToDate) >= int.Parse(DateTime.Today.ToString("yyyyMMdd")))
-        //                    //{
-        //                    //    ItemList.UseYN = "Y";
-        //                    //}
-        //                    //else
-        //                    //{
-        //                    //    ItemList.UseYN = "N";
-        //                    //}
-
-        //                    ItemList.Qty = Lib.Instance.returnNumString(ItemList.Qty);
-        //                    ItemList.Weight = Lib.Instance.returnNumString(ItemList.Weight);
-        //                    ItemList.LossQty = Lib.Instance.returnNumString(ItemList.LossQty);
-        //                    ItemList.ScraptRate = Lib.Instance.returnNumString(ItemList.ScraptRate);
-
-        //                    ItemList.FromDate_CV = Lib.Instance.StrDateTimeBar(ItemList.FromDate);
-        //                    ItemList.ToDate_CV = Lib.Instance.StrDateTimeBar(ItemList.ToDate);
-        //                    ItemList.FirstColumnCV = ItemList.LvlPad + "(" + ItemList.ArticleID + ")" + ItemList.BuyerArticleNo;
-
-        //                    if (ItemList.LVL.Equals("1"))
-        //                    {
-        //                        mTreeViewItem = new TreeViewItem() { Header = ItemList, IsExpanded = true };
-        //                        if (mTreeViewItem != null) { tlvItemList.Items.Add(mTreeViewItem); }
-        //                        strOneParentArticleID = ItemList.ArticleID;
-        //                    }
-        //                    else
-        //                    {
-        //                        if (ItemList.PARENTArticleID == strOneParentArticleID)
-        //                        {
-        //                            mTreeViewItem0 = new TreeViewItem() { Header = ItemList, IsExpanded = true };
-        //                            if (mTreeViewItem0 != null) { mTreeViewItem.Items.Add(mTreeViewItem0); }
-        //                            strTwoParentArticleID = ItemList.ArticleID;
-        //                        }
-
-        //                        if (ItemList.PARENTArticleID == strTwoParentArticleID)
-        //                        {
-        //                            mTreeViewItem1 = new TreeViewItem() { Header = ItemList, IsExpanded = true };
-        //                            if (mTreeViewItem1 != null) { mTreeViewItem0.Items.Add(mTreeViewItem1); }
-        //                            strThreeParentArticleID = ItemList.ArticleID;
-        //                        }
-
-        //                        if (ItemList.PARENTArticleID == strThreeParentArticleID)
-        //                        {
-        //                            mTreeViewItem3 = new TreeViewItem() { Header = ItemList };
-        //                            if (mTreeViewItem3 != null) { mTreeViewItem1.Items.Add(mTreeViewItem3); }
-        //                            strFoursParentArticleID = ItemList.ArticleID;
-        //                        }
-
-        //                        if (ItemList.PARENTArticleID == strFoursParentArticleID)
-        //                        { 
-        //                            mTreeViewItem4 = new TreeViewItem() { Header = ItemList };
-        //                            if (mTreeViewItem4 != null) { mTreeViewItem3.Items.Add(mTreeViewItem4); }
-        //                        }
-        //                    }
-        //                }
-        //            }
-        //        }
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        MessageBox.Show("오류 발생, 오류 내용 : " + ex.ToString());
-        //    }
-        //}
-        #endregion
 
         #region 2020-02-11 신규 조회 FillGrid2()
 
@@ -871,6 +761,120 @@ namespace WizMes_ANT
         }
 
         #endregion
+        #region
+        //검색
+        private void FillGridExcel()
+        {
+            if (dgdExcel.Items.Count > 0)
+            {
+                dgdExcel.Items.Clear();
+            }
+
+            try
+            {
+                Dictionary<string, object> sqlParameter = new Dictionary<string, object>();
+                sqlParameter.Add("sArticleGrpID", chkArticleGrpSrh.IsChecked == true && cboArticleGrpSrh.SelectedValue != null ? cboArticleGrpSrh.SelectedValue.ToString() : "");
+                sqlParameter.Add("sArticleID", chkArticleSrh.IsChecked == true && txtArticleSrh.Tag != null ? txtArticleSrh.Tag.ToString() : "");
+                sqlParameter.Add("sDirection", strDirection);
+                sqlParameter.Add("sIncNotuse", chkNoUse.IsChecked == true ? 1 : 0);
+
+                DataSet ds = DataStore.Instance.ProcedureToDataSet_LogWrite("xp_Article_sArticleBOM", sqlParameter, true, "R");
+
+                if (ds != null && ds.Tables.Count > 0)
+                {
+                    DataTable dt = ds.Tables[0];
+                    int i = 0;
+
+                    //dataGrid.Items.Clear();e
+                    if (dt.Rows.Count == 0)
+                    {
+                        MessageBox.Show("조회된 데이터가 없습니다.");
+                    }
+                    else
+                    {
+                        DataRowCollection drc = dt.Rows;
+
+                        foreach (DataRow dr in drc)
+                        {
+                            i++;
+                            var WinExcel = new Win_com_ArticleBOM_ItemList()
+                            {
+                                Num = i,
+                                Article = dr["Article"].ToString(),
+                                ArticleID = dr["ArticleID"].ToString(),
+                                LVL = ConvertInt(dr["LVL"].ToString()),
+                                ArticleGrpID = dr["ArticleGrpID"].ToString(),
+                                ArticleP = dr["ArticleP"].ToString(),
+                                ChildBuyerArticleNO = dr["ChildBuyerArticleNO"].ToString(),
+                                ChildCnt = dr["ChildCnt"].ToString(),
+                                FromDate = dr["FromDate"].ToString(),
+                                LossPcntClss = dr["LossPcntClss"].ToString(),
+                                LossQty = dr["LossQty"].ToString(),
+                                LvlPad = dr["LvlPad"].ToString(),
+                                ord = dr["ord"].ToString(),
+                                PARENTArticleID = dr["PARENTArticleID"].ToString(),
+                                ParentArticleIDS = dr["ParentArticleIDS"].ToString(),
+                                ParentBuyerArticleNO = dr["ParentBuyerArticleNO"].ToString(),
+                                PcntClss = dr["PcntClss"].ToString(),
+                                Qty = dr["Qty"].ToString(),
+                                ScraptRate = dr["ScraptRate"].ToString(),
+                                ToDate = dr["ToDate"].ToString(),
+                                UnitClss = dr["UnitClss"].ToString(),
+                                UnitClssName = dr["UnitClssName"].ToString(),
+                                Weight = dr["Weight"].ToString(),
+                                UseYN = dr["UseYN"].ToString(),
+                                BuyerArticleNo = dr["BuyerArticleNo"].ToString()
+
+                            };
+                            //if ((item["cls"].ToString() != "3")
+                            //if (dr["LVL"].ToString() == "1")
+                            //{
+                            //    WinExcel.LVL1 = WinExcel.LVL; 
+
+                            //}
+                            //if (dr["LVL"].ToString() == "2")
+                            //{
+                            //    WinExcel.LVL2 = WinExcel.LVL;
+                            //}
+                            //if (dr["LVL"].ToString() == "3")
+                            //{
+                            //    WinExcel.LVL3 = WinExcel.LVL;
+                            //}
+                            //if (dr["LVL"].ToString() == "4")
+                            //{
+                            //    WinExcel.LVL4 = WinExcel.LVL;
+                            //}
+
+
+                            //WinExcel.LVL2
+                            //WinExcel.LVL3
+                            //WinExcel.LVL4
+
+                            WinExcel.Weight = Lib.Instance.returnNumString(WinExcel.Weight);
+                            WinExcel.LossQty = Lib.Instance.returnNumString(WinExcel.LossQty);
+                            WinExcel.ScraptRate = Lib.Instance.returnNumString(WinExcel.ScraptRate);
+
+                            WinExcel.FromDate_CV = Lib.Instance.StrDateTimeBar(WinExcel.FromDate);
+                            WinExcel.ToDate_CV = Lib.Instance.StrDateTimeBar(WinExcel.ToDate);
+
+
+                            dgdExcel.Items.Add(WinExcel);
+                            ovcArticleBom.Add(WinExcel);
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("오류 발생, 오류 내용 : " + ex.ToString());
+            }
+            finally
+            {
+                DataStore.Instance.CloseConnection();
+            }
+        }
+
+        #endregion
 
         private void TlvItemList_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
         {
@@ -885,7 +889,7 @@ namespace WizMes_ANT
                     this.DataContext = WinArticleBomList;
                     txtArticle.Tag = WinArticleBomList.ArticleID;
                     txtParentArticle.Tag = WinArticleBomList.PARENTArticleID;
-        
+
                     // ↑소요량 수정불가 현상을 위해 추가 2022.05.06 (프로시저 저장시 상위품명의 코드를 찾지 못해서 소요량 수정이 정상적으로 작동하지 않음 )
 
 
@@ -962,7 +966,7 @@ namespace WizMes_ANT
                         && txtArticle.Tag.ToString().Trim().Equals(txtParentArticle.Tag.ToString().Trim()))
                     {
                         txtParentArticle.Tag = "";
-              
+
 
                     }
 
@@ -981,7 +985,7 @@ namespace WizMes_ANT
                     sqlParameter.Add("UseYN", chkUseClss.IsChecked == true ? "N" : "Y");
 
 
- 
+
                     sqlParameter.Add("UserID", MainWindow.CurrentUser);
                     sqlParameter.Add("OutMsg", "");
 
@@ -1656,6 +1660,477 @@ namespace WizMes_ANT
                     parent.RaiseEvent(evtArg);
             }
         }
+
+        private void btnExcelUp_Click(object sender, RoutedEventArgs e)
+        {
+            // 인쇄 메서드
+            ContextMenu menu = btnExcel.ContextMenu;
+            menu.StaysOpen = true;
+            menu.IsOpen = true;
+        }
+
+        #region BOM 인쇄 메서드
+
+        // 미리보기
+        private void menuSeeAhead_Click(object sender, RoutedEventArgs e)
+        {
+            if (ovcArticleBom.Count < 1)
+            {
+                MessageBox.Show("해당 자료가 존재하지 않습니다.");
+                return;
+            }
+
+            msg.Show();
+            msg.Topmost = true;
+            msg.Refresh();
+
+            Lib.Instance.Delay(1000);
+
+            PrintWork(true);
+
+            msg.Visibility = Visibility.Hidden;
+        }
+
+        // 바로 인쇄
+        private void menuRightPrint_Click(object sender, RoutedEventArgs e)
+        {
+            if (ovcArticleBom.Count < 1)
+            {
+                MessageBox.Show("해당 자료가 존재하지 않습니다.");
+                return;
+            }
+            DataStore.Instance.InsertLogByForm(this.GetType().Name, "P");
+            msg.Show();
+            msg.Topmost = true;
+            msg.Refresh();
+
+            Lib.Instance.Delay(1000);
+
+            PrintWork(false);
+
+            msg.Visibility = Visibility.Hidden;
+        }
+        // 닫기
+        private void menuClose_Click(object sender, RoutedEventArgs e)
+        {
+            ContextMenu menu = btnExcel.ContextMenu;
+            menu.StaysOpen = false;
+            menu.IsOpen = false;
+        }
+
+        // 프린터 엑셀 작업
+        // 실제 엑셀작업
+        private void PrintWork(bool previewYN)
+        {
+            try
+            {
+
+                // 코드
+                // 상호
+                string ArticleID = "";
+                // 사업장 주소
+                string BuyerArticleNo = "";
+                // 성명
+                string Qty = "";
+                //자회사명
+                string UnitClssName = "";
+                //자회사 대표
+
+
+                var ArticleBom = dgdExcel.SelectedItem as Win_com_ArticleBOM_ItemList;
+
+                if (ArticleBom != null)
+                {
+
+                    //CustomName = ArticleBom.CustomName;
+                    //CustomChief = ArticleBom.CustomChief;
+                    //CustomAddr = ArticleBom.CustomAddr1 + " " + ArticleBom.CustomAddr2 + " " + ArticleBom.CustomAddr3;
+                    //kCompany = ArticleBom.kCompany;
+                    //Chief = ArticleBom.Chief;
+                }
+
+                excelapp = new Microsoft.Office.Interop.Excel.Application();
+
+
+                string MyBookPath = System.IO.Path.GetDirectoryName(System.Reflection.Assembly.GetEntryAssembly().Location) + "\\Report\\비오엠엑셀.xls";
+                workbook = excelapp.Workbooks.Add(MyBookPath);
+                worksheet = workbook.Sheets["Form"];
+                pastesheet = workbook.Sheets["Print"];
+
+                //// 거래일자는 어떻게 해야 하는가
+                //workrange = worksheet.get_Range("C5");
+                //workrange.Value2 = DateTime.Today.ToString("yyyy.MM.dd");
+
+                //// 상호
+                //workrange = worksheet.get_Range("G6");
+                //workrange.Value2 = CustomName;
+
+                //// 사업장 주소
+                //workrange = worksheet.get_Range("G8");
+                //workrange.Value2 = CustomAddr;
+
+                //// 성명
+                //workrange = worksheet.get_Range("G10");
+                //workrange.Value2 = CustomChief;
+
+                //// 회사명
+                //workrange = worksheet.get_Range("W8");
+                //workrange.Value2 = kCompany;
+
+                //workrange = worksheet.get_Range("AE8");
+                //workrange.Value2 = Chief;
+
+                // 페이지 계산 등
+                int rowCount = ovcArticleBom.Count;
+                int excelStartRow = 2;
+
+                // 총 데이터를 입력할수 있는 갯수
+                int totalDataInput = 350;
+
+                //// 카피할 다음페이지 인덱스
+                //int nextCopyLine = 380;
+
+
+                int copyLine = 0;
+                int Page = 0;
+                int PageAll = (int)Math.Ceiling(1.0 * rowCount / totalDataInput);
+                int DataCount = 0;
+
+
+
+
+                // 총 금액 계산하기
+                //double SumAmount = 0;
+
+                for (int k = 0; k < PageAll; k++)
+                {
+                    Page++;
+                    //copyLine = ((Page - 1) * (nextCopyLine - 1));
+                    //copyLine = ((Page - 1) * 37);
+
+                    int excelNum = 0;
+
+                    // 기존에 있는 데이터 지우기 "A7", "W41"
+                    worksheet.Range["A2", "P350"].EntireRow.ClearContents();
+
+
+                    for (int i = DataCount; i < rowCount; i++)
+                    {
+                        //11
+                        if (i == totalDataInput * Page)
+                        {
+                            break;
+                        }
+
+                        var OcArticleBom = ovcArticleBom[i];
+
+                        int excelRow = excelStartRow + excelNum;
+
+                        int excelRowStairTwo = excelStartRow + excelNum - 1;
+                        int excelRowStairThree = excelStartRow + excelNum - 2;
+                        int excelRowStairFour = excelStartRow + excelNum - 3;
+
+                        int Temp = ConvertInt(OcArticleBom.ChildCnt);
+                        int excelRowTest = excelStartRow + excelNum - Temp;
+
+
+
+                        if (OcArticleBom != null)
+                        {
+                            if (OcArticleBom.LVL == 1)
+                            {
+
+                                if (excelNum < 10)
+                                {
+                                    workrange = worksheet.get_Range("A" + excelRow);
+                                    workrange.Value2 = OcArticleBom.ArticleID;
+                                    workrange.Borders[Excel.XlBordersIndex.xlEdgeBottom].Weight = Excel.XlBorderWeight.xlThin;
+                                    workrange.Borders[Excel.XlBordersIndex.xlEdgeTop].Weight = Excel.XlBorderWeight.xlThin;
+
+                                    workrange = worksheet.get_Range("B" + excelRow);
+                                    workrange.Value2 = OcArticleBom.BuyerArticleNo;
+                                    workrange.Borders[Excel.XlBordersIndex.xlEdgeBottom].Weight = Excel.XlBorderWeight.xlThin;
+                                    workrange.Borders[Excel.XlBordersIndex.xlEdgeTop].Weight = Excel.XlBorderWeight.xlThin;
+                                    workrange = worksheet.get_Range("C" + excelRow);
+                                    workrange.Value2 = OcArticleBom.Qty;
+                                    workrange.Borders[Excel.XlBordersIndex.xlEdgeBottom].Weight = Excel.XlBorderWeight.xlThin;
+                                    workrange.Borders[Excel.XlBordersIndex.xlEdgeTop].Weight = Excel.XlBorderWeight.xlThin;
+                                    workrange = worksheet.get_Range("D" + excelRow);
+                                    workrange.Value2 = OcArticleBom.UnitClssName;
+                                    workrange.Borders[Excel.XlBordersIndex.xlEdgeBottom].Weight = Excel.XlBorderWeight.xlThin;
+                                    workrange.Borders[Excel.XlBordersIndex.xlEdgeTop].Weight = Excel.XlBorderWeight.xlThin;
+                                    workrange.Borders[Excel.XlBordersIndex.xlEdgeRight].Weight = Excel.XlBorderWeight.xlThin;
+                                }
+                                else
+                                {
+                                    workrange = worksheet.get_Range("A" + (excelRow - 1));
+                                    workrange.Value2 = OcArticleBom.ArticleID;
+                                    workrange.Borders[Excel.XlBordersIndex.xlEdgeBottom].Weight = Excel.XlBorderWeight.xlThin;
+                                    workrange.Borders[Excel.XlBordersIndex.xlEdgeTop].Weight = Excel.XlBorderWeight.xlThin;
+
+                                    workrange = worksheet.get_Range("B" + (excelRow - 1));
+                                    workrange.Value2 = OcArticleBom.BuyerArticleNo;
+                                    workrange.Borders[Excel.XlBordersIndex.xlEdgeBottom].Weight = Excel.XlBorderWeight.xlThin;
+                                    workrange.Borders[Excel.XlBordersIndex.xlEdgeTop].Weight = Excel.XlBorderWeight.xlThin;
+                                    workrange = worksheet.get_Range("C" + (excelRow - 1));
+                                    workrange.Value2 = OcArticleBom.Qty;
+                                    workrange.Borders[Excel.XlBordersIndex.xlEdgeBottom].Weight = Excel.XlBorderWeight.xlThin;
+                                    workrange.Borders[Excel.XlBordersIndex.xlEdgeTop].Weight = Excel.XlBorderWeight.xlThin;
+                                    workrange = worksheet.get_Range("D" + (excelRow - 1));
+                                    workrange.Value2 = OcArticleBom.UnitClssName;
+                                    workrange.Borders[Excel.XlBordersIndex.xlEdgeBottom].Weight = Excel.XlBorderWeight.xlThin;
+                                    workrange.Borders[Excel.XlBordersIndex.xlEdgeTop].Weight = Excel.XlBorderWeight.xlThin;
+                                    workrange.Borders[Excel.XlBordersIndex.xlEdgeRight].Weight = Excel.XlBorderWeight.xlThin;
+                                }
+                            }
+                            else if (OcArticleBom.LVL == 2)
+                            {
+                                if (excelNum < 10)
+                                {
+
+                                    workrange = worksheet.get_Range("E" + excelRowStairTwo);
+                                    workrange.Value2 = OcArticleBom.ArticleID;
+                                    workrange.Borders[Excel.XlBordersIndex.xlEdgeBottom].Weight = Excel.XlBorderWeight.xlThin;
+                                    workrange.Borders[Excel.XlBordersIndex.xlEdgeTop].Weight = Excel.XlBorderWeight.xlThin;
+                                    workrange.Borders[Excel.XlBordersIndex.xlEdgeLeft].Weight = Excel.XlBorderWeight.xlThin;
+
+                                    workrange = worksheet.get_Range("F" + excelRowStairTwo);
+                                    workrange.Value2 = OcArticleBom.BuyerArticleNo;
+                                    workrange.Borders[Excel.XlBordersIndex.xlEdgeBottom].Weight = Excel.XlBorderWeight.xlThin;
+                                    workrange.Borders[Excel.XlBordersIndex.xlEdgeTop].Weight = Excel.XlBorderWeight.xlThin;
+                                    workrange = worksheet.get_Range("G" + excelRowStairTwo);
+                                    workrange.Value2 = OcArticleBom.Qty;
+                                    workrange.Borders[Excel.XlBordersIndex.xlEdgeBottom].Weight = Excel.XlBorderWeight.xlThin;
+                                    workrange.Borders[Excel.XlBordersIndex.xlEdgeTop].Weight = Excel.XlBorderWeight.xlThin;
+                                    workrange = worksheet.get_Range("H" + excelRowStairTwo);
+                                    workrange.Value2 = OcArticleBom.UnitClssName;
+                                    workrange.Borders[Excel.XlBordersIndex.xlEdgeBottom].Weight = Excel.XlBorderWeight.xlThin;
+                                    workrange.Borders[Excel.XlBordersIndex.xlEdgeTop].Weight = Excel.XlBorderWeight.xlThin;
+                                    workrange.Borders[Excel.XlBordersIndex.xlEdgeRight].Weight = Excel.XlBorderWeight.xlThin;
+                                }
+
+                                else
+                                {
+                                    workrange = worksheet.get_Range("E" + (excelRowStairTwo - 1));
+                                    workrange.Value2 = OcArticleBom.ArticleID;
+                                    workrange.Borders[Excel.XlBordersIndex.xlEdgeBottom].Weight = Excel.XlBorderWeight.xlThin;
+                                    workrange.Borders[Excel.XlBordersIndex.xlEdgeTop].Weight = Excel.XlBorderWeight.xlThin;
+                                    workrange.Borders[Excel.XlBordersIndex.xlEdgeLeft].Weight = Excel.XlBorderWeight.xlThin;
+
+                                    workrange = worksheet.get_Range("F" + (excelRowStairTwo - 1));
+                                    workrange.Value2 = OcArticleBom.BuyerArticleNo;
+                                    workrange.Borders[Excel.XlBordersIndex.xlEdgeBottom].Weight = Excel.XlBorderWeight.xlThin;
+                                    workrange.Borders[Excel.XlBordersIndex.xlEdgeTop].Weight = Excel.XlBorderWeight.xlThin;
+                                    workrange = worksheet.get_Range("G" + (excelRowStairTwo - 1));
+                                    workrange.Value2 = OcArticleBom.Qty;
+                                    workrange.Borders[Excel.XlBordersIndex.xlEdgeBottom].Weight = Excel.XlBorderWeight.xlThin;
+                                    workrange.Borders[Excel.XlBordersIndex.xlEdgeTop].Weight = Excel.XlBorderWeight.xlThin;
+                                    workrange = worksheet.get_Range("H" + (excelRowStairTwo - 1));
+                                    workrange.Value2 = OcArticleBom.UnitClssName;
+                                    workrange.Borders[Excel.XlBordersIndex.xlEdgeBottom].Weight = Excel.XlBorderWeight.xlThin;
+                                    workrange.Borders[Excel.XlBordersIndex.xlEdgeTop].Weight = Excel.XlBorderWeight.xlThin;
+                                    workrange.Borders[Excel.XlBordersIndex.xlEdgeRight].Weight = Excel.XlBorderWeight.xlThin;
+                                }
+
+
+                            }
+                            else if (OcArticleBom.LVL == 3)
+                            {
+                                if (excelNum < 10)
+                                {
+
+                                    workrange = worksheet.get_Range("I" + excelRowStairThree);
+                                    workrange.Value2 = OcArticleBom.ArticleID;
+                                    workrange.Borders[Excel.XlBordersIndex.xlEdgeBottom].Weight = Excel.XlBorderWeight.xlThin;
+                                    workrange.Borders[Excel.XlBordersIndex.xlEdgeTop].Weight = Excel.XlBorderWeight.xlThin;
+                                    workrange.Borders[Excel.XlBordersIndex.xlEdgeLeft].Weight = Excel.XlBorderWeight.xlThin;
+
+                                    workrange = worksheet.get_Range("J" + excelRowStairThree);
+                                    workrange.Value2 = OcArticleBom.BuyerArticleNo;
+                                    workrange.Borders[Excel.XlBordersIndex.xlEdgeBottom].Weight = Excel.XlBorderWeight.xlThin;
+                                    workrange.Borders[Excel.XlBordersIndex.xlEdgeTop].Weight = Excel.XlBorderWeight.xlThin;
+                                    workrange = worksheet.get_Range("K" + excelRowStairThree);
+                                    workrange.Value2 = OcArticleBom.Qty;
+                                    workrange.Borders[Excel.XlBordersIndex.xlEdgeBottom].Weight = Excel.XlBorderWeight.xlThin;
+                                    workrange.Borders[Excel.XlBordersIndex.xlEdgeTop].Weight = Excel.XlBorderWeight.xlThin;
+                                    workrange = worksheet.get_Range("L" + excelRowStairThree);
+                                    workrange.Value2 = OcArticleBom.UnitClssName;
+                                    workrange.Borders[Excel.XlBordersIndex.xlEdgeBottom].Weight = Excel.XlBorderWeight.xlThin;
+                                    workrange.Borders[Excel.XlBordersIndex.xlEdgeTop].Weight = Excel.XlBorderWeight.xlThin;
+                                    workrange.Borders[Excel.XlBordersIndex.xlEdgeRight].Weight = Excel.XlBorderWeight.xlThin;
+                                }
+
+                                else
+                                {
+                                    workrange = worksheet.get_Range("I" + (excelRowStairThree - 1));
+                                    workrange.Value2 = OcArticleBom.ArticleID;
+                                    workrange.Borders[Excel.XlBordersIndex.xlEdgeBottom].Weight = Excel.XlBorderWeight.xlThin;
+                                    workrange.Borders[Excel.XlBordersIndex.xlEdgeTop].Weight = Excel.XlBorderWeight.xlThin;
+                                    workrange.Borders[Excel.XlBordersIndex.xlEdgeLeft].Weight = Excel.XlBorderWeight.xlThin;
+
+                                    workrange = worksheet.get_Range("J" + (excelRowStairThree - 1));
+                                    workrange.Value2 = OcArticleBom.BuyerArticleNo;
+                                    workrange.Borders[Excel.XlBordersIndex.xlEdgeBottom].Weight = Excel.XlBorderWeight.xlThin;
+                                    workrange.Borders[Excel.XlBordersIndex.xlEdgeTop].Weight = Excel.XlBorderWeight.xlThin;
+                                    workrange = worksheet.get_Range("K" + (excelRowStairThree - 1));
+                                    workrange.Value2 = OcArticleBom.Qty;
+                                    workrange.Borders[Excel.XlBordersIndex.xlEdgeBottom].Weight = Excel.XlBorderWeight.xlThin;
+                                    workrange.Borders[Excel.XlBordersIndex.xlEdgeTop].Weight = Excel.XlBorderWeight.xlThin;
+                                    workrange = worksheet.get_Range("L" + (excelRowStairThree - 1));
+                                    workrange.Value2 = OcArticleBom.UnitClssName;
+                                    workrange.Borders[Excel.XlBordersIndex.xlEdgeBottom].Weight = Excel.XlBorderWeight.xlThin;
+                                    workrange.Borders[Excel.XlBordersIndex.xlEdgeTop].Weight = Excel.XlBorderWeight.xlThin;
+                                    workrange.Borders[Excel.XlBordersIndex.xlEdgeRight].Weight = Excel.XlBorderWeight.xlThin;
+                                }
+                            }
+                            else if (OcArticleBom.LVL == 4)
+                            {
+                                if (excelNum < 10)
+                                {
+
+                                    workrange = worksheet.get_Range("M" + excelRowStairFour);
+                                    workrange.Value2 = OcArticleBom.ArticleID;
+                                    workrange.Borders[Excel.XlBordersIndex.xlEdgeBottom].Weight = Excel.XlBorderWeight.xlThin;
+                                    workrange.Borders[Excel.XlBordersIndex.xlEdgeTop].Weight = Excel.XlBorderWeight.xlThin;
+                                    workrange.Borders[Excel.XlBordersIndex.xlEdgeLeft].Weight = Excel.XlBorderWeight.xlThin;
+
+                                    workrange = worksheet.get_Range("N" + excelRowStairFour);
+                                    workrange.Value2 = OcArticleBom.BuyerArticleNo;
+                                    workrange.Borders[Excel.XlBordersIndex.xlEdgeBottom].Weight = Excel.XlBorderWeight.xlThin;
+                                    workrange.Borders[Excel.XlBordersIndex.xlEdgeTop].Weight = Excel.XlBorderWeight.xlThin;
+                                    workrange = worksheet.get_Range("O" + excelRowStairFour);
+                                    workrange.Value2 = OcArticleBom.Qty;
+                                    workrange.Borders[Excel.XlBordersIndex.xlEdgeBottom].Weight = Excel.XlBorderWeight.xlThin;
+                                    workrange.Borders[Excel.XlBordersIndex.xlEdgeTop].Weight = Excel.XlBorderWeight.xlThin;
+                                    workrange = worksheet.get_Range("P" + excelRowStairFour);
+                                    workrange.Value2 = OcArticleBom.UnitClssName;
+                                    workrange.Borders[Excel.XlBordersIndex.xlEdgeBottom].Weight = Excel.XlBorderWeight.xlThin;
+                                    workrange.Borders[Excel.XlBordersIndex.xlEdgeTop].Weight = Excel.XlBorderWeight.xlThin;
+                                    workrange.Borders[Excel.XlBordersIndex.xlEdgeRight].Weight = Excel.XlBorderWeight.xlThin;
+
+                                }
+                                else
+                                {
+                                    workrange = worksheet.get_Range("M" + (excelRowStairFour - 1));
+                                    workrange.Value2 = OcArticleBom.ArticleID;
+                                    workrange.Borders[Excel.XlBordersIndex.xlEdgeBottom].Weight = Excel.XlBorderWeight.xlThin;
+                                    workrange.Borders[Excel.XlBordersIndex.xlEdgeTop].Weight = Excel.XlBorderWeight.xlThin;
+                                    workrange.Borders[Excel.XlBordersIndex.xlEdgeLeft].Weight = Excel.XlBorderWeight.xlThin;
+
+                                    workrange = worksheet.get_Range("N" + (excelRowStairFour - 1));
+                                    workrange.Value2 = OcArticleBom.BuyerArticleNo;
+                                    workrange.Borders[Excel.XlBordersIndex.xlEdgeBottom].Weight = Excel.XlBorderWeight.xlThin;
+                                    workrange.Borders[Excel.XlBordersIndex.xlEdgeTop].Weight = Excel.XlBorderWeight.xlThin;
+                                    workrange = worksheet.get_Range("O" + (excelRowStairFour - 1));
+                                    workrange.Value2 = OcArticleBom.Qty;
+                                    workrange.Borders[Excel.XlBordersIndex.xlEdgeBottom].Weight = Excel.XlBorderWeight.xlThin;
+                                    workrange.Borders[Excel.XlBordersIndex.xlEdgeTop].Weight = Excel.XlBorderWeight.xlThin;
+                                    workrange = worksheet.get_Range("P" + (excelRowStairFour - 1));
+                                    workrange.Value2 = OcArticleBom.UnitClssName;
+                                    workrange.Borders[Excel.XlBordersIndex.xlEdgeBottom].Weight = Excel.XlBorderWeight.xlThin;
+                                    workrange.Borders[Excel.XlBordersIndex.xlEdgeTop].Weight = Excel.XlBorderWeight.xlThin;
+                                    workrange.Borders[Excel.XlBordersIndex.xlEdgeRight].Weight = Excel.XlBorderWeight.xlThin;
+                                }
+
+
+                            }
+
+                        }
+
+
+                        //workrange.Borders[Excel.XlBordersIndex.xlEdgeTop].Weight = Excel.XlBorderWeight.xlThin;
+                        //workrange.Borders[Excel.XlBordersIndex.xlEdgeBottom].Weight = Excel.XlBorderWeight.xlThin;
+
+                        excelNum++;
+                        DataCount = i;
+                    }
+
+
+                    // 2장 이상 넘어가면 페이지 넘버 입력
+                    //if (PageAll > 1)
+                    //{
+                    //    pastesheet.PageSetup.CenterFooter = "&P / &N";
+                    //}
+
+                    //Form 시트 내용 Print 시트에 복사 붙여넣기
+                    worksheet.Select();
+                    worksheet.UsedRange.EntireRow.Copy();
+                    pastesheet.Select();
+                    workrange = pastesheet.Cells[copyLine + 1, 1];
+                    workrange.Select();
+                    pastesheet.Paste();
+
+
+                    DataCount++;
+                }
+
+                //// 총금액 입력하기 : 10, 50, 90
+                //for (int i = 0; i < PageAll; i++)
+                //{
+                //    int sumAmount_Index = 10 + (40 * i);
+
+                //    workrange = pastesheet.get_Range("E" + sumAmount_Index);
+                //    workrange.Value2 = SumAmount;
+                //}
+
+                pastesheet.UsedRange.EntireRow.Select();
+
+                //
+                excelapp.Visible = true;
+                msg.Hide();
+
+                if (previewYN == true)
+                {
+                    pastesheet.PrintPreview();
+                }
+                else
+                {
+                    pastesheet.PrintOutEx();
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+            finally
+            {
+                // Clean up 백그라운드에서 엑셀을 지우자 - 달달
+
+                ReleaseExcelObject(workbook);
+                ReleaseExcelObject(worksheet);
+                ReleaseExcelObject(pastesheet);
+                ReleaseExcelObject(workrange);
+                ReleaseExcelObject(excelapp);
+
+
+            }
+        }
+        //엑셀 백그라운드 증발 - 달달
+        private static void ReleaseExcelObject(object obj)
+        {
+            try
+            {
+                if (obj != null)
+                {
+                    Marshal.ReleaseComObject(obj);
+                    obj = null;
+                }
+            }
+            catch (Exception ex)
+            {
+                obj = null;
+                throw ex;
+            }
+            finally
+            {
+                GC.Collect();
+            }
+        }
+
+
+        #endregion // 거래명세서 인쇄 메서드
+
+
     }
 
     class Win_com_ArticleBOM_ItemList : BaseView
@@ -1702,6 +2177,11 @@ namespace WizMes_ANT
         public string BuyerArticleNo { get; set; }
 
         public string FirstColumnCV2 { get; set; }
+
+        public int LVL1 { get; set; }
+        public int LVL2 { get; set; }
+        public int LVL3 { get; set; }
+        public int LVL4 { get; set; }
 
         //public string SubArticleID { get; set; }
         //public string SubArticleName { get; set; }

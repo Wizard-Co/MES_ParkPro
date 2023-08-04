@@ -212,11 +212,19 @@
                             <TextBlock Text="{Binding Source={StaticResource tblCancle},Mode=OneWay,Path=Text}" VerticalAlignment="Center"/>
                         </StackPanel>
                     </Button>
-                    <Button x:Name="btnExcel" Grid.Column="3" Margin="1" Click="btnExcel_Click" Visibility="Hidden">
+                    <Button x:Name="btnExcel" Grid.Column="3" Margin="1" Click="btnExcelUp_Click" Visibility="Visible">
                         <StackPanel Orientation="Horizontal">
                             <Image Source="{DynamicResource btiExcel}" Style="{DynamicResource imgSize}" VerticalAlignment="Center"/>
                             <TextBlock Text="{Binding Source={StaticResource tblExcel},Mode=OneWay,Path=Text}" VerticalAlignment="Center"/>
                         </StackPanel>
+                        <Button.ContextMenu>
+                            <ContextMenu>
+                                <MenuItem Header="미리보기" Click="menuSeeAhead_Click" ></MenuItem>
+                                <MenuItem Header="바로인쇄" Click="menuRightPrint_Click" ></MenuItem>
+                                <MenuItem Header="닫   기" Click="menuClose_Click" ></MenuItem>
+                            </ContextMenu>
+                        </Button.ContextMenu>
+                        
                     </Button>
                 </Grid>
 
@@ -461,7 +469,7 @@
                                 </Label>
 
 
-                         
+
 
 
 
@@ -594,7 +602,32 @@
                                         <TextBlock Text="조회" Margin="7" />
                                     </Button>
                                 </Grid>
-                                <DataGrid x:Name="dgdArticleP" Grid.Row="3" Margin="1" Style="{StaticResource DataGridSet1}"
+                                <DataGrid x:Name="dgdExcel"  Grid.Row="3"  Margin="1"  IsReadOnly="True" Style="{DynamicResource DataGridSet1}" Visibility="Hidden">
+
+                                    <DataGrid.Columns>
+                                        <DataGridTextColumn x:Name="Lv1" Header="LVL1" Binding="{Binding LVL1}" Width="auto" />
+
+                                        <DataGridTextColumn Header="품명코드" Binding="{Binding ArticleID}" Width="auto" />
+                                        <DataGridTextColumn x:Name="Lv2" Header="LVL2" Binding="{Binding LVL2}" Width="auto" />
+                                        <DataGridTextColumn Header="품명코드" Binding="{Binding ArticleID}" Width="auto" />
+                                        <DataGridTextColumn x:Name="Lv3" Header="LVL3" Binding="{Binding LVL3}" Width="auto" />
+                                        <DataGridTextColumn Header="품명코드" Binding="{Binding ArticleID}" Width="auto" />
+                                        <DataGridTextColumn x:Name="Lv4" Header="LVL4" Binding="{Binding LVL4}" Width="auto" />
+                                        <DataGridTextColumn Header="품명코드" Binding="{Binding ArticleID}" Width="auto" />
+                                        
+                                        
+                                        <!--<DataGridTextColumn Header="품번" Binding="{Binding ChildBuyerArticleNO}" Width="*"  />
+                                        <DataGridTextColumn Header="품명" Binding="{Binding Article}" Width="*"/>
+                                        <DataGridTextColumn Header="소요량" Binding="{Binding Qty, StringFormat=N0}" Width="*"/>
+                                        <DataGridTextColumn Header="단위" Binding="{Binding UnitClssName}" Width="*"/>
+                                        <DataGridTextColumn Header="중량" Binding="{Binding Weight, StringFormat=N0}" Width="*"/>
+                                        <DataGridTextColumn Header="스크랩발생률" Binding="{Binding ScraptRate, StringFormat=N0}" Width="*"/>
+                                        <DataGridTextColumn Header="적용시작일" Binding="{Binding FromDate_CV}" Width="*"/>
+                                        <DataGridTextColumn Header="적용종료일" Binding="{Binding ToDate_CV}" Width="*"/>-->
+                                        <!--<DataGridTextColumn Header="FirstColumnCV" Binding="{Binding Article}" Width="*"/>-->
+                                    </DataGrid.Columns>
+                                </DataGrid>
+                                <DataGrid x:Name="dgdArticleP" Grid.Row="3" Margin="1" Style="{StaticResource DataGridSet1}" Visibility="Visible"
                                           SelectionChanged="DgdArticleP_SelectionChanged">
                                     <DataGrid.RowStyle>
                                         <Style TargetType="DataGridRow">
