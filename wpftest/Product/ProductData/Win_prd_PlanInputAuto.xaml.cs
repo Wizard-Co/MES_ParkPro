@@ -1,13 +1,12 @@
 ﻿/**
  * 
- * @details 주간생산계획 작성
- * @author 정승학
- * @date 2019-07-30
+ * @details 생산계획편성 작성
+ * @author 김수정
+ * @date 
  * @version 1.0
  * 
  * @section MODIFYINFO 수정정보
  * - 수정일        - 수정자       : 수정내역
- * - 2000-01-01    - 정승학       : -----
  * 
  * 
  * */

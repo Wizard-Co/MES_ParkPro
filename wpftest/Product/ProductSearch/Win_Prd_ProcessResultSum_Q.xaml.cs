@@ -756,9 +756,9 @@ namespace WizMes_ANT
                                 
                             };
 
-                            if (WinA.cls.Trim().Equals("3")) // 공정계
+                            if (WinA.cls.Trim().Equals("3")) // 품명계
                             {
-                                WinA.BuyerArticleNo = "공정계";
+                                WinA.BuyerArticleNo = "품명계";
                                 dgdByArticle.Items.Add(WinA);
                             }
                             else if (WinA.cls.Trim().Equals("9")) // 총계
