@@ -1,7 +1,10 @@
-﻿using System;
+﻿using MahApps.Metro.Controls;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Data;
+using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading;
@@ -17,6 +20,7 @@ using System.Windows.Shapes;
 using WizMes_ANT.PopUp;
 using WizMes_ANT.PopUP;
 using WPF.MDI;
+using static System.Net.WebRequestMethods;
 
 namespace WizMes_ANT
 {
@@ -43,6 +47,17 @@ namespace WizMes_ANT
         // 수정 후 찾아가기 위한 변수!
         string ProcessIDS = "";
         string MachineIDS = "";
+
+        //FTP 활용모음
+        string strImagePath = string.Empty;
+        string strFullPath = string.Empty;
+        string strDelFileName = string.Empty;
+        List<string[]> listFtpFile = new List<string[]>();
+        string FTP_ADDRESS = "ftp://" + LoadINI.FileSvr + ":" + LoadINI.FTPPort + LoadINI.FtpImagePath + "/";
+        string ForderName = "ProdGoal";
+        private FTP_EX _ftp = null;
+        private const string FTP_ID = "wizuser";
+        private const string FTP_PASS = "wiz9999";
 
         public Win_prd_MCArticleRunningGoal_U()
         {
@@ -723,6 +738,8 @@ namespace WizMes_ANT
                                 CT = stringFormatN1(dr["CT"]),
                                 AutoPassive = dr["AutoPassive"].ToString(),
                                 AutoPassiveName = dr["AutoPassiveName"].ToString(),
+                                ImageFile = dr["ImageFile"].ToString(),
+                                ImageFilePath = dr["ImageFilePath"].ToString()
                             };
 
                             dgdSub.Items.Add(WinSub);
@@ -854,7 +871,8 @@ namespace WizMes_ANT
                                 sqlParameter.Add("CT", ConvertDouble(WinSub.CT));
                                 sqlParameter.Add("AutoPassive", cboAutoPassive.SelectedValue != null ? cboAutoPassive.SelectedValue.ToString() : "");
                                 sqlParameter.Add("nProcessAllYN", chkProcessAll.IsChecked == true ? 1 : 0);
-
+                                sqlParameter.Add("ImageFile", WinSub.ImageFile);
+                                sqlParameter.Add("ImageFilePath", !WinSub.ImageFilePath.Equals("") ? "/ImageData/" + ForderName + "/" + txtYYYY.Text + "/" : "");
                                 sqlParameter.Add("CreateUserID", MainWindow.CurrentUser);
 
                                 Procedure pro1 = new Procedure();
@@ -865,6 +883,14 @@ namespace WizMes_ANT
 
                                 Prolist.Add(pro1);
                                 ListParameter.Add(sqlParameter);
+
+                                if (!WinSub.ImageFile.Replace(" ", "").Equals(""))
+                                {
+                                    string[] FtpFilePathAndName = new string[2];
+                                    FtpFilePathAndName[0] = WinSub.ImageFile;
+                                    FtpFilePathAndName[1] = WinSub.ImageFilePath;
+                                    listFtpFile.Add(FtpFilePathAndName);
+                                }
                             }
                         }
 
@@ -882,6 +908,16 @@ namespace WizMes_ANT
                         }
                     }
 
+                    if (flag)
+                    {
+                        if (listFtpFile.Count > 0)
+                        {
+                            FTP_Save_File(listFtpFile, txtYYYY.Text.ToString());
+                        }
+                    } 
+
+                    listFtpFile.Clear();
+
                     #endregion
                 }
             }
@@ -896,6 +932,88 @@ namespace WizMes_ANT
 
             return flag;
         }
+
+        private void FTP_Save_File(List<string[]> listStrArrayFileInfo, string MakeFolderName)
+        {
+            _ftp = new FTP_EX(FTP_ADDRESS, FTP_ID, FTP_PASS);
+
+            List<string[]> UpdateFilesInfo = new List<string[]>();
+            string[] fileListSimple;
+            string[] fileListDetail = null;
+            fileListSimple = _ftp.directoryListSimple("", Encoding.Default);
+
+            // 기존 폴더 확인작업.
+            bool MakeFolder = false;
+            MakeFolder = FolderInfoAndFlag(fileListSimple, MakeFolderName);
+
+
+            if (MakeFolder == false)        // 같은 아이를 찾지 못한경우,
+            {
+                if (_ftp.createDirectory("ProdGoal") == false)
+                {
+                    MessageBox.Show("업로드를 위한 폴더를 생성할 수 없습니다.");
+                    return;
+                }
+
+                //MIL 폴더에 InspectionID로 저장
+                if (_ftp.createDirectory(MakeFolderName) == false)
+                {
+                    MessageBox.Show("업로드를 위한 폴더를 생성할 수 없습니다.");
+                    return;
+                }
+            }
+            else
+            {
+                fileListDetail = _ftp.directoryListSimple(MakeFolderName, Encoding.Default);
+            }
+
+            for (int i = 0; i < listStrArrayFileInfo.Count; i++)
+            {
+                bool flag = true;
+
+                if (fileListDetail != null)
+                {
+                    foreach (string compare in fileListDetail)
+                    {
+                        if (compare.Equals(listStrArrayFileInfo[i][0]))
+                        {
+                            flag = false;
+                            break;
+                        }
+                    }
+                }
+
+                if (flag)
+                {
+                    listStrArrayFileInfo[i][0] = MakeFolderName + "/" + listStrArrayFileInfo[i][0];
+                    UpdateFilesInfo.Add(listStrArrayFileInfo[i]);
+                }
+            }
+
+            if (!_ftp.UploadTempFilesToFTP(UpdateFilesInfo))
+            {
+                MessageBox.Show("파일업로드에 실패하였습니다.");
+                return;
+            }
+        }
+
+        /// <summary>
+        /// 해당영역에 폴더가 있는지 확인
+        /// </summary>
+        bool FolderInfoAndFlag(string[] strFolderList, string FolderName)
+        {
+            bool flag = false;
+            foreach (string FolderList in strFolderList)
+            {
+                if (FolderList == FolderName)
+                {
+                    flag = true;
+                    break;
+                }
+            }
+            return flag;
+        }
+
         #endregion
 
         #region 입력 체크
@@ -961,7 +1079,7 @@ namespace WizMes_ANT
             int colCountOne = dgdSub.Columns.IndexOf(dgdtpeBuyArticleNo);
             int colCountTwo = dgdSub.Columns.IndexOf(dgdtpeArticle);
             int colCountThree = dgdSub.Columns.IndexOf(dgdtpeGoalRunRate);
-            int colCountFour = dgdSub.Columns.IndexOf(dgdtpeAutoPassive);
+            int colCountFour = dgdSub.Columns.IndexOf(dgdtpeImage);
             int colCount = dgdSub.Columns.IndexOf(dgdSub.CurrentCell.Column);
 
             if (e.Key == Key.Enter)
@@ -1033,7 +1151,7 @@ namespace WizMes_ANT
                 if (cell.Column == dgdtpeBuyArticleNo
                     || cell.Column == dgdtpeArticle
                     || cell.Column == dgdtpeGoalRunRate
-                    || cell.Column == dgdtpeAutoPassive)
+                    || cell.Column == dgdtpeImage)
                 {
                     cell.IsEditing = true;
                 }
@@ -1171,6 +1289,103 @@ namespace WizMes_ANT
             }
         }
 
+        private void dgdtpetxtImage_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (lblMsg.Visibility == Visibility.Visible)
+            {
+
+                if (e.Key == Key.Enter)
+                {
+                    WinMachineGoal = dgdSub.CurrentItem as Win_prd_MCRunningGoal_U_Sub_CodeView;
+
+                    if (WinMachineGoal != null)
+                    {
+                        if (!WinMachineGoal.ImageFile.Trim().Equals(string.Empty) && strFlag.Equals("U"))
+                        {
+                            MessageBox.Show("먼저 해당파일의 삭제를 진행 후 진행해주세요.");
+                            return;
+                        }
+                        else
+                        {
+                            FTP_Upload_TextBox(sender as TextBox);
+                        }
+                    }
+                }
+            }
+        }
+
+        private void FTP_Upload_TextBox(TextBox textBox)
+        {
+            if (!textBox.Text.Equals(string.Empty) && strFlag.Equals("U"))
+            {
+                MessageBox.Show("먼저 해당파일의 삭제를 진행 후 진행해주세요.");
+                return;
+            }
+            else
+            {
+                Microsoft.Win32.OpenFileDialog OFdlg = new Microsoft.Win32.OpenFileDialog();
+                //OFdlg.Filter = "Image files (*.jpg, *.jpeg, *.jpe, *.jfif, *.png, *.pcx, *.pdf) | *.jpg; *.jpeg; *.jpe; *.jfif; *.png; *.pcx; *.pdf | All Files|*.*";
+                //OFdlg.Filter = "Image files (*.jpg, *.jpeg, *.jpe, *.jfif, *.png) | *.jpg; *.jpeg; *.jpe; *.jfif; *.png;";
+                OFdlg.Filter = MainWindow.OFdlg_Filter;
+
+                Nullable<bool> result = OFdlg.ShowDialog();
+                if (result == true)
+                {
+                    strFullPath = OFdlg.FileName;
+
+                    string ImageFileName = OFdlg.SafeFileName;  //명.
+                    string ImageFilePath = string.Empty;       // 경로
+
+                    ImageFilePath = strFullPath.Replace(ImageFileName, "");
+
+                    StreamReader sr = new StreamReader(OFdlg.FileName);
+                    long FileSize = sr.BaseStream.Length;
+                    if (sr.BaseStream.Length > (2048 * 1000))
+                    {
+                        //업로드 파일 사이즈범위 초과
+                        MessageBox.Show("이미지의 파일사이즈가 2M byte를 초과하였습니다.");
+                        sr.Close();
+                        return;
+                    }
+                    else
+                    {
+                        textBox.Text = ImageFileName;
+                        textBox.Tag = ImageFilePath;
+
+                        Bitmap image = new Bitmap(ImageFilePath + ImageFileName);
+
+                        var Hoit = textBox.DataContext as Win_prd_MCRunningGoal_U_Sub_CodeView;
+                        Hoit.ImageView = BitmapToImageSource(image);
+                        Hoit.imageFlag = true;
+                        //MessageBox.Show(Hoit.McInspectBasisID);
+
+                        //imgSetting.Source = BitmapToImageSource(image);
+
+                        string[] strTemp = new string[] { ImageFileName, ImageFilePath.ToString() };
+                        listFtpFile.Add(strTemp);
+                    }
+                }
+            }
+        }
+
+
+        // 비트맵을 비트맵 이미지로 형태변환시키기.<0823 허윤구> 
+        BitmapImage BitmapToImageSource(Bitmap bitmap)
+        {
+            using (MemoryStream memory = new MemoryStream())
+            {
+                bitmap.Save(memory, System.Drawing.Imaging.ImageFormat.Bmp);
+                memory.Position = 0;
+                BitmapImage bitmapimage = new BitmapImage();
+                bitmapimage.BeginInit();
+                bitmapimage.StreamSource = memory;
+                bitmapimage.CacheOption = BitmapCacheOption.OnLoad;
+                bitmapimage.EndInit();
+
+                return bitmapimage;
+            }
+        }
+
 
         #endregion
 
@@ -1191,6 +1406,8 @@ namespace WizMes_ANT
                 BuyerArticleNo = "",
                 AutoPassive = "",
                 AutoPassiveName = "",
+                ImageFile ="",
+                ImageFilePath = "",
             };
 
             lstMG.Add(MCRunningGoal);
@@ -1536,6 +1753,11 @@ namespace WizMes_ANT
             //    }
             //}
         }
+
+        private void btnSeeImage_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 
 
@@ -1566,6 +1788,10 @@ namespace WizMes_ANT
         public string CT { get; set; }
         public string AutoPassive { get; set; }
         public string AutoPassiveName { get; set; }
+        public string ImageFile { get; set; }
+        public string ImageFilePath { get; set; }
+        public bool imageFlag { get; set; }
+        public BitmapImage ImageView { get; set; }
     }
     #endregion
 }

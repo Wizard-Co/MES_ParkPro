@@ -225,7 +225,6 @@
                             </DataTemplate>
                         </DataGridTemplateColumn.CellTemplate>
                     </DataGridTemplateColumn>
-
                     <DataGridTemplateColumn Header="호기" SortMemberPath="MachineNo" Width="auto">
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
@@ -233,63 +232,164 @@
                             </DataTemplate>
                         </DataGridTemplateColumn.CellTemplate>
                     </DataGridTemplateColumn>
-
-                    <!-- 품명코드 -->
-                    <DataGridTemplateColumn Header="합격수량" SortMemberPath="WorkQty" Width="auto">
+                    <DataGridTemplateColumn Header="사출압력1" Width="auto">
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
-                                <TextBlock Text="{Binding WorkQty, StringFormat= '#,###.##'}" TextAlignment="Right" Padding="5 0 3 0"/>
+                                <TextBlock Text="{Binding Sachul1Pressure, StringFormat= '#,###.##'}" TextAlignment="Right" ></TextBlock>
                             </DataTemplate>
                         </DataGridTemplateColumn.CellTemplate>
                     </DataGridTemplateColumn>
-
-                    <DataGridTemplateColumn Header="불량수량" Width="auto">
+                    <DataGridTemplateColumn Header="사출압력2" Width="auto">
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
-                                <TextBlock Text="{Binding DefectQty, StringFormat= '#,###.##'}" TextAlignment="Right" ></TextBlock>
+                                <TextBlock Text="{Binding Sachul2Pressure, StringFormat= '#,###.##'}" TextAlignment="Right" ></TextBlock>
                             </DataTemplate>
                         </DataGridTemplateColumn.CellTemplate>
                     </DataGridTemplateColumn>
-                    <!--d-->
-                    <DataGridTemplateColumn Header="사출압력" Width="auto">
+                    <DataGridTemplateColumn Header="사출압력3" Width="auto">
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
-                                <TextBlock Text="{Binding SachulPressure, StringFormat= '#,###.##'}" TextAlignment="Right" ></TextBlock>
+                                <TextBlock Text="{Binding Sachul3Pressure, StringFormat= '#,###.##'}" TextAlignment="Right" ></TextBlock>
                             </DataTemplate>
                         </DataGridTemplateColumn.CellTemplate>
                     </DataGridTemplateColumn>
-                    <DataGridTemplateColumn Header="사출속도" Width="auto">
+                    <DataGridTemplateColumn Header="사출압력4" Width="auto">
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
-                                <TextBlock Text="{Binding SachulSpeed, StringFormat= '#,###.##'}" TextAlignment="Right" ></TextBlock>
+                                <TextBlock Text="{Binding Sachul4Pressure, StringFormat= '#,###.##'}" TextAlignment="Right" ></TextBlock>
                             </DataTemplate>
                         </DataGridTemplateColumn.CellTemplate>
                     </DataGridTemplateColumn>
-                    <DataGridTemplateColumn Header="사출거리" Width="auto">
+                    <DataGridTemplateColumn Header="사출압력5" Width="auto">
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
-                                <TextBlock Text="{Binding SachulLocation, StringFormat= '#,###.##'}" TextAlignment="Right" ></TextBlock>
+                                <TextBlock Text="{Binding Sachul5Pressure, StringFormat= '#,###.##'}" TextAlignment="Right" ></TextBlock>
                             </DataTemplate>
                         </DataGridTemplateColumn.CellTemplate>
                     </DataGridTemplateColumn>
-                    <DataGridTemplateColumn Header="보압압력" Width="auto">
+                    <DataGridTemplateColumn Header="사출속도1" Width="auto">
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
-                                <TextBlock Text="{Binding BoApPressure, StringFormat= '#,###.##'}" TextAlignment="Right" ></TextBlock>
+                                <TextBlock Text="{Binding Sachul1Speed, StringFormat= '#,###.##'}" TextAlignment="Right" ></TextBlock>
                             </DataTemplate>
                         </DataGridTemplateColumn.CellTemplate>
                     </DataGridTemplateColumn>
-                    <DataGridTemplateColumn Header="보압속도" Width="auto">
+                    <DataGridTemplateColumn Header="사출속도2" Width="auto">
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
-                                <TextBlock Text="{Binding BoApSpeed, StringFormat= '#,###.##'}" TextAlignment="Right" ></TextBlock>
+                                <TextBlock Text="{Binding Sachul2Speed, StringFormat= '#,###.##'}" TextAlignment="Right" ></TextBlock>
                             </DataTemplate>
                         </DataGridTemplateColumn.CellTemplate>
                     </DataGridTemplateColumn>
-                    <DataGridTemplateColumn Header="보압시간" Width="auto">
+                    <DataGridTemplateColumn Header="사출속도3" Width="auto">
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
-                                <TextBlock Text="{Binding BoApTime, StringFormat= '#,###.##'}" TextAlignment="Right" ></TextBlock>
+                                <TextBlock Text="{Binding Sachul3Speed, StringFormat= '#,###.##'}" TextAlignment="Right" ></TextBlock>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                    <DataGridTemplateColumn Header="사출속도4" Width="auto">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding Sachul4Speed, StringFormat= '#,###.##'}" TextAlignment="Right" ></TextBlock>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                    <DataGridTemplateColumn Header="사출속도5" Width="auto">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding Sachul5Speed, StringFormat= '#,###.##'}" TextAlignment="Right" ></TextBlock>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                    <DataGridTemplateColumn Header="사출거리1" Width="auto">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding Sachul1Location, StringFormat= '#,###.##'}" TextAlignment="Right" ></TextBlock>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                    <DataGridTemplateColumn Header="사출거리2" Width="auto">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding Sachul2Location, StringFormat= '#,###.##'}" TextAlignment="Right" ></TextBlock>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                    <DataGridTemplateColumn Header="사출거리3" Width="auto">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding Sachul3Location, StringFormat= '#,###.##'}" TextAlignment="Right" ></TextBlock>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                    <DataGridTemplateColumn Header="사출거리4" Width="auto">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding Sachul4Location, StringFormat= '#,###.##'}" TextAlignment="Right" ></TextBlock>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                    <DataGridTemplateColumn Header="사출거리5" Width="auto">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding Sachul5Location, StringFormat= '#,###.##'}" TextAlignment="Right" ></TextBlock>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                    <DataGridTemplateColumn Header="보압1" Width="auto">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding BaeAp1, StringFormat= '#,###.##'}" TextAlignment="Right" ></TextBlock>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                    <DataGridTemplateColumn Header="보압2" Width="auto">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding BaeAp2, StringFormat= '#,###.##'}" TextAlignment="Right" ></TextBlock>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                    <DataGridTemplateColumn Header="보압3" Width="auto">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding BaeAp3, StringFormat= '#,###.##'}" TextAlignment="Right" ></TextBlock>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                    <DataGridTemplateColumn Header="보압시간1" Width="auto">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding BoAp1Time, StringFormat= '#,###.##'}" TextAlignment="Right" ></TextBlock>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                    <DataGridTemplateColumn Header="보압시간2" Width="auto">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding BoAp2Time, StringFormat= '#,###.##'}" TextAlignment="Right" ></TextBlock>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                    <DataGridTemplateColumn Header="보압시간3" Width="auto">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding BoAp3Time, StringFormat= '#,###.##'}" TextAlignment="Right" ></TextBlock>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                    <DataGridTemplateColumn Header="보압속도1" Width="auto">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding BoAp1Speed, StringFormat= '#,###.##'}" TextAlignment="Right" ></TextBlock>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                    <DataGridTemplateColumn Header="보압속도2" Width="auto">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding BoAp2Speed, StringFormat= '#,###.##'}" TextAlignment="Right" ></TextBlock>
                             </DataTemplate>
                         </DataGridTemplateColumn.CellTemplate>
                     </DataGridTemplateColumn>
@@ -314,39 +414,59 @@
                             </DataTemplate>
                         </DataGridTemplateColumn.CellTemplate>
                     </DataGridTemplateColumn>
-                    <DataGridTemplateColumn Header="계량속도" Width="auto">
+                    <DataGridTemplateColumn Header="계랑속도1" Width="auto">
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
-                                <TextBlock Text="{Binding MeasurSpeed, StringFormat= '#,###.##'}" TextAlignment="Right" ></TextBlock>
+                                <TextBlock Text="{Binding Measur1Speed, StringFormat= '#,###.##'}" TextAlignment="Right" ></TextBlock>
                             </DataTemplate>
                         </DataGridTemplateColumn.CellTemplate>
                     </DataGridTemplateColumn>
-                    <DataGridTemplateColumn Header="배압" Width="auto">
+                    <DataGridTemplateColumn Header="계랑속도2" Width="auto">
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
-                                <TextBlock Text="{Binding BaeAp, StringFormat= '#,###.##'}" TextAlignment="Right" ></TextBlock>
+                                <TextBlock Text="{Binding Measur2Speed, StringFormat= '#,###.##'}" TextAlignment="Right" ></TextBlock>
                             </DataTemplate>
                         </DataGridTemplateColumn.CellTemplate>
                     </DataGridTemplateColumn>
-                    <DataGridTemplateColumn Header="석백전" Width="auto">
+                    <DataGridTemplateColumn Header="계랑속도3" Width="auto">
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
-                                <TextBlock Text="{Binding SukBaekMeasureBefore, StringFormat= '#,###.##'}" TextAlignment="Right" ></TextBlock>
+                                <TextBlock Text="{Binding Measur3Speed, StringFormat= '#,###.##'}" TextAlignment="Right" ></TextBlock>
                             </DataTemplate>
                         </DataGridTemplateColumn.CellTemplate>
                     </DataGridTemplateColumn>
-                    <DataGridTemplateColumn Header="석백후" Width="auto">
+                    <DataGridTemplateColumn Header="배압1" Width="auto">
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
-                                <TextBlock Text="{Binding SukBaekMeasureAfter, StringFormat= '#,###.##'}" TextAlignment="Right" ></TextBlock>
+                                <TextBlock Text="{Binding Measur1BaeAp, StringFormat= '#,###.##'}" TextAlignment="Right" ></TextBlock>
                             </DataTemplate>
                         </DataGridTemplateColumn.CellTemplate>
                     </DataGridTemplateColumn>
-                    
-                    <DataGridTemplateColumn Header="계량위치" Width="auto">
+                    <DataGridTemplateColumn Header="배압2" Width="auto">
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
-                                <TextBlock Text="{Binding MeasurLocation, StringFormat= '#,###.##'}" TextAlignment="Right" ></TextBlock>
+                                <TextBlock Text="{Binding Measur2BaeAp, StringFormat= '#,###.##'}" TextAlignment="Right" ></TextBlock>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                    <DataGridTemplateColumn Header="석백" Width="auto">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding a, StringFormat= '#,###.##'}" TextAlignment="Right" ></TextBlock>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                    <DataGridTemplateColumn Header="계량위치1" Width="auto">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding Measur1Location, StringFormat= '#,###.##'}" TextAlignment="Right" ></TextBlock>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                    <DataGridTemplateColumn Header="계량위치2" Width="auto">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding Measur2Location, StringFormat= '#,###.##'}" TextAlignment="Right" ></TextBlock>
                             </DataTemplate>
                         </DataGridTemplateColumn.CellTemplate>
                     </DataGridTemplateColumn>
@@ -357,16 +477,34 @@
                             </DataTemplate>
                         </DataGridTemplateColumn.CellTemplate>
                     </DataGridTemplateColumn>
-
-                    <!--k-->
-                    <DataGridTemplateColumn Header="StationNo" SortMemberPath="StationNO" Width="auto">
+                    <DataGridTemplateColumn Header="냉각수 In" Width="auto">
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
-                                <TextBlock Text="{Binding StationNO}" TextAlignment="Center" Padding="5 0"/>
+                                <TextBlock Text="{Binding CoolWaterInTemper, StringFormat= '#,###.##'}" TextAlignment="Right" ></TextBlock>
                             </DataTemplate>
                         </DataGridTemplateColumn.CellTemplate>
                     </DataGridTemplateColumn>
-
+                    <DataGridTemplateColumn Header="냉각수 Out" Width="auto">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding CoolWaterOutTemper, StringFormat= '#,###.##'}" TextAlignment="Right" ></TextBlock>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                    <DataGridTemplateColumn Header="온수기온도" Width="auto">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding a, StringFormat= '#,###.##'}" TextAlignment="Right" ></TextBlock>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                    <DataGridTemplateColumn Header="금형온도" Width="auto">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding a, StringFormat= '#,###.##'}" TextAlignment="Right" ></TextBlock>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
                 </DataGrid.Columns>
             </DataGrid>
 
