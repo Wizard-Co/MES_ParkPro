@@ -5,11 +5,11 @@ using System.Data;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
-using WizMes_ANT.PopUp;
-using WizMes_ANT.PopUP;
+using WizMes_ParkPro.PopUp;
+using WizMes_ParkPro.PopUP;
 using System.Windows.Input;
 
-namespace WizMes_ANT
+namespace WizMes_ParkPro
 {
     /// <summary>
     /// Win_Prd_ProcessResult_Q.xaml에 대한 상호 작용 논리

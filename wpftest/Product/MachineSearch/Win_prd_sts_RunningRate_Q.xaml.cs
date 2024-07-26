@@ -6,13 +6,13 @@ using System.Collections.ObjectModel;
 using System.Data;
 using System.Windows;
 using System.Windows.Controls;
-using WizMes_ANT.PopUp;
-using WizMes_ANT.PopUP;
+using WizMes_ParkPro.PopUp;
+using WizMes_ParkPro.PopUP;
 using System.Windows.Input;
 using System.Threading;
 using WPF.MDI;
 
-namespace WizMes_ANT
+namespace WizMes_ParkPro
 {
     /**************************************************************************************************
     '** System 명 : WizMES
@@ -448,7 +448,7 @@ namespace WizMes_ANT
                     }
                     else
                     {
-                        Type type = Type.GetType("WizMes_ANT." + MainWindow.mMenulist[i].ProgramID.Trim(), true);
+                        Type type = Type.GetType("WizMes_ParkPro." + MainWindow.mMenulist[i].ProgramID.Trim(), true);
                         object uie = Activator.CreateInstance(type);
 
                         MainWindow.mMenulist[i].subProgramID = new MdiChild()

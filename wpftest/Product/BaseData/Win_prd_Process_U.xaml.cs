@@ -8,10 +8,10 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
-using WizMes_ANT.PopUp;
-using WizMes_ANT.PopUP;
+using WizMes_ParkPro.PopUp;
+using WizMes_ParkPro.PopUP;
 
-namespace WizMes_ANT
+namespace WizMes_ParkPro
 {
     /// <summary>
     /// Win_com_Process_U.xaml에 대한 상호 작용 논리

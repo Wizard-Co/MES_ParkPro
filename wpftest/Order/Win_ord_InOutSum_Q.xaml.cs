@@ -8,11 +8,11 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Shapes;
-using WizMes_ANT.PopUP;
-using WizMes_ANT.PopUp;
+using WizMes_ParkPro.PopUP;
+using WizMes_ParkPro.PopUp;
 using WPF.MDI;
 
-namespace WizMes_ANT
+namespace WizMes_ParkPro
 {
     /// <summary>
     /// Win_ord_InOutSum_Q.xaml에 대한 상호 작용 논리

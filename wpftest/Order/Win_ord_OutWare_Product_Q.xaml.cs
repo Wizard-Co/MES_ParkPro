@@ -7,11 +7,11 @@ using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
-using WizMes_ANT.PopUP;
-using WizMes_ANT.PopUp;
+using WizMes_ParkPro.PopUP;
+using WizMes_ParkPro.PopUp;
 using WPF.MDI;
 
-namespace WizMes_ANT
+namespace WizMes_ParkPro
 {
     /// <summary>
     /// Win_ord_OutWare_Product_Q.xaml에 대한 상호 작용 논리

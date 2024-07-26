@@ -8,7 +8,7 @@ using System.Security;
 using System.Windows;
 using System.Windows.Interop;
 
-namespace WizMes_ANT
+namespace WizMes_ParkPro
 {
     public class FilePreviewControl : HwndHost
     {

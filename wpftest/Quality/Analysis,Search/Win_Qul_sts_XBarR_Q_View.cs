@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
 
-namespace WizMes_ANT
+namespace WizMes_ParkPro
 {
     class Win_Qul_sts_XBarR_Q_View : BaseView
     {

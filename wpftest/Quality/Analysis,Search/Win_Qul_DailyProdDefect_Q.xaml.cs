@@ -13,11 +13,11 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-using WizMes_ANT.PopUp;
-using WizMes_ANT.PopUP;
+using WizMes_ParkPro.PopUp;
+using WizMes_ParkPro.PopUP;
 using WPF.MDI;
 
-namespace WizMes_ANT
+namespace WizMes_ParkPro
 {
     /// <summary>
     /// Win_Qul_DailyProdDefect_Q.xaml에 대한 상호 작용 논리

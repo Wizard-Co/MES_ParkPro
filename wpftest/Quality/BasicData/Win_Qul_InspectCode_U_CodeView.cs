@@ -1,4 +1,4 @@
-﻿namespace WizMes_ANT
+﻿namespace WizMes_ParkPro
 {
     class Win_Qul_InspectCode_U_Defect_CodeView : BaseView
     {

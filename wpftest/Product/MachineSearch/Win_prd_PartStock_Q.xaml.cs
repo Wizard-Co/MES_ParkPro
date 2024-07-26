@@ -14,13 +14,13 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-using WizMes_ANT.PopUP;
+using WizMes_ParkPro.PopUP;
 using WPF.MDI;
 
-namespace WizMes_ANT
+namespace WizMes_ParkPro
 {
     /**************************************************************************************************
-   '** System 명 : WizMes_ANT
+   '** System 명 : WizMes_ParkPro
    '** Author    : Wizard
    '** 작성자    : 최준호
    '** 내용      : 금형/설비 부품 재고조회

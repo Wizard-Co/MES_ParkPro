@@ -7,10 +7,10 @@ using System.Data;
 using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
-using WizMes_ANT.PopUp;
-using WizMes_ANT.PopUP;
+using WizMes_ParkPro.PopUp;
+using WizMes_ParkPro.PopUP;
 
-namespace WizMes_ANT
+namespace WizMes_ParkPro
 {
     /**************************************************************************************************
     '** System 명 : WizMES

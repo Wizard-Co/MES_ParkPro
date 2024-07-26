@@ -11,13 +11,13 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media.Imaging;
-using WizMes_ANT.PopUP;
-using WizMes_ANT.PopUp;
+using WizMes_ParkPro.PopUP;
+using WizMes_ParkPro.PopUp;
 
-namespace WizMes_ANT
+namespace WizMes_ParkPro
 {
     /**************************************************************************************************
-   '** System 명 : WizMes_ANT
+   '** System 명 : WizMes_ParkPro
    '** Author    : Wizard
    '** 작성자    : 최준호
    '** 내용      : 부품 등록

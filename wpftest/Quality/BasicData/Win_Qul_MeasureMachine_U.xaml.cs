@@ -9,9 +9,9 @@ using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
-using WizMes_ANT.PopUP;
+using WizMes_ParkPro.PopUP;
 
-namespace WizMes_ANT
+namespace WizMes_ParkPro
 {
     /**************************************************************************************************
     '** System 명 : WizMes_GLS
@@ -43,7 +43,7 @@ namespace WizMes_ANT
         ObservableCollection<Win_Qul_MeasureMachine_U_CodeView> ovcMeasureMachine
             = new ObservableCollection<Win_Qul_MeasureMachine_U_CodeView>();
 
-        WizMes_ANT.PopUp.NoticeMessage msg = new PopUp.NoticeMessage();
+        WizMes_ParkPro.PopUp.NoticeMessage msg = new PopUp.NoticeMessage();
 
         // FTP 활용모음.
         string strImagePath = string.Empty;

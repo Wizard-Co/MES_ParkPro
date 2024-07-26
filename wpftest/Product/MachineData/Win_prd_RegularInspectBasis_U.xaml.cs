@@ -16,14 +16,14 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-using WizMes_ANT.PopUP;
-using WizMes_ANT.PopUp;
-using WizMes_ANT;
+using WizMes_ParkPro.PopUP;
+using WizMes_ParkPro.PopUp;
+using WizMes_ParkPro;
 using WPF.MDI;
 using System.Net;
 using System.Threading;
 
-namespace WizMes_ANT
+namespace WizMes_ParkPro
 {
     /// <summary>
     /// Win_prd_RegularInspectBasis_U.xaml에 대한 상호 작용 논리
