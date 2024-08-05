@@ -591,6 +591,9 @@
       <DependentUpon>Win_Qul_DefectTotal_Q.xaml</DependentUpon>
     </Compile>
     <Compile Include="Quality\Analysis,Search\Win_Qul_DefectTotal_Q_View.cs" />
+    <Compile Include="Quality\Analysis,Search\Win_Qul_InspectDefectResultTotal_Q.xaml.cs">
+      <DependentUpon>Win_Qul_InspectDefectResultTotal_Q.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Quality\Analysis,Search\Win_Qul_sts_XBarR_Q.xaml.cs">
       <DependentUpon>Win_Qul_sts_XBarR_Q.xaml</DependentUpon>
     </Compile>
@@ -1175,6 +1178,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Quality\Analysis,Search\Win_Qul_DefectTotal_Q.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Quality\Analysis,Search\Win_Qul_InspectDefectResultTotal_Q.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
