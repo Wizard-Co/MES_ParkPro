@@ -2,10 +2,16 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Data;
-using System.Threading;
+using System.Linq;
+using System.Text;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Data;
+using System.Windows.Documents;
 using System.Windows.Input;
+using System.Windows.Media;
+using System.Windows.Media.Imaging;
+using System.Windows.Shapes;
 
 namespace WizMes_ParkPro.PopUp
 {
@@ -25,22 +31,24 @@ namespace WizMes_ParkPro.PopUp
         public string UnitClssName = "";
         public string StockQty = "";
 
+        
+
         public string date = "";
 
-        Lib lib = new Lib();
+        PlusFinder pf = new PlusFinder();
 
-        public Win_mtr_LotStockControl_U StockControl = new Win_mtr_LotStockControl_U();
+        public Win_mtr_StockControl_U StockControl = new Win_mtr_StockControl_U();
 
-        public List<Win_mtr_LotStockControl_U_CodeView> lstLotClonePop = new List<Win_mtr_LotStockControl_U_CodeView>();
-
-
+        public List<Win_mtr_StockControl_U_CodeView> lstLotClonePop = new List<Win_mtr_StockControl_U_CodeView>();
+        
+        
 
         public Win_pop_Stock_LotNo()
         {
             InitializeComponent();
         }
 
-        public Win_pop_Stock_LotNo(List<Win_mtr_LotStockControl_U_CodeView> lstLotClonePop)
+        public Win_pop_Stock_LotNo(List<Win_mtr_StockControl_U_CodeView> lstLotClonePop)
         {
             InitializeComponent();
 
@@ -59,6 +67,8 @@ namespace WizMes_ParkPro.PopUp
             this.ArticleGrp = ArticleGrp;
             this.UnitClssName = UnitClssName;
             this.StockQty = StockQty;
+
+            
         }
 
         // 콤보박스셋팅
@@ -76,7 +86,7 @@ namespace WizMes_ParkPro.PopUp
             this.cboArticleGroup.SelectedIndex = 0;
 
 
-
+            
 
             this.cboWareHouse.ItemsSource = cbWareHouse;
             this.cboWareHouse.DisplayMemberPath = "code_name";
@@ -89,15 +99,10 @@ namespace WizMes_ParkPro.PopUp
         {
             //dtpAdjustDate.SelectedDate = DateTime.Today;
 
-
+            
             ComboBoxSetting();
 
-            if (!LotID.Trim().Equals(""))
-            {
-                chkLotIDSrh.IsChecked = true;
-                txtLotIDSrh.Text = LotID;
-            }
-            else if (!ArticleID.Trim().Equals(""))
+            if (!ArticleID.Trim().Equals(""))
             {
                 txtArticleSrh.Text = Article;
 
@@ -118,16 +123,16 @@ namespace WizMes_ParkPro.PopUp
 
         #region 주요 버튼 이벤트 - 확인, 닫기, 검색
 
-        public List<Win_mtr_LotStockControl_U_CodeView> lstLotStock = new List<Win_mtr_LotStockControl_U_CodeView>();
+        public List<Win_mtr_StockControl_U_CodeView> lstLotStock = new List<Win_mtr_StockControl_U_CodeView>();
 
         //확인
         private void btnConfirm_Click(object sender, RoutedEventArgs e)
         {
-            for (int i = 0; i < dgdMain.Items.Count; i++)
+            for(int i = 0 ;  i < dgdMain.Items.Count; i++)
             {
-                var main = dgdMain.Items[i] as Win_mtr_LotStockControl_U_CodeView;
+                var main = dgdMain.Items[i] as Win_mtr_StockControl_U_CodeView;
 
-                if (main != null && main.Chk == true)
+                if(main != null && main.Chk == true)
                 {
                     lstLotStock.Add(main);
 
@@ -136,7 +141,7 @@ namespace WizMes_ParkPro.PopUp
             }
 
             this.DialogResult = true;
-
+            
         }
 
         //닫기
@@ -148,28 +153,7 @@ namespace WizMes_ParkPro.PopUp
         //검색
         private void btnSearch_Click(object sender, RoutedEventArgs e)
         {
-            //검색버튼 비활성화
-            btnSearch.IsEnabled = false;
-
-            Dispatcher.BeginInvoke(new Action(() =>
-
-            {
-                Thread.Sleep(2000);
-
-                //로직
-                rowNum = 0;
-                re_Search(rowNum);
-
-            }), System.Windows.Threading.DispatcherPriority.Background);
-
-
-
-            Dispatcher.BeginInvoke(new Action(() =>
-
-            {
-                btnSearch.IsEnabled = true;
-
-            }), System.Windows.Threading.DispatcherPriority.Background);
+            re_Search(rowNum);
         }
 
         #endregion // 주요 버튼 이벤트
@@ -177,13 +161,14 @@ namespace WizMes_ParkPro.PopUp
 
         #region Header 부분 - 검색조건
 
-
+     
         // 품명
         private void lblArticleSrh_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
             if (chkArticle.IsChecked == true)
             {
                 chkArticle.IsChecked = false;
+
             }
             else
             {
@@ -194,57 +179,19 @@ namespace WizMes_ParkPro.PopUp
         {
             chkArticle.IsChecked = true;
             txtArticleSrh.IsEnabled = true;
+            btnArticle.IsEnabled = true;
         }
         private void chkArticleSrh_Unchecked(object sender, RoutedEventArgs e)
         {
             chkArticle.IsChecked = false;
             txtArticleSrh.IsEnabled = false;
+            btnArticle.IsEnabled = false;
         }
 
-        // LotID - 바코드 검색
-        private void lblLotIDSrh_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
-        {
-            if (chkLotIDSrh.IsChecked == true)
-            {
-                chkLotIDSrh.IsChecked = false;
-            }
-            else
-            {
-                chkLotIDSrh.IsChecked = true;
-            }
-        }
-
-        private void chkLotIDSrh_Checked(object sender, RoutedEventArgs e)
-        {
-            chkLotIDSrh.IsChecked = true;
-            txtLotIDSrh.IsEnabled = true;
-        }
-
-        private void chkLotIDSrh_Unchecked(object sender, RoutedEventArgs e)
-        {
-            chkLotIDSrh.IsChecked = false;
-            txtLotIDSrh.IsEnabled = false;
-        }
 
         #endregion // Header 부분 - 검색조건
 
-        #region Header 부분 - 검색조건 : 바코드 검색 → 바코드 비워주기 (다음 바코드를 바로 입력할 수 있도록)
-
-        //Lot ID
-        private void txtLotID_KeyDown(object sender, KeyEventArgs e)
-        {
-            if (e.Key == Key.Enter)
-            {
-                e.Handled = true;
-                FillGrid();
-
-                txtLotIDSrh.Text = "";
-
-            }
-        }
-
-        #endregion
-
+    
         #region 주요 메서드 모음
 
         private void re_Search(int rowNum)
@@ -277,69 +224,15 @@ namespace WizMes_ParkPro.PopUp
                 Dictionary<string, object> sqlParameter = new Dictionary<string, object>();
                 sqlParameter.Clear();
 
-                //sqlParameter.Add("ChkArticleID", 0);
-                //sqlParameter.Add("ArticleID", "");
-                //sqlParameter.Add("ChkArticle", chkArticleSrh.IsChecked == true ? 1 : 0);
-                //sqlParameter.Add("Article", chkArticleSrh.IsChecked == true && !txtArticleSrh.Text.Trim().Equals("") ? txtArticleSrh.Text : "");
-                //sqlParameter.Add("ChkLotID", chkLotIDSrh.IsChecked == true ? 1 : 0);
-                //sqlParameter.Add("LotID", chkLotIDSrh.IsChecked == true && !txtLotIDSrh.Text.Trim().Equals("") ? txtLotIDSrh.Text : "");
-                //sqlParameter.Add("ArticleGrpID", chkArticleGroup.IsChecked == true && cboArticleGroup.SelectedValue != null ? cboArticleGroup.SelectedValue.ToString() : "");
-
-
                 sqlParameter.Add("sDate", date);
                 sqlParameter.Add("ChkArticle", chkArticle.IsChecked == true ? 1 : 0);
                 sqlParameter.Add("ArticleID", chkArticle.IsChecked == true && txtArticleSrh.Tag != null ? txtArticleSrh.Tag.ToString() : "");
-                sqlParameter.Add("ChkLotID", chkLotIDSrh.IsChecked == true ? 1 : 0);
-                sqlParameter.Add("LotID", chkLotIDSrh.IsChecked == true && txtLotIDSrh.Text.Trim().Length > 0 ? txtLotIDSrh.Text.Trim() : "");
                 sqlParameter.Add("ArticleGrpID", chkArticleGroup.IsChecked == true && cboArticleGroup.SelectedValue != null ? cboArticleGroup.SelectedValue.ToString() : ""); //제품그룹
                 sqlParameter.Add("sToLocID", chkToLocSrh.IsChecked == true ? (cboWareHouse.SelectedValue != null ? cboWareHouse.SelectedValue.ToString() : "") : ""); // 창고
-
+             
                 //DataSet ds = DataStore.Instance.ProcedureToDataSet("xp_mtr_StockLotID_WPF", sqlParameter, false);
-                DataSet ds = DataStore.Instance.ProcedureToDataSet("xp_sbStock_sLotStockControl_LotStock", sqlParameter, false);
+                DataSet ds = DataStore.Instance.ProcedureToDataSet("xp_sbStock_sStockControl_Stock_mtr", sqlParameter, false);
 
-                #region 봉인
-                //if (ds != null && ds.Tables.Count > 0)
-                //{
-                //    DataTable dt = ds.Tables[0];
-
-                //    if (dt.Rows.Count > 0)
-                //    {
-                //        DataRowCollection drc = dt.Rows;
-
-                //        int i = 0;
-
-                //        foreach (DataRow dr in drc)
-                //        {
-                //            i++;
-
-                //            var Main = new Win_mtr_StockControl_U_Stuffin()
-                //            {
-                //                Num = i.ToString(),
-                //              //  StuffDate = dr["StuffDate"].ToString(),
-                //               // StuffDate_CV = DatePickerFormat(dr["StuffDate"].ToString()),
-                //                BuyerArticleNo = dr["BuyerArticleNo"].ToString(),
-                //                Article = dr["Article"].ToString(),
-                //                ArticleID = dr["ArticleID"].ToString(),
-                //                LotID = dr["LotID"].ToString(),
-                //                UnitClss = dr["UnitClss"].ToString(),
-
-                //                UnitClssName = dr["UnitClssName"].ToString(),
-                //                ArticleGrpID = dr["ArticleGrpID"].ToString(),
-                //                ArticleGrp = dr["ArticleGrp"].ToString(),
-                //                TOLocID = dr["TOLocID"].ToString(),
-                //                ToLocName = dr["ToLocName"].ToString(),
-                //                Qty = stringFormatN0(dr["Qty"]), //현재고는 어떻게 구하니?
-
-                //            };
-
-                //            dgdMain.Items.Add(Main);
-
-                //        }
-
-                //        tblCount.Text = "▶검색개수 : " + i + "건";
-                //    }
-                //}
-                #endregion
                 if (ds != null && ds.Tables.Count > 0)
                 {
                     DataTable dt = ds.Tables[0];
@@ -356,12 +249,12 @@ namespace WizMes_ParkPro.PopUp
                         foreach (DataRow dr in drc)
                         {
                             index++;
-                            var NowStockData = new Win_mtr_LotStockControl_U_CodeView
+                            var NowStockData = new Win_mtr_StockControl_U_CodeView
                             {
                                 Num = index,
                                 ArticleID = dr["ArticleID"].ToString(),
-                                LotID = dr["LotID"].ToString(),
-                                LotName = dr["LotID"].ToString(),
+                                //LotID = dr["LotID"].ToString(),
+                                //LotName = dr["LotID"].ToString(),
                                 UnitClss = dr["UnitClss"].ToString(),
                                 StuffinQty = dr["StuffinQty"].ToString(),
                                 OutQty = dr["Outqty"].ToString(),
@@ -376,6 +269,10 @@ namespace WizMes_ParkPro.PopUp
                                 TOLocID = dr["TOLocID"].ToString(),
                                 ToLocName = dr["ToLocName"].ToString(),
                                 LastDate = dr["LastDate"].ToString(),
+
+                                //Color = dr["Color"].ToString(),
+                                //Spec = dr["Spec"].ToString(),
+
                                 UDFlag = true,
 
                             };
@@ -384,7 +281,7 @@ namespace WizMes_ParkPro.PopUp
                             {
                                 for (int i = 0; i < lstLotClonePop.Count; i++)
                                 {
-                                    if (NowStockData.LotID.Equals(lstLotClonePop[i].LotID.Trim()))
+                                    if (NowStockData.ArticleID.Equals(lstLotClonePop[i].ArticleID.Trim()))
                                     {
                                         NowStockData.StockQty = lstLotClonePop[i].StockQty;
                                     }
@@ -395,7 +292,7 @@ namespace WizMes_ParkPro.PopUp
 
                             dgdMain.Items.Add(NowStockData);
                         }
-                        tblCount.Text = "▶ 검색결과 : " + index + "건";
+                        tblCount.Text = "▶검색개수 : " + index + "건";
 
                     }
                 }
@@ -415,78 +312,6 @@ namespace WizMes_ParkPro.PopUp
 
         #endregion
 
-        #region 조회 - ArticleID 로!
-
-        //private void FillGrid_ArticleID(string ArticleID)
-        //{
-        //    if (dgdMain.Items.Count > 0)
-        //    {
-        //        dgdMain.Items.Clear();
-        //    }
-
-        //    try
-        //    {
-        //        Dictionary<string, object> sqlParameter = new Dictionary<string, object>();
-        //        sqlParameter.Clear();
-
-
-        //        sqlParameter.Add("ChkArticleID", 1);
-        //        sqlParameter.Add("ArticleID", ArticleID);
-
-        //        sqlParameter.Add("ChkArticle", 0);
-        //        sqlParameter.Add("Article", "");
-
-        //        sqlParameter.Add("ChkLotID", 0);
-        //        sqlParameter.Add("LotID", "");
-
-        //        DataSet ds = DataStore.Instance.ProcedureToDataSet("xp_mtr_StockLotID_WPF", sqlParameter, false);
-
-        //        if (ds != null && ds.Tables.Count > 0)
-        //        {
-        //            DataTable dt = ds.Tables[0];
-
-        //            if (dt.Rows.Count > 0)
-        //            {
-        //                DataRowCollection drc = dt.Rows;
-
-        //                int i = 0;
-
-        //                foreach (DataRow dr in drc)
-        //                {
-        //                    i++;
-
-        //                    var Main = new Win_mtr_StockControl_U_Stuffin()
-        //                    {
-        //                        Num = i.ToString(),
-
-        //                        BuyerArticleNo = dr["BuyerArticleNo"].ToString(),
-
-        //                        Article = dr["Article"].ToString(),
-        //                        ArticleID = dr["ArticleID"].ToString(),
-        //                        LotID = dr["LotID"].ToString(),
-        //                        Qty = stringFormatN0(dr["Qty"]),
-
-        //                    };
-
-        //                    dgdMain.Items.Add(Main);
-
-        //                }
-
-        //                tblCount.Text = "▶검색개수 : " + i + "건";
-        //            }
-        //        }
-        //    }
-        //    catch (Exception ee)
-        //    {
-        //        MessageBox.Show("조회 오류 : " + ee.Message);
-        //    }
-        //    finally
-        //    {
-        //        DataStore.Instance.CloseConnection();
-        //    }
-        //}
-
-        #endregion
 
         #endregion
 
@@ -692,7 +517,7 @@ namespace WizMes_ParkPro.PopUp
         private void chkReq_Click(object sender, RoutedEventArgs e)
         {
             CheckBox chkSender = sender as CheckBox;
-            var LotStock = chkSender.DataContext as Win_mtr_LotStockControl_U_CodeView;
+            var LotStock = chkSender.DataContext as Win_mtr_StockControl_U_CodeView;
 
             if (LotStock != null)
             {
@@ -749,7 +574,7 @@ namespace WizMes_ParkPro.PopUp
 
         }
 
-        // 창고체크박스
+       // 창고체크박스
         private void chkToLocSrh_Click(object sender, RoutedEventArgs e)
         {
             if (chkToLocSrh.IsChecked == true)
@@ -778,6 +603,23 @@ namespace WizMes_ParkPro.PopUp
                 cboWareHouse.IsEnabled = true;
                 cboWareHouse.Focus();
             }
+        }
+
+
+        //품명 검색
+        private void TxtArticleSrh_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Enter)
+            {
+                MainWindow.pf.ReturnCode(txtArticleSrh, 77, "");
+                //pf.ReturnCode(txtArticleSrh, 98, "");
+            }
+        }
+
+        private void btnArticleSrh_Click(object sender, RoutedEventArgs e)
+        {
+            MainWindow.pf.ReturnCode(txtArticleSrh, 77, "");
+            //pf.ReturnCode(txtArticleSrh, 98, "");
         }
     }
 
