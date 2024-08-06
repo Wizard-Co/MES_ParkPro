@@ -735,7 +735,7 @@ namespace WizMes_ParkPro
         private void btnAdd_Click(object sender, RoutedEventArgs e)
         {
             strFlag = "I";
-            this.DataContext = null;
+            this.DataContext = null;           
 
             txtAmount.Text = "0";
 
@@ -1585,6 +1585,33 @@ namespace WizMes_ParkPro
                 msg = "가공구분이 선택되지 않았습니다. 먼저 가공구분을 선택해주세요";
             /*else if (cboVAT_YN.SelectedValue == null)
                 msg = "부가세별도여부가 선택되지 않았습니다. 먼저 부가세별도여부를 선택해주세요");*/
+
+
+            //작지, 출고 이력 있으면 삭제 안 됨
+            if (OrderView.OrderID != null)
+            {
+                string sql = "select OrderID from pl_Input where OrderID = " + OrderView.OrderID;
+                DataSet ds = DataStore.Instance.QueryToDataSet(sql);
+                if (ds != null && ds.Tables.Count > 0)
+                {
+                    DataTable dt = ds.Tables[0];
+                    if (dt.Rows.Count > 0)
+                    {
+                        sql = "select OrderID from OutWare where OrderID = " + OrderView.OrderID;
+
+                        ds = DataStore.Instance.QueryToDataSet(sql);
+                        if (ds != null && ds.Tables.Count > 0)
+                        {
+                            dt = ds.Tables[0];
+                            msg = dt.Rows.Count > 0 ?
+                                "해당 수주 건은 생산 진행중이오니, 변경하시려면 생산부터 작업지시까지 먼저 삭제해주세요" :
+                                "해당 수주 건은 작업지시 진행중이오니, 변경 하시려면 작업지시 진행 관리에서 먼저 삭제해주세요.";
+                     
+                        }
+                    }
+                }
+            }
+
 
             bool flag = true;
             if (!string.IsNullOrEmpty(msg))
