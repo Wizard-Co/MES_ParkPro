@@ -445,17 +445,6 @@ namespace WizMes_ParkPro
         //
         private void btnUpdate_Click(object sender, RoutedEventArgs e)
         {
-            //var IC = dgdSub.Items[0] as ItemCollection;
-
-            //object item = dgdSub.Items[0];
-
-            //ContentPresenter CP = (ContentPresenter)(dgdSub.Columns[6].GetCellContent(item));
-            ////TextBox ele = CP as TextBox;
-            //DataTemplate dtpSender = CP.ContentTemplate;
-            //TextBox txtSender = (TextBox)dtpSender.FindName("TextBox", CP);
-
-            //MessageBox.Show(txtSender.Name);
-
 
             WinPlanView = dgdMain.SelectedItem as Win_prd_PlanInputView_U_CodeView;
 
@@ -466,8 +455,8 @@ namespace WizMes_ParkPro
                 chkMtrExceptYN.IsEnabled = true;
                 chkOutWareExceptYN.IsEnabled = true;
                 chkTheEnd.IsEnabled = true;
-
                 rowNum = dgdMain.SelectedIndex;
+                //btnReWrite.Visibility = Visibility.Visible;
 
             }
             else
@@ -601,7 +590,7 @@ namespace WizMes_ParkPro
 
                             TotOrderinstqty = Convert.ToDouble(dr["TotOrderinstqty"]),
                             notOrderInstQty = Convert.ToDouble(dr["notOrderInstQty"]),
-                            OrderInstQy = Convert.ToDouble(dr["OrderInstQy"]),
+                            OrderInstQty = Convert.ToDouble(dr["OrderInstQty"]),
                             p1WorkQty = Convert.ToDouble(dr["p1WorkQty"]),
                             p1ProcessID = dr["p1ProcessID"].ToString(),
 
@@ -627,6 +616,7 @@ namespace WizMes_ParkPro
                             LotID = dr["LotID"].ToString(),
                             PlanTheEnd = dr["PlanTheEnd"].ToString(),
                             Progress = dr["Progress"].ToString() + "%",               //진척률
+                            InstSeq = dr["InstSeq"].ToString()           
 
                         };
 
@@ -677,6 +667,7 @@ namespace WizMes_ParkPro
 
             if (WinPlanView != null)
             {
+
                 FillGridSub(WinPlanView.InstID);
 
                 if (WinPlanView.MtrExceptYN.Equals("Y"))
@@ -745,7 +736,7 @@ namespace WizMes_ParkPro
                                 InstID = dr["InstID"].ToString(),
                                 InstDetSeq = dr["InstDetSeq"].ToString(),
 
-                                InstQty = stringFormatN0(dr["InstQty"]),
+                                InstQty = stringFormatN2(dr["InstQty"]),
                                 StartDate = dr["StartDate"].ToString(),
                                 StartDate_CV = DatePickerFormat(dr["StartDate"].ToString()),
                                 EndDate = dr["EndDate"].ToString(),
@@ -787,6 +778,12 @@ namespace WizMes_ParkPro
 
         #endregion
 
+        //재지시 
+        private void btnReWrite_Click(object sender, RoutedEventArgs e)
+        {
+           
+        }
+
         //저장
         private void btnSave_Click(object sender, RoutedEventArgs e)
         {
@@ -809,6 +806,7 @@ namespace WizMes_ParkPro
                 //dgdMain.IsEnabled = true;
                 dgdMain.IsHitTestVisible = true;
                 Lib.Instance.UiButtonEnableChange_IUControl(this);
+                //btnReWrite.Visibility = Visibility;
 
                 dgdMain.Items.Clear();
                 dgdSub.Items.Clear();
@@ -884,18 +882,10 @@ namespace WizMes_ParkPro
                 Dictionary<string, object> sqlParameter = new Dictionary<string, object>();
                 sqlParameter.Clear();
                 sqlParameter.Add("InstID", WinPlanView.InstID);
-                sqlParameter.Add("MtrExceptYN", chkMtrExceptYN.IsChecked == true ? 'Y' : 'N');
-                sqlParameter.Add("OutwareExceptYN", chkOutWareExceptYN.IsChecked == true ? 'Y' : 'N');
-                sqlParameter.Add("OrderInstQty", WinPlanView.OrderInstQy);
+                sqlParameter.Add("MtrExceptYN", chkMtrExceptYN.IsChecked == true ? "Y" : "N");
+                sqlParameter.Add("OutwareExceptYN", chkOutWareExceptYN.IsChecked == true ? "Y" : "N");
+                sqlParameter.Add("OrderInstQty", WinPlanView.OrderInstQty);
                 sqlParameter.Add("UpdateUserID", MainWindow.CurrentUser);
-
-                //string[] result = DataStore.Instance.ExecuteProcedure("xp_PlanInput_uPlanInput", sqlParameter, true);
-                //if (!result[0].Equals("success"))
-                //{
-                //    MessageBox.Show("이상발생, 관리자에게 문의하세요.");
-                //    flag = false;
-                //    return flag;
-                //}
 
                 Procedure pro1 = new Procedure();
                 pro1.Name = "xp_PlanInput_uPlanInput";
@@ -915,22 +905,13 @@ namespace WizMes_ParkPro
                     sqlParameter.Add("nInstDetSeq", i + 1);
                     sqlParameter.Add("sStartDate", WinPlanSub.StartDate);
                     sqlParameter.Add("sEndDate", WinPlanSub.EndDate);
-                    sqlParameter.Add("nInstQty", int.Parse(WinPlanSub.InstQty.Replace(",", "")));
-                    //temp = pidOne.InstQty.Replace(",", "");
+                    sqlParameter.Add("nInstQty", ConvertDouble(WinPlanSub.InstQty.Replace(",", "")));
                     sqlParameter.Add("sInstSubRemark", WinPlanSub.InstRemark);
                     sqlParameter.Add("MachineID", WinPlanSub.MachineID);
                     sqlParameter.Add("TheEnd", chkTheEnd.IsChecked == true ? 1 : 0);
                     sqlParameter.Add("MtrExceptYN", WinPlanSub.MtrExceptYN == null ? "" : WinPlanSub.MtrExceptYN);
                     sqlParameter.Add("FirstInFirstOut", WinPlanSub.FirstInFirstOutYN == null ? "" : WinPlanSub.FirstInFirstOutYN);
                     sqlParameter.Add("UpdateUserID", MainWindow.CurrentUser);
-
-                    //string[] result2 = DataStore.Instance.ExecuteProcedure("xp_PlanInput_uPlanInputSub", sqlParameter, false);
-                    //if (!result2[0].Equals("success"))
-                    //{
-                    //    MessageBox.Show("result2 이상발생, 관리자에게 문의하세요.");
-                    //    reUp = false;
-                    //    return reUp;
-                    //}
 
                     Procedure pro2 = new Procedure();
                     pro2.Name = "xp_PlanInput_uPlanInputSub_WPF";
@@ -1190,11 +1171,10 @@ namespace WizMes_ParkPro
         {
             Lib.Instance.DataGridINTextBoxFocusByMouseUP(sender, e);
         }
+            #endregion // Content 부분 - 데이터 그리드 키 이벤트
 
-        #endregion // Content 부분 - 데이터 그리드 키 이벤트
-
-        //enter 시 Control 포커스
-        private void TextBoxFocusInDataGrid(object sender, KeyEventArgs e)
+            //enter 시 Control 포커스
+            private void TextBoxFocusInDataGrid(object sender, KeyEventArgs e)
         {
             Lib.Instance.DataGridINControlFocus(sender, e);
         }
@@ -1224,6 +1204,11 @@ namespace WizMes_ParkPro
                     }
                 }
             }
+        }
+
+        private void dgdtxtOrderInstQty_PreviewTextInput(object sender, TextCompositionEventArgs e)
+        {
+            Lib.Instance.CheckIsNumeric((TextBox)sender, e);
         }
 
         //지시수량
@@ -1316,26 +1301,7 @@ namespace WizMes_ParkPro
             }
         }
 
-        //지시사항
-        private void dgdtpetxtInstRemark_TextChanged(object sender, TextChangedEventArgs e)
-        {
-            if (btnSave.Visibility == Visibility.Visible)
-            {
-                WinPlanSub = dgdSub.CurrentItem as Win_prd_PlanInputView_U_Sub_CodeView;
-
-                if (WinPlanSub != null)
-                {
-                    TextBox tb1 = sender as TextBox;
-
-                    if (tb1 != null)
-                    {
-                        WinPlanSub.InstRemark = tb1.Text;
-                    }
-
-                    sender = tb1;
-                }
-            }
-        }
+     
 
         //생산수량
         private void dgdtpetxtWorkQty_TextChanged(object sender, TextChangedEventArgs e)
@@ -2459,7 +2425,7 @@ namespace WizMes_ParkPro
 
         public double TotOrderinstqty { get; set; }
         public double notOrderInstQty { get; set; }
-        public double OrderInstQy { get; set; }
+        public double OrderInstQty { get; set; }
         public double p1WorkQty { get; set; }
         public string p1ProcessID { get; set; }
 
@@ -2486,6 +2452,7 @@ namespace WizMes_ParkPro
         public string ArticleGrpName { get; set; }
         public string PlanTheEnd { get; set; }
         public string Progress { get; set; }
+        public string InstSeq { get; set; }
 
         // 체크 되었는지 안되었는지
         public bool IsCheck { get; set; }

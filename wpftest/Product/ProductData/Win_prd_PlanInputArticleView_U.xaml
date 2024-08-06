@@ -56,7 +56,7 @@
                 <DatePicker x:Name="dtpSDate" Grid.Column="1" 
                             Style="{DynamicResource DatePickerSearch}" />
             </Grid>
-            
+
             <Grid Grid.Column="1" Grid.Row="1">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="75*" />
@@ -65,7 +65,7 @@
                 <DatePicker x:Name="dtpEDate" Grid.Column="1" 
                             Style="{DynamicResource DatePickerSearch}"/>
             </Grid>
-            
+
             <Grid Grid.Column="1" Grid.Row="2">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="10*" />
@@ -286,7 +286,7 @@
                             </DataGridTemplateColumn>
                         </DataGrid.Columns>
                     </DataGrid>
-                    
+
                 </Grid>
             </Border>
 
@@ -415,9 +415,9 @@
                                  Text="{Binding InstRemark}" />
 
                     </Grid>
-                    
+
                 </Grid>
-                
+
             </Grid>
 
         </Grid>

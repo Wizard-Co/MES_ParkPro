@@ -522,6 +522,20 @@ namespace WizMes_ParkPro
             }
         }
 
+        private void lblAC_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            if (chkAC.IsChecked == true) { chkAC.IsChecked = false; }
+            else { chkAC.IsChecked = true; }
+        }
+        private void chkAC_Checked(object sender, RoutedEventArgs e)
+        {
+            txtAC.IsEnabled = true;
+        }
+        private void chkAC_Unchecked(object sender, RoutedEventArgs e)
+        {
+            txtAC.IsEnabled = false;
+        }
+
         #endregion
 
         #region 버튼 클릭 이벤트
@@ -670,6 +684,9 @@ namespace WizMes_ParkPro
                 sqlParameter.Add("ChkInCustom", chkInCustom.IsChecked == true ? 1 : 0);
                 sqlParameter.Add("InCustomID", chkInCustom.IsChecked == true ? (txtInCustom.Tag != null ? txtInCustom.Tag.ToString() : "") : "");
 
+                sqlParameter.Add("chkAC", chkAC.IsChecked == true ? 1 : 0);
+                sqlParameter.Add("AC", chkAC.IsChecked == true && txtAC.Text.Trim().Equals("") == false ? txtAC.Text : "");
+
                 DataSet ds = DataStore.Instance.ProcedureToDataSet_LogWrite("xp_prd_sWKResult_WPF_Q", sqlParameter, true, "R");
 
                 if (ds != null && ds.Tables.Count > 0)
@@ -744,6 +761,7 @@ namespace WizMes_ParkPro
                                 ScanDate_CV = ConvertTimeFormat(dr["ScanDate"].ToString()),
 
                                 MachineNo = dr["MachineNo"].ToString(),
+                                AC = dr["AC"].ToString(),
                             };
 
                             if (WinR.cls.Equals("1"))
@@ -1103,6 +1121,7 @@ namespace WizMes_ParkPro
         public string ScanDate { get; set; }
         public string ScanDate_CV { get; set; }
         public string MachineNo { get; set; }
+        public string AC { get; set; }
     }
 
     class ProcessList

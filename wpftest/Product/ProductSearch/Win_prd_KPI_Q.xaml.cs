@@ -43,83 +43,75 @@ namespace WizMes_ParkPro
             DataStore.Instance.InsertLogByFormS(this.GetType().Name, stDate, stTime, "S");
 
             lib.UiLoading(sender);
-            DatePickerStartDateSearch.SelectedDate = DateTime.Today;
-            DatePickerEndDateSearch.SelectedDate = DateTime.Today;
+            dtpSDate.SelectedDate = DateTime.Today;
+            dtpEDate.SelectedDate = DateTime.Today;
         }
 
         #region 상단 검색조건
-        //전년
-        private void ButtonLastYear_Click(object sender, RoutedEventArgs e)
-        {
-            try
-            {
-                if (DatePickerStartDateSearch.SelectedDate != null)
-                {
-                    DatePickerStartDateSearch.SelectedDate = DatePickerStartDateSearch.SelectedDate.Value.AddYears(-1);
-                }
-                else
-                {
-                    DatePickerStartDateSearch.SelectedDate = DateTime.Today.AddDays(-1);
-                }
-            }
-            catch (Exception ee)
-            {
-                MessageBox.Show("오류지점 - " + ee.ToString());
-            }
-        }
-
         //전월
-        private void ButtonLastMonth_Click(object sender, RoutedEventArgs e)
+        private void btnLastMonth_Click(object sender, RoutedEventArgs e)
         {
             try
             {
-                if (DatePickerStartDateSearch.SelectedDate != null)
+                if (dtpSDate.SelectedDate != null)
                 {
-                    DateTime FirstDayOfMonth = DatePickerStartDateSearch.SelectedDate.Value.AddDays(-(DatePickerStartDateSearch.SelectedDate.Value.Day - 1));
-                    DateTime FirstDayOfLastMonth = FirstDayOfMonth.AddMonths(-1);
+                    DateTime ThatMonth1 = dtpSDate.SelectedDate.Value.AddDays(-(dtpSDate.SelectedDate.Value.Day - 1)); // 선택한 일자 달의 1일!
 
-                    DatePickerStartDateSearch.SelectedDate = FirstDayOfLastMonth;
+                    DateTime LastMonth1 = ThatMonth1.AddMonths(-1); // 저번달 1일
+                    DateTime LastMonth31 = ThatMonth1.AddDays(-1); // 저번달 말일
+
+                    dtpSDate.SelectedDate = LastMonth1;
+                    dtpEDate.SelectedDate = LastMonth31;
                 }
                 else
                 {
-                    DateTime FirstDayOfMonth = DateTime.Today.AddDays(-(DateTime.Today.Day - 1));
+                    DateTime ThisMonth1 = DateTime.Today.AddDays(-(DateTime.Today.Day - 1)); // 이번달 1일
 
-                    DatePickerStartDateSearch.SelectedDate = FirstDayOfMonth;
+                    DateTime LastMonth1 = ThisMonth1.AddMonths(-1); // 저번달 1일
+                    DateTime LastMonth31 = ThisMonth1.AddDays(-1); // 저번달 말일
+
+                    dtpSDate.SelectedDate = LastMonth1;
+                    dtpEDate.SelectedDate = LastMonth31;
                 }
             }
             catch (Exception ee)
             {
-                MessageBox.Show("오류지점 - " + ee.ToString());
+                MessageBox.Show("오류지점 - btnLastMonth_Click : " + ee.ToString());
             }
         }
 
-        //금년
-        private void ButtonThisYear_Click(object sender, RoutedEventArgs e)
+        //전일
+        private void btnYesterday_Click(object sender, RoutedEventArgs e)
         {
             try
             {
-                if (DatePickerStartDateSearch.SelectedDate != null)
+                if (dtpSDate.SelectedDate != null)
                 {
-                    DatePickerStartDateSearch.SelectedDate = lib.BringThisYearDatetimeFormat()[0];
+                    dtpSDate.SelectedDate = dtpSDate.SelectedDate.Value.AddDays(-1);
+                    dtpEDate.SelectedDate = dtpSDate.SelectedDate;
+                }
+                else
+                {
+                    dtpSDate.SelectedDate = DateTime.Today.AddDays(-1);
+                    dtpEDate.SelectedDate = DateTime.Today.AddDays(-1);
                 }
             }
             catch (Exception ee)
             {
-                MessageBox.Show("오류지점 - " + ee.ToString());
+                MessageBox.Show("오류지점 - btnYesterday_Click : " + ee.ToString());
             }
         }
-
-        //금월
-        private void ButtonThisMonth_Click(object sender, RoutedEventArgs e)
+        //금일
+        private void btnToday_Click(object sender, RoutedEventArgs e)
         {
-            try
-            {
-                DatePickerStartDateSearch.SelectedDate = lib.BringThisMonthDatetimeList()[0];
-            }
-            catch (Exception ee)
-            {
-                MessageBox.Show("오류지점 - " + ee.ToString());
-            }
+            dtpSDate.SelectedDate = DateTime.Today;
+            dtpEDate.SelectedDate = DateTime.Today;
+        }
+        //금월
+        private void btnThisMonth_Click(object sender, RoutedEventArgs e)
+        {
+            dtpSDate.SelectedDate = Lib.Instance.BringThisMonthDatetimeList()[0];
+            dtpEDate.SelectedDate = Lib.Instance.BringThisMonthDatetimeList()[1];
         }
 
         #endregion
@@ -179,8 +171,8 @@ namespace WizMes_ParkPro
                 DataSet ds = null;
                 Dictionary<string, object> sqlParameter = new Dictionary<string, object>();
                 sqlParameter.Clear();
-                sqlParameter.Add("FromDate", DatePickerStartDateSearch.SelectedDate == null ? "" : DatePickerStartDateSearch.SelectedDate.Value.ToString().Replace("-", ""));
-                sqlParameter.Add("ToDate", DatePickerEndDateSearch.SelectedDate == null ? "" : DatePickerEndDateSearch.SelectedDate.Value.ToString().Replace("-", ""));
+                sqlParameter.Add("FromDate", dtpSDate.SelectedDate == null ? "" : dtpSDate.SelectedDate.Value.ToString().Replace("-", ""));
+                sqlParameter.Add("ToDate", dtpEDate.SelectedDate == null ? "" : dtpEDate.SelectedDate.Value.ToString().Replace("-", ""));
                 sqlParameter.Add("ArticleNo", ArticleID != null ? ArticleID : ""); //품번
                 ds = DataStore.Instance.ProcedureToDataSet("xp_prd_sKPI_KPI", sqlParameter, false);
 
@@ -206,25 +198,31 @@ namespace WizMes_ParkPro
                                 GbnName = dr["GbnName"].ToString(),
                                 ArticleNo = dr["ARTICLENO"].ToString(),
                                 Article = dr["article"].ToString(),
-                                WorkQty = Convert.ToDouble(dr["WorkQty"].ToString()),
-                                WorkTime = lib.returnNumStringOne(dr["WorkTime"].ToString()),
-                                WorkQtyPerHour = Convert.ToDouble(dr["WorkQtyPerHour"].ToString()),
-                                DefectQty = Convert.ToDouble(dr["DefectQty"].ToString()),
-                                DefectWorkQty = Convert.ToDouble(dr["DefectWorkQty"].ToString()),
+                                WorkQty = stringFormatN0(dr["WorkQty"]),
+                                WorkTime = stringFormatN1(dr["WorkTime"]),
+                                WorkQtyPerHour = stringFormatN1(dr["WorkQtyPerHour"]),
+                                DefectQty = stringFormatN0(dr["DefectQty"]),
+                                DefectWorkQty = stringFormatN0(dr["DefectWorkQty"]),
                                 DefectRate = stringFormatN1(dr["DefectRate"]),
+                                DefectUpRate = stringFormatN1(dr["DefectUpRate"]),
+                                DefectGoalRate = stringFormatN1(dr["DefectGoalRate"]),
                                 gbn = dr["gbn"].ToString(),
                                 Sort = dr["Sort"].ToString(),
+                                WorkUpRate = stringFormatN1(dr["WorkUpRate"]),
+                                WorkGoalRate = stringFormatN1(dr["WorkGoalRate"])
                             };
-
+                            if (WPKQC.gbn == "P")
+                            {
+                                WPKQC.Goal = "150.0";
+                                dgdGonsu.Items.Add(WPKQC);
+                            }
                             if (WPKQC.gbn == "Q")
                             {
+                                WPKQC.Goal = "0.7";
                                 dgdOut.Items.Add(WPKQC);
                             }
 
-                            if (WPKQC.gbn == "P")
-                            {
-                                dgdGonsu.Items.Add(WPKQC);
-                            }
+                           
 
                             i++;
                         }
@@ -440,6 +438,12 @@ namespace WizMes_ParkPro
             }
         }
 
+        // 천마리 콤마, 소수점 버리기
+        private string stringFormatN0(object obj)
+        {
+            return string.Format("{0:N0}", obj);
+        }
+
         // 천마리 콤마, 소수점 두자리
         private string stringFormatN2(object obj)
         {
@@ -465,19 +469,20 @@ namespace WizMes_ParkPro
         public string GbnName { get; set; }
         public string ArticleNo { get; internal set; }
         public string Article { get; internal set; }
-        public double WorkQty { get; internal set; }
+        public string WorkQty { get; internal set; }
         public string WorkTime { get; internal set; }
-        public double WorkQtyPerHour { get; internal set; }
+        public string WorkQtyPerHour { get; internal set; }
         public string WorkMan { get; set; }
-        public string Gonsu { get; set; }
-        public string OrderQty { get; set; }
-        public string DiffOutDate { get; set; }
-        public string DiffOutDayPerQty { get; set; }
-        public double DefectQty { get; set; }
-        public double DefectWorkQty { get; set; }
+        public string WorkUpRate { get; set; }
+        public string WorkGoalRate { get; set; }
+        public string DefectQty { get; set; }
+        public string DefectWorkQty { get; set; }
         public string DefectRate { get; set; }
+        public string DefectUpRate { get; set; }
+        public string DefectGoalRate { get; set; }
         public string gbn { get; set; }
         public string Sort { get; set; }
+        public string Goal { get; set; }
 
 
     }

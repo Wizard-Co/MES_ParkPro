@@ -131,7 +131,7 @@ namespace WizMes_ParkPro
         {
             MainWindow.pf.ReturnCode(txtArticleSrh, 77, "");
         }
-        
+
         //거래처
         private void lblCustomSrh_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
@@ -179,6 +179,10 @@ namespace WizMes_ParkPro
             grdSrh1.IsEnabled = true;
             grdSrh2.IsEnabled = true;
             grdSrh3.IsEnabled = true;
+            dtpEDate.IsEnabled = true;
+            dtpSDate.IsEnabled = true;
+            chkDateSrh.IsEnabled = true;
+            chkDateSrh.IsChecked = true;
 
             GridInputArea.IsEnabled = false;
         }
@@ -193,6 +197,7 @@ namespace WizMes_ParkPro
             dgdSub.IsHitTestVisible = true;
 
             grdSrh1.IsEnabled = false;
+            dtpEDate.IsEnabled = false;
             grdSrh2.IsEnabled = false;
             grdSrh3.IsEnabled = false;
 
@@ -466,7 +471,7 @@ namespace WizMes_ParkPro
                     }
                 }
 
-                
+
             }
             catch (Exception ex)
             {
@@ -594,7 +599,7 @@ namespace WizMes_ParkPro
                 }
 
                 string[] Confirm = new string[2];
-                Confirm = DataStore.Instance.ExecuteAllProcedureOutputNew_NewLog(Prolist, ListParameter,"U");
+                Confirm = DataStore.Instance.ExecuteAllProcedureOutputNew_NewLog(Prolist, ListParameter, "U");
                 if (Confirm[0] != "success")
                 {
                     MessageBox.Show("[저장실패]\r\n" + Confirm[1].ToString());

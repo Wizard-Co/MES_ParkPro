@@ -38,7 +38,7 @@
                        MouseLeftButtonDown="lblDay_MouseLeftButtonDown">
                     <StackPanel Style="{DynamicResource StackPanelInLabel}">
                         <Viewbox Style="{DynamicResource ViewBoxSetMaxMinHeight}">
-                            <CheckBox x:Name="chkDay" Click="chkDay_Click" VerticalAlignment="Center" IsEnabled="False"/>
+                            <CheckBox x:Name="chkDay" Click="chkDay_Click" VerticalAlignment="Center"/>
                         </Viewbox>
                         <Viewbox Style="{DynamicResource ViewBoxSetMaxMinHeight}" >
                             <TextBlock Text="작 업 일" 
@@ -235,32 +235,7 @@
                          KeyDown="txtWorkerNameSearch_KeyDown"/>
             </Grid>
             
-            <Grid Grid.Column="2" Grid.Row="3" Visibility="Hidden" >
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="75*" />
-                    <ColumnDefinition Width="90*" />
-                    <ColumnDefinition Width="15*" />
-                </Grid.ColumnDefinitions>
-                <Label x:Name="lblModel" Grid.Column="0" 
-                       Style="{DynamicResource LabelSearch}"
-                       MouseLeftButtonDown="lblModel_MouseLeftButtonDown">
-                    <StackPanel Style="{DynamicResource StackPanelInLabel}">
-                        <Viewbox Style="{DynamicResource ViewBoxSetMaxMinHeight}">
-                            <CheckBox x:Name="chkModel" Click="chkModel_Click" VerticalAlignment="Center"/>
-                        </Viewbox>
-                        <Viewbox Style="{DynamicResource ViewBoxSetMaxMinHeight}" >
-                            <TextBlock Text="모     델" 
-                                       Style="{DynamicResource TextBlockInViewBoxSearch}"/>
-                        </Viewbox>
-                    </StackPanel>
-                </Label>
-                <TextBox x:Name="txtModelSearch" Grid.Column="1" 
-                         Style="{DynamicResource TextBoxSearch}"
-                         KeyDown="txtModelSearch_KeyDown"/>
-                <Button x:Name="btnPfModel" Grid.Column="2" Margin="1" IsEnabled="False" Click="btnPfModel_Click">
-                    <Image Source="{DynamicResource btiPlusFind}" Style="{DynamicResource imgPlusFind}" />
-                </Button>
-            </Grid>
+          
             
             <Grid Grid.Column="3" Grid.Row="1" >
                 <Grid.ColumnDefinitions>
@@ -573,21 +548,21 @@
                         <DataGridTemplateColumn Header="건수" Width="*">
                             <DataGridTemplateColumn.CellTemplate>
                                 <DataTemplate>
-                                    <TextBlock Text="{Binding WorkCnt }" TextAlignment="Right"/>
+                                    <TextBlock Text="{Binding WorkCnt, StringFormat='#,###' }" TextAlignment="Right"/>
                                 </DataTemplate>
                             </DataGridTemplateColumn.CellTemplate>
                         </DataGridTemplateColumn>
                         <DataGridTemplateColumn Header="총수량" Width="*">
                             <DataGridTemplateColumn.CellTemplate>
                                 <DataTemplate>
-                                    <TextBlock Text="{Binding WorkQty}" TextAlignment="Right"/>
+                                    <TextBlock Text="{Binding WorkQty, StringFormat='#,###'}" TextAlignment="Right"/>
                                 </DataTemplate>
                             </DataGridTemplateColumn.CellTemplate>
                         </DataGridTemplateColumn>
                         <DataGridTemplateColumn Header="시간(Hour)" Width="*">
                             <DataGridTemplateColumn.CellTemplate>
                                 <DataTemplate>
-                                    <TextBlock Text="{Binding WorkHour}" TextAlignment="Right"/>
+                                    <TextBlock Text="{Binding WorkHour, StringFormat='#,###'}" TextAlignment="Right"/>
                                 </DataTemplate>
                             </DataGridTemplateColumn.CellTemplate>
                         </DataGridTemplateColumn>
@@ -727,13 +702,13 @@
                         <Label Grid.Row="6" Grid.Column="0" 
                                Style="{DynamicResource LabelInputArea}" >
                             <Viewbox Style="{DynamicResource ViewBoxSetMaxMinHeight}" >
-                                <TextBlock Text="차     종" 
+                                <TextBlock Text="제품공인인증번호" 
                                            Style="{DynamicResource TextBlockInViewBoxInput}" />
                             </Viewbox>
                         </Label>
-                        <TextBox x:Name="txtModel" Grid.Row="6" Grid.Column="1" 
+                        <TextBox x:Name="txtAC" Grid.Row="6" Grid.Column="1" 
                                  Style="{DynamicResource TextBoxInputArea}"
-                                 Text="{Binding BuyerModel}" Tag="{Binding BuyerModelID}" IsEnabled="False"/>
+                                 Text="{Binding AC}" Tag="{Binding AC}" IsEnabled="False"/>
 
                         <Label Grid.Row="7" Grid.Column="0" 
                                Style="{DynamicResource LabelInputArea}" >
@@ -874,7 +849,8 @@
                                     Text="{Binding WorkStartDate}"
                                     KeyDown="dtpWorkStartDate_KeyDown"
                                     PreviewKeyDown="dtpWorkStartDate_PreviewKeyDown"
-                                    CalendarClosed="dtpWorkStartDate_CalendarClosed"/>
+                                    CalendarClosed="dtpWorkStartDate_CalendarClosed"
+                                    SelectedDateChanged="dtpWorkStartDate_SelectedDateChanged"/>
                         <TextBox Grid.Row="6" x:Name="txtStartTime" Grid.Column="5" IsEnabled="False"
                                  Style="{DynamicResource TextBoxInputArea}"
                                  Text="{Binding WorkStartTime, StringFormat=HH:mm:ss}" 
@@ -890,7 +866,8 @@
                                     Text="{Binding WorkEndDate}"
                                     KeyDown="dtpWorkEndDate_KeyDown"
                                     PreviewKeyDown="dtpWorkEndDate_PreviewKeyDown"
-                                    CalendarClosed="dtpWorkEndDate_CalendarClosed"/>
+                                    CalendarClosed="dtpWorkEndDate_CalendarClosed"
+                                    SelectedDateChanged="dtpWorkEndDate_SelectedDateChanged"/>
                         <TextBox Grid.Row="7" x:Name="txtEndTime" Grid.Column="5" IsEnabled="False"
                                  Style="{DynamicResource TextBoxInputArea}"
                                  Text="{Binding WorkEndTime,StringFormat=HH:mm:ss}" 

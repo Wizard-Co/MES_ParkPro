@@ -66,29 +66,31 @@ namespace WizMes_ParkPro
         private void SaveUpdateMode()
         {
             Lib.Instance.UiButtonEnableChange_SCControl(this);
-            
-            txtQty.IsEnabled = true;
+            chkDay.IsEnabled = false;
+            dtpSDate.IsEnabled = false;
+            dtpEDate.IsEnabled = false;
+
+            //생산일자 
             dtpProdDate.IsEnabled = true;
             txtProdScanTime.IsEnabled = true;
 
+            //작업일시
             dtpWorkStartDate.IsEnabled = true;
             txtStartTime.IsEnabled = true;
             dtpWorkEndDate.IsEnabled = true;
             txtEndTime.IsEnabled = true;
             txtWorkMinute.IsEnabled = true;
 
-            //dgdResult.IsEnabled = false;
-            dgdResult.IsHitTestVisible = false;
-
-            // 작업조 수정 가능 하도록 추가.
+            // 작업조 
             cboDayOrNight.IsEnabled = true;
-            txtCT.IsEnabled = true;
 
             // 작업자, 호기 수정 가능 하도록
             txtWorker.IsEnabled = true;
-            btnPfWorker.IsEnabled = true;
             cboMachine.IsEnabled = true;
 
+            //제품공인인증번호
+            txtAC.IsEnabled = true;
+          
             SaveUpdateHeaderFalseMode();
         }
 
@@ -103,7 +105,6 @@ namespace WizMes_ParkPro
             btnToday.IsEnabled = false;
             lblCustom.IsEnabled = false;
             lblArticle.IsEnabled = false;
-            lblModel.IsEnabled = false;
             lblProcess.IsEnabled = false;
             lblMachine.IsEnabled = false;
             lblGubun.IsEnabled = false;
@@ -124,7 +125,6 @@ namespace WizMes_ParkPro
             btnToday.IsEnabled = true;
             lblCustom.IsEnabled = true;
             lblArticle.IsEnabled = true;
-            lblModel.IsEnabled = true;
             lblProcess.IsEnabled = true;
             lblMachine.IsEnabled = true;
             lblGubun.IsEnabled = true;
@@ -157,10 +157,13 @@ namespace WizMes_ParkPro
             cboDayOrNight.IsEnabled = false;
             txtCT.IsEnabled = false;
 
-            // 작업자, 호기 수정 가능 하도록
+            // 작업자, 호기 수정 X
             txtWorker.IsEnabled = false;
             btnPfWorker.IsEnabled = false;
             cboMachine.IsEnabled = false;
+
+            //제품공인인증번호 수정X 
+            txtAC.IsEnabled = false;
 
             SaveUpdateHeaderMode();
 
@@ -499,60 +502,7 @@ namespace WizMes_ParkPro
             }
         }
 
-        //모델
-        private void lblModel_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
-        {
-            if (chkModel.IsChecked == true) { chkModel.IsChecked = false; }
-            else { chkModel.IsChecked = true; }
-
-            chkModelClick(); //2021-04-23 검색조건 차종을 이동전표로 바뀌어서 PlusFind 안써도 됨
-        }
-
-        //모델 클릭시
-        private void chkModel_Click(object sender, RoutedEventArgs e)
-        {
-            chkModelClick(); //2021-04-23 검색조건 차종을 이동전표로 바뀌어서 PlusFind 안써도 됨
-        }
-
-        //모델 이벤트 2021-04-23 검색조건 차종을 이동전표로 바뀌어서 PlusFind 안써도 됨
-        //2022.03.28 이동전표 -> 모델 복원
-        private void chkModelClick()
-        {
-            if (chkModel.IsChecked == true)
-            {
-                txtModelSearch.IsEnabled = true;
-                btnPfModel.IsEnabled = true;
-                txtModelSearch.Focus();
-            }
-            else
-            {
-                txtModelSearch.IsEnabled = false;
-                btnPfModel.IsEnabled = false;
-            }
-        }
-
-        //모델 2021-04-23 검색조건 차종을 이동전표로 바뀌어서 PlusFind 안써도 됨
-        //2022.03.28 이동전표 -> 모델 복원
-        private void txtModelSearch_KeyDown(object sender, KeyEventArgs e)
-        {
-            if (e.Key == Key.Enter)
-            {
-                rowNum = 0;
-                //using (Loading lw = new Loading(re_Search))
-                //{
-                //    lw.ShowDialog();
-                //}
-
-                MainWindow.pf.ReturnCode(txtModelSearch, (int)Defind_CodeFind.DCF_BUYERMODEL, ""); 
-
-            }
-        }
-
-        //모델
-        private void btnPfModel_Click(object sender, RoutedEventArgs e)
-        {
-            MainWindow.pf.ReturnCode(txtModelSearch, (int)Defind_CodeFind.DCF_BUYERMODEL, "");
-        }
+     
 
         //품번
         private void lblArticleNo_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
@@ -783,9 +733,6 @@ namespace WizMes_ParkPro
             if (Main != null)
             {
                 SaveUpdateMode();
-
-                // GLS 2020.05.19 수량 변경에 문제가 많아 작업수량을 막음
-                txtQty.IsEnabled = false;
 
                 // 정렬이 생산일자 이기 때문에, 생산일자가 변경되면 행순서도 변경 되어 수정시 찾아갈 수가 없음.
                 // JobId 로 찾아가도록 수정
@@ -1089,8 +1036,9 @@ namespace WizMes_ParkPro
 
 
                 Dictionary<string, object> sqlParameter = new Dictionary<string, object>();
-                sqlParameter.Add("sFromDate", dtpSDate.SelectedDate != null ? dtpSDate.SelectedDate.Value.ToString("yyyyMMdd") : "");
-                sqlParameter.Add("sToDate", dtpEDate.SelectedDate != null ? dtpEDate.SelectedDate.Value.ToString("yyyyMMdd") : "");
+                sqlParameter.Add("ChkDate", chkDay.IsChecked == true ? 1 : 0);
+                sqlParameter.Add("sFromDate", chkDay.IsChecked == true && dtpSDate.SelectedDate != null ? dtpSDate.SelectedDate.Value.ToString("yyyyMMdd") : "");
+                sqlParameter.Add("sToDate", chkDay.IsChecked == true && dtpEDate.SelectedDate != null ? dtpEDate.SelectedDate.Value.ToString("yyyyMMdd") : "");
                 sqlParameter.Add("sProcessID", ProcessID);
                 sqlParameter.Add("sMachineID", MachineID);
                 sqlParameter.Add("ArticleID", chkArticle.IsChecked == true && txtArticleSearch.Tag != null ? txtArticleSearch.Tag.ToString() : "");
@@ -1101,8 +1049,8 @@ namespace WizMes_ParkPro
                 sqlParameter.Add("nJobGbn", (chkGubun.IsChecked == true ? 1 : 0));
                 sqlParameter.Add("sJobGubun", chkGubun.IsChecked == true && cboGubunSearch.SelectedValue != null ? cboGubunSearch.SelectedValue.ToString() : "");
 
-                sqlParameter.Add("nBuyerModel", ((chkModel.IsChecked == true) ? 1 : 0));
-                sqlParameter.Add("sBuyerModel", chkModel.IsChecked == true ? txtModelSearch.Text : ""); //2021-04-23 PlusFinder 안써서 수정 ("sBuyerModel", chkModel.IsChecked == true && txtModelSearch.Tag != null ? txtModelSearch.Tag.ToString() : "")
+                sqlParameter.Add("nBuyerModel", 0);
+                sqlParameter.Add("sBuyerModel", "");
                 sqlParameter.Add("nBuyerArticleNo", chkArticleNo.IsChecked == true ? 1 : 0);
                 sqlParameter.Add("sBuyerArticleNo", chkArticleNo.IsChecked == true ? txtArticleNoSearch.Text : "");
                 sqlParameter.Add("ndefect", chkDefectWork.IsChecked == true ? 1 : 0);
@@ -1187,6 +1135,7 @@ namespace WizMes_ParkPro
                                     //gbn = dr["gbn"].ToString(),
 
                                     WorkTimeMinute = Convert.ToDouble(dr["WorkTimeMinute"]),
+                                    AC = dr["AC"].ToString(),
 
                                 };
 
@@ -1483,6 +1432,7 @@ namespace WizMes_ParkPro
                     sqlParameter.Add("SplitSeq", ConvertInt(prodResult.SplitSeq)); // 이것이 스플릿인가 아닌가
                     sqlParameter.Add("WorkTimeMinute", txtWorkMinute.Text == string.Empty ? 0 : Convert.ToDouble(txtWorkMinute.Text.Replace(",", "")));
                     sqlParameter.Add("UpdateUserID", MainWindow.CurrentUser);
+                    sqlParameter.Add("AC", txtAC.Text);
 
                     string[] result = DataStore.Instance.ExecuteProcedure_NewLog("xp_prd_uWkResultOne_WPF", sqlParameter, "U");
 
@@ -1720,54 +1670,12 @@ namespace WizMes_ParkPro
         #region 작업시간 자동계산
         private void txtStartTime_TextChanged(object sender, TextChangedEventArgs e)
         {
-            try
-            {
-                if (txtStartTime.Text != string.Empty && txtEndTime.Text != string.Empty && txtStartTime.Text.Length == 8)
-                {
-                    string SDate = txtStartTime.Text;
-                    string EDate = txtEndTime.Text;
-
-                    DateTime StartDate = Convert.ToDateTime(SDate);
-                    DateTime EndDate = Convert.ToDateTime(EDate);
-
-                    TimeSpan dateDiff = EndDate - StartDate;
-
-                    double totalMinutes = dateDiff.TotalMinutes;
-
-                    txtWorkMinute.Text = Math.Round(totalMinutes).ToString();
-                }
-            }
-            catch
-            {
-
-            }
-
+            calcurateTime();
         }
 
         private void txtEndTime_TextChanged(object sender, TextChangedEventArgs e)
         {
-            try
-            {
-                if (txtStartTime.Text != string.Empty && txtEndTime.Text != string.Empty && txtStartTime.Text.Length == 8)
-                {
-                    string SDate = txtStartTime.Text;
-                    string EDate = txtEndTime.Text;
-
-                    DateTime StartDate = Convert.ToDateTime(SDate);
-                    DateTime EndDate = Convert.ToDateTime(EDate);
-
-                    TimeSpan dateDiff = EndDate - StartDate;
-
-                    double totalMinutes = dateDiff.TotalMinutes;
-
-                    txtWorkMinute.Text = Math.Round(totalMinutes).ToString();
-                }
-            }
-            catch
-            {
-
-            }
-
+            calcurateTime();
         }
 
         #endregion
@@ -2169,9 +2077,51 @@ namespace WizMes_ParkPro
             }
         }
 
+
         #endregion
 
-        
+        private void dtpWorkStartDate_SelectedDateChanged(object sender, SelectionChangedEventArgs e)
+        {
+            calcurateTime();
+        }
+
+        private void dtpWorkEndDate_SelectedDateChanged(object sender, SelectionChangedEventArgs e)
+        {
+            calcurateTime();
+        }
+
+        public void calcurateTime()
+        {
+            try
+            {
+                if (txtStartTime.Text != string.Empty && txtEndTime.Text != string.Empty && txtStartTime.Text.Length == 8)
+                {
+                    string SDate = dtpWorkStartDate.SelectedDate.Value.ToString("yyyy-MM-dd") + " " + txtStartTime.Text;
+
+                    if (dtpWorkEndDate.SelectedDate.Value != null)
+                    {
+                        string EDate = dtpWorkEndDate.SelectedDate.Value.ToString("yyyy-MM-dd") + " " + txtEndTime.Text;
+                        DateTime StartDate = Convert.ToDateTime(SDate);
+                        DateTime EndDate = Convert.ToDateTime(EDate);
+
+                        TimeSpan dateDiff = EndDate - StartDate;
+
+                        double totalMinutes = dateDiff.TotalMinutes;
+
+                        txtWorkMinute.Text = Math.Round(totalMinutes).ToString();
+                    }
+                    else
+                    {
+                        MessageBox.Show("작업 종료 시간이 없습니다");
+                    }
+
+                }
+            }
+            catch (Exception ex)
+            {
+
+            }
+        }
     }
 
     class Win_Prd_ProdResult_U_CodeView : BaseView
@@ -2244,6 +2194,7 @@ namespace WizMes_ParkPro
         public string SplitSeq { get; set; }
         public string gbn { get; set; }
         public double WorkTimeMinute { get; set; }
+        public string AC { get; set; }
     }
 
     class ProdResult_Count : BaseView

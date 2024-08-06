@@ -43,6 +43,7 @@ namespace WizMes_ParkPro
             Lib.Instance.UiLoading(sender);
             dtpSDate.SelectedDate = DateTime.Today;
             dtpEDate.SelectedDate = DateTime.Today;
+            chkRepairDaySrh.IsChecked = true;
 
             SetCombo();
         }
@@ -50,10 +51,8 @@ namespace WizMes_ParkPro
         private void SetCombo()
         {
             List<string[]> lstRepairGubun = new List<string[]>();
-            string[] strRepairGubun_0 = { "0", "" };
             string[] strRepairGubun_1 = { "1", "수리" };
             string[] strRepairGubun_2 = { "2", "교체" };
-            lstRepairGubun.Add(strRepairGubun_0);
             lstRepairGubun.Add(strRepairGubun_1);
             lstRepairGubun.Add(strRepairGubun_2);
 
@@ -441,6 +440,10 @@ namespace WizMes_ParkPro
         //조회
         private void FillGrid()
         {
+            if(dgdMCRepair.Items.Count > 0)
+            {
+                dgdMCRepair.Items.Clear();
+            }
             try
             {
                 Dictionary<string, object> sqlParameter = new Dictionary<string, object>();
@@ -482,7 +485,8 @@ namespace WizMes_ParkPro
                                 BuyCustomName = dr["BuyCustomName"].ToString(),
                                 personid = dr["personid"].ToString(),
                                 personname = dr["personname"].ToString(),
-                                RepairRemark = dr["RepairRemark"].ToString()
+                                RepairRemark = dr["RepairRemark"].ToString(),
+                                price = Convert.ToDouble(dr["price"])
                             };
 
                             if (WinMCRepair.repairdate != null && !WinMCRepair.repairdate.Equals(""))
@@ -662,6 +666,7 @@ namespace WizMes_ParkPro
                     sqlParameter.Add("personid", txtpersonname.Tag.ToString().Replace(" ", ""));
                     sqlParameter.Add("personname", txtpersonname.Text);
                     sqlParameter.Add("repairremark", txtRepairRemark.Text);
+                    sqlParameter.Add("price", !txtPrice.Text.Equals("") ? Convert.ToDouble(txtPrice.Text) : 0);
 
                     if (strflag.Equals("I"))
                     {
@@ -898,30 +903,22 @@ namespace WizMes_ParkPro
                         flag = false;
                         return flag;
                     }
-                    if (WinSubGrid.reason == null || WinSubGrid.reason == "")
-                    {
-                        MessageBox.Show("사유를 입력하지 않았습니다.");
-                        flag = false;
-                        return flag;
-                    }
+                    //if (WinSubGrid.reason == null || WinSubGrid.reason == "")
+                    //{
+                    //    MessageBox.Show("사유를 입력하지 않았습니다.");
+                    //    flag = false;
+                    //    return flag;
+                    //}
                 }
-                //if (WinSub != null)
-                //{
-                //    if (WinSub.MCPartID == null)
-                //    {
-                //        MessageBox.Show("부품수리 내역을 입력하지 않았습니다. 부품추가하여 부품수리내역을 입력하여 주세요.");
-                //        flag = false;
-                //        return flag;
-                //    }
-                //}
+               
 
             }
-            else
-            {
-                MessageBox.Show("부품수리 내역을 입력하지 않았습니다. 부품추가하여 부품수리내역을 입력하여 주세요.");
-                flag = false;
-                return flag;
-            }
+            //else
+            //{
+            //    MessageBox.Show("부품수리 내역을 입력하지 않았습니다. 부품추가하여 부품수리내역을 입력하여 주세요.");
+            //    flag = false;
+            //    return flag;
+            //}
 
             return flag;
         }
@@ -951,7 +948,7 @@ namespace WizMes_ParkPro
                 MCPartName = "",
                 reason = "",
                 partcnt = "",
-                partprice = "",
+                partprice = "0",
                 partremark = "",
                 CustomID = "",
                 customname = "",
@@ -1050,15 +1047,61 @@ namespace WizMes_ParkPro
                 TextBox tb1 = sender as TextBox;
                 MainWindow.pf.ReturnCode(tb1, (int)Defind_CodeFind.DCF_PART, "");
 
-                if (tb1.Tag != null)
+                if (tb1.Tag != null && !tb1.Tag.ToString().Equals(""))
                 {
                     WinMCRepairSub.MCPartName = tb1.Text;
                     WinMCRepairSub.MCPartID = tb1.Tag.ToString();
-                }
+       
+                    String[] lst = GetMcPart(WinMCRepairSub.MCPartID);
+                    if (lst != null)
+                    {
+                        WinMCRepairSub.CustomID = lst[0];
+                        WinMCRepairSub.customname = lst[1];
 
+                    }
+
+                }
                 sender = tb1;
             }
         }
+
+        //예비품 입력시 거래처,종류 가져오게 
+        private String[] GetMcPart(string McPartID)
+        {
+            String[] lst = new string[3];
+            string sql = "select CustomID, Custom, ForUse from mt_McPart mmp left join mc_PartStuffIN mps on mps.MCPartID = mmp.MCPartID where mmp.MCPartID = " + McPartID;
+
+            try
+            {
+                DataSet ds = DataStore.Instance.QueryToDataSet(sql);
+                if (ds != null && ds.Tables.Count > 0)
+                {
+                    DataTable dt = ds.Tables[0];
+                    if (dt.Rows.Count > 0)
+                    {
+                        DataRowCollection drc = dt.Rows;
+                        DataRow dr = drc[0];
+
+                        lst[0] = dr["CustomID"].ToString();
+                        lst[1] = dr["Custom"].ToString();
+
+                    }
+                    return lst;
+                }
+
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.ToString());
+            }
+            finally
+            {
+                DataStore.Instance.CloseConnection();
+            }
+            return null;
+        }
+
+
 
         //부품
         private void EditableMCPartName_MouseDoubleClick(object sender, MouseButtonEventArgs e)
@@ -1763,8 +1806,8 @@ namespace WizMes_ParkPro
         public string personname { get; set; }
         public string RepairRemark { get; set; }
         public string repairdate_CV { get; set; }
-
         public string RepairGubun_CV { get; set; }
+        public double price { get; set; }
     }
 
     class Win_prd_Repair_U_Sub_CodeView : BaseView

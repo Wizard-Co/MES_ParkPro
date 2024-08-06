@@ -480,12 +480,6 @@ namespace WizMes_ParkPro
                 CompleteCancelMode();
             }
 
-            //검색버튼 비활성화
-            btnSearch.IsEnabled = false;
-
-            Dispatcher.BeginInvoke(new Action(() =>
-
-            {
                 //로직
                 using (Loading lw = new Loading(re_Search))
                 {
@@ -502,16 +496,9 @@ namespace WizMes_ParkPro
                     dgdMain.SelectedIndex = rowNum;
                 }
 
-            }), System.Windows.Threading.DispatcherPriority.Background);
 
+            btnSearch.IsEnabled = true;
 
-
-            Dispatcher.BeginInvoke(new Action(() =>
-
-            {
-                btnSearch.IsEnabled = true;
-
-            }), System.Windows.Threading.DispatcherPriority.Background);
             
         }
 
@@ -685,9 +672,6 @@ namespace WizMes_ParkPro
                         {
                             DataRowCollection drc = dt.Rows;
 
-
-
-  
                             foreach (DataRow dr in drc)
                             {
                                 var WinPlanArticle = new Win_prd_PlanArticleOne_CodeView()
@@ -696,17 +680,18 @@ namespace WizMes_ParkPro
                                     PatternSeq = dr["PatternSeq"].ToString(),
                                     ProcessID = dr["ProcessID"].ToString(),
                                     Process = dr["Process"].ToString(),
-                                    Qty = stringFormatN0(dr["Qty"]),
+                                    Qty = dr["Qty"].ToString(),
                                     Article = dr["Article"].ToString(),
                                     ArticleID = dr["ArticleID"].ToString(),
                                     BuyerArticleNo = dr["BuyerArticleNo"].ToString(),
                                     LVL = dr["LVL"].ToString(),
-                                    InstQty = stringFormatN0(txtQty.Text),
                                     StartDate = dtpInstDate.SelectedDate.Value.ToString("yyyyMMdd"),
                                     EndDate = dtpInstCompleteDate.SelectedDate.Value.ToString("yyyyMMdd"),
                                     ChildBuyerArticleNo = dr["ChildBuyerArticleNo"].ToString(),
                                 };
 
+                                //지시수량
+                                WinPlanArticle.InstQty = stringFormatN2(ConvertDouble(WinPlanArticle.Qty) * ConvertDouble(txtQty.Text));
 
                                 // 날짜 세팅
                                 WinPlanArticle.StartDate_CV = DatePickerFormat(WinPlanArticle.StartDate);
@@ -829,13 +814,6 @@ namespace WizMes_ParkPro
             if (WinPlan.ArticleID == null)
             {
                 MessageBox.Show("해당 수주에 품명 정보가 없습니다.");
-                return false;
-            }
-
-            // 지시 완료가 되어 있다면!!!
-            if (WinPlan.PlanComplete.Trim().Equals("*"))
-            {
-                MessageBox.Show("지시완료가 된 작업지시입니다.");
                 return false;
             }
 
@@ -1051,16 +1029,6 @@ namespace WizMes_ParkPro
                         sqlParameter.Add("CreateUserID", MainWindow.CurrentUser);
                         sqlParameter.Add("DevideYN", "N");
 
-                        //if(MessageBox.Show("기간동안 지시량을 일로 분할 저장하시겠습니까?", "삭제 전 확인", MessageBoxButton.YesNo) == MessageBoxResult.Yes)
-                        //{
-                        //    devideYN = "Y";
-                        //    sqlParameter.Add("DevideYN", "Y");
-                        //} else
-                        //{
-                        //    devideYN = "N";
-                        //    sqlParameter.Add("DevideYN", "N");
-                        //}
-
                         Procedure pro1 = new Procedure();
                         pro1.Name = "xp_PlanInput_iPlanInput";
                         pro1.OutputUseYN = "Y";
@@ -1092,19 +1060,12 @@ namespace WizMes_ParkPro
                             sqlParameter.Add("CreateUserID", MainWindow.CurrentUser);
                             sqlParameter.Add("DevideYN", "N");
 
-                            //if (devideYN.Equals("Y"))
-                            //{
-                            //    sqlParameter.Add("DevideYN", "Y");
-                            //}
-                            //else
-                            //{
-                            //    sqlParameter.Add("DevideYN", "N");
-                            //}
                             Procedure pro2 = new Procedure();
                             pro2.Name = "xp_PlanInput_iPlanInputSub";
                             pro2.OutputUseYN = "N";
                             pro2.OutputName = "InstID";
                             pro2.OutputLength = "12";
+
 
                             Prolist.Add(pro2);
                             ListParameter.Add(sqlParameter);

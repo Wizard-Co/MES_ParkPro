@@ -329,27 +329,50 @@
                 </Label>
             </Grid>
 
-            <Grid Grid.Column="4" Grid.Row="3">
+            <Grid Grid.Column="4" Grid.Row="2">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="100*" />
                     <ColumnDefinition Width="65*" />
                     <ColumnDefinition Width="15*" />
                 </Grid.ColumnDefinitions>
                 <Label x:Name="lblOnlyDefect" 
-                       Style="{DynamicResource LabelSearch}"
-                       MouseLeftButtonDown="lblOnlyDefect_MouseLeftButtonDown" >
+           Style="{DynamicResource LabelSearch}"
+           MouseLeftButtonDown="lblOnlyDefect_MouseLeftButtonDown" >
                     <StackPanel Style="{DynamicResource StackPanelInLabel}">
                         <Viewbox Style="{DynamicResource ViewBoxSetMaxMinHeight}">
                             <CheckBox x:Name="chkDefect" />
                         </Viewbox>
                         <Viewbox Style="{DynamicResource ViewBoxSetMaxMinHeight}" >
                             <TextBlock Text="생산불량 발생건만" 
-                                       Style="{DynamicResource TextBlockInViewBoxSearch}" />
+                           Style="{DynamicResource TextBlockInViewBoxSearch}" />
                         </Viewbox>
                     </StackPanel>
                 </Label>
             </Grid>
 
+
+            <Grid Grid.Column="4" Grid.Row="3">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="100*" />
+                    <ColumnDefinition Width="65*" />
+                    <ColumnDefinition Width="15*" />
+                </Grid.ColumnDefinitions>
+                <Label x:Name="lblAC" Style="{DynamicResource LabelSearch}" MouseLeftButtonDown="lblAC_MouseLeftButtonDown" >
+                    <StackPanel Style="{DynamicResource StackPanelInLabel}">
+                        <Viewbox Style="{DynamicResource ViewBoxSetMaxMinHeight}">
+                            <CheckBox x:Name="chkAC" Checked="chkAC_Checked" Unchecked="chkAC_Unchecked"/>
+                        </Viewbox>
+                        <Viewbox Style="{DynamicResource ViewBoxSetMaxMinHeight}" >
+                            <TextBlock Text="제품공인인증번호" 
+                           Style="{DynamicResource TextBlockInViewBoxSearch}" />
+                        </Viewbox>
+                    </StackPanel>
+                </Label>
+                <TextBox x:Name="txtAC" Grid.Column="1" Style="{DynamicResource TextBoxSearch}" KeyDown="txtBox_EnterAndSearch" />
+            </Grid>
+
+
+            
             <Grid Grid.Column="5" Grid.RowSpan="4">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="*" />
@@ -461,7 +484,7 @@
                             </DataGridTemplateColumn.CellTemplate>
                         </DataGridTemplateColumn>
                         
-                        <DataGridTemplateColumn Header="모델" SortMemberPath="BuyerModel">
+                        <DataGridTemplateColumn Header="모델" SortMemberPath="BuyerModel" Visibility="Hidden">
                             <DataGridTemplateColumn.CellTemplate>
                                 <DataTemplate>
                                     <TextBlock Text="{Binding BuyerModel}" TextAlignment="Center" Padding="5 0" />
@@ -476,6 +499,7 @@
                                 </DataTemplate>
                             </DataGridTemplateColumn.CellTemplate>
                         </DataGridTemplateColumn>
+                        <DataGridTextColumn Header="제품공인인증번호" Binding="{Binding AC}"></DataGridTextColumn>
                         <DataGridTemplateColumn x:Name="dgdtpeOrderID" Header="관리번호" Visibility="Hidden" >
                             <DataGridTemplateColumn.CellTemplate>
                                 <DataTemplate>

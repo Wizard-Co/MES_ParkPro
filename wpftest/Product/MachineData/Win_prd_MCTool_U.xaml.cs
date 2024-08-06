@@ -229,6 +229,7 @@ namespace WizMes_ParkPro
 
             //Tool 추가 2021-05-27
             cboForUse.SelectedValue = 3;
+            cboUnitClss.SelectedIndex = 0;
         }
 
         //수정
@@ -1083,11 +1084,11 @@ namespace WizMes_ParkPro
                 string[] fileListDetail;
                 fileListDetail = _ftp.directoryListSimple(FolderName, Encoding.Default);
 
-                //ExistFile = FileInfoAndFlag(fileListDetail, ImageName);
-                //if (ExistFile)
-                //{
-                bit = _ftp.DrawingImageByByte(FTP_ADDRESS + '/' + FolderName + '/' + ImageName + "");
-                //}
+                ExistFile = FileInfoAndFlag(fileListDetail, ImageName);
+                if (ExistFile)
+                {
+                    bit = _ftp.DrawingImageByByte(FTP_ADDRESS + '/' + FolderName + '/' + ImageName + "");
+                }
             }
             catch (Exception ex)
             {
