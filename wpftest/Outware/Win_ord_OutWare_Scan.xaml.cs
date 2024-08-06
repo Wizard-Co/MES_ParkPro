@@ -1482,11 +1482,11 @@ namespace WizMes_ParkPro
             {
                 if (e.Key == Key.Enter)
                 {
-                    if (string.IsNullOrEmpty(txtOutwareReqID.Text))
-                    {
-                        MessageBox.Show("선택된 출고지시가 없습니다");
-                        return;
-                    }
+                    //if (string.IsNullOrEmpty(txtOutwareReqID.Text))
+                    //{
+                    //    MessageBox.Show("선택된 출고지시가 없습니다");
+                    //    return;
+                    //}
 
                     if (tgnMoveByID.IsChecked == true)
                     {
@@ -2127,7 +2127,8 @@ namespace WizMes_ParkPro
             {
                 if (CheckData())
                 {
-                    string orderID = txtOutwareReqID.Tag != null ? txtOutwareReqID.Tag.ToString() : "";
+                    //string orderID = txtOutwareReqID.Tag != null ? txtOutwareReqID.Tag.ToString() : "";
+                    string orderID = txtOrderID.Tag != null ? txtOrderID.Tag.ToString() : "";
 
                     #region 추가
 
@@ -2442,17 +2443,17 @@ namespace WizMes_ParkPro
         {
             try
             {
-                //if (txtOrderID.Text == "")
-                //{
-                //    MessageBox.Show("관리번호를 반드시 입력하세요.");
-                //    return false;
-                //}
-
-                if (txtOutwareReqID.Text == "")
+                if (txtOrderID.Text == "")
                 {
-                    MessageBox.Show("출고지시번호를 반드시 입력하세요.");
+                    MessageBox.Show("관리번호를 반드시 입력하세요.");
                     return false;
                 }
+
+                //if (txtOutwareReqID.Text == "")
+                //{
+                //    MessageBox.Show("출고지시번호를 반드시 입력하세요.");
+                //    return false;
+                //}
 
                 if (txtKCustom.Text == "")
                 {
@@ -2583,7 +2584,7 @@ namespace WizMes_ParkPro
                 Dictionary<string, object> sqlParameter = new Dictionary<string, object>();
                 sqlParameter.Clear();
                 sqlParameter.Add("OrderID", orderID);
-                sqlParameter.Add("OutwareReqID", OutwareReqID);
+                //sqlParameter.Add("OutwareReqID", OutwareReqID);
                 sqlParameter.Add("Article", replyArticle);
 
                 DataSet ds = DataStore.Instance.ProcedureToDataSet("xp_Outware_sOrderOne", sqlParameter, false);
