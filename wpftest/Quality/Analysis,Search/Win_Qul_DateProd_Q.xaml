@@ -287,7 +287,7 @@
                                 </DataTemplate>
                             </DataGridTemplateColumn.CellTemplate>
                         </DataGridTemplateColumn>
-                    <DataGridTemplateColumn Header="차종" Width="*" >
+                    <DataGridTemplateColumn Header="모델" Width="*" >
                             <DataGridTemplateColumn.CellTemplate >
                                 <DataTemplate>
                                 <TextBlock Text="{Binding BuyerModelID}" TextAlignment="Center"/>
@@ -354,7 +354,8 @@
                     </Style>
                 </DataGrid.RowStyle>
                 <DataGrid.Columns>
-                    <DataGridTextColumn Header="총 발생수량" Width="*" Binding="{Binding Path=DefectQty}" CellStyle="{StaticResource NumericDataGridCell}"  />
+                    <DataGridTextColumn Header="총 발생수량" Width="*" Binding="{Binding Path=DefectQty}" 
+                                        CellStyle="{StaticResource DataGridCellAndCentering}"  />
                 </DataGrid.Columns>
             </DataGrid>
            

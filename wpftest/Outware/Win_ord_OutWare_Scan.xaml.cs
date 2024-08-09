@@ -10,6 +10,7 @@ using System.Windows.Input;
 using System.Drawing.Printing;
 using WizMes_ParkPro.PopUP;
 using WizMes_ParkPro.PopUp;
+using System.Windows.Media;
 
 /**************************************************************************************************
 '** 프로그램명 : Win_ord_OutWare_Scan
@@ -22,6 +23,8 @@ using WizMes_ParkPro.PopUp;
 '**************************************************************************************************
 ' 2023.03.30, 장시영, 삼익SDT에서 가져옴
 ' 2023.04.28, 장시영, 라벨 스캔 시 선출고 체크
+' 2024.08.08, 최대현, 관리번호값을 정상적으로 불러왔을때만 출고구분 콤보 열리도록 변경
+' 2024.08.08, 최대현, 총합계 Text 값 출력
 '**************************************************************************************************/
 
 namespace WizMes_ParkPro
@@ -1260,16 +1263,18 @@ namespace WizMes_ParkPro
             {
                 if (e.Key == Key.Enter)
                 {
-                    pf.ReturnCode(txtOrderID, 4, "");
+                    pf.ReturnCode(txtOrderID, 99, "");
 
                     if (txtOrderID.Text.Length > 0)
                     {
                         //관리번호 기반_ 항목 뿌리기 작업.
                         OrderID_OtherSearch(txtOrderID.Text, "");
+
+                        //관리번호 입력 후 출고구분 콤보박스 포커스 이동
+                        cboOutClss.IsDropDownOpen = true;
                     }
 
-                    //관리번호 입력 후 출고구분 콤보박스 포커스 이동
-                    cboOutClss.IsDropDownOpen = true;
+
                 }
             }
             catch (Exception ee)
@@ -1442,7 +1447,7 @@ namespace WizMes_ParkPro
         {
             try
             {
-                pf.ReturnCode(txtOrderID, 4, "");
+                pf.ReturnCode(txtOrderID, 99, "");
 
                 if (txtOrderID.Text.Length > 0)
                 {
@@ -1913,8 +1918,14 @@ namespace WizMes_ParkPro
                 {
                     DataTable dt = ds.Tables[0];
 
+                    int Total_count = 0;
+                    int Total_OutQty = 0;
+                    int Total_OutAmount = 0;
+
                     if (dt.Rows.Count == 0)
                     {
+                        ClearInputGrid();
+                        ClearTotalText();
                         MessageBox.Show("조회결과가 없습니다. 검색조건을 확인해 주세요.");
                         return;
                     }
@@ -2005,6 +2016,11 @@ namespace WizMes_ParkPro
 
                             };
 
+                            Total_count++;
+                            Total_OutQty += Convert.ToInt32(Convert.ToDouble(Win_ord_OutWare_Scan_Insert.OutQty));
+                            Total_OutAmount += Convert.ToInt32(Convert.ToDouble(Win_ord_OutWare_Scan_Insert.UnitPrice)) 
+                                                * Convert.ToInt32(Convert.ToDouble(Win_ord_OutWare_Scan_Insert.OutQty));
+                         
                             //출고일자 데이트피커 포맷으로 변경
                             Win_ord_OutWare_Scan_Insert.OutDate = DatePickerFormat(Win_ord_OutWare_Scan_Insert.OutDate);
                             //잔량, 수주량, 소요량, 출고량, 누계출고, 단가 소숫점 두자리 변환
@@ -2019,6 +2035,10 @@ namespace WizMes_ParkPro
 
                             //MessageBox.Show(Win_ord_OutWare_Scan_Insert.TOLocID);
                         }
+
+                        txtOutCount.Text = stringFormatN0(Total_count) + " 건";
+                        txtOutYds.Text = stringFormatN0(Total_OutQty) + " EA";
+                        txtOutAmount.Text = stringFormatN0(Total_OutAmount) + " 원";
                     }
                 }
             }
@@ -2114,6 +2134,13 @@ namespace WizMes_ParkPro
         }
 
         #endregion Sub조회
+
+        #region Total조회
+
+      
+
+        #endregion
+
 
         #region 저장
         private bool SaveData(string strFlag)
@@ -2434,6 +2461,8 @@ namespace WizMes_ParkPro
 
             return flag;
         }
+
+
 
         #endregion 저장
 
@@ -3533,6 +3562,8 @@ namespace WizMes_ParkPro
         }
         #endregion
 
+        #region 기타 메서드
+
         // 숫자로 변환 가능한지 체크 이벤트
         private bool CheckConvertInt(string str)
         {
@@ -3566,6 +3597,50 @@ namespace WizMes_ParkPro
 
             return result;
         }
+
+        private void ClearTotalText()
+        {
+            txtOutCount.Text = string.Empty;
+            txtOutYds.Text = string.Empty;
+            txtOutAmount.Text = string.Empty;
+        }
+
+        //남아있는 데이터로 오류 방지 입력칸 비우기
+        private void ClearInputGrid()
+        {
+            //여기에 비우고자 하는 그리드를 파라미터로 적어주세요
+            ClearTextLabel(grbOutwareDetailBox);
+        }
+
+        //UI컨트롤을 찾아 해당하는 요소가 있으면 내용을 비움
+        private void ClearTextLabel(DependencyObject parent)
+        {
+            int childCount = VisualTreeHelper.GetChildrenCount(parent);
+
+            for (int i = 0; i < childCount; i++)
+            {
+                var child = VisualTreeHelper.GetChild(parent, i);
+
+                if (child is TextBox textBox)
+                {
+                    // TextBox를 찾으면 Text 속성을 빈 문자열로 설정
+                    textBox.Text = string.Empty;
+                    textBox.Tag = null;
+                }
+                if (child is ComboBox comboBox)
+                {
+                    //콤보박스 선택값 비워줌
+                    comboBox.SelectedValue = "";
+                }
+                else
+                {
+                    // 자식이 TextBox가 아니면 재귀적으로 그 자식의 자식들을 탐색
+                    ClearTextLabel(child);
+                }
+            }
+        }
+
+        #endregion
     }
 
 

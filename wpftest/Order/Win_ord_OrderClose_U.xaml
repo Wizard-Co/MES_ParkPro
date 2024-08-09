@@ -333,7 +333,7 @@
                 <RowDefinition Height="10"/>
             </Grid.RowDefinitions>
 
-            <DataGrid x:Name="dgdMain" Grid.Row="0" Style="{DynamicResource DataGridSet1}" IsReadOnly="True" MouseDoubleClick="DgdMain_MouseDoubleClick" SizeChanged="DataGrid_SizeChange" >
+            <DataGrid x:Name="dgdMain" Grid.Row="0" Style="{DynamicResource DataGridSet1}" IsReadOnly="True" SizeChanged="DataGrid_SizeChange" >
                 <DataGrid.RowStyle>
                     <Style TargetType="DataGridRow">
                         <Style.Resources>

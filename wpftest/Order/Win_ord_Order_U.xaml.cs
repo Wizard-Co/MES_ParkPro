@@ -9,9 +9,11 @@ using System.Windows.Input;
 using WizMes_ParkPro.PopUP;
 using WizMes_ParkPro.PopUp;
 using Excel = Microsoft.Office.Interop.Excel;
+using System.Windows.Media;
+using System.Linq;
 
 /**************************************************************************************************
-'** 프로그램명 : Win_Qul_DefectRepair_Q
+'** 프로그램명 : Win_ord_Order_U
 '** 설명       : 수주등록
 '** 작성일자   : 2023.04.03
 '** 작성자     : 장시영
@@ -19,7 +21,7 @@ using Excel = Microsoft.Office.Interop.Excel;
 '**************************************************************************************************
 ' 변경일자  , 변경자, 요청자    , 요구사항ID      , 요청 및 작업내용
 '**************************************************************************************************
-' 2023.04.03, 장시영, 저장시 xp_Order_dOrderColorAll 내용 삭제 - xp_Order_uOrder 에서 동작하도록 수정
+
 '**************************************************************************************************/
 
 namespace WizMes_ParkPro
@@ -735,7 +737,13 @@ namespace WizMes_ParkPro
         private void btnAdd_Click(object sender, RoutedEventArgs e)
         {
             strFlag = "I";
-            this.DataContext = null;           
+
+            DateTime today = DateTime.Today;
+
+            dtpAcptDate.SelectedDate = today;
+            dtpDvlyDate.SelectedDate = today;
+
+            this.DataContext = new object();
 
             txtAmount.Text = "0";
 
@@ -757,12 +765,15 @@ namespace WizMes_ParkPro
             cboUnitClss.SelectedIndex = 0;
             cboWork.SelectedIndex = 0;
 
-            dtpAcptDate.SelectedDate = DateTime.Today;
-            dtpDvlyDate.SelectedDate = DateTime.Today;
+
+                     
             btnNeedStuff.IsEnabled = true;
             tbkMsg.Text = "자료 입력 중";
             rowNum = Math.Max(0, dgdMain.SelectedIndex);
-            
+
+            //dtpAcptDate.GetBindingExpression(DatePicker.SelectedDateProperty)?.UpdateTarget();
+            //dtpDvlyDate.GetBindingExpression(DatePicker.SelectedDateProperty)?.UpdateTarget();
+
             if (dgdNeedStuff.Items.Count > 0)
                 dgdNeedStuff.Items.Clear();
         }
@@ -795,57 +806,129 @@ namespace WizMes_ParkPro
 
         private void beDelete()
         {
-            btnDelete.IsEnabled = false;
+            #region ...
+            //한건씩 삭제
+            ////btnDelete.IsEnabled = false;
 
+            ////Dispatcher.BeginInvoke(new Action(() =>
+            ////{
+            ////    OrderView = dgdMain.SelectedItem as Win_ord_Order_U_CodeView;
+
+            ////    if (OrderView == null)
+            ////    {
+            ////        MessageBox.Show("삭제할 데이터가 지정되지 않았습니다. 삭제데이터를 지정하고 눌러주세요");
+            ////    }
+            ////    else
+            ////    {
+            ////        string sql = "select OrderID from pl_Input where OrderID = " + OrderView.OrderID;
+
+            ////        DataSet ds = DataStore.Instance.QueryToDataSet(sql);
+            ////        if (ds != null && ds.Tables.Count > 0)
+            ////        {
+            ////            DataTable dt = ds.Tables[0];
+            ////            if (dt.Rows.Count > 0)
+            ////            {
+            ////                sql = "select OrderID from OutWare where OrderID = " + OrderView.OrderID;
+
+            ////                ds = DataStore.Instance.QueryToDataSet(sql);
+            ////                if (ds != null && ds.Tables.Count > 0)
+            ////                {
+            ////                    dt = ds.Tables[0];
+            ////                    string msg = dt.Rows.Count > 0 ?
+            ////                        "해당 수주 건은 생산 진행중이오니, 삭제하시려면 생산부터 작업지시까지 먼저 삭제해주세요" :
+            ////                        "해당 수주 건은 작업지시 진행중이오니, 삭제하시려면 작업지시 먼저 삭제해주세요";
+            ////                    MessageBox.Show(msg);
+            ////                }
+            ////            }
+            ////            else
+            ////            {
+            ////                if (MessageBox.Show("선택하신 항목을 삭제하시겠습니까?", "삭제 전 확인", MessageBoxButton.YesNo) == MessageBoxResult.Yes)
+            ////                {
+            ////                    if (dgdMain.Items.Count > 0 && dgdMain.SelectedItem != null)
+            ////                        rowNum = dgdMain.SelectedIndex;
+
+            ////                    if (DeleteData(OrderView.OrderID))
+            ////                    {
+            ////                        rowNum = Math.Max(0, rowNum - 1);
+            ////                        re_Search(rowNum);
+            ////                    }
+            ////                }
+            ////            }
+            ////        }
+            ////    }
+            ////}), System.Windows.Threading.DispatcherPriority.Background);
+
+            ////btnDelete.IsEnabled = true;
+            ///
+            #endregion
+
+
+            btnDelete.IsEnabled = false;
             Dispatcher.BeginInvoke(new Action(() =>
             {
-                OrderView = dgdMain.SelectedItem as Win_ord_Order_U_CodeView;
-
-                if (OrderView == null)
+                if (dgdMain.SelectedItems.Count == 0)
                 {
-                    MessageBox.Show("삭제할 데이터가 지정되지 않았습니다. 삭제데이터를 지정하고 눌러주세요");
+                    MessageBox.Show("삭제할 데이터가 지정되지 않았습니다. 삭제할 데이터를 선택해주세요.");
+                    return;
                 }
-                else
+
+                var selectedOrders = dgdMain.SelectedItems.Cast<Win_ord_Order_U_CodeView>().ToList();
+                var orderIdsToDelete = new List<string>();
+
+                foreach (var order in selectedOrders)
                 {
-                    string sql = "select OrderID from pl_Input where OrderID = " + OrderView.OrderID;
-
-                    DataSet ds = DataStore.Instance.QueryToDataSet(sql);
-                    if (ds != null && ds.Tables.Count > 0)
+                    if (!CanDeleteOrder(order.OrderID))
                     {
-                        DataTable dt = ds.Tables[0];
-                        if (dt.Rows.Count > 0)
-                        {
-                            sql = "select OrderID from OutWare where OrderID = " + OrderView.OrderID;
+                        return; // 삭제할 수 없는 수주가 있으면 중단
+                    }
+                    orderIdsToDelete.Add(order.OrderID);
+                }
 
-                            ds = DataStore.Instance.QueryToDataSet(sql);
-                            if (ds != null && ds.Tables.Count > 0)
-                            {
-                                dt = ds.Tables[0];
-                                string msg = dt.Rows.Count > 0 ?
-                                    "해당 수주 건은 생산 진행중이오니, 삭제하시려면 생산부터 작업지시까지 먼저 삭제해주세요" :
-                                    "해당 수주 건은 작업지시 진행중이오니, 삭제하시려면 작업지시 먼저 삭제해주세요";
-                                MessageBox.Show(msg);
-                            }
-                        }
-                        else
+                if (MessageBox.Show($"선택하신 {orderIdsToDelete.Count}개의 항목을 삭제하시겠습니까?", "삭제 전 확인", MessageBoxButton.YesNo) == MessageBoxResult.Yes)
+                {
+                    bool allDeleted = true;
+                    foreach (var orderId in orderIdsToDelete)
+                    {
+                        if (!DeleteData(orderId))
                         {
-                            if (MessageBox.Show("선택하신 항목을 삭제하시겠습니까?", "삭제 전 확인", MessageBoxButton.YesNo) == MessageBoxResult.Yes)
-                            {
-                                if (dgdMain.Items.Count > 0 && dgdMain.SelectedItem != null)
-                                    rowNum = dgdMain.SelectedIndex;
-
-                                if (DeleteData(OrderView.OrderID))
-                                {
-                                    rowNum = Math.Max(0, rowNum - 1);
-                                    re_Search(rowNum);
-                                }
-                            }
+                            allDeleted = false;
+                            break;
                         }
+                    }
+
+                    if (allDeleted)
+                    {
+                        MessageBox.Show("선택한 모든 항목이 성공적으로 삭제되었습니다.");
+                        re_Search(0); // 첫 번째 행부터 다시 검색
+                    }
+                    else
+                    {
+                        MessageBox.Show("일부 항목 삭제 중 오류가 발생했습니다.");
                     }
                 }
             }), System.Windows.Threading.DispatcherPriority.Background);
-
             btnDelete.IsEnabled = true;
+        }
+
+
+        private bool CanDeleteOrder(string orderId)
+        {
+            string sql = $"select OrderID from pl_Input where OrderID = {orderId}";
+            DataSet ds = DataStore.Instance.QueryToDataSet(sql);
+            if (ds != null && ds.Tables.Count > 0 && ds.Tables[0].Rows.Count > 0)
+            {
+                sql = $"select OrderID from OutWare where OrderID = {orderId}";
+                ds = DataStore.Instance.QueryToDataSet(sql);
+                if (ds != null && ds.Tables.Count > 0)
+                {
+                    string msg = ds.Tables[0].Rows.Count > 0 ?
+                        $"해당 수주번호: {orderId} 건은 생산 진행중이오니, 삭제하시려면 생산부터 작업지시까지 먼저 삭제해주세요" :
+                        $"해당 수주번호: {orderId} 작업지시 진행중이오니, 삭제하시려면 작업지시 먼저 삭제해주세요";
+                    MessageBox.Show(msg);
+                    return false;
+                }
+            }
+            return true;
         }
 
         //닫기
@@ -1136,11 +1219,11 @@ namespace WizMes_ParkPro
 
             if (dgdMain.Items.Count > 0)
             {
-                dgdMain.SelectedIndex = PrimaryKey.Equals(string.Empty) ? 
+                dgdMain.SelectedIndex = PrimaryKey.Equals(string.Empty) ?
                     selectedIndex : SelectItem(PrimaryKey, dgdMain);
             }
             else
-                DataContext = null;
+                DataContext = new object();
 
             CalculGridSum();
         }
@@ -1199,7 +1282,8 @@ namespace WizMes_ParkPro
 
                     if (dt.Rows.Count == 0)
                     {
-                        MessageBox.Show("조회된 데이터가 없습니다.");
+                        ClearInputGrid();
+                        MessageBox.Show("조회된 데이터가 없습니다.");                        
                     }
                     else
                     {
@@ -1378,19 +1462,45 @@ namespace WizMes_ParkPro
         /// <returns></returns>
         private bool DeleteData(string strID)
         {
-            bool flag = false;
+            #region ...
+            //한건씩 삭제
+            //bool flag = false;
 
+            //try
+            //{
+            //    Dictionary<string, object> sqlParameter = new Dictionary<string, object>();
+            //    sqlParameter.Clear();
+            //    sqlParameter.Add("OrderID", strID);
+
+            //    string[] result = DataStore.Instance.ExecuteProcedure_NewLog("xp_Order_dOrder", sqlParameter, "D");
+
+            //    if (result[0].Equals("success"))
+            //    {
+            //        //MessageBox.Show("성공 *^^*");
+            //        flag = true;
+            //    }
+            //}
+            //catch (Exception ex)
+            //{
+            //    MessageBox.Show("오류 발생, 오류 내용 : " + ex.ToString());
+            //}
+            //finally
+            //{
+            //    DataStore.Instance.CloseConnection();
+            //}
+
+            //return flag;
+            #endregion
+
+            bool flag = false;
             try
             {
                 Dictionary<string, object> sqlParameter = new Dictionary<string, object>();
                 sqlParameter.Clear();
                 sqlParameter.Add("OrderID", strID);
-
                 string[] result = DataStore.Instance.ExecuteProcedure_NewLog("xp_Order_dOrder", sqlParameter, "D");
-
                 if (result[0].Equals("success"))
                 {
-                    //MessageBox.Show("성공 *^^*");
                     flag = true;
                 }
             }
@@ -1402,7 +1512,6 @@ namespace WizMes_ParkPro
             {
                 DataStore.Instance.CloseConnection();
             }
-
             return flag;
         }
 
@@ -1587,7 +1696,7 @@ namespace WizMes_ParkPro
                 msg = "부가세별도여부가 선택되지 않았습니다. 먼저 부가세별도여부를 선택해주세요");*/
 
 
-            //작지, 출고 이력 있으면 삭제 안 됨
+            //작지, 출고 이력 있으면 변경 안 됨
             if (OrderView.OrderID != null)
             {
                 string sql = "select OrderID from pl_Input where OrderID = " + OrderView.OrderID;
@@ -2004,6 +2113,42 @@ namespace WizMes_ParkPro
 
             return result;
         }
+
+        //남아있는 데이터로 오류 방지 입력칸 비우기
+        private void ClearInputGrid()
+        {
+            //여기에 비우고자 하는 그리드를 파라미터로 적어주세요
+            ClearTextLabel(grdInput);
+        }
+
+        //UI컨트롤을 찾아 해당하는 요소가 있으면 내용을 비움
+        private void ClearTextLabel(DependencyObject parent)
+        {
+            int childCount = VisualTreeHelper.GetChildrenCount(parent);
+
+            for (int i = 0; i < childCount; i++)
+            {
+                var child = VisualTreeHelper.GetChild(parent, i);
+
+                if (child is TextBox textBox)
+                {
+                    // TextBox를 찾으면 Text 속성을 빈 문자열로 설정
+                    textBox.Text = string.Empty;
+                    textBox.Tag = null;
+                }
+                if (child is ComboBox comboBox)
+                {
+                    //콤보박스 선택값 비워줌
+                    comboBox.SelectedValue = "";
+                }
+                else
+                {
+                    // 자식이 TextBox가 아니면 재귀적으로 그 자식의 자식들을 탐색
+                    ClearTextLabel(child);
+                }
+            }
+        }
+
         #endregion
 
         #region keyDown 이벤트(커서이동)
@@ -2102,10 +2247,22 @@ namespace WizMes_ParkPro
         {
             try
             {
-                var OrderInfo = dgdMain.SelectedItem as Win_ord_Order_U_CodeView;
-
-                if (OrderInfo != null)
-                    DataContext = OrderInfo;
+                if (dgdMain.SelectedItems.Count == 1)
+                {
+                    dgdNeedStuff.Items.Clear();
+                    var OrderInfo = dgdMain.SelectedItem as Win_ord_Order_U_CodeView;
+                    if (OrderInfo != null)
+                    {
+                        DataContext = OrderInfo;
+                        FillNeedStockQty(OrderInfo.ArticleID, OrderInfo.OrderQty);
+                    }
+                     
+                }
+                else if (dgdMain.SelectedItems.Count > 1)
+                {
+                    dgdNeedStuff.Items.Clear();
+                    DataContext = null; 
+                }
             }
             catch (Exception ee)
             {
@@ -2138,7 +2295,8 @@ namespace WizMes_ParkPro
                         cboArticleGroup.SelectedValue = articleData.ArticleGrpID;
                         //품명 대입
                         txtArticle.Text = articleData.Article;
-                        //단가 대입
+                        txtArticle.Tag = articleData.ArticleID;                                             
+                        //단가 대입                        
                         txtUnitPrice.Text = articleData.OutUnitPrice;
                         //차종 대입
                         txtModel.Tag = articleData.BuyerModelID;

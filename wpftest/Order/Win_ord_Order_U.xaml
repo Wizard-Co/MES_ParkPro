@@ -415,6 +415,7 @@
                             <DataGridTextColumn x:Name="dgdtxtOrderID" Header="관리번호" Binding="{Binding OrderID}" />
                             <DataGridTextColumn x:Name="dgdtxtOrderNo" Header="Order No" Binding="{Binding OrderNO}" Visibility="Hidden" />
                             <DataGridTextColumn Header="거래처명" Binding="{Binding KCustom}" />
+                            <DataGridTextColumn Header="최종거래처" Binding="{Binding KInCustom}" />
                             <DataGridTextColumn Header="품  번" Binding="{Binding BuyerArticleNo}" />
                             <DataGridTextColumn Header="품  명" Binding="{Binding Article}" />
                             <DataGridTextColumn Header="총 주문량" Binding="{Binding OrderQty}" 

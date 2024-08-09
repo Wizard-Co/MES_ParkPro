@@ -9,6 +9,18 @@ using WizMes_ParkPro.PopUP;
 using WizMes_ParkPro.PopUp;
 using WPF.MDI;
 
+/**************************************************************************************************
+'** 프로그램명 : Win_ord_OrderClose_U
+'** 설명       : 수주등록
+'** 작성일자   : 2024.08.08
+'** 작성자     : 장시영
+'**------------------------------------------------------------------------------------------------
+'**************************************************************************************************
+' 변경일자  , 변경자, 요청자    , 요구사항ID      , 요청 및 작업내용
+'**************************************************************************************************
+' 
+'**************************************************************************************************/
+
 namespace WizMes_ParkPro
 {
     /// <summary>
@@ -724,15 +736,15 @@ namespace WizMes_ParkPro
 
                                 WorkName = item["WorkName"].ToString(),
                                 //WorkWidth = item["WorkWidth"] as string,
-                                OrderQty = item["OrderQty"].ToString(),
-                                ColorQty = item["ColorQty"].ToString(),
+                                OrderQty = stringFormatN0(item["OrderQty"]),
+                                ColorQty = stringFormatN0(item["ColorQty"]),
 
                                 UnitClss = item["UnitClss"] as string,  //주문기준 value
-                                InspectQty = item["InspectQty"].ToString(),
+                                InspectQty = stringFormatN0(item["InspectQty"]),
 
-                                PassQty = item["PassQty"].ToString(),
-                                DefectQty = item["DefectQty"].ToString(),
-                                OutQty = item["OutQty"].ToString(),
+                                PassQty = stringFormatN0(item["PassQty"]),
+                                DefectQty = stringFormatN0(item["DefectQty"]),
+                                OutQty = stringFormatN0(item["OutQty"]),
                                 BuyerModel = item["BuyerModel"] as string,
                                 BuyerModelID = item["BuyerModelID"] as string,
 
@@ -740,7 +752,7 @@ namespace WizMes_ParkPro
                                 UnitClssName = item["UnitClssName"] as string,
                                 p1StartWorkDate = item["p1StartWorkDate"] as string,
                                 p1StartWorkDTime = item["p1StartWorkDTime"] as string,
-                                p1WorkQty = item["p1WorkQty"].ToString(),
+                                p1WorkQty = stringFormatN0(item["p1WorkQty"]),
 
                                 p1ProcessID = item["p1ProcessID"] as string,
                                 p1ProcessName = item["p1ProcessName"] as string,
@@ -1381,6 +1393,14 @@ namespace WizMes_ParkPro
                 dgs.FontSize = dgs.FontSize * c;
             }
         }
+
+        #region 기타 메서드
+        private string stringFormatN0(object obj)
+        {
+            return string.Format("{0:N0}", obj);
+        }
+
+        #endregion
     }
 
     class Win_ord_OrderClose_U_CodeView : BaseView

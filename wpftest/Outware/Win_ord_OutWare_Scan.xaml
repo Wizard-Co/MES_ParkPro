@@ -153,7 +153,7 @@
             </Grid>
 
             <!--지시번호-->
-            <Grid Grid.Column="2" Grid.Row="3">
+            <Grid Grid.Column="2" Grid.Row="3" Visibility="Hidden">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="75*" />
                     <ColumnDefinition Width="90*" />
@@ -178,7 +178,7 @@
             </Grid>
 
             <!--관리번호-->
-            <Grid Grid.Column="2" Grid.Row="3" Visibility="Hidden">
+            <Grid Grid.Column="2" Grid.Row="3" Visibility="Visible">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="75*" />
                     <ColumnDefinition Width="90*" />
@@ -443,13 +443,13 @@
                     <Label Grid.Column="0" Grid.Row="0" Grid.RowSpan="2" BorderThickness="1" BorderBrush="Black" VerticalContentAlignment="Center">
                         <TextBlock Text="합계" Margin="4"/>
                     </Label>
-                    <TextBox x:Name="txtOrderCount" Grid.Column="1" Grid.Row="0" IsReadOnly="True"
+                    <TextBox x:Name="txtOutCount" Grid.Column="1" Grid.Row="0" IsReadOnly="True"
                                  Style="{DynamicResource NumericAndReadOnlyNoBackTextBox}"/>
                     <TextBox x:Name="txtOrder" Grid.Column="1" Grid.Row="1" IsReadOnly="True" 
                                  Style="{DynamicResource NumericAndReadOnlyNoBackTextBox}"/>
-                    <TextBox x:Name="txtOrderYds" Grid.Column="2" Grid.Row="0" IsReadOnly="True"
+                    <TextBox x:Name="txtOutYds" Grid.Column="2" Grid.Row="0" IsReadOnly="True"
                                  Style="{DynamicResource NumericAndReadOnlyNoBackTextBox}"/>
-                    <TextBox x:Name="txtOrderAmount" Grid.Column="2" Grid.Row="1" IsReadOnly="True"
+                    <TextBox x:Name="txtOutAmount" Grid.Column="2" Grid.Row="1" IsReadOnly="True"
                                  Style="{DynamicResource NumericAndReadOnlyNoBackTextBox}"/>
                 </Grid>
             </Grid>
@@ -608,7 +608,7 @@
                                 <TextBlock Text="납품장소"  Style="{DynamicResource TextBlockInViewBoxInput}"/>
                             </Viewbox>
                         </Label>
-                        <TextBox x:Name="txtBuyerName" Grid.Column="1" Grid.Row="6" Style="{DynamicResource TextBoxInputArea}"
+                        <TextBox x:Name="txtBuyerName" Grid.Column="1" Grid.Row="6" Style="{DynamicResource TextBoxInputArea}" IsReadOnly="True"
                                  Text="{Binding Path=DvlyCustom}" Tag="{Binding Path=DvlyCustomID}" KeyDown="txtBuyerName_KeyDown" TabIndex="17"/>
                         <!--Text="{Binding Path=BuyerName}" Tag="{Binding Path=BuyerID}"-->
                         <!--20210526-->

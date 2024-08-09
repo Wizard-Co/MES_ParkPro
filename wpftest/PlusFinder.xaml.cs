@@ -786,6 +786,8 @@ namespace WizMes_ParkPro
 
         private void btnClose_Click(object sender, RoutedEventArgs e)
         {
+            txtBox.Text = string.Empty;
+            txtBox.Tag = null;
             this.Close();
         }
 
