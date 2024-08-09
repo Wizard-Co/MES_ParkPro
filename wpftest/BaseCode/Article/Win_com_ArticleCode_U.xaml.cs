@@ -532,7 +532,7 @@ namespace WizMes_ParkPro
             cboFTAMgrYN.SelectedIndex = 1; //FTA중점
             cboBigMiSmal.SelectedIndex = 3; //대중소 구분
 
-            txtCode.IsReadOnly = false;
+            txtCode.IsReadOnly = true;
             txtBuyerArticleNo.Focus();
         }
 
@@ -632,7 +632,7 @@ namespace WizMes_ParkPro
         //조회
         private void btnSearch_Click(object sender, RoutedEventArgs e)
         {
-            using(Loading ld = new Loading(beSearch))
+            using (Loading ld = new Loading(beSearch))
             {
                 ld.ShowDialog();
             }
@@ -1289,8 +1289,9 @@ namespace WizMes_ParkPro
                     sqlParameter.Clear();
 
 
-                    sqlParameter.Add("sArticleID", txtCode.Text != null && !txtCode.Text.Trim().Equals("") ? txtCode.Text : "");
-                    sqlParameter.Add("sNewArticleID", "");
+                    sqlParameter.Add("sArticleID", strFlag.Trim().Equals("I") ? "" : strID);
+                    //sqlParameter.Add("sArticleID", txtCode.Text != null && !txtCode.Text.Trim().Equals("") ? txtCode.Text : "");
+                    //sqlParameter.Add("sNewArticleID", "");
                     sqlParameter.Add("CompanyID", MainWindow.CompanyID);
                     sqlParameter.Add("sArticle", txtName.Text.Trim().Equals("") ? txtBuyerArticleNo.Text : txtName.Text);
                     sqlParameter.Add("BuyerArticleNo", txtBuyerArticleNo.Text);
@@ -1345,80 +1346,59 @@ namespace WizMes_ParkPro
                     {
                         sqlParameter.Add("CreateUserID", MainWindow.CurrentUser);
 
-                        Procedure pro1 = new Procedure();
-                        pro1.Name = "xp_Article_iArticle";
-                        pro1.OutputUseYN = "Y";
-                        pro1.OutputName = "sNewArticleID";
-                        
-                        pro1.OutputLength = "10";
+                        Dictionary<string, int> outputParam = new Dictionary<string, int>();
+                        outputParam.Add("sArticleID", 10);
+                        Dictionary<string, string> dicResult = DataStore.Instance.ExecuteProcedureOutputNoTran("xp_Article_iArticle", sqlParameter, outputParam, true);
 
-                        Prolist.Add(pro1);
-                        ListParameter.Add(sqlParameter);
+                        GetKey = dicResult["sArticleID"];
 
-                        List<KeyValue> list_Result = new List<KeyValue>();
-                        list_Result = DataStore.Instance.ExecuteAllProcedureOutputGetCS_NewLog(Prolist, ListParameter, "C");
-                        //string sGetID = string.Empty;
-                        if (list_Result[0].key.ToLower() == "success")
-                        {
-                            list_Result.RemoveAt(0);
-                            for (int i = 0; i < list_Result.Count; i++)
-                            {
-                                KeyValue kv = list_Result[i];
-                                if (kv.key == "sNewArticleID")
-                                {
-                                    GetKey = kv.value;
-                                    flag = true;
-                                }
-                            }
-                        }
-                        else
-                        {
-                            MessageBox.Show("[저장실패]\r\n" + list_Result[0].value.ToString());
-                            flag = false;
-                            //return false;
-                        }
-
-                        Prolist.Clear();
-                        ListParameter.Clear();
-
-                    
-                        // 공정 선택한거 넣기
-                        for (int i = 0; i < dgdProcess.Items.Count; i++)
-                        {
-                            var WinProcess = dgdProcess.Items[i] as Process_CodeView;
-                            if (WinProcess != null && WinProcess.CheckFlag == true)
-                            {
-                                sqlParameter = new Dictionary<string, object>();
-                                sqlParameter.Clear();
-
-                                //sqlParameter.Add("sArticleID", txtCode.Text != null && !txtCode.Text.Trim().Equals("") ? txtCode.Text : "");
-                                sqlParameter.Add("sArticleID", GetKey);
-                                sqlParameter.Add("sProcessID", WinProcess.ProcessID);
-                                sqlParameter.Add("UseYN", "Y");
-                                sqlParameter.Add("UserID", MainWindow.CurrentUser);
-
-                                Procedure pro2 = new Procedure();
-                                pro2.Name = "xp_Article_iArticleProcess";
-                                pro2.OutputUseYN = "N";
-                                pro2.OutputName = "sArticleID";
-                                pro2.OutputLength = "10";
-
-                                Prolist.Add(pro2);
-                                ListParameter.Add(sqlParameter);
-                            }
-                        }
-
-                        string[] Confirm = new string[2];
-                        Confirm = DataStore.Instance.ExecuteAllProcedureOutputNew_NewLog(Prolist, ListParameter, "C");
-                        if (Confirm[0] != "success")
-                        {
-                            MessageBox.Show("[저장실패]\r\n" + Confirm[1].ToString());
-                            flag = false;
-                            return false;
-                        }
-                        else
+                        if ((GetKey != string.Empty) && (GetKey != "9999"))
                         {
                             flag = true;
+
+                            // 공정 선택한거 넣기
+                            for (int i = 0; i < dgdProcess.Items.Count; i++)
+                            {
+                                var WinProcess = dgdProcess.Items[i] as Process_CodeView;
+                                if (WinProcess != null && WinProcess.CheckFlag == true)
+                                {
+                                    sqlParameter = new Dictionary<string, object>();
+                                    sqlParameter.Clear();
+
+                                    sqlParameter.Add("sArticleID", GetKey);
+                                    sqlParameter.Add("sProcessID", WinProcess.ProcessID);
+                                    sqlParameter.Add("UseYN", "Y");
+                                    sqlParameter.Add("UserID", MainWindow.CurrentUser);
+
+                                    Procedure pro2 = new Procedure();
+                                    pro2.Name = "xp_Article_iArticleProcess";
+                                    pro2.OutputUseYN = "N";
+                                    pro2.OutputName = "sArticleID";
+                                    pro2.OutputLength = "10";
+
+                                    Prolist.Add(pro2);
+                                    ListParameter.Add(sqlParameter);
+                                }
+                            }
+
+                            string[] Confirm = new string[2];
+                            Confirm = DataStore.Instance.ExecuteAllProcedureOutputNew_NewLog(Prolist, ListParameter, "C");
+                            if (Confirm[0] != "success")
+                            {
+                                MessageBox.Show("[저장실패]\r\n" + Confirm[1].ToString());
+                                flag = false;
+                                return false;
+                            }
+                            else
+                            {
+                                flag = true;
+                            }
+                        }
+                        else
+                        {
+                            MessageBox.Show("[저장실패]\r\n" + GetKey);
+                            flag = false;
+                            return false;
                         }
                     }
                     #endregion // 추가
@@ -1575,11 +1555,7 @@ namespace WizMes_ParkPro
 
             if (strFlag.Equals("I"))
             {
-                if (txtCode.Text.Length < 5)
-                {
-                    MessageBox.Show("5자리의 코드를 입력해주세요");
-                    return false;
-                }
+
 
                 // 2020.02.20 일단 품명 중복검사 제외
                 // 2021.07.21 일단 품명 중복검사 제외
@@ -1589,14 +1565,6 @@ namespace WizMes_ParkPro
                     return false;
                 }
 
-            #if ANT_2 == false
-                if (txtCode.Text.Trim().Equals(""))
-                {
-                    MessageBox.Show("코드가 입력되지 않았습니다.");
-                    flag = false;
-                    return flag;
-                }
-            #endif
 
                 // 2020.02.20 품번이 필수 입력이 되어야함!!!
                 if (txtBuyerArticleNo.Text.Trim().Equals(""))
@@ -1606,13 +1574,7 @@ namespace WizMes_ParkPro
                 }
             }
 
-            //if(strFlag.Equals("U"))
-            //{
-            //    if(!GetArticleByName(strName))
-            //    {
 
-            //    }
-            //}
 
             if (cboArticleGrp.SelectedIndex == -1 || cboArticleGrp.SelectedValue == null)
             {

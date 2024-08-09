@@ -358,8 +358,8 @@
                         </Viewbox>
                     </Label>
                     <TextBox x:Name="txtCode" Grid.Column="1" Grid.Row="0" Style="{DynamicResource TextBoxInputAutoCreate}"
-                             MaxLength="5"
-                             IsReadOnly="False" Text="{Binding ArticleID}"/>
+                             
+                             IsReadOnly="True" Text="{Binding ArticleID}"/>
 
                     <!-- 주요관심품목, 사용안함 -->
                     <Label Grid.Column="3" Grid.Row="0"  Style="{DynamicResource LabelInputArea}" Visibility="Visible">
@@ -619,7 +619,7 @@
                             </Label>
                             <TextBox x:Name="txtLength" Grid.Column="5" Grid.Row="0" Style="{DynamicResource TextBoxInput_Number_Right}"
                                      Text="{Binding Length}" />
-                            
+
                             <Label Grid.Column="3" Grid.Row="1" Grid.ColumnSpan="2" Style="{DynamicResource LabelInputArea}" Visibility="Hidden">
                                 <Viewbox Style="{DynamicResource ViewBoxSetMaxMinHeight}">
                                     <TextBlock Text="무검사 입고품 여부" Style="{DynamicResource TextBlockInViewBoxInput}"/>
@@ -742,7 +742,7 @@
                             <Image Source="{DynamicResource btiPlusFind}" />
                         </Button>
                     </Grid>
-                    
+
 
                     <Grid Grid.Column="4" Grid.Row="11">
                         <Grid.ColumnDefinitions>
@@ -806,7 +806,7 @@
                         <RowDefinition Height="*" />
                         <RowDefinition Height="0.2*" />
                         <RowDefinition Height="10*" />
-                        
+
                     </Grid.RowDefinitions>
 
                     <!-- 자료 추가중, 수정중 메시지 -->
