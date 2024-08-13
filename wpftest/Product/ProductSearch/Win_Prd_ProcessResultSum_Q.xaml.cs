@@ -751,7 +751,7 @@ namespace WizMes_ParkPro
                                 ProcessID = dr["ProcessID"].ToString(),
                                 Process = dr["Process"].ToString(),
                                 WorkQty = Convert.ToDouble(dr["WorkQty"]),
-                                WorkTime = stringFormatN1(dr["WorkTime"]),
+                                //WorkTime = stringFormatN1(dr["WorkTime"]),
                                 ProdQtyPerBox = stringFormatN0(dr["ProdQtyPerBox"]),
                                 
                             };

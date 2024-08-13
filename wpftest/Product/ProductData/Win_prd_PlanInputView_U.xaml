@@ -353,9 +353,9 @@
         <!-- 전체 중 하단 -->
         <Grid Grid.Row="1">
             <Grid.RowDefinitions>
-                <RowDefinition Height="7*" />
+                <RowDefinition Height="10*" />
                 <RowDefinition Height="65" />
-                <RowDefinition Height="3*" />
+                <RowDefinition Height="5*" />
             </Grid.RowDefinitions>
             <Grid Grid.Row="0">
                 <Grid.RowDefinitions>
@@ -446,14 +446,14 @@
                         <DataGridTemplateColumn Header="  수 주 량  " Width="auto" SortMemberPath="OrderQty">
                             <DataGridTemplateColumn.CellTemplate>
                                 <DataTemplate>
-                                    <TextBlock Text="{Binding OrderQty,StringFormat={}{0:#\,#.##}}" TextAlignment="Right"/>
+                                    <TextBlock Text="{Binding OrderQty,StringFormat=N0}" TextAlignment="Right"/>
                                 </DataTemplate>
                             </DataGridTemplateColumn.CellTemplate>
                         </DataGridTemplateColumn>
                         <DataGridTemplateColumn Header="  계 획 량  " Width="auto" SortMemberPath="OrderInstQty">
                             <DataGridTemplateColumn.CellTemplate>
                                 <DataTemplate>
-                                    <TextBlock Text="{Binding OrderInstQty,StringFormat={}{0:#\,#.##}, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" TextAlignment="Right"/>
+                                    <TextBlock Text="{Binding OrderInstQty,StringFormat=N0, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" TextAlignment="Right"/>
                                 </DataTemplate>
                             </DataGridTemplateColumn.CellTemplate>
                         </DataGridTemplateColumn>
@@ -469,21 +469,21 @@
                         <DataGridTemplateColumn Header="합계 계획량" Width="auto" SortMemberPath="TotOrderinstqty">
                             <DataGridTemplateColumn.CellTemplate>
                                 <DataTemplate>
-                                    <TextBlock Text="{Binding TotOrderinstqty,StringFormat={}{0:#\,#}}" TextAlignment="Right"/>
+                                    <TextBlock Text="{Binding TotOrderinstqty,StringFormat=N0}" TextAlignment="Right"/>
                                 </DataTemplate>
                             </DataGridTemplateColumn.CellTemplate>
                         </DataGridTemplateColumn>
                         <DataGridTemplateColumn Header="합계 미계획량" Width="auto" SortMemberPath="notOrderInstQty">
                             <DataGridTemplateColumn.CellTemplate>
                                 <DataTemplate>
-                                    <TextBlock Text="{Binding notOrderInstQty,StringFormat={}{0:#\,#}}" TextAlignment="Right"/>
+                                    <TextBlock Text="{Binding notOrderInstQty,StringFormat=N0}" TextAlignment="Right"/>
                                 </DataTemplate>
                             </DataGridTemplateColumn.CellTemplate>
                         </DataGridTemplateColumn>
                         <DataGridTemplateColumn Header="합계 투입량" Width="auto" SortMemberPath="p1WorkQty">
                             <DataGridTemplateColumn.CellTemplate>
                                 <DataTemplate>
-                                    <TextBlock Text="{Binding p1WorkQty,StringFormat={}{0:#\,#}}" TextAlignment="Right"/>
+                                    <TextBlock Text="{Binding p1WorkQty,StringFormat=N0}" TextAlignment="Right"/>
                                 </DataTemplate>
                             </DataGridTemplateColumn.CellTemplate>
                         </DataGridTemplateColumn>
@@ -491,14 +491,14 @@
                         <DataGridTemplateColumn Header="합계 검사량" Width="auto" SortMemberPath="InspectQty">
                             <DataGridTemplateColumn.CellTemplate>
                                 <DataTemplate>
-                                    <TextBlock Text="{Binding InspectQty,StringFormat={}{0:#\,#}}" TextAlignment="Right"/>
+                                    <TextBlock Text="{Binding InspectQty,StringFormat=N0}" TextAlignment="Right"/>
                                 </DataTemplate>
                             </DataGridTemplateColumn.CellTemplate>
                         </DataGridTemplateColumn>
                         <DataGridTemplateColumn Header="합계 출고량" Width="auto" SortMemberPath="OutQty">
                             <DataGridTemplateColumn.CellTemplate>
                                 <DataTemplate>
-                                    <TextBlock Text="{Binding OutQty,StringFormat={}{0:#\,#}}" TextAlignment="Right"/>
+                                    <TextBlock Text="{Binding OutQty,StringFormat=N0}" TextAlignment="Right"/>
                                 </DataTemplate>
                             </DataGridTemplateColumn.CellTemplate>
                         </DataGridTemplateColumn>
@@ -507,7 +507,7 @@
                         <DataGridTemplateColumn Header="품명그룹" Width="auto" >
                             <DataGridTemplateColumn.CellTemplate>
                                 <DataTemplate>
-                                    <TextBlock Text="{Binding ArticleGrpName}" Tag="{Binding ArticleGrpID}" />
+                                    <TextBlock Text="{Binding ArticleGrp}" Tag="{Binding ArticleGrpID}" />
                                 </DataTemplate>
                             </DataGridTemplateColumn.CellTemplate>
                         </DataGridTemplateColumn>
@@ -522,7 +522,7 @@
                         <DataGridTemplateColumn Header="진척률(%)" Width="auto" SortMemberPath="Progress">
                             <DataGridTemplateColumn.CellTemplate>
                                 <DataTemplate>
-                                    <TextBlock Text="{Binding Progress,StringFormat={}{0:#\,#}}" TextAlignment="Right"/>
+                                    <TextBlock Text="{Binding Progress,StringFormat=N0}" TextAlignment="Right"/>
                                 </DataTemplate>
                             </DataGridTemplateColumn.CellTemplate>
                         </DataGridTemplateColumn>
@@ -601,8 +601,7 @@
                 </Grid>
             </Border>
 
-
-            <Grid Grid.Row="3" >
+            <Grid Grid.Row="2" >
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="9*" />
                     <ColumnDefinition Width="*" />
@@ -730,13 +729,13 @@
                                             </DataTemplate>
                                         </DataGridTemplateColumn.CellEditingTemplate>
                                     </DataGridTemplateColumn>
-                                    <DataGridTemplateColumn x:Name="dgdtpeWorkQty" Header="생산수량" Width="auto" IsReadOnly="True">
+                                    <DataGridTemplateColumn x:Name="dgdtpeWorkQty" Header="생산수량" Width="auto" IsReadOnly="False">
                                         <DataGridTemplateColumn.CellTemplate>
                                             <DataTemplate>
                                                 <TextBlock Text="{Binding WorkQty}" TextAlignment="Right" Padding="5 0 3 0"/>
                                             </DataTemplate>
                                         </DataGridTemplateColumn.CellTemplate>
-                                        <!--<DataGridTemplateColumn.CellEditingTemplate>
+                                        <DataGridTemplateColumn.CellEditingTemplate>
                                             <DataTemplate>
                                                 <TextBox Text="{Binding WorkQty}" TextAlignment="Right" Padding="5 0 3 0"
                                                          TextChanged="dgdtpetxtWorkQty_TextChanged"
@@ -752,7 +751,7 @@
                                                     </TextBox.Style>
                                                 </TextBox>
                                             </DataTemplate>
-                                        </DataGridTemplateColumn.CellEditingTemplate>-->
+                                        </DataGridTemplateColumn.CellEditingTemplate>
                                     </DataGridTemplateColumn>
                                     <DataGridTemplateColumn x:Name="dgdtpeMachine" Header="호기" Width="auto" MinWidth="50">
                                         <DataGridTemplateColumn.CellTemplate>
@@ -854,7 +853,7 @@
                         <ColumnDefinition Width="10*" />
                         <ColumnDefinition Width="3*" />
                     </Grid.ColumnDefinitions>
-                  
+                   
                     <Button x:Name="btnSave" Grid.Row="1" Grid.Column="1" Margin="1" Click="btnSave_Click" Visibility="Hidden">
                         <StackPanel>
                             <Image Source="{DynamicResource btiSave}" Style="{DynamicResource imgSize}" />

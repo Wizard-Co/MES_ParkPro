@@ -456,7 +456,7 @@ namespace WizMes_ParkPro
                 chkOutWareExceptYN.IsEnabled = true;
                 chkTheEnd.IsEnabled = true;
                 rowNum = dgdMain.SelectedIndex;
-                //btnReWrite.Visibility = Visibility.Visible;
+                
 
             }
             else
@@ -599,6 +599,7 @@ namespace WizMes_ParkPro
                             OutQty = Convert.ToDouble(dr["OutQty"]),
                             PatternID = dr["PatternID"].ToString(),
                             ArticleGrpID = dr["ArticleGrpID"].ToString(),
+                            ArticleGrp = dr["ArticleGrp"].ToString(),
 
                             BuyerModel = dr["BuyerModel"].ToString(),
                             BuyerModelID = dr["BuyerModelID"].ToString(),
@@ -778,11 +779,7 @@ namespace WizMes_ParkPro
 
         #endregion
 
-        //재지시 
-        private void btnReWrite_Click(object sender, RoutedEventArgs e)
-        {
-           
-        }
+
 
         //저장
         private void btnSave_Click(object sender, RoutedEventArgs e)
@@ -806,7 +803,6 @@ namespace WizMes_ParkPro
                 //dgdMain.IsEnabled = true;
                 dgdMain.IsHitTestVisible = true;
                 Lib.Instance.UiButtonEnableChange_IUControl(this);
-                //btnReWrite.Visibility = Visibility;
 
                 dgdMain.Items.Clear();
                 dgdSub.Items.Clear();
@@ -1301,7 +1297,26 @@ namespace WizMes_ParkPro
             }
         }
 
-     
+        //지시사항
+        private void dgdtpetxtInstRemark_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            if (btnSave.Visibility == Visibility.Visible)
+            {
+                WinPlanSub = dgdSub.CurrentItem as Win_prd_PlanInputView_U_Sub_CodeView;
+
+                if (WinPlanSub != null)
+                {
+                    TextBox tb1 = sender as TextBox;
+
+                    if (tb1 != null)
+                    {
+                        WinPlanSub.InstRemark = tb1.Text;
+                    }
+
+                    sender = tb1;
+                }
+            }
+        }
 
         //생산수량
         private void dgdtpetxtWorkQty_TextChanged(object sender, TextChangedEventArgs e)
@@ -2449,7 +2464,7 @@ namespace WizMes_ParkPro
 
         public string OutwareExceptYN { get; set; }
         public string LotID { get; set; }
-        public string ArticleGrpName { get; set; }
+        public string ArticleGrp { get; set; }
         public string PlanTheEnd { get; set; }
         public string Progress { get; set; }
         public string InstSeq { get; set; }
