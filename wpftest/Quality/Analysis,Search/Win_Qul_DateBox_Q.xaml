@@ -155,7 +155,7 @@
                     </StackPanel>
                 </Label>
                 <TextBox x:Name="txtOrderID"  Grid.Column="1" Grid.Row="2" Style="{DynamicResource TextBoxSearch}"/>
-                <Label Grid.ColumnSpan="2" Grid.Column="0" Grid.Row="3" Style="{DynamicResource LabelSearch}">
+                <Label Grid.ColumnSpan="2" Grid.Column="0" Grid.Row="3" Style="{DynamicResource LabelSearch}" Visibility="Hidden">
                     <StackPanel Style="{DynamicResource StackPanelInLabel}">
                         <RadioButton x:Name="rbnOrderNO" Content="Order No." Click="rbnOrderNO_Click" Margin="1"></RadioButton>
                         <RadioButton x:Name="rbnManageNumber" Content="관리 번호" Click="rbnManageNumber_Click" Margin="1"  ></RadioButton>
@@ -192,19 +192,20 @@
                 </Label>
                 <ComboBox x:Name="cboFaultyGBN" Grid.Column="1" Grid.Row="0" Style="{DynamicResource ComboBoxSearchString}"/>
 
-                <Label  Grid.Column="0" Grid.Row="1" MouseLeftButtonUp="chkCID_Click" Style="{DynamicResource LabelSearch}">
+                <!--파크로 차후 공정라벨에서 인증번호 검색으로 바뀔수도 있음-->
+                <Label  Grid.Column="0" Grid.Row="1" MouseLeftButtonUp="chkCID_Click" Style="{DynamicResource LabelSearch}" Visibility="Hidden">
                     <StackPanel Style="{DynamicResource StackPanelInLabel}">
                         <Viewbox Style="{DynamicResource ViewBoxSetMaxMinHeight}">
                             <CheckBox x:Name="chkCID"  Click="chkCID_Click" ></CheckBox>
                         </Viewbox>
                         <Viewbox Style="{DynamicResource ViewBoxSetMaxMinHeight}">
-                            <TextBlock Text="공정라벨" Style="{DynamicResource TextBlockInViewBoxSearch_Q}" />
+                            <TextBlock Text="공정라벨" Style="{DynamicResource TextBlockInViewBoxSearch_Q}"/>
                         </Viewbox>
                     </StackPanel>
                 </Label>
-                <TextBox x:Name="txtCID" Grid.Column="1" Grid.Row="1" Style="{DynamicResource TextBoxSearch}"/>
+                <TextBox x:Name="txtCID" Grid.Column="1" Grid.Row="1" Style="{DynamicResource TextBoxSearch}" Visibility="Hidden"/>
 
-                <Label  Grid.Column="0" Grid.Row="2" MouseLeftButtonUp="chkBoxID_Click" Style="{DynamicResource LabelSearch}">
+                <Label  Grid.Column="0" Grid.Row="2" MouseLeftButtonUp="chkBoxID_Click" Style="{DynamicResource LabelSearch}" Visibility="Hidden">
                     <StackPanel Style="{DynamicResource StackPanelInLabel}">
                         <Viewbox VerticalAlignment="Center" Style="{DynamicResource ViewBoxSetMaxMinHeight}">
                             <CheckBox x:Name="chkBoxID"  Click="chkBoxID_Click" />
@@ -214,7 +215,7 @@
                         </Viewbox>
                     </StackPanel>
                 </Label>
-                <TextBox x:Name="txtBoxID" Grid.Column="1" Grid.Row="2" Style="{DynamicResource TextBoxSearch}" />
+                <TextBox x:Name="txtBoxID" Grid.Column="1" Grid.Row="2" Style="{DynamicResource TextBoxSearch}" Visibility="Hidden"/>
             </Grid>
 
             <!-- 검색/닫기/엑셀 버튼 -->
@@ -294,19 +295,19 @@
                         <DataGridTextColumn Header="일자" Width="auto"  Binding="{Binding Path=ExamDate }" 
                                         ElementStyle="{StaticResource DataGridCellCenter}"/>
                         <DataGridTextColumn Header="거래선" Width="auto"  Binding="{Binding Path=KCustom}" ElementStyle="{StaticResource DataGridCellLeft}" />
-                        <DataGridTextColumn Header="오더NO" Width="auto"  Binding="{Binding Path=OrderNo}" ElementStyle="{StaticResource DataGridCellLeft}" />
-                        <DataGridTextColumn Header="관리NO" Width="auto"  Binding="{Binding Path=OrderID}" 
-                                        ElementStyle="{StaticResource DataGridCellLeft}" Visibility="Hidden"/>
+                        <DataGridTextColumn Header="오더NO" Width="auto"  Binding="{Binding Path=OrderNo}" ElementStyle="{StaticResource DataGridCellLeft}"  Visibility="Hidden"/>
+                        <DataGridTextColumn Header="관리번호" Width="auto"  Binding="{Binding Path=OrderID}" 
+                                        ElementStyle="{StaticResource DataGridCellLeft}"/>
                         <DataGridTextColumn Header="품번" Width="auto"  Binding="{Binding Path=BuyerArticleNo}" ElementStyle="{StaticResource DataGridCellLeft}"/>
                         <DataGridTextColumn Header="품명" Width="auto"  Binding="{Binding Path=Article}" 
                                         ElementStyle="{StaticResource DataGridCellCenter}"/>
                         <DataGridTextColumn Header="규격" Width="auto"  Binding="{Binding Path=spec}" ElementStyle="{StaticResource DataGridCellLeft}" Visibility="Hidden"/>
                         <DataGridTextColumn Header="차종" Width="auto"  Binding="{Binding Path=BuyerModel}" ElementStyle="{StaticResource DataGridCellLeft}" Visibility="Hidden"/>
-                        <DataGridTextColumn Header="수주" Width="auto"  Binding="{Binding Path=OrderQty}" ElementStyle="{StaticResource DataGridCellLeft}"/>
+                        <DataGridTextColumn Header="수주" Width="auto"  Binding="{Binding Path=OrderQty}" ElementStyle="{StaticResource DataGridCellRight}"/>
                         <DataGridTextColumn Header="포장번호" Width="auto"  Binding="{Binding Path=PackID}" ElementStyle="{StaticResource DataGridCellLeft}"/>
                         <DataGridTextColumn Header="포장라벨" Width="SizeToHeader"  Binding="{Binding Path=BoxID}" />
                         <DataGridTextColumn Header="공정라벨" Width="auto"  Binding="{Binding Path=PackBoxID}" ElementStyle="{StaticResource DataGridCellLeft}"/>
-                        <DataGridTextColumn Header="단위" Width="auto"  Binding="{Binding Path=UnitClss}" ElementStyle="{StaticResource DataGridCellLeft}"/>
+                        <DataGridTextColumn Header="단위" Width="auto"  Binding="{Binding Path=UnitClss}" ElementStyle="{StaticResource DataGridCellCenter}"/>
                         <DataGridTextColumn Header="검사" Width="auto"  Binding="{Binding Path=CtrlQty}" 
                                         ElementStyle="{StaticResource DataGridCellRight}"/>
                         <DataGridTextColumn Header="합격박스" Width="auto" Binding="{Binding Path=PassRoll}" 
@@ -345,14 +346,14 @@
                                 ElementStyle="{StaticResource DataGridCellCenter}"/>
 
                         <DataGridTextColumn Header="검사" Width="1*"  Binding="{Binding Path=CtrlQty}" 
-                                ElementStyle="{StaticResource DataGridCellRight}"/>
-                        <DataGridTextColumn Header="합격박스" Width="1*" Binding="{Binding Path=PassRoll}" 
-                                ElementStyle="{StaticResource DataGridCellRight}"/>
-                        <DataGridTextColumn Header="합격량" Width="1*"  Binding="{Binding Path=PassQty}" 
-                                ElementStyle="{StaticResource DataGridCellRight}"/>
+                                ElementStyle="{StaticResource DataGridCellCenter}"/>
+                        <DataGridTextColumn Header="합격박스" Width="1*" Binding="{Binding Path=PassQty}" 
+                                ElementStyle="{StaticResource DataGridCellCenter}"/>
+                        <DataGridTextColumn Header="합격량" Width="1*"  Binding="{Binding Path=PassRoll}" 
+                                ElementStyle="{StaticResource DataGridCellCenter}"/>
                         <DataGridTextColumn Header="불량박스" Width="1*"  Binding="{Binding Path=DefectRoll}" Visibility="Hidden"
-                                ElementStyle="{StaticResource DataGridCellRight}"/>
-                        <DataGridTextColumn Header="불량수량" Width="1*" Binding="{Binding Path=DefectQty}" ElementStyle="{StaticResource DataGridCellRight}"/>
+                                ElementStyle="{StaticResource DataGridCellCenter}"/>
+                        <DataGridTextColumn Header="불량수량" Width="1*" Binding="{Binding Path=DefectQty}" ElementStyle="{StaticResource DataGridCellCenter}"/>
 
 
                     </DataGrid.Columns>

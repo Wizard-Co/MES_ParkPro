@@ -286,7 +286,7 @@
                         <TextBlock/>
                         <CheckBox x:Name="chkMainInterestItemsSee" Content="주요관심품목만 보기" Style="{DynamicResource CheckBoxInputArea}" />
                         <TextBlock/>
-                        <CheckBox x:Name="chkRegistItemsByCustomer" Content="거래처별 등록 품목" Style="{DynamicResource CheckBoxInputArea}" />
+                        <CheckBox x:Name="chkRegistItemsByCustomer" Content="거래처별 등록 품목" Style="{DynamicResource CheckBoxInputArea}" Visibility="Hidden"/>
                     </StackPanel>
                 </Label>
 

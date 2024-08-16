@@ -51,7 +51,10 @@ namespace WizMes_ParkPro
             //조건 박스 false
             cboProcess.IsEnabled = false;
             txtArticle.IsEnabled = false;
+            txtArticleNo.IsEnabled = false;
+            
             btnArticle.IsEnabled = false;
+            btnArticleNo.IsEnabled = false;
         }
 
         //콤보박스 셋팅

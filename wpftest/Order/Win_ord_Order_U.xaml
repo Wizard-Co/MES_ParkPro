@@ -671,7 +671,7 @@
                                     Background="#fff2d2" SelectedValue="{Binding WorkID}"
                                      />
 
-                            <Label Grid.Row="11" Grid.Column="0" 
+                            <Label Grid.Row="11" Grid.Column="0"  Visibility="Hidden"
                                     Style="{DynamicResource LabelInputArea}">
                                 <Viewbox Style="{DynamicResource ViewBoxSetMaxMinHeight}">
 
@@ -680,8 +680,8 @@
                             </Label>
                             <TextBox x:Name="txtModel" Grid.Row="11" Grid.Column="1" 
                                      Tag="{Binding BuyerModelID}" Text="{Binding BuyerModel}" Style="{DynamicResource TextBoxInputArea}"
-                                     Keyboard.KeyDown="txtModel_KeyDown"/>
-                            <Button x:Name="btnPfModel" Grid.Row="11" Grid.Column="2" Click="btnPfModel_Click" >
+                                     Keyboard.KeyDown="txtModel_KeyDown" Visibility="Hidden"/>
+                            <Button x:Name="btnPfModel" Grid.Row="11" Grid.Column="2" Click="btnPfModel_Click" Visibility="Hidden">
                                 <Image Source="{DynamicResource btiPlusFind}" />
                             </Button>
 

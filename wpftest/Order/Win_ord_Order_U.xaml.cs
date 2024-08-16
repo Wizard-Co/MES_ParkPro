@@ -740,10 +740,10 @@ namespace WizMes_ParkPro
 
             DateTime today = DateTime.Today;
 
-            dtpAcptDate.SelectedDate = today;
-            dtpDvlyDate.SelectedDate = today;
-
             this.DataContext = new object();
+
+            dtpAcptDate.SelectedDate = today;
+            dtpDvlyDate.SelectedDate = today;          
 
             txtAmount.Text = "0";
 
@@ -2276,16 +2276,16 @@ namespace WizMes_ParkPro
             {
                 if (e.Key == Key.Enter)
                 {
-                    if (txtCustom != null && txtCustom.Text != "")
-                    {   
-                        //품번을 품명처럼 쓴다고 해서 품번을 조회하도록 2020.03.17, 장가빈
-                        MainWindow.pf.ReturnCodeGLS(txtBuyerArticleNO, 7070, txtCustom.Tag.ToString().Trim());
-                    }
-                    else
-                    {
+                    //if (txtCustom != null && txtCustom.Text != "")
+                    //{   
+                    //    //품번을 품명처럼 쓴다고 해서 품번을 조회하도록 2020.03.17, 장가빈
+                    //    MainWindow.pf.ReturnCodeGLS(txtBuyerArticleNO, 7070, txtCustom.Tag.ToString().Trim());
+                    //}
+                    //else
+                    //{
                         //품번을 품명처럼 쓴다고 해서 품번을 조회하도록 2020.03.17, 장가빈
                         MainWindow.pf.ReturnCodeGLS(txtBuyerArticleNO, 7071, "");
-                    }
+                    //}
 
                     if (txtBuyerArticleNO.Tag != null)
                     {
@@ -2299,8 +2299,8 @@ namespace WizMes_ParkPro
                         //단가 대입                        
                         txtUnitPrice.Text = articleData.OutUnitPrice;
                         //차종 대입
-                        txtModel.Tag = articleData.BuyerModelID;
-                        txtModel.Text = articleData.BuyerModel;
+                        //txtModel.Tag = articleData.BuyerModelID;
+                        //txtModel.Text = articleData.BuyerModel;
                     }
 
                     //플러스 파인더 작동 후 규격으로 커서 이동
@@ -2321,15 +2321,15 @@ namespace WizMes_ParkPro
         {
             try
             {
-                if (txtCustom != null && txtCustom.Text != "")
-                {   
-                    //선택된 납품거래처에 따른 품명만 보여주게
-                    MainWindow.pf.ReturnCodeGLS(txtBuyerArticleNO, 7070, txtCustom.Tag.ToString().Trim());
-                }
-                else
-                {   //선택된 납품거래처가 없다면 전체 품명 다 보여주게
+                //if (txtCustom != null && txtCustom.Text != "")
+                //{   
+                //    //선택된 납품거래처에 따른 품명만 보여주게
+                //    MainWindow.pf.ReturnCodeGLS(txtBuyerArticleNO, 7070, txtCustom.Tag.ToString().Trim());
+                //}
+                //else
+                //{   //선택된 납품거래처가 없다면 전체 품명 다 보여주게
                     MainWindow.pf.ReturnCodeGLS(txtBuyerArticleNO, 7071, "");
-                }
+                //}
 
                 if (txtBuyerArticleNO.Tag != null)
                 {
@@ -2342,8 +2342,8 @@ namespace WizMes_ParkPro
                     //단가 대입
                     txtUnitPrice.Text = articleData.OutUnitPrice;
                     //차종 대입
-                    txtModel.Tag = articleData.BuyerModelID;
-                    txtModel.Text = articleData.BuyerModel;
+                    //txtModel.Tag = articleData.BuyerModelID;
+                    //txtModel.Text = articleData.BuyerModel;
                 }
 
                 //플러스 파인더 작동 후 규격으로 커서 이동

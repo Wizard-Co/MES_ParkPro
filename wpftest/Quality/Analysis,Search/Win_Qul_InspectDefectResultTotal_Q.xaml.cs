@@ -442,11 +442,11 @@ namespace WizMes_ParkPro
                                 {
                                     Num = idx,
                                     cls = dr["cls"].ToString().Trim(),
-                                    ArticleID = dr["ArticleID"].ToString(),
+                                    //ArticleID = dr["ArticleID"].ToString(),
                                     BuyerArticleNo = dr["BuyerArticleNo"].ToString(),
                                     CtrlQty =  stringFormatN0(Convert.ToDouble(dr["CtrlQty"])),
                                     Article = dr["Article"].ToString(),
-                                    DefectID = dr["DefectID"].ToString(),
+                                    //DefectID = dr["DefectID"].ToString(),
                                     KDefect = dr["KDefect"].ToString(),
                                     DefectQty = stringFormatN0(dr["DefectQty"]),
                                     DefectRate = stringFormatN2(dr["DefectRate"]),
@@ -461,9 +461,13 @@ namespace WizMes_ParkPro
                                     Win.cls = defect_tot ? "불량계" : "품번계";
 
                                     if (defect_tot)
-                                    { Win.KDefect = ""; Win.ColorGreen = "true"; }
+                                    { Win.KDefect = ""; Win.ColorGreen = "true";
+                                      Win.CtrlQty = "";
+                                    }
                                     else
-                                    { Win.BuyerArticleNo = ""; Win.ColorGreen = "true"; }
+                                    { Win.BuyerArticleNo = ""; Win.ColorGreen = "true";
+                                      Win.CtrlQty = "";
+                                    }
                             
                                 }
                                 else if (Win.cls.Equals("9")) // 총계

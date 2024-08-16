@@ -360,7 +360,7 @@
                     <DataGridTextColumn x:Name="dgdtxtCustom" Header="거래처" Width="auto" Binding="{Binding KCustom}" MinWidth="100"/>
                     <DataGridTextColumn x:Name="dgdtxtArticleID" Header="품번" Width="auto" Binding="{Binding BuyerArticleNo}" MinWidth="100"/>
                     <DataGridTextColumn x:Name="dgdtxtArticle" Header="품명" Width="auto" Binding="{Binding Article}" MinWidth="100"/>
-                    <DataGridTextColumn x:Name="dgdtxtModel" Header="모델" Width="auto" Binding="{Binding BuyerModel}" MinWidth="100"/>
+                    <DataGridTextColumn x:Name="dgdtxtModel" Header="모델" Width="auto" Binding="{Binding BuyerModel}" MinWidth="100" Visibility="Hidden" />
                     <DataGridTextColumn x:Name="dgdtxtDvlyDate" Header="납기일자" Width="auto" Binding="{Binding DvlyDateEdit}" MinWidth="100"
                                         ElementStyle="{StaticResource  DataGridCellCenter}" />
                     <DataGridTextColumn x:Name="dgdtxtWork" Header="가공구분" Width="auto" Binding="{Binding WorkName}" MinWidth="100"

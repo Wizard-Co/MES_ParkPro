@@ -488,12 +488,12 @@ namespace WizMes_ParkPro
                                 {
                                     ExamDate = item["ExamDate"].ToString(),
                                     KCustom = item["KCustom"].ToString(),
-                                    OrderNo = item["OrderNo"].ToString(),
+                                    //OrderNo = item["OrderNo"].ToString(),
                                     OrderID = item["OrderID"].ToString(),
                                     Article = item["Article"].ToString(),
 
                                     spec = item["spec"].ToString(),
-                                    BuyerModel = item["BuyerModel"].ToString(),
+                                    //BuyerModel = item["BuyerModel"].ToString(),
                                     BuyerArticleNo = item["BuyerArticleNo"].ToString(),
                                     OrderQty = stringFormatN0(item["OrderQty"]),
                                     PackBoxID = item["PackBoxID"].ToString(),
