@@ -420,7 +420,7 @@ namespace WizMes_ParkPro
 
                     sqlParameter.Add("chkArticle", chkArticle.IsChecked == true ? 1 : 0);
                     sqlParameter.Add("ArticleID", chkArticle.IsChecked == true ? txtArticle.Tag.ToString() : "");
-
+                        
 
                     // 구분
                     int gubun = i + 1;

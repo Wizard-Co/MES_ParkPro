@@ -381,6 +381,7 @@ namespace WizMes_ParkPro
             {
                 dgdMain.SelectedIndex = selectedIndex;
             }
+          
         }
 
         //조회
@@ -389,6 +390,10 @@ namespace WizMes_ParkPro
             if (dgdMain.Items.Count > 0)
             {
                 dgdMain.Items.Clear();
+            }
+            if(dgdTotal.Items.Count > 0)
+            {
+                dgdTotal.Items.Clear();
             }
 
             try

@@ -2411,9 +2411,13 @@ namespace WizMes_ParkPro
         {
             try
             {
-                if (dgdMain.SelectedItems.Count == 1)
+                if(dgdNeedStuff.Items.Count > 0)
                 {
                     dgdNeedStuff.Items.Clear();
+                }
+
+                if (dgdMain.SelectedItems.Count == 1)
+                {
                     var OrderInfo = dgdMain.SelectedItem as Win_ord_Order_U_CodeView;
                     if (OrderInfo != null)
                     {
