@@ -449,7 +449,7 @@ namespace WizMes_ParkPro
         /// <summary>
         /// xp_Code_sDefect 사용
         /// </summary>
-        public DataTable GetDefect()
+        public DataTable GetDefect(string UseClss)
         {
             DataTable dataTable = null;
 
@@ -457,6 +457,7 @@ namespace WizMes_ParkPro
             {
                 Dictionary<string, object> sqlParameter = new Dictionary<string, object>();
                 sqlParameter.Add("sBasisID", "%");
+                sqlParameter.Add("chkUseClss", UseClss);
                 DataSet ds = DataStore.Instance.ProcedureToDataSet("xp_Code_sDefect", sqlParameter, false);
 
                 if (ds != null && ds.Tables.Count > 0)
