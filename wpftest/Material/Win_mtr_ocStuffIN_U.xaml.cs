@@ -1641,31 +1641,33 @@ namespace WizMes_ParkPro
                 if (e.Key == Key.Enter)
                 {
 
-                 //   if (txtCustom.Tag == null || txtCustom.Tag.ToString().Trim().Equals("")
-                 //|| txtCustom.Text.Trim().Equals(""))
-                 //   {
-                 //       MessageBox.Show("거래처를 먼저 선택해주세요.");
-                 //       return;
-                 //   }
+                    //   if (txtCustom.Tag == null || txtCustom.Tag.ToString().Trim().Equals("")
+                    //|| txtCustom.Text.Trim().Equals(""))
+                    //   {
+                    //       MessageBox.Show("거래처를 먼저 선택해주세요.");
+                    //       return;
+                    //   }
 
 
-                    if (txtCustom != null && txtCustom.Text != "")
-                    {   //선택된 납품거래처에 따른 품명만 보여주게
-                        //MainWindow.pf.ReturnCode(txtArticle, 57, txtCustom.Tag.ToString().Trim());
+                    MainWindow.pf.ReturnCode(txtArticle, 7071, "");
 
-                        // 품번을 조회하도록 
-                        MainWindow.pf.ReturnCodeGLS(txtArticle, 7070, txtCustom.Tag.ToString().Trim());
-                        //txtBuyerarticleNo.Tag = txtArticle.Tag;
-                        //txtBuyerarticleNo.Text = txtBuyerarticleNo.Text;
-                    }
-                    else
-                    {   //선택된 납품거래처가 없다면 전체 품명 다 보여주게
-                        //MainWindow.pf.ReturnCode(txtArticle, (int)Defind_CodeFind.DCF_Article, "");
+                    //if (txtCustom != null && txtCustom.Text != "")
+                    //{   //선택된 납품거래처에 따른 품명만 보여주게
+                    //    //MainWindow.pf.ReturnCode(txtArticle, 57, txtCustom.Tag.ToString().Trim());
 
-                        // 품번을 조회하도록 
-                        MainWindow.pf.ReturnCodeGLS(txtArticle, 7071, "");
-                        //txtBuyerarticleNo.Tag = txtArticle.Tag;
-                    }
+                    //    // 품번을 조회하도록 
+                    //    MainWindow.pf.ReturnCodeGLS(txtArticle, 7070, txtCustom.Tag.ToString().Trim());
+                    //    //txtBuyerarticleNo.Tag = txtArticle.Tag;
+                    //    //txtBuyerarticleNo.Text = txtBuyerarticleNo.Text;
+                    //}
+                    //else
+                    //{   //선택된 납품거래처가 없다면 전체 품명 다 보여주게
+                    //    //MainWindow.pf.ReturnCode(txtArticle, (int)Defind_CodeFind.DCF_Article, "");
+
+                    //    // 품번을 조회하도록 
+                    //    MainWindow.pf.ReturnCodeGLS(txtArticle, 7071, "");
+                    //    //txtBuyerarticleNo.Tag = txtArticle.Tag;
+                    //}
 
 
                     if (txtArticle.Tag != null)
