@@ -341,19 +341,16 @@ namespace WizMes_ParkPro
                                 WorkDate = dr["WorkDate"].ToString(),
                                 WorkDate_CV = DatePickerFormat(dr["WorkDate"].ToString()),
                                 WorkQty =stringFormatN0(dr["WorkQty"]),
-                                TotalWorkQty = stringFormatN0(dr["TotalWorkQty"]),
                                 DefectQty = stringFormatN0(dr["DefectQty"]),
                                 WorkTime = dr["WorkTime"].ToString(),
                                 WorkTime_CV = ConvertTimeFormat(dr["WorkTime"].ToString()),
                                 StationNO = dr["StationNO"].ToString(),
                                 ProcessID = dr["ProcessID"].ToString(),
-
                                 Process = dr["Process"].ToString(),
                                 MachineID = dr["MachineID"].ToString(),
                                 Machine = dr["Machine"].ToString(),
                                 MachineNo = dr["MachineNo"].ToString(),
                                 Comments = dr["Comments"].ToString(),
-                                CT = dr["CT"].ToString()
                             };
 
                             dgdMain.Items.Add(WinR);
@@ -554,7 +551,6 @@ namespace WizMes_ParkPro
         public string CreateUserID { get; set; }
         public string UpdateDate { get; set; }
         public string UpdateUserID { get; set; }
-        public string CT { get; set; }
 
 
 

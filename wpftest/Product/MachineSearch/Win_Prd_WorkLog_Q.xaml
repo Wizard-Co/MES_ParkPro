@@ -201,9 +201,7 @@
                     <DataGridTextColumn Header="공정" Binding="{Binding Process}" ElementStyle="{StaticResource DataGridCellLeft}"></DataGridTextColumn>
                     <DataGridTextColumn Header="호기" Binding="{Binding MachineNo}" ElementStyle="{StaticResource DataGridCellRight}"></DataGridTextColumn>
                     <DataGridTextColumn Header="생산량" Binding="{Binding WorkQty}" ElementStyle="{StaticResource DataGridCellRight}"></DataGridTextColumn>
-                    <DataGridTextColumn Header="총 생산량" Binding="{Binding TotalWorkQty}" ElementStyle="{StaticResource DataGridCellRight}"></DataGridTextColumn>
                     <DataGridTextColumn Header="불량량" Binding="{Binding DefectQty}" ElementStyle="{StaticResource DataGridCellRight}"></DataGridTextColumn>
-                    <DataGridTextColumn Header="Cycle Time" Binding="{Binding CT}" ElementStyle="{StaticResource DataGridCellRight}"></DataGridTextColumn>
                 </DataGrid.Columns>
             </DataGrid>
 
