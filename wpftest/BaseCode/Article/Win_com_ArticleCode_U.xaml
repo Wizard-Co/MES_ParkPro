@@ -723,14 +723,14 @@
                         </Viewbox>
                     </Label>
 
-                    <Label Grid.Row="12" Grid.Column="3" 
+                    <Label Grid.Row="12" Grid.Column="3" Visibility="Hidden"
                                     Style="{DynamicResource LabelInputArea}">
                         <Viewbox Style="{DynamicResource ViewBoxSetMaxMinHeight}">
 
                             <TextBlock Text="차   종" Style="{DynamicResource TextBlockInViewBoxInput}" />
                         </Viewbox>
                     </Label>
-                    <Grid Grid.Column="4" Grid.Row="12">
+                    <Grid Grid.Column="4" Grid.Row="12" Visibility="Hidden">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="4*" />
                             <ColumnDefinition Width="*" />

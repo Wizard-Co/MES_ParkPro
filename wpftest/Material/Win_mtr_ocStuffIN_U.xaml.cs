@@ -1889,7 +1889,7 @@ namespace WizMes_ParkPro
             txtCustomInspector.Text = MainWindow.CurrentName;
             // 7. 전창고, 후창고 - 두번째 선택
             //cboFromLoc.SelectedIndex = 0;
-            cboToLoc.SelectedIndex = 1;
+            cboToLoc.SelectedIndex = 0;
             cboFreeStuffinYN.SelectedIndex = 0; //검사필요여부 기본값 Y
 
             
