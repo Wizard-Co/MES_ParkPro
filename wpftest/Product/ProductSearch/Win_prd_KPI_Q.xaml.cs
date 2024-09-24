@@ -198,9 +198,11 @@ namespace WizMes_ParkPro
                                 GbnName = dr["GbnName"].ToString(),
                                 ArticleNo = dr["ARTICLENO"].ToString(),
                                 Article = dr["article"].ToString(),
-                                WorkQty = stringFormatN0(dr["WorkQty"]),
-                                WorkTime = stringFormatN1(dr["WorkTime"]),
-                                WorkQtyPerHour = stringFormatN1(dr["WorkQtyPerHour"]),
+                                InstDate = dr["InstDate"].ToString(),
+                                WorkDate = dr["WorkDate"].ToString(),
+                                WorkUpRate = stringFormatN1(dr["WorkUpRate"]),
+                                WorkGoalRate = stringFormatN1(dr["WorkGoalRate"]),
+                                DiffDate = stringFormatN0(dr["DiffDate"]),
                                 DefectQty = stringFormatN0(dr["DefectQty"]),
                                 DefectWorkQty = stringFormatN0(dr["DefectWorkQty"]),
                                 DefectRate = stringFormatN1(dr["DefectRate"]),
@@ -208,17 +210,16 @@ namespace WizMes_ParkPro
                                 DefectGoalRate = stringFormatN1(dr["DefectGoalRate"]),
                                 gbn = dr["gbn"].ToString(),
                                 Sort = dr["Sort"].ToString(),
-                                WorkUpRate = stringFormatN1(dr["WorkUpRate"]),
-                                WorkGoalRate = stringFormatN1(dr["WorkGoalRate"])
+
                             };
                             if (WPKQC.gbn == "P")
                             {
-                                WPKQC.Goal = "150.0";
+                                WPKQC.Goal = "15.8";
                                 dgdGonsu.Items.Add(WPKQC);
                             }
                             if (WPKQC.gbn == "Q")
                             {
-                                WPKQC.Goal = "0.7";
+                                WPKQC.Goal = "5.5";
                                 dgdOut.Items.Add(WPKQC);
                             }
 
@@ -483,6 +484,10 @@ namespace WizMes_ParkPro
         public string gbn { get; set; }
         public string Sort { get; set; }
         public string Goal { get; set; }
+        public string InstDate { get; set; }
+        public string WorkDate { get; set; }
+        public string DiffDate { get; set; }
+
 
 
     }

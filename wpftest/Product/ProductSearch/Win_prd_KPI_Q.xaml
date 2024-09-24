@@ -186,7 +186,7 @@
                 <RowDefinition Height="10*" />
                 <RowDefinition Height="*" />
             </Grid.RowDefinitions>
-            <GroupBox Header="[시간당 생산량]" Grid.Row="0">
+            <GroupBox Header="[제조 리드타임]" Grid.Row="0">
                 <DataGrid x:Name="dgdGonsu" IsReadOnly="True"
                       Style="{DynamicResource DataGridSet1}">
                     <DataGrid.Columns>
@@ -195,13 +195,13 @@
                                         ElementStyle="{StaticResource DataGridCellLeft}" FontSize="20" />
                         <DataGridTextColumn Header="품명" Width="*" MinWidth="150" Binding="{Binding Article}"  Visibility="Hidden" 
                                         ElementStyle="{StaticResource DataGridCellLeft}" FontSize="20" />
-                        <DataGridTextColumn Header="생산수량(EA)" Width="*" MinWidth="150" Binding="{Binding WorkQty, StringFormat='#,##0'}" 
+                        <DataGridTextColumn Header="지시일자" Width="*" MinWidth="150" Binding="{Binding InstDate}" 
                                         ElementStyle="{StaticResource DataGridCellRight}" FontSize="20" />
-                        <DataGridTextColumn Header="작업시간(Hr)" MinWidth="150" Width="*" Binding="{Binding WorkTime, StringFormat='#,##0'}" 
+                        <DataGridTextColumn Header="작업일자" MinWidth="150" Width="*" Binding="{Binding WorkDate}" 
                                         ElementStyle="{StaticResource DataGridCellRight}" FontSize="20" />
-                        <DataGridTextColumn Header="시간당생산량(EA/Hr)" MinWidth="150" Width="*" Binding="{Binding WorkQtyPerHour, StringFormat='#,##0'}" 
+                        <DataGridTextColumn Header="제조리드타임(Day)" MinWidth="150" Width="*" Binding="{Binding DiffDate, StringFormat='#,##0'}" 
                                         ElementStyle="{StaticResource DataGridCellRight}" FontSize="20" />
-                        <DataGridTextColumn Header="목표(EA/Hr)" MinWidth="150" Width="*" Binding="{Binding Goal, StringFormat='#,##0'}" 
+                        <DataGridTextColumn Header="목표(Day)" MinWidth="150" Width="*" Binding="{Binding Goal, StringFormat='#,##0'}" 
                                         ElementStyle="{StaticResource DataGridCellRight}" FontSize="20" />
                         <DataGridTextColumn Header="달성률(%)" MinWidth="150" Width="*" Binding="{Binding WorkGoalRate, StringFormat='#,##0'}" 
                                         ElementStyle="{StaticResource DataGridCellRight}" FontSize="20" />
