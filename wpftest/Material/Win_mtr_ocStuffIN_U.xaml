@@ -405,8 +405,8 @@
                                     </DataTemplate>
                                 </DataGridTemplateColumn.CellTemplate>
                             </DataGridTemplateColumn>
-                            <DataGridTextColumn Header="발주번호" Binding="{Binding Req_ID}"/>
-                            <DataGridTextColumn Header="발주비고" Binding="{Binding ReqName}"/>
+                            <DataGridTextColumn Header="발주번호" Binding="{Binding Req_ID}" Visibility="Hidden"/>
+                            <DataGridTextColumn Header="발주비고" Binding="{Binding ReqName}" Visibility="Hidden"/>
                             <DataGridTextColumn Header="입고일자" Binding="{Binding StuffDate_CV}"/>
                             <DataGridTextColumn Header="거래처" Binding="{Binding CustomName}"/>
                             <DataGridTextColumn Header="품번" Binding="{Binding BuyerArticleNo}"/>
@@ -681,12 +681,12 @@
 
                         <Label Grid.Row="4" Grid.Column="0" Style="{DynamicResource LabelInputArea}" >
                             <Viewbox  Style="{DynamicResource ViewBoxSetMaxMinHeight}">
-                                <TextBlock Text="품     번" Style="{DynamicResource TextBlockInViewBoxInput}"/>
+                                <TextBlock Text="품     명" Style="{DynamicResource TextBlockInViewBoxInput}"/>
                             </Viewbox>
                         </Label>
                         <TextBox x:Name="txtArticle" Grid.Row="4" Grid.Column="1" 
                                  Style="{StaticResource TextBoxInputNecessary}" Grid.ColumnSpan="2"
-                                 Text="{Binding BuyerArticleNo}" Tag="{Binding ArticleID}"
+                                 Text="{Binding Article}" Tag="{Binding ArticleID}"
                                  Keyboard.KeyDown="txtArticle_KeyDown" IsHitTestVisible="True"/>
                         <Button x:Name="btnPfArticle" Grid.Row="4" Grid.Column="3" Margin="1"
                                 Click="btnPfArticle_Click" IsEnabled="True">

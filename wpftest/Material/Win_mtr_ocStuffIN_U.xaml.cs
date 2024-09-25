@@ -1649,7 +1649,7 @@ namespace WizMes_ParkPro
                     //   }
 
 
-                    MainWindow.pf.ReturnCode(txtArticle, 7071, "");
+                    MainWindow.pf.ReturnCode(txtArticle, 77, "");
 
                     //if (txtCustom != null && txtCustom.Text != "")
                     //{   //선택된 납품거래처에 따른 품명만 보여주게
@@ -1712,14 +1712,15 @@ namespace WizMes_ParkPro
             //}
             try
             {
-                if (txtCustom != null && txtCustom.Text != "")
-                {   //선택된 납품거래처에 따른 품명만 보여주게
-                    MainWindow.pf.ReturnCodeGLS(txtArticle, 7070, txtCustom.Tag.ToString().Trim());
-                }
-                else
-                {   //선택된 납품거래처가 없다면 전체 품명 다 보여주게
-                    MainWindow.pf.ReturnCodeGLS(txtArticle, 7071, "");
-                }
+                MainWindow.pf.ReturnCode(txtArticle, 77, "");
+                //if (txtCustom != null && txtCustom.Text != "")
+                //{   //선택된 납품거래처에 따른 품명만 보여주게
+                //    MainWindow.pf.ReturnCodeGLS(txtArticle, 7070, txtCustom.Tag.ToString().Trim());
+                //}
+                //else
+                //{   //선택된 납품거래처가 없다면 전체 품명 다 보여주게
+                //    MainWindow.pf.ReturnCodeGLS(txtArticle, 7071, "");
+                //}
 
                 if (txtArticle.Tag != null)
                 {
