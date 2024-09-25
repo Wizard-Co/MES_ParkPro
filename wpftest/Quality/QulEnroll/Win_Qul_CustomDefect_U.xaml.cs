@@ -9,6 +9,7 @@ using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using System.Windows.Media;
 using WizMes_ParkPro.PopUP;
 using WPF.MDI;
 
@@ -710,12 +711,12 @@ namespace WizMes_ParkPro
         // 플러스파인더 _ 거래처 찾기.
         private void btnCustomer_Click(object sender, RoutedEventArgs e)
         {
-            pf.ReturnCode(txtCustomer, 0, "");
+            pf.ReturnCode(txtCustomer, 72, "");
         }
         // 플러스파인더 _ 거래처 찾기.
         private void btnCustomer_InGroupBox_Click(object sender, RoutedEventArgs e)
         {
-            pf.ReturnCode(txtCustomer_InGroupBox, 0, "");
+            pf.ReturnCode(txtCustomer_InGroupBox, 72, "");
         }
         // 플러스파인더 _ 품명 찾기
         private void btnArticle_Click(object sender, RoutedEventArgs e)
@@ -1146,7 +1147,8 @@ namespace WizMes_ParkPro
                     int i = 0;
                     if (dt.Rows.Count == 0)
                     {
-                        MessageBox.Show("조회결과가 없습니다.");
+                        ClearInputGrid();
+                        MessageBox.Show("조회결과가 없습니다.");                     
                         return;
                     }
                     else
@@ -2727,6 +2729,46 @@ namespace WizMes_ParkPro
 
         #endregion
 
+        //남아있는 데이터로 오류 방지 입력칸 비우기
+        private void ClearInputGrid()
+        {
+            //여기에 비우고자 하는 그리드 또는 그룹박스를 파라미터로 적어주세요       
+            ClearTextLabel(Sub1);
+            ClearTextLabel(Sub2);
+        }
+
+        //UI컨트롤을 찾아 해당하는 요소가 있으면 내용을 비움
+        private void ClearTextLabel(DependencyObject parent)
+        {
+            int childCount = VisualTreeHelper.GetChildrenCount(parent);
+
+            for (int i = 0; i < childCount; i++)
+            {
+                var child = VisualTreeHelper.GetChild(parent, i);
+
+                if (child is TextBox textBox)
+                {
+                    // TextBox를 찾으면 Text 속성을 빈 문자열로 설정
+                    textBox.Text = string.Empty;
+                    textBox.Tag = null;
+                }
+                if (child is ComboBox comboBox)
+                {
+                    //콤보박스 선택값 비워줌
+                    comboBox.SelectedValue = "";
+                }
+                if(child is DatePicker datePicker)
+                {
+                    datePicker.SelectedDate = null;
+                }
+                else
+                {
+                    // 자식이 TextBox가 아니면 재귀적으로 그 자식의 자식들을 탐색
+                    ClearTextLabel(child);
+                }
+            }
+        }
+
         private void DataGrid_SizeChange(object sender, SizeChangedEventArgs e)
         {
             DataGrid dgs = sender as DataGrid;
@@ -2775,6 +2817,14 @@ namespace WizMes_ParkPro
         {
             rbnChoice1.IsChecked = false;
             rbnChoice2.IsChecked = true;
+        }
+
+        private void txtCustomer_KeyDown(object sender, KeyEventArgs e)
+        {
+            if(e.Key == Key.Enter)
+            {
+                btnCustomer_Click(null, null);
+            }
         }
     }
 

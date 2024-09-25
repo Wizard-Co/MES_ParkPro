@@ -597,7 +597,7 @@
                                 <TextBlock Text="최종고객사"  Style="{DynamicResource TextBlockInViewBoxInput}"/>
                             </Viewbox>
                         </Label>
-                        <TextBox x:Name="txtOutCustom" Grid.Column="1" Grid.Row="5" Style="{DynamicResource TextBoxInputArea}" IsReadOnly="True"
+                        <TextBox x:Name="txtOutCustom" Grid.Column="1" Grid.Row="5" Style="{DynamicResource TextBoxInputArea}" 
                                  Text="{Binding Path=OutCustom}" Tag="{Binding Path=OutCustomID}" KeyDown="TxtOutCustom_KeyDown" TabIndex="19" />
                         <Button x:Name="btnOutCustom"  Grid.Column="2" Grid.Row="5" Click="btnOutCustom_Click" >
                             <Image Source="{DynamicResource btiPlusFind}" Style="{DynamicResource imgPlusFind}" Margin="1"/>

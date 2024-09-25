@@ -289,13 +289,13 @@ namespace WizMes_ParkPro
         private void txtCustomSrh_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.Key == Key.Enter)
-                MainWindow.pf.ReturnCode(txtCustomSrh, (int)Defind_CodeFind.DCF_CUSTOM, "");
+                MainWindow.pf.ReturnCode(txtCustomSrh, 72, "");
         }
 
         //거래처
         private void btnPfCustomSrh_Click(object sender, RoutedEventArgs e)
         {
-            MainWindow.pf.ReturnCode(txtCustomSrh, (int)Defind_CodeFind.DCF_CUSTOM, "");
+            MainWindow.pf.ReturnCode(txtCustomSrh, 72, "");
         }
 
         //최종고객사
@@ -322,13 +322,13 @@ namespace WizMes_ParkPro
         private void txtInCustomSrh_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.Key == Key.Enter)
-                MainWindow.pf.ReturnCode(txtInCustomSrh, (int)Defind_CodeFind.DCF_BUYERMODEL, "");
+                MainWindow.pf.ReturnCode(txtInCustomSrh, 72, "");
         }
 
         //최종고객사
         private void btnPfInCustomSrh_Click(object sender, RoutedEventArgs e)
         {
-            MainWindow.pf.ReturnCode(txtInCustomSrh, (int)Defind_CodeFind.DCF_BUYERMODEL, "");
+            MainWindow.pf.ReturnCode(txtInCustomSrh, 72, "");
         }
 
         //검색조건 - 품번 라벨 클릭
@@ -1902,7 +1902,7 @@ namespace WizMes_ParkPro
         {
             if (e.Key == Key.Enter)
             {
-                MainWindow.pf.ReturnCode(txtCustom, (int)Defind_CodeFind.DCF_CUSTOM, "");
+                MainWindow.pf.ReturnCode(txtCustom, 72, "");
 
                 if (txtCustom.Tag != null)
                 {
@@ -1919,7 +1919,7 @@ namespace WizMes_ParkPro
         //거래처
         private void btnPfCustom_Click(object sender, RoutedEventArgs e)
         {
-            MainWindow.pf.ReturnCode(txtCustom, (int)Defind_CodeFind.DCF_CUSTOM, "");
+            MainWindow.pf.ReturnCode(txtCustom, 72, "");
 
             if (txtCustom.Tag != null)
             {
