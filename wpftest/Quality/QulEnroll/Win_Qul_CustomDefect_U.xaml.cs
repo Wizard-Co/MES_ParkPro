@@ -2346,6 +2346,7 @@ namespace WizMes_ParkPro
                     return false;
                 }
             }
+            listStrArrayFileInfo.Clear();
             return true;
         }
 

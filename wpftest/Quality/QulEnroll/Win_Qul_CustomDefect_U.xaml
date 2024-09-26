@@ -163,7 +163,7 @@
                             <CheckBox x:Name="chkDefectContent" Click="chkDefectContent_Click"></CheckBox>
                         </Viewbox>
                         <Viewbox Style="{DynamicResource ViewBoxSetMaxMinHeight_Q}">
-                            <TextBlock Text="발생내역(%)" Style="{DynamicResource TextBlockInViewBoxSearch_Q}"/>
+                            <TextBlock Text="문제발생내역" Style="{DynamicResource TextBlockInViewBoxSearch_Q}"/>
                         </Viewbox>
                     </StackPanel>
                 </Label>
