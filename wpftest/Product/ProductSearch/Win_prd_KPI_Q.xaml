@@ -190,7 +190,7 @@
                 <DataGrid x:Name="dgdGonsu" IsReadOnly="True"
                       Style="{DynamicResource DataGridSet1}">
                     <DataGrid.Columns>
-                        <DataGridTextColumn Header="GBN" Width="*" MinWidth="0" Binding="{Binding GbnName}" FontSize="20" />
+                        <DataGridTextColumn Header="기간" Width="*" MinWidth="0" Binding="{Binding GbnName}" FontSize="20" />
                         <DataGridTextColumn Header="품번" Width="*" MinWidth="150" Binding="{Binding ArticleNo}" 
                                         ElementStyle="{StaticResource DataGridCellLeft}" FontSize="20" />
                         <DataGridTextColumn Header="품명" Width="*" MinWidth="150" Binding="{Binding Article}" 
@@ -221,9 +221,9 @@
                                         ElementStyle="{StaticResource DataGridCellLeft}" FontSize="20"  />
                         <DataGridTextColumn Header="품명" Width="*" MinWidth="150" Binding="{Binding Article}"  Visibility="Hidden" 
                                         ElementStyle="{StaticResource DataGridCellLeft}" FontSize="20" />
-                        <DataGridTextColumn Header="생산량" Width="*" MinWidth="150" Binding="{Binding DefectWorkQty, StringFormat='#,##0'}" 
+                        <DataGridTextColumn Header="생산량(EA)" Width="*" MinWidth="150" Binding="{Binding DefectWorkQty, StringFormat='#,##0'}" 
                                         ElementStyle="{StaticResource DataGridCellRight}" FontSize="20" />
-                        <DataGridTextColumn Header="불량량" Width="*" MinWidth="150" Binding="{Binding DefectQty, StringFormat='#,##0'}" 
+                        <DataGridTextColumn Header="불량량(EA)" Width="*" MinWidth="150" Binding="{Binding DefectQty, StringFormat='#,##0'}" 
                                         ElementStyle="{StaticResource DataGridCellRight}" FontSize="20" />
                         <DataGridTextColumn Header="불량률(%)" Width="*" MinWidth="150" Binding="{Binding DefectRate, StringFormat='#,##0'}" 
                                         ElementStyle="{StaticResource DataGridCellRight}" FontSize="20" />

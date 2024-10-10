@@ -198,8 +198,8 @@ namespace WizMes_ParkPro
                                 GbnName = dr["GbnName"].ToString(),
                                 ArticleNo = dr["ARTICLENO"].ToString(),
                                 Article = dr["article"].ToString(),
-                                InstDate = dr["InstDate"].ToString(),
-                                WorkDate = dr["WorkDate"].ToString(),
+                                InstDate = DatePickerFormat(dr["InstDate"].ToString()),
+                                WorkDate = DatePickerFormat(dr["WorkDate"].ToString()),
                                 WorkUpRate = stringFormatN1(dr["WorkUpRate"]),
                                 WorkGoalRate = stringFormatN1(dr["WorkGoalRate"]),
                                 DiffDate = stringFormatN0(dr["DiffDate"]),
@@ -437,6 +437,21 @@ namespace WizMes_ParkPro
             {
                 MessageBox.Show("예외처리 - " + ee.ToString());
             }
+        }
+
+        private string DatePickerFormat(string str)
+        {
+            string result = "";
+
+            if (str.Length == 8)
+            {
+                if (!str.Trim().Equals(""))
+                {
+                    result = str.Substring(0, 4) + "-" + str.Substring(4, 2) + "-" + str.Substring(6, 2);
+                }
+            }
+
+            return result;
         }
 
         // 천마리 콤마, 소수점 버리기
