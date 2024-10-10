@@ -291,7 +291,7 @@ namespace WizMes_ParkPro
             {
                 if (e.Key == Key.Enter)
                 {
-                    pf.ReturnCode(txtCustomer, 0, "");
+                    pf.ReturnCode(txtCustomer, 72, "");
                 }
             }
             catch (Exception ee)
@@ -305,7 +305,7 @@ namespace WizMes_ParkPro
         {
             try
             {
-                pf.ReturnCode(txtCustomer, 0, "");
+                pf.ReturnCode(txtCustomer, 72, "");
             }
             catch (Exception ee)
             {
@@ -357,7 +357,7 @@ namespace WizMes_ParkPro
             {
                 if (e.Key == Key.Enter)
                 {
-                    pf.ReturnCode(txtInCustomer, 0, "");
+                    pf.ReturnCode(txtInCustomer, 72, "");
                 }
             }
             catch (Exception ee)
@@ -371,7 +371,7 @@ namespace WizMes_ParkPro
         {
             try
             {
-                pf.ReturnCode(txtInCustomer, 0, "");
+                pf.ReturnCode(txtInCustomer, 72, "");
             }
             catch (Exception ee)
             {
@@ -585,9 +585,9 @@ namespace WizMes_ParkPro
             {
                 strFlag = "I";
 
-                this.DataContext = null;
+                this.DataContext = new Win_ord_OutWare_Scan_CodeView();
                 CanBtnControl();                             //버튼 컨트롤
-                dtpOutDate.SelectedDate = DateTime.Today;
+                dtpOutDate.SelectedDate = DateTime.Today;        
 
                 txtOrderID.Focus();                          //관리번호에 포커스 이동
 
@@ -1380,12 +1380,12 @@ namespace WizMes_ParkPro
             }
         }
 
-        //출고처 키다운 이벤트
+        //최종거래처 키다운 이벤트
         private void TxtOutCustom_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.Key == Key.Enter)
             {
-                cboFromLoc.IsDropDownOpen = true;
+                pf.ReturnCode(txtOutCustom, 72, "");
             }
         }
         #endregion
@@ -1467,12 +1467,7 @@ namespace WizMes_ParkPro
         {
             try
             {
-                pf.ReturnCode(txtOutCustom, 0, "");
-
-                if (txtOutCustom.Text.Length > 0)
-                    txtBuyerName.Text = txtOutCustom.Text;
-
-                txtBuyerName.Focus();
+                pf.ReturnCode(txtOutCustom, 72, "");
             }
             catch (Exception ee)
             {

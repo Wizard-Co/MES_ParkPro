@@ -310,7 +310,7 @@ namespace WizMes_ParkPro
         //거래처
         private void btnCustomer_Click(object sender, RoutedEventArgs e)
         {
-            pf.ReturnCode(txtCustomer, 0, "");  // 매출거래처만 표기되도록 변경(0 -> 68).
+            pf.ReturnCode(txtCustomer, 72, "");  
         }
 
         // 품명

@@ -334,14 +334,14 @@ namespace WizMes_ParkPro
         {
             if (e.Key == Key.Enter)
             {
-                MainWindow.pf.ReturnCode(txtCustom, (int)Defind_CodeFind.DCF_CUSTOM, "");
+                MainWindow.pf.ReturnCode(txtCustom, 72, "");
             }
         }
 
         //거래처
         private void btnPfCustom_Click(object sender, RoutedEventArgs e)
         {
-            MainWindow.pf.ReturnCode(txtCustom, (int)Defind_CodeFind.DCF_CUSTOM, "");
+            MainWindow.pf.ReturnCode(txtCustom, 72, "");
         }
 
         // 최종고객사
@@ -371,14 +371,14 @@ namespace WizMes_ParkPro
         {
             if (e.Key == Key.Enter)
             {
-                MainWindow.pf.ReturnCode(txtInCustom, (int)Defind_CodeFind.DCF_CUSTOM, "");
+                MainWindow.pf.ReturnCode(txtInCustom, 72, "");
             }
         }
 
         // 최종고객사
         private void btnPfInCustom_Click(object sender, RoutedEventArgs e)
         {
-            MainWindow.pf.ReturnCode(txtInCustom, (int)Defind_CodeFind.DCF_CUSTOM, "");
+            MainWindow.pf.ReturnCode(txtInCustom, 72, "");
         }
 
         // 품번

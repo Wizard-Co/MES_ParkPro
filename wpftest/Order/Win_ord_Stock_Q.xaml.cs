@@ -806,12 +806,12 @@ namespace WizMes_ParkPro
         //플러스파인더 _ 거래처_클릭.
         private void btnCustomer_Click(object sender, RoutedEventArgs e)
         {
-            pf.ReturnCode(txtCustomer, 0, "");
+            pf.ReturnCode(txtCustomer, 72, "");
         }
         //플러스파인더 _ 거래처_키다운.
         private void TxtCustomer_KeyDown(object sender, KeyEventArgs e)
         {
-            pf.ReturnCode(txtCustomer, 0, "");
+            pf.ReturnCode(txtCustomer, 72, "");
         }
 
         //플러스파인더 _ 품명_클릭. (품번이 검색되도록 수정, 2020.03.18, 장가빈)

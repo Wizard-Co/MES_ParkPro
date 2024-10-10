@@ -277,12 +277,12 @@ namespace WizMes_ParkPro
             if (e.Key == Key.Enter)
             {
                 e.Handled = true;
-                MainWindow.pf.ReturnCode(txtCustomer, 68, "");
+                MainWindow.pf.ReturnCode(txtCustomer, 72, "");
             }
         }
         private void btnCustomer_Click(object sender, RoutedEventArgs e)
         {
-            MainWindow.pf.ReturnCode(txtCustomer, 68, "");
+            MainWindow.pf.ReturnCode(txtCustomer, 72, "");
         }
 
         // 품명

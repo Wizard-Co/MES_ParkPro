@@ -517,6 +517,15 @@ namespace WizMes_ParkPro
             {
                 if (txtArticle.Text == "")
                 {
+                    MessageBox.Show("품명 선택이 되지 않았습니다. 체크를 해제하거나 품명을 선택하고 검색해 주세요.");
+                    flag = false;
+                    return flag;
+                }
+            }
+            if (chkArticleNo.IsChecked == true)
+            {
+                if (txtArticleNo.Text == "")
+                {
                     MessageBox.Show("품번 선택이 되지 않았습니다. 체크를 해제하거나 품번을 선택하고 검색해 주세요.");
                     flag = false;
                     return flag;

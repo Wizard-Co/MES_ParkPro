@@ -414,8 +414,8 @@
                                     </DataTemplate>
                                 </DataGridTemplateColumn.CellTemplate>
                             </DataGridTemplateColumn>
-                            <DataGridTextColumn Header="발주번호" Binding="{Binding Req_ID}" Width="auto"/>
-                            <DataGridTextColumn Header="발주명" Binding="{Binding ReqName}" Width="auto"/>
+                            <DataGridTextColumn Header="발주번호" Binding="{Binding Req_ID}" Width="auto" Visibility="Hidden"/>
+                            <DataGridTextColumn Header="발주명" Binding="{Binding ReqName}" Width="auto" Visibility="Hidden"/>
                             <DataGridTextColumn Header="사업장" Binding="{Binding kCompany}" Width="auto" Visibility="Hidden"/>
 
                             <DataGridTextColumn Header="입고일자" Binding="{Binding StuffDate_CV}" Width="auto"/>
@@ -652,12 +652,12 @@
 
                         <Label Grid.Row="4" Grid.Column="0" Style="{DynamicResource LabelInputArea}" >
                             <Viewbox  Style="{DynamicResource ViewBoxSetMaxMinHeight}">
-                                <TextBlock Text="품     번" Style="{DynamicResource TextBlockInViewBoxInput}"/>
+                                <TextBlock Text="품     명" Style="{DynamicResource TextBlockInViewBoxInput}"/>
                             </Viewbox>
                         </Label>
                         <TextBox x:Name="txtArticle" Grid.Row="4" Grid.Column="1" 
                                  Style="{StaticResource TextBoxInputNecessary}" Grid.ColumnSpan="2"
-                                 Text="{Binding BuyerArticleNo}" Tag="{Binding ArticleID}"
+                                 Text="{Binding Article}" Tag="{Binding ArticleID}"
                                   IsHitTestVisible="True"/>
 
                         <Label Grid.Row="2" Grid.Column="4" Style="{DynamicResource LabelInputArea}">
