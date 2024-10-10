@@ -191,9 +191,9 @@
                       Style="{DynamicResource DataGridSet1}">
                     <DataGrid.Columns>
                         <DataGridTextColumn Header="GBN" Width="*" MinWidth="0" Binding="{Binding GbnName}" FontSize="20" />
-                        <DataGridTextColumn Header="품번" Width="*" MinWidth="150" Binding="{Binding ArticleNo}" Visibility="Hidden" 
+                        <DataGridTextColumn Header="품번" Width="*" MinWidth="150" Binding="{Binding ArticleNo}" 
                                         ElementStyle="{StaticResource DataGridCellLeft}" FontSize="20" />
-                        <DataGridTextColumn Header="품명" Width="*" MinWidth="150" Binding="{Binding Article}"  Visibility="Hidden" 
+                        <DataGridTextColumn Header="품명" Width="*" MinWidth="150" Binding="{Binding Article}" 
                                         ElementStyle="{StaticResource DataGridCellLeft}" FontSize="20" />
                         <DataGridTextColumn Header="지시일자" Width="*" MinWidth="150" Binding="{Binding InstDate}" 
                                         ElementStyle="{StaticResource DataGridCellRight}" FontSize="20" />
@@ -201,7 +201,7 @@
                                         ElementStyle="{StaticResource DataGridCellRight}" FontSize="20" />
                         <DataGridTextColumn Header="제조리드타임(Day)" MinWidth="150" Width="*" Binding="{Binding DiffDate, StringFormat='#,##0'}" 
                                         ElementStyle="{StaticResource DataGridCellRight}" FontSize="20" />
-                        <DataGridTextColumn Header="목표(Day)" MinWidth="150" Width="*" Binding="{Binding Goal, StringFormat='#,##0'}" 
+                        <DataGridTextColumn Header="목표(Day)" MinWidth="150" Width="*" Binding="{Binding Goal, StringFormat='#,##0'}" Visibility="Hidden"
                                         ElementStyle="{StaticResource DataGridCellRight}" FontSize="20" />
                         <DataGridTextColumn Header="달성률(%)" MinWidth="150" Width="*" Binding="{Binding WorkGoalRate, StringFormat='#,##0'}" 
                                         ElementStyle="{StaticResource DataGridCellRight}" FontSize="20" />
@@ -216,7 +216,7 @@
                 <DataGrid x:Name="dgdOut" Grid.Row="1" IsReadOnly="True" 
                       Style="{DynamicResource DataGridSet1}">
                     <DataGrid.Columns>
-                        <DataGridTextColumn Header="GBN" Width="*" MinWidth="0" Binding="{Binding GbnName}" FontSize="20" />
+                        <DataGridTextColumn Header="GBN" Width="*" MinWidth="0" Binding="{Binding GbnName}" FontSize="20" Visibility="Hidden"/>
                         <DataGridTextColumn Header="품번" Width="*" MinWidth="150" Binding="{Binding ArticleNo}"   Visibility="Hidden" 
                                         ElementStyle="{StaticResource DataGridCellLeft}" FontSize="20"  />
                         <DataGridTextColumn Header="품명" Width="*" MinWidth="150" Binding="{Binding Article}"  Visibility="Hidden" 
@@ -227,7 +227,7 @@
                                         ElementStyle="{StaticResource DataGridCellRight}" FontSize="20" />
                         <DataGridTextColumn Header="불량률(%)" Width="*" MinWidth="150" Binding="{Binding DefectRate, StringFormat='#,##0'}" 
                                         ElementStyle="{StaticResource DataGridCellRight}" FontSize="20" />
-                        <DataGridTextColumn Header="목표(%)" Width="*" MinWidth="150" Binding="{Binding Goal}" 
+                        <DataGridTextColumn Header="목표(%)" Width="*" MinWidth="150" Binding="{Binding Goal}" Visibility="Hidden"
                                         ElementStyle="{StaticResource DataGridCellRight}" FontSize="20" />
                         <DataGridTextColumn Header="달성률(%)" MinWidth="150" Width="*" Binding="{Binding DefectGoalRate, StringFormat='#,##0'}" 
                                         ElementStyle="{StaticResource DataGridCellRight}" FontSize="20" />
