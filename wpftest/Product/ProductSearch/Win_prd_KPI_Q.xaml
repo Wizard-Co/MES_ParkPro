@@ -190,15 +190,14 @@
                 <DataGrid x:Name="dgdGonsu" IsReadOnly="True"
                       Style="{DynamicResource DataGridSet1}">
                     <DataGrid.Columns>
-                        <DataGridTextColumn Header="기간" Width="*" MinWidth="0" Binding="{Binding GbnName}" FontSize="20" />
-                        <DataGridTextColumn Header="품번" Width="*" MinWidth="150" Binding="{Binding ArticleNo}" 
+                        <DataGridTextColumn Header="품번" Width="*" MinWidth="150" Binding="{Binding ArticleNo}" Visibility="Hidden"
                                         ElementStyle="{StaticResource DataGridCellLeft}" FontSize="20" />
-                        <DataGridTextColumn Header="품명" Width="*" MinWidth="150" Binding="{Binding Article}" 
+                        <DataGridTextColumn Header="품명" Width="*" MinWidth="150" Binding="{Binding Article}" Visibility="Hidden"
                                         ElementStyle="{StaticResource DataGridCellLeft}" FontSize="20" />
                         <DataGridTextColumn Header="지시일자" Width="*" MinWidth="150" Binding="{Binding InstDate}" 
-                                        ElementStyle="{StaticResource DataGridCellRight}" FontSize="20" />
+                                        ElementStyle="{StaticResource DataGridCellCenter}" FontSize="20" />
                         <DataGridTextColumn Header="작업일자" MinWidth="150" Width="*" Binding="{Binding WorkDate}" 
-                                        ElementStyle="{StaticResource DataGridCellRight}" FontSize="20" />
+                                        ElementStyle="{StaticResource DataGridCellCenter}" FontSize="20" />
                         <DataGridTextColumn Header="제조리드타임(Day)" MinWidth="150" Width="*" Binding="{Binding DiffDate, StringFormat='#,##0'}" 
                                         ElementStyle="{StaticResource DataGridCellRight}" FontSize="20" />
                         <DataGridTextColumn Header="목표(Day)" MinWidth="150" Width="*" Binding="{Binding Goal, StringFormat='#,##0'}" Visibility="Hidden"
