@@ -788,9 +788,9 @@ namespace WizMes_ParkPro
 
                 if (msg.Length > 0) { MessageBox.Show(msg); return; }
 
-                string prodmsg = CheckIsProd(ConvertDouble(Main.JobID)); //2021-10-28 재고 체크
+                //string prodmsg = CheckIsProd(ConvertDouble(Main.JobID)); 
 
-                if (prodmsg.Length > 0) { MessageBox.Show(prodmsg); return; }
+                //if (prodmsg.Length > 0) { MessageBox.Show(prodmsg); return; }
 
                 if (DeleteData(Main.JobID, Main.SplitSeq))
                 {
