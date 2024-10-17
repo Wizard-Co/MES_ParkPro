@@ -116,6 +116,7 @@ namespace WizMes_ParkPro
 
         private void SaveUpdateHeaderMode()
         {
+            chkDay.IsEnabled = true;
             lblWorkerName.IsEnabled = true;
             lblDay.IsEnabled = true;
             dtpEDate.IsEnabled = true;
