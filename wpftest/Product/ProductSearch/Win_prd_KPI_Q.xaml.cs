@@ -195,9 +195,6 @@ namespace WizMes_ParkPro
                             {
                                 Num = i + 1,
 
-                                GbnName = dr["GbnName"].ToString(),
-                                ArticleNo = dr["ARTICLENO"].ToString(),
-                                Article = dr["article"].ToString(),
                                 InstDate = DatePickerFormat(dr["InstDate"].ToString()),
                                 WorkDate = DatePickerFormat(dr["WorkDate"].ToString()),
                                 WorkUpRate = stringFormatN1(dr["WorkUpRate"]),
@@ -214,12 +211,10 @@ namespace WizMes_ParkPro
                             };
                             if (WPKQC.gbn == "P")
                             {
-                                WPKQC.Goal = "15.8";
                                 dgdGonsu.Items.Add(WPKQC);
                             }
                             if (WPKQC.gbn == "Q")
                             {
-                                WPKQC.Goal = "5.5";
                                 dgdOut.Items.Add(WPKQC);
                             }
 
