@@ -5,6 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:WizMes_ParkPro"
              mc:Ignorable="d" 
+              xmlns:lvc="clr-namespace:LiveCharts.Wpf;assembly=LiveCharts.Wpf"
              Loaded="UserControl_Loaded"
              d:DesignHeight="620" d:DesignWidth="820">
     <Grid>
@@ -181,12 +182,15 @@
         </Grid>
 
         <Grid Grid.Row="1" >
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"></ColumnDefinition>
+                <ColumnDefinition Width="*"></ColumnDefinition>
+            </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
-                <RowDefinition Height="10*" />
-                <RowDefinition Height="10*" />
-                <RowDefinition Height="*" />
+                <RowDefinition Height="*"></RowDefinition>
+                <RowDefinition Height="*"></RowDefinition>
             </Grid.RowDefinitions>
-            <GroupBox Header="[제조 리드타임]" Grid.Row="0">
+            <GroupBox Header="[제조 리드타임]" Grid.Column="0">
                 <DataGrid x:Name="dgdGonsu" IsReadOnly="True"
                       Style="{DynamicResource DataGridSet1}">
                     <DataGrid.Columns>
@@ -207,7 +211,19 @@
                 </DataGrid>
             </GroupBox>
 
-            <GroupBox Header="[공정불량률 감소]" Grid.Row="1" >
+            <GroupBox Grid.Row="1" Header="[제조리드타임 그래프]">
+                <lvc:CartesianChart x:Name="lvcChartP" Series="{Binding seriesCollection}" LegendLocation="Bottom">
+                    <lvc:CartesianChart.AxisX>
+                        <lvc:Axis Title="일자별" Labels="{Binding Labels}" Separator="{x:Static lvc:DefaultAxes.CleanSeparator}"/>
+                    </lvc:CartesianChart.AxisX>
+                    <lvc:CartesianChart.AxisY>
+                        <lvc:Axis Title="일생산량" LabelFormatter="{Binding Formatter}"/>
+                    </lvc:CartesianChart.AxisY>
+                </lvc:CartesianChart>
+            </GroupBox>
+
+
+            <GroupBox Header="[공정불량률 감소]" Grid.Column="1" >
                 <DataGrid x:Name="dgdOut" Grid.Row="1" IsReadOnly="True" 
                       Style="{DynamicResource DataGridSet1}">
                     <DataGrid.Columns>
@@ -229,6 +245,16 @@
                 </DataGrid>
             </GroupBox>
 
+            <GroupBox Grid.Row="1" Grid.Column="1" Header="[공정 불량률 그래프]">
+                <lvc:CartesianChart x:Name="lvcChartQ" Series="{Binding seriesCollection}" LegendLocation="Bottom">
+                    <lvc:CartesianChart.AxisX>
+                        <lvc:Axis Title="일자별" Labels="{Binding Labels}" Separator="{x:Static lvc:DefaultAxes.CleanSeparator}"/>
+                    </lvc:CartesianChart.AxisX>
+                    <lvc:CartesianChart.AxisY>
+                        <lvc:Axis Title="일 불량량" LabelFormatter="{Binding Formatter}" MinValue="0"/>
+                    </lvc:CartesianChart.AxisY>
+                </lvc:CartesianChart>
+            </GroupBox>
         </Grid>
 
     </Grid>

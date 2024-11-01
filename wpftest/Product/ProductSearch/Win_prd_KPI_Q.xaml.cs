@@ -14,6 +14,8 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using WizMes_ParkPro.PopUP;
 using WizMes_ParkPro.PopUp;
+using LiveCharts.Wpf;
+using LiveCharts;
 
 namespace WizMes_ParkPro
 {
@@ -224,6 +226,18 @@ namespace WizMes_ParkPro
                         }
                     }
                 }
+
+                if (dgdGonsu.Items.Count > 0)
+                {
+                    setGraphP(dgdGonsu);
+                }
+
+                if (dgdOut.Items.Count > 0)
+                {
+                    setGraphQ(dgdOut);
+                }
+
+
             }
             catch (Exception ee)
             {
@@ -232,6 +246,152 @@ namespace WizMes_ParkPro
             finally
             {
                 DataStore.Instance.CloseConnection();
+            }
+        }
+        private void setGraphP(DataGrid dataGrid)
+        {
+            try
+            {
+                if (lvcChartP.Series != null)
+                {
+                    lvcChartP.Series.Clear();
+                }
+
+                ChartDTO chart = new ChartDTO();
+                chart.seriesCollection = new SeriesCollection();
+                chart.lineQty = new ChartValues<double>();
+                chart.varQty = new ChartValues<double>();
+                chart.Labels = new string[dataGrid.Items.Count];
+
+                int index = 0;
+                for (int i = 0; i < dataGrid.Items.Count; i++)
+                {
+                    var Rating = dataGrid.Items[i] as Win_prd_KPI_Q_CodeView;
+
+                    if (Rating != null)
+                    {
+                        chart.Labels[index] = Rating.WorkDate;
+                        index++;
+
+                        if (Rating.DiffDate != null)
+                        {
+                            chart.lineQty.Add(Convert.ToInt32(Rating.DiffDate.Replace(",", "")));
+                        }
+                        else
+                        {
+                            chart.lineQty.Add(0);
+                        }
+
+                        //if (Rating.WorkQty != null)
+                        //{
+                        //    chart.varQty.Add(Convert.ToInt32(Rating.WorkQty.Replace(",", "")));
+                        //}
+                        //else
+                        //{
+                        //    chart.varQty.Add(0);
+                        //}
+                    }
+                }
+
+                chart.Formatter = data => data.Y.ToString("N0") + "(일)";
+
+                chart.seriesCollection.Add(new LineSeries
+                {
+                    Values = chart.lineQty,
+                    DataLabels = true,
+                    Title = "제조 리드 타임",
+                    LabelPoint = chart.Formatter
+                });
+
+                //chart.seriesCollection.Add(new ColumnSeries
+                //{
+                //    Values = chart.varQty,
+                //    DataLabels = true,
+                //    Title = "생산량",
+                //    LabelPoint = chart.Formatter
+                //});
+
+                lvcChartP.DataContext = chart;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+        }
+
+        private void setGraphQ(DataGrid dataGrid)
+        {
+            try
+            {
+                if (lvcChartQ.Series != null)
+                {
+                    lvcChartQ.Series.Clear();
+                }
+
+                ChartDTO chart2 = new ChartDTO();
+                chart2.seriesCollection = new SeriesCollection();
+                chart2.lineQty = new ChartValues<double>();
+                chart2.varQty = new ChartValues<double>();
+                chart2.Labels = new string[dataGrid.Items.Count];
+
+
+                int index = 0;
+                for (int i = 0; i < dataGrid.Items.Count; i++)
+                {
+                    var Rating = dataGrid.Items[i] as Win_prd_KPI_Q_CodeView;
+
+                    if (Rating != null)
+                    {
+                        chart2.Labels[index] = Rating.WorkDate;
+                        index++;
+
+                        if (Rating.DefectRate != null)
+                        {
+                            chart2.lineQty.Add(Convert.ToDouble(Rating.DefectRate));
+                        }
+                        else
+                        {
+                            chart2.lineQty.Add(0);
+                        }
+
+                        //if (Rating.DefectQty != null)
+                        //{
+                        //    chart2.varQty.Add(Convert.ToDouble(Rating.DefectQty));
+                        //}
+                        //else
+                        //{
+                        //    chart2.varQty.Add(0);
+                        //}
+                    }
+                }
+
+                chart2.PercentFormatter = data => data.Y + "(%)";
+                chart2.Formatter = data => data.Y + "(개)";
+
+                chart2.seriesCollection.Add(new LineSeries
+                {
+                    Values = chart2.lineQty,
+                    DataLabels = true,
+                    Title = "일 불량량",
+                    LabelPoint = chart2.PercentFormatter
+                });
+
+                //chart2.seriesCollection.Add(new ColumnSeries
+                //{
+                //    Values = chart2.varQty,
+                //    DataLabels = true,
+                //    Title = "불량량",
+                //    LabelPoint = chart2.Formatter
+                //});
+
+
+
+                lvcChartQ.DataContext = chart2;
+
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
             }
         }
         #endregion
@@ -483,7 +643,6 @@ namespace WizMes_ParkPro
         public string WorkQty { get; internal set; }
         public string WorkTime { get; internal set; }
         public string WorkQtyPerHour { get; internal set; }
-        public string WorkMan { get; set; }
         public string WorkUpRate { get; set; }
         public string WorkGoalRate { get; set; }
         public string DefectQty { get; set; }
@@ -498,9 +657,19 @@ namespace WizMes_ParkPro
         public string WorkDate { get; set; }
         public string DiffDate { get; set; }
 
-
-
     }
+
+    public class ChartDTO
+    {
+        public SeriesCollection seriesCollection { get; set; }
+        public string[] Labels { get; set; }
+        public Func<ChartPoint, string> Formatter { get; set; }
+        public Func<ChartPoint, string> PercentFormatter { get; set; }
+        public ColumnSeries columnSeries { get; set; }
+        public ChartValues<double> lineQty { get; set; }
+        public ChartValues<double> varQty { get; set; }
+    }
+
 
     #endregion
 
